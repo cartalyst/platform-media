@@ -30,7 +30,7 @@ return array(
 	|
 	*/
 
-	'name' => 'Pages',
+	'name' => 'Content',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -44,7 +44,7 @@ return array(
 	|
 	*/
 
-	'slug' => 'platform/pages',
+	'slug' => 'platform/content',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -67,7 +67,7 @@ return array(
 	|
 	*/
 
-	'description' => 'An extension to manage pages and content.',
+	'description' => 'An extension to manage content.',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -141,7 +141,7 @@ return array(
 	|
 	*/
 
-	'uri' => 'pages',
+	'uri' => 'content',
 
 	/*
 	|--------------------------------------------------------------------------

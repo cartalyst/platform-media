@@ -1,5 +1,5 @@
 {
-    "name": "platform/pages",
+    "name": "platform/content",
     "type": "platform-extension",
     "description": "A base application on Laravel.",
     "keywords": ["platform", "ecommerce", "laravel", "bootstrap"],
@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Platform\\Pages" : "models"
+            "Platform\\Content" : "models"
         },
         "classmap": [
             "controllers",
