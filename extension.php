@@ -119,7 +119,7 @@ return array(
 	| your composer.json file specifies the autoloading logic, 'platform',
 	| where your extension receives convention autoloading based on Platform
 	| standards, or a closure which takes two parameters, first is an instance of
-	| Composer\Autoload\ClassLoader and second is Platform\Extensions\Extension.
+	| Composer\Autoload\ClassLoader and second is Platform\Foundation\Extensions\Extension.
 	| The autoload must set appropriate classes and namespaces available when the
 	| extension is started.
 	|
@@ -154,7 +154,7 @@ return array(
 	|
 	*/
 
-	'boot' => function(Platform\Extensions\Extension $extension)
+	'boot' => function(Platform\Foundation\Extensions\Extension $extension)
 	{
 
 	},
@@ -166,12 +166,12 @@ return array(
 	|
 	| Routes closure to be called when the Extension is started. Register any
 	| custom routing logic here. This closure takes a
-	| Platform\Extensions\Extension object as a parameter just in case you
+	| Platform\Foundation\Extensions\Extension object as a parameter just in case you
 	| need it.
 	|
 	*/
 
-	'routes' => function(Platform\Extensions\Extension $extension)
+	'routes' => function(Platform\Foundation\Extensions\Extension $extension)
 	{
 		
 	},
