@@ -176,4 +176,38 @@ return array(
 		
 	},
 
+	/*
+	|--------------------------------------------------------------------------
+	| Widgets
+	|--------------------------------------------------------------------------
+	|
+	| List of custom widgets associated with the extension. Like routes, the
+	| value for the widget key may either be a closure or a class & method name
+	| (joined with an @ symbol). Of course, Platform will guess the widget
+	| class for you, this is just for custom widgets or if you do not wish to
+	| make a new class for a very small widget.
+	|
+	*/
+
+	'widgets' => array(
+
+	),
+
+	/*
+	|--------------------------------------------------------------------------
+	| Plugins
+	|--------------------------------------------------------------------------
+	|
+	| List of custom plugins associated with the extension. Like routes, the
+	| value for the plugin key may either be a closure or a class & method name
+	| (joined with an @ symbol). Of course, Platform will guess the plugin
+	| class for you, this is just for custom plugins or if you do not wish to
+	| make a new class for a very small plugin.
+	|
+	*/
+
+	'plugins' => array(
+
+	),
+
 );
