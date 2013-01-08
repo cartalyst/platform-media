@@ -24,7 +24,8 @@
         "classmap": [
             "controllers",
             "database/migrations",
-            "tests"
+            "tests",
+            "widgets"
         ]
     },
     "minimum-stability": "dev"
