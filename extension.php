@@ -189,9 +189,7 @@ return array(
 	|
 	*/
 
-	'widgets' => array(
-
-	),
+	'widgets' => array(),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -206,8 +204,6 @@ return array(
 	|
 	*/
 
-	'plugins' => array(
-
-	),
+	'plugins' => array(),
 
 );
