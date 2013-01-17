@@ -171,7 +171,7 @@ return array(
 
 	'routes' => function(Platform\Extensions\Extension $extension)
 	{
-		
+		Route::get(ADMIN_URI, 'Platform\Admin\Controllers\Admin\AdminController@getIndex');
 	},
 
 	/*
