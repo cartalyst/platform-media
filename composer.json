@@ -1,13 +1,13 @@
 {
 	"name": "platform/admin",
 	"type": "platform-extension",
-	"description": "A base application on Laravel.",
-	"keywords": ["platform", "ecommerce", "laravel", "bootstrap"],
+	"description": "The main administration screen.",
+	"keywords": ["cartalyst", "platform", "laravel", "extension"],
 	"license": "BSD License (3-clause)",
 	"authors": [
 		{
 			"name": "Cartalyst LLC",
-			"email": "ben.corlett@cartalyst.com"
+			"email": "help@cartalyst.com"
 		}
 	],
 	"repositories": [

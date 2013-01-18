@@ -30,7 +30,7 @@ return array(
 	|
 	*/
 
-	'name' => 'Content',
+	'name' => 'Admin',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ return array(
 	| This is a unique slug to describe the extension. This is the only
 	| identifier for this extension and should not be changed as it will be
 	| recognized as a new extension. Ideally, this should match the folder
-	| structure within the extnsions folder though this is not required.
+	| structure within the extensions folder, though this is not required.
 	|
 	*/
 
@@ -63,19 +63,19 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	| One or two sentences describing the extension for users to view when
-	| they are installing the extension
+	| they are installing the extension.
 	|
 	*/
 
-	'description' => 'An extension to manage content.',
+	'description' => 'The main administration screen.',
 
 	/*
 	|--------------------------------------------------------------------------
 	| Version
 	|--------------------------------------------------------------------------
 	|
-	| Version should be a string version that can be used with
-	| version_compare(). This is how we compare versions of extensions.
+	| Version should be a string that can be used with version_compare().
+	| This is how we compare versions of extensions.
 	|
 	*/
 
@@ -130,7 +130,7 @@ return array(
 	| URI
 	|--------------------------------------------------------------------------
 	|
-	| Specify the URI the this extension will respond to. You can choose to
+	| Specify the URI that this extension will respond to. You can choose to
 	| specify a single string, where the URI will be matched on the admin and
 	| public sections of Platform. You can provide an array with keys 'admin'
 	| and 'public' to specify a different URI for admin and public sections and
@@ -146,7 +146,7 @@ return array(
 	| Boot Callback
 	|--------------------------------------------------------------------------
 	|
-	| Closure which takes a Platform\Extnesions\Extension object as a parameter
+	| Closure which takes a Platform\Extensions\Extension object as a parameter
 	| and is called when the extension is booted. This can do whatever custom
 	| logic is needed upon booting.
 	|
