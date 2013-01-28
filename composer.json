@@ -1,7 +1,7 @@
 {
-	"name": "platform/admin",
+	"name": "platform/media",
 	"type": "platform-extension",
-	"description": "The main administration screen.",
+	"description": "Media management for Platform.",
 	"keywords": ["cartalyst", "platform", "laravel", "extension"],
 	"license": "BSD License (3-clause)",
 	"authors": [
@@ -27,7 +27,7 @@
 	},
 	"autoload": {
 		"psr-0": {
-			"Platform\\Admin" : "models"
+			"Platform\\Media" : "models"
 		},
 		"classmap": [
 			"controllers",

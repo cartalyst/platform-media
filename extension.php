@@ -30,7 +30,7 @@ return array(
 	|
 	*/
 
-	'name' => 'Admin',
+	'name' => 'Media',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -44,7 +44,7 @@ return array(
 	|
 	*/
 
-	'slug' => 'platform/admin',
+	'slug' => 'platform/media',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -67,7 +67,7 @@ return array(
 	|
 	*/
 
-	'description' => 'The main administration screen.',
+	'description' => 'The main mediaistration screen.',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -131,9 +131,9 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	| Specify the URI that this extension will respond to. You can choose to
-	| specify a single string, where the URI will be matched on the admin and
-	| public sections of Platform. You can provide an array with keys 'admin'
-	| and 'public' to specify a different URI for admin and public sections and
+	| specify a single string, where the URI will be matched on the media and
+	| public sections of Platform. You can provide an array with keys 'media'
+	| and 'public' to specify a different URI for media and public sections and
 	| even provide an 'override' which is an array of Extensions this extension
 	| overrides it's URI from.
 	|
@@ -171,7 +171,7 @@ return array(
 
 	'routes' => function(Platform\Extensions\Extension $extension)
 	{
-		Route::get(ADMIN_URI, 'Platform\Admin\Controllers\Admin\AdminController@getIndex');
+		Route::get(ADMIN_URI, 'Platform\Media\Controllers\Media\MediaController@getIndex');
 	},
 
 	/*
