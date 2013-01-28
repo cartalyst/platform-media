@@ -20,28 +20,14 @@
 
 return array(
 
-	'name'        => 'Name',
-	'name_help'   => 'Type a descriptive name for your content.',
-	'slug'        => 'Slug',
-	'slug_help'   => 'Slug to find content by.',
-	'status'      => 'Status',
-	'status_help' => 'The content status.',
-	'value'       => 'Content',
-	'value_help'  => 'Value of your content. @content call is allowed.',
-
-	'create' => array(
-		'legend'  => 'Add Content',
+	'upload' => array(
+		'legend'  => 'Upload Media',
 		'summary' => 'Please supply the following information.'
 	),
 
-	'edit' => array(
-		'legend'  => 'Edit Content',
-		'summary' => 'Please supply the following information.'
-	),
-
-	'clone' => array(
-		'legend'  => 'Clone Content',
-		'summary' => 'Please supply the following information.'
+	'view' => array(
+		'legend'  => 'View Media',
+		'summary' => ''
 	)
 
 );

@@ -20,21 +20,16 @@
 
 return array(
 
-	'does_not_exist' => 'Content [:contentId] does not exist.',
+	'does_not_exist' => 'Media [:mediaId] does not exist.',
 
-	'create' => array(
-		'error'   => 'Content was not created, please try again.',
-		'success' => 'Content created successfully.'
-	),
-
-	'update' => array(
-		'error'   => 'Content was not updated, please try again',
-		'success' => 'Content updated successfully.'
+	'upload' => array(
+		'error'   => 'Media was not uploaded, please try again.',
+		'success' => 'Media uploaded successfully.'
 	),
 
 	'delete' => array(
-		'error'      => 'There was an issue deleting the content. Please try again.',
-		'success'    => 'The content was deleted successfully.'
+		'error'      => 'There was an issue deleting the media. Please try again.',
+		'success'    => 'The media was deleted successfully.'
 	)
 
 );

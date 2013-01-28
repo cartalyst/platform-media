@@ -21,6 +21,6 @@
 return array(
 
 	'title'       => 'Media Management',
-	'description' => 'Manage your website media.'
+	'description' => 'Manage all the files and images that are used throughout your application.'
 
 );
