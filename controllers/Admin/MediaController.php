@@ -91,37 +91,29 @@ class MediaController extends AdminController {
 		return \View::make('platform/media::upload');
 	}
 
-	# API::post('media', $file);
+	/**
+	 * Media upload form processing.
+	 *
+	 * @return Redirect
+	 */
 	public function postUpload()
 	{
-		//
-		$mediaPath = media_storage_directory(); # or create a method in the model -> Media::getDirectory();
-
-		$file = \Input::file('files');
-
-		$newPath = $mediaPath . $file->getClientOriginalName();
-
-		// Move the uploaded file to public/media directory
-		$file->move($mediaPath, $newPath);
-
-		$info = array(
-			'name'           => $file->getClientOriginalName(),
-			'file_path'      => '', # this will be stored on the media folder, for now!
-			'file_name'      => $file->getClientOriginalName(),
-			'file_extension' => $file->getClientOriginalExtension(),
-			'file_mime_type' => $file->getClientMimeType(),
-			'file_size'      => $file->getClientSize()
-		);
-
-		// Validate image
-		if (in_array($file->getClientMimeType(), array('image/jpeg', 'image/png', 'image/gif', 'image/bmp')) and $size = getimagesize($newPath))
+		try
 		{
-			$info['width']  = $size[0];
-			$info['height'] = $size[1];
+			// Upload the file
+			\API::post('media', array('files' => \Input::file()));
+
+			// Set the success message
+			# TODO !
+		}
+		catch (\Cartalyst\Api\ApiHttpException $e)
+		{
+			// Set the error message
+			# TODO !
 		}
 
-		echo '<pre>';
-		print_r($info);
+		// Redirect to the media management page
+		return \Redirect::to(ADMIN_URI . '/media');
 	}
 
 

@@ -81,10 +81,59 @@ class MediaController extends ApiController {
 	 * Uploads a new media file.
 	 *
 	 * @return Cartalyst\Api\Http\Response
+	 * @todo   Implement validation
 	 */
 	public function create()
 	{
+		if (\Input::hasFile('files'))
+		{
+			//
+			$file = \Input::file('files');
 
+			//
+			$mediaPath = media_storage_directory(); # maybe change this, later, not sure!
+
+			//
+			$newPath = $mediaPath . $file->getClientOriginalName();
+
+			// Move the uploaded file to the media storage directory
+			if ($file->move($mediaPath, $newPath))
+			{
+				//
+				$info = array(
+					'name'           => $file->getClientOriginalName(),
+					'file_path'      => '', # this will be stored on the media folder root, for now!
+					'file_name'      => $file->getClientOriginalName(),
+					'file_extension' => $file->getClientOriginalExtension(),
+					'file_mime_type' => $file->getClientMimeType(),
+					'file_size'      => $file->getClientSize()
+				);
+
+				// Validate image
+				if (in_array($file->getClientMimeType(), array('image/jpeg', 'image/png', 'image/gif', 'image/bmp')) and $size = getimagesize($newPath))
+				{
+					$info['width']  = $size[0];
+					$info['height'] = $size[1];
+				}
+
+
+				$media = new Media($info);
+
+				if($media->save())
+				{
+					//
+					return $this->response('');
+				}
+			}
+
+			# we are because something went wrong :c
+
+			# echo '<pre>';
+			# print_r($info);
+			return $this->response(array(
+				'message' => 'something went wrong here...'
+			), 500);
+		}
 	}
 
 	/**
