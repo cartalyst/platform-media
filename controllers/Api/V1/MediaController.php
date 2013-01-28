@@ -61,14 +61,6 @@ class MediaController extends ApiController {
 	 */
 	public function index()
 	{
-		/*
-		$manager = new Manager;
-
-		echo $manager->directory();
-
-		die;
-		*/
-
 		if ( ! $limit = $this->input('limit'))
 		{
 			return $this->response(array('media' => $this->model->all()));
