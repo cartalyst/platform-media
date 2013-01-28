@@ -30,7 +30,7 @@ return array(
 	|
 	*/
 
-	'name' => 'Media',
+	'name' => 'Media Management',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -67,7 +67,7 @@ return array(
 	|
 	*/
 
-	'description' => 'The main mediaistration screen.',
+	'description' => 'Manage your website media.',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -106,7 +106,9 @@ return array(
 	|
 	*/
 
-	'require' => array(),
+	'require' => array(
+		'platform/menus'
+	),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -139,7 +141,7 @@ return array(
 	|
 	*/
 
-	'uri' => 'content',
+	'uri' => 'media',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -154,7 +156,28 @@ return array(
 
 	'boot' => function(Platform\Extensions\Extension $extension)
 	{
+		$app = app();
 
+		// @todo, move this logic into platform/extensions
+		$app['translator']->addNamespace('platform/media', __DIR__.'/lang');
+
+		require_once __DIR__ . '/functions.php';
+
+		Blade::extend(function($value)
+		{
+			$matcher = Blade::createMatcher('media');
+
+			return preg_replace($matcher, '<?php echo get_media$2; ?>', $value);
+		});
+
+		$app['platform/media::media'] = function($app)
+		{
+			$media = new Platform\Media\Media;
+
+			$media->setFilesystem($app['files']);
+
+			return $media;
+		};
 	},
 
 	/*
@@ -171,7 +194,7 @@ return array(
 
 	'routes' => function(Platform\Extensions\Extension $extension)
 	{
-		Route::get(ADMIN_URI, 'Platform\Media\Controllers\Media\MediaController@getIndex');
+
 	},
 
 	/*
