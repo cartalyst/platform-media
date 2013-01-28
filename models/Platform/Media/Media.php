@@ -53,6 +53,44 @@ class Media extends \Illuminate\Database\Eloquent\Model {
 	}
 
 	/**
+	 * Returns the converted file size from bytes.
+	 *
+	 * @param  int  $precision
+	 * @return string
+	 */
+	function file_size($precision = 2)
+	{
+		$size = $this->file_size;
+
+		$base = log($size) / log(1024);
+		$suffixes = array('', 'KB', 'MB', 'GB', 'TB');
+
+		return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
+	}
+
+	/**
+	 * Returns the file width, this is just stored
+	 * if the uploaded file is an image.
+	 *
+	 * @return string
+	 */
+	public function width()
+	{
+		return ($this->width ? $this->width . 'px' : 'n/a');
+	}
+
+	/**
+	 * Returns the file height, this is just stored
+	 * if the uploaded file is an image.
+	 *
+	 * @return string
+	 */
+	public function height()
+	{
+		return ($this->height ? $this->height . 'px' : 'n/a');
+	}
+
+	/**
 	 * Set the filesystem
 	 *
 	 * @param Illuminate\Filesystem\Filesystem
