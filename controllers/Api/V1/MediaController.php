@@ -21,6 +21,8 @@
 use Platform\Routing\Controllers\ApiController;
 use Platform\Media\Media;
 
+use Platform\Media\Manager;
+
 class MediaController extends ApiController {
 
 	/**
@@ -48,7 +50,7 @@ class MediaController extends ApiController {
 	{
 		$app = app();
 
-		$this->model = $app->make('platform/media::media');
+		$this->model = $app->make('platform/media::media')->newQuery();
 	}
 
 	/**
@@ -59,6 +61,14 @@ class MediaController extends ApiController {
 	 */
 	public function index()
 	{
+		/*
+		$manager = new Manager;
+
+		echo $manager->directory();
+
+		die;
+		*/
+
 		if ( ! $limit = $this->input('limit'))
 		{
 			return $this->response(array('media' => $this->model->all()));
@@ -67,12 +77,15 @@ class MediaController extends ApiController {
 		return $this->response(array('media' => $this->model->paginate($limit)));
 	}
 
-
+	/**
+	 * Uploads a new media file.
+	 *
+	 * @return Cartalyst\Api\Http\Response
+	 */
 	public function create()
 	{
-		// upload ?
-	}
 
+	}
 
 	/**
 	 * Returns information about the given media.
@@ -118,7 +131,7 @@ class MediaController extends ApiController {
 	public function destroy($mediaId)
 	{
 		// Check if the media exists
-		if (is_null($media = $this->model->newQuery()->find($mediaId)))
+		if (is_null($media = $this->model->find($mediaId)))
 		{
 			return $this->response(array(
 				'message' => \Lang::get('platform/media::messages.does_not_exist', compact('mediaId'))
@@ -136,7 +149,7 @@ class MediaController extends ApiController {
 		// There was a problem deleting the media
 		return $this->response(array(
 			'message' => \Lang::get('platform/media::messages.delete.error')
-		));
+		), 500);
 	}
 
 }
