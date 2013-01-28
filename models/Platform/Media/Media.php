@@ -41,12 +41,15 @@ class Media extends \Illuminate\Database\Eloquent\Model {
 	 * deletes the associated file in the filesystem.
 	 *
 	 * @return void
+	 * @todo   Use: $this->file_path once better implemented!
 	 */
 	public function delete()
 	{
-		if ($this->filesystem->exists($this->file_path))
+		$file = media_storage_directory() . $this->file_name;
+
+		if ($this->filesystem->exists($file))
 		{
-			$this->filesystem->delete($this->file_path);
+			$this->filesystem->delete($file);
 		}
 
 		parent::delete();
