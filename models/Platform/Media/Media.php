@@ -46,10 +46,10 @@ class Media extends \Illuminate\Database\Eloquent\Model {
 	{
 		if ($this->filesystem->exists($this->file_path))
 		{
-			#$this->filesystem->delete($this->file_path);
+			$this->filesystem->delete($this->file_path);
 		}
 
-		#parent::delete();
+		parent::delete();
 	}
 
 	/**

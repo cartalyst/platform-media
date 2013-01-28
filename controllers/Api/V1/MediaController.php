@@ -118,13 +118,12 @@ class MediaController extends ApiController {
 	public function destroy($mediaId)
 	{
 		// Check if the media exists
-		if (is_null($media = $this->model->find($mediaId)))
+		if (is_null($media = $this->model->newQuery()->find($mediaId)))
 		{
 			return $this->response(array(
 				'message' => \Lang::get('platform/media::messages.does_not_exist', compact('mediaId'))
 			), 404);
 		}
-
 
 		// Was the media deleted?
 		if ($media->delete())
