@@ -202,7 +202,7 @@ return array(
 	| Permissions
 	|--------------------------------------------------------------------------
 	|
-	| List of permissions this extension has. These are shown in user
+	| List of permissions this extension has. These are shown in the user
 	| management to build a graphical interface where permissions may be
 	| selected.
 	|
