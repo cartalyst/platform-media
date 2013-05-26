@@ -1,4 +1,4 @@
-<?php namespace Platform\Media;
+<?php namespace Platform\Media\Models;
 /**
  * Part of the Platform application.
  *
@@ -18,9 +18,10 @@
  * @link       http://cartalyst.com
  */
 
-use \Illuminate\Filesystem\Filesystem;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Database\Eloquent\Model;
 
-class Media extends \Illuminate\Database\Eloquent\Model {
+class Media extends Model {
 
 	/**
 	 * The table associated with the model.
@@ -32,7 +33,7 @@ class Media extends \Illuminate\Database\Eloquent\Model {
 	/**
 	 * Holds the Illuminate filesystem.
 	 *
-	 * @var \Illuminate\Filesystem\Filesystem
+	 * @var Illuminate\Filesystem\Filesystem
 	 */
 	protected $filesystem;
 

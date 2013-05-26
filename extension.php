@@ -18,6 +18,9 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Extensions\ExtensionInterface;
+use Illuminate\Foundation\Application;
+
 return array(
 
 	/*
@@ -25,8 +28,8 @@ return array(
 	| Name
 	|--------------------------------------------------------------------------
 	|
-	| This is a name for your extension that is for presentational purposes
-	| only.
+	| This is your extension name and it is only used for presentational
+	| purposes only.
 	|
 	*/
 
@@ -37,10 +40,10 @@ return array(
 	| Slug
 	|--------------------------------------------------------------------------
 	|
-	| This is a unique slug to describe the extension. This is the only
-	| identifier for this extension and should not be changed as it will be
-	| recognized as a new extension. Ideally, this should match the folder
-	| structure within the extensions folder, though this is not required.
+	| This is your extension unique identifier and should not be changed as
+	| it will be recognized as a new extension. Ideally, this should match
+	| the folder structure within the extensions folder, but this is
+	| completely optional.
 	|
 	*/
 
@@ -75,7 +78,7 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	| Version should be a string that can be used with version_compare().
-	| This is how we compare versions of extensions.
+	| This is how the extensions versions are compared.
 	|
 	*/
 
@@ -83,31 +86,22 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| Is Core
-	|--------------------------------------------------------------------------
-	|
-	| Specifies that the extension is a core extension and is installed when
-	| Platform is installed. Typically you wouldn't use this.
-	|
-	*/
-
-	'is_core' => true,
-
-	/*
-	|--------------------------------------------------------------------------
 	| Requirements
 	|--------------------------------------------------------------------------
 	|
-	| List all extensions this extension requires to install / run etc. This
-	| is used in conjunction with composer (you should put the same extension
-	| dependencies in composer.json so they're resolved using composer),
-	| however it can be used without composer, at which point you'll have to
-	| ensure the required extensions are available.
+	| You should list here all the extensions this extension requires to work
+	| properly. This is used in conjunction with composer, so you should put
+	| the same extension dependencies on your composer.json require key so
+	| that they get resolved using composer, however you can use without
+	| composer, at which point you'll have to ensure that the required
+	| extensions are available.
 	|
 	*/
 
 	'require' => array(
-		'platform/menus'
+
+		'platform/admin',
+
 	),
 
 	/*
@@ -119,7 +113,7 @@ return array(
 	| your composer.json file specifies the autoloading logic, 'platform',
 	| where your extension receives convention autoloading based on Platform
 	| standards, or a closure which takes two parameters, first is an instance of
-	| Composer\Autoload\ClassLoader and second is Platform\Extensions\Extension.
+	| Composer\Autoload\ClassLoader and second is Cartalyst\Extensions\Extension.
 	| The autoload must set appropriate classes and namespaces available when the
 	| extension is started.
 	|
@@ -133,9 +127,9 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	| Specify the URI that this extension will respond to. You can choose to
-	| specify a single string, where the URI will be matched on the media and
-	| public sections of Platform. You can provide an array with keys 'media'
-	| and 'public' to specify a different URI for media and public sections and
+	| specify a single string, where the URI will be matched on the admin and
+	| public sections of Platform. You can provide an array with keys 'admin'
+	| and 'public' to specify a different URI for admin and public sections and
 	| even provide an 'override' which is an array of Extensions this extension
 	| overrides it's URI from.
 	|
@@ -145,29 +139,52 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| Boot Callback
+	| Register Callback
 	|--------------------------------------------------------------------------
 	|
-	| Closure which takes a Platform\Extensions\Extension object as a parameter
-	| and is called when the extension is booted. This can do whatever custom
-	| logic is needed upon booting.
+	| Closure that is called when the extension is registered. This can do
+	| all the needed custom logic upon registering.
+	|
+	| The closure parameters are:
+	|
+	|	object Cartalyst\Extensions\ExtensionInterface
+	|	object Illuminate\Foundation\Application
 	|
 	*/
 
-	'boot' => function(Platform\Extensions\Extension $extension)
+	'register' => function(ExtensionInterface $extension, Application $app)
 	{
-		$app = app();
 
-		// @todo, move this logic into platform/extensions
-		$app['translator']->addNamespace('platform/media', __DIR__.'/lang');
+	},
 
-		require_once __DIR__ . '/functions.php';
+	/*
+	|--------------------------------------------------------------------------
+	| Boot Callback
+	|--------------------------------------------------------------------------
+	|
+	| Closure that is called when the extension is booted. This can do
+	| all the needed custom logic upon booting.
+	|
+	| The closure parameters are:
+	|
+	|	object Cartalyst\Extensions\ExtensionInterface
+	|	object Illuminate\Foundation\Application
+	|
+	|
+	*/
 
-		Blade::extend(function($value)
+	'boot' => function(ExtensionInterface $extension, Application $app)
+	{
+
+		require_once __DIR__.'/helpers.php';
+/*
+		// Register @media blade extension.
+		$blade = $app['view']->getEngineResolver()->resolve('blade')->getCompiler();
+		$blade->extend(function($value) use ($blade)
 		{
-			$matcher = Blade::createMatcher('media');
+			$matcher = $blade->createMatcher('media');
 
-			return preg_replace($matcher, '<?php echo get_media$2; ?>', $value);
+			return preg_replace($matcher, '<?php echo Platform\Media\Models\Media::get$2; ?>', $value);
 		});
 
 		$app['platform/media::media'] = function($app)
@@ -178,6 +195,8 @@ return array(
 
 			return $media;
 		};
+*/
+
 	},
 
 	/*
@@ -185,14 +204,17 @@ return array(
 	| Routes
 	|--------------------------------------------------------------------------
 	|
-	| Routes closure to be called when the Extension is started. Register any
-	| custom routing logic here. This closure takes a
-	| Platform\Extensions\Extension object as a parameter just in case you
-	| need it.
+	| Closure that is called when the extension is started. You can register
+	| any custom routing logic here.
+	|
+	| The closure parameters are:
+	|
+	|	object Cartalyst\Extensions\ExtensionInterface
+	|	object Illuminate\Foundation\Application
 	|
 	*/
 
-	'routes' => function(Platform\Extensions\Extension $extension)
+	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
 
 	},
@@ -203,17 +225,17 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	| List of permissions this extension has. These are shown in the user
-	| management to build a graphical interface where permissions may be
-	| selected.
+	| management area to build a graphical interface where permissions
+	| may be selected.
 	|
 	| The admin controllers state that permissions should follow the following
 	| structure:
 	|
-	|     vendor/extension::admin.controller@method
+	|     vendor/extension::area.controller@method
 	|
 	| For example:
 	|
-	|    platform/users::admin.usersController@getIndex
+	|    platform/users::admin.usersController@index
 	|    Platform\Users\Controllers\Admin\UsersController@getIndex
 	|
 	| These are automatically generated for controller routes however you are
@@ -225,7 +247,10 @@ return array(
 	|
 	*/
 
-	'permissions' => array(),
+	'permissions' => function()
+	{
+
+	},
 
 	/*
 	|--------------------------------------------------------------------------
@@ -233,10 +258,10 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	| List of custom widgets associated with the extension. Like routes, the
-	| value for the widget key may either be a closure or a class & method name
-	| (joined with an @ symbol). Of course, Platform will guess the widget
-	| class for you, this is just for custom widgets or if you do not wish to
-	| make a new class for a very small widget.
+	| value for the widget key may either be a closure or a class & method
+	| name (joined with an @ symbol). Of course, Platform will guess the
+	| widget class for you, this is just for custom widgets or if you
+	| do not wish to make a new class for a very small widget.
 	|
 	*/
 
@@ -248,13 +273,28 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	| List of custom plugins associated with the extension. Like routes, the
-	| value for the plugin key may either be a closure or a class & method name
-	| (joined with an @ symbol). Of course, Platform will guess the plugin
-	| class for you, this is just for custom plugins or if you do not wish to
-	| make a new class for a very small plugin.
+	| value for the plugin key may either be a closure or a class & method
+	| name (joined with an @ symbol). Of course, Platform will guess the
+	| plugin class for you, this is just for custom plugins or if you
+	| do not wish to make a new class for a very small plugin.
 	|
 	*/
 
 	'plugins' => array(),
+
+	/*
+	|--------------------------------------------------------------------------
+	| Settings
+	|--------------------------------------------------------------------------
+	|
+	| Register any settings for your extension. You can also configure
+	| the namespace and group that a setting belongs to.
+	|
+	*/
+
+	'settings' => function()
+	{
+
+	},
 
 );
