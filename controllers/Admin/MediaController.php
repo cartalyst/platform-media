@@ -20,6 +20,8 @@
 
 use API;
 use Cartalyst\Api\Http\ApiHttpException;
+use DataGrid;
+use Illuminate\Support\MessageBag as Bag;
 use Input;
 use Lang;
 use Platform\Admin\Controllers\Admin\AdminController;
@@ -31,31 +33,33 @@ class MediaController extends AdminController {
 	/**
 	 * Content management main page.
 	 *
-	 * @return mixed
+	 * @return \View
 	 */
 	public function getIndex()
 	{
-		try
-		{
-			// Set the current active menu
-			set_active_menu('admin-media');
-
-			// Get the media list
-			$response = API::get('v1/media', array();
-			$media    = $response['media'];
-
-			// Show the page
-			return View::make('platform/media::index', compact('media'));
-		}
-		catch (ApiHttpException $e)
-		{
-			// Set the error message
-			# TODO !
-
-			// Redirect to the admin dashboard
-			return Redirect::toAdmin('/');
-		}
+		// Show the page
+		return View::make('platform/media::index');
 	}
+
+	/**
+	 * Datasource for the media Data Grid.
+	 *
+	 * @return \Cartalyst\DataGrid\DataGrid
+	 */
+	public function getGrid()
+	{
+		// Get the all the media
+		$response = API::get('v1/media');
+
+		// Return the Data Grid object
+		return DataGrid::make($response['media'], array(
+			'id',
+			'name',
+			'created_at',
+		));
+	}
+
+
 
 	/**
 	 *
@@ -63,7 +67,7 @@ class MediaController extends AdminController {
 	 * @param  int  $id
 	 * @return mixed
 	 */
-	public function getView($id = null)
+	public function _getView($id = null)
 	{
 		try
 		{
@@ -76,36 +80,22 @@ class MediaController extends AdminController {
 		}
 		catch (ApiHttpException $e)
 		{
-			// Set the error message
-			# TODO !
-
 			// Redirect to the media management page
 			return Redirect::toAdmin('media');
 		}
 	}
 
 	/**
-	 * Media upload.
-	 *
-	 * @return View
-	 */
-	public function getUpload()
-	{
-		// Show the page
-		return View::make('platform/media::upload');
-	}
-
-	/**
 	 * Media upload form processing.
 	 *
-	 * @return Redirect
+	 * @return \Redirect
 	 */
 	public function postUpload()
 	{
 		try
 		{
 			// Upload the file
-			API::post('media', array('files' => \Input::file()));
+			API::post('media', array('files' => Input::file()));
 
 			// Set the success message
 			# TODO !
@@ -117,34 +107,34 @@ class MediaController extends AdminController {
 		}
 
 		// Redirect to the media management page
-		return \Redirect::to(ADMIN_URI . '/media');
+		return Redirect::toAdmin('media');
 	}
 
 
 	/**
-	 * Media delete.
+	 * Remove the specified media.
 	 *
 	 * @param  int  $id
-	 * @return Redirect
+	 * @return |Redirect
 	 */
 	public function getDelete($id = null)
 	{
 		try
 		{
 			// Delete the media
-			API::delete("media/$id");
+			API::delete("media/{$id}");
 
 			// Set the success message
-			$notifications = with(new Bag)->add('success', Lang::get('platform/media::message.success.delete'));
+			$bag = with(new Bag)->add('success', Lang::get('platform/media::message.success.delete'));
 		}
 		catch (ApiHttpException $e)
 		{
 			// Set the error message
-			$notifications = with(new Bag)->add('error', Lang::get('platform/media::message.error.delete'));
+			$bag = with(new Bag)->add('error', Lang::get('platform/media::message.error.delete'));
 		}
 
 		// Redirect to the media management page
-		return Redirect::toAdmin('media')->with('notifications', $notifications);
+		return Redirect::toAdmin('media')->withNotifications($bag);
 	}
 
 }

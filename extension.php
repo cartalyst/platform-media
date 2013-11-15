@@ -109,13 +109,23 @@ return array(
 	| Autoload Logic
 	|--------------------------------------------------------------------------
 	|
-	| Autoloading Logic for the Extension. It may either be 'composer', where
-	| your composer.json file specifies the autoloading logic, 'platform',
-	| where your extension receives convention autoloading based on Platform
-	| standards, or a closure which takes two parameters, first is an instance of
-	| Composer\Autoload\ClassLoader and second is Cartalyst\Extensions\Extension.
-	| The autoload must set appropriate classes and namespaces available when the
-	| extension is started.
+	| You can define here your extension autoloading logic, it may either
+	| be 'composer', 'platform' or a 'Closure'.
+	|
+	| If composer is defined, your composer.json file specifies the autoloading
+	| logic.
+	|
+	| If platform is defined, your extension receives convetion autoloading
+	| based on the Platform standards.
+	|
+	| If a Closure is defined, it should take two parameters as defined
+	| bellow:
+	|
+	|	object Composer\Autoload\ClassLoader      $loader
+	|	object Illuminate\Foundation\Application  $app
+	|
+	|
+	| Supported: "composer", "platform", "Closure"
 	|
 	*/
 
@@ -126,12 +136,17 @@ return array(
 	| URI
 	|--------------------------------------------------------------------------
 	|
-	| Specify the URI that this extension will respond to. You can choose to
-	| specify a single string, where the URI will be matched on the admin and
-	| public sections of Platform. You can provide an array with keys 'admin'
-	| and 'public' to specify a different URI for admin and public sections and
-	| even provide an 'override' which is an array of Extensions this extension
-	| overrides it's URI from.
+	| You can specify the URI that this extension will respond to.
+	|
+	| You can choose to specify a single string, where the URI will be matched
+	| on the 'admin' and 'public' sections of Platform.
+	|
+	| You can provide an array with the 'admin' and 'public' keys to specify
+	| a different URI for admin and public sections, you can have as many
+	| keys as you need in case your applications needs them.
+	|
+	| You can provide an 'override' which is an array of extensions this
+	| extension overrides it's URI from.
 	|
 	*/
 
@@ -169,7 +184,6 @@ return array(
 	|
 	|	object Cartalyst\Extensions\ExtensionInterface
 	|	object Illuminate\Foundation\Application
-	|
 	|
 	*/
 
@@ -296,5 +310,39 @@ return array(
 	{
 
 	},
+
+	/*
+	|--------------------------------------------------------------------------
+	| Menus
+	|--------------------------------------------------------------------------
+	|
+	| You may specify the default various menu hierarchy for your extension.
+	| You can provide a recursive array of menu children and their children.
+	| These will be created upon installation, synchronized upon upgrading
+	| and removed upon uninstallation.
+	|
+	| Menu children are automatically put at the end of the menu for extensions
+	| installed through the Operations extension.
+	|
+	| The default order (for extensions installed initially) can be
+	| found by editing app/config/platform.php.
+	|
+	*/
+
+	'menus' => array(
+
+		'admin' => array(
+
+			array(
+				'slug'  => 'admin-media',
+				'name'  => 'Media',
+				'class' => 'fa fa-picture-o',
+				'uri'   => 'media',
+				'regex' => '/media/i',
+			),
+
+		),
+
+	),
 
 );
