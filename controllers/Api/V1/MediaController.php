@@ -18,10 +18,9 @@
  * @link       http://cartalyst.com
  */
 
+use Input;
 use Platform\Routing\Controllers\ApiController;
-use Platform\Media\Media;
-
-use Platform\Media\Manager;
+use Response;
 
 class MediaController extends ApiController {
 
@@ -37,7 +36,7 @@ class MediaController extends ApiController {
 	/**
 	 *
 	 *
-	 * @var Platform\Media\Media
+	 * @var \Platform\Media\Models\Media
 	 */
 	protected $model;
 
@@ -48,25 +47,28 @@ class MediaController extends ApiController {
 	 */
 	public function __construct()
 	{
-		$app = app();
-
-		$this->model = $app->make('platform/media::media')->newQuery();
+		$this->model = app('Platform\Media\Models\Media');
 	}
 
 	/**
 	 * Display a listing of media using the given filters.
 	 *
-	 * @return Cartalyst\Api\Http\Response
-	 * @todo   Refactor to allow search filters !!
+	 * @return \Cartalyst\Api\Http\Response
 	 */
 	public function index()
 	{
-		if ( ! $limit = $this->input('limit'))
+		$query = $this->model->newQuery();
+
+		if ($limit = Input::get('limit'))
 		{
-			return $this->response(array('media' => $this->model->all()));
+			$media = $query->paginate($limit);
+		}
+		else
+		{
+			$media = $query->get();
 		}
 
-		return $this->response(array('media' => $this->model->paginate($limit)));
+		return Response::api(compact('media'));
 	}
 
 	/**

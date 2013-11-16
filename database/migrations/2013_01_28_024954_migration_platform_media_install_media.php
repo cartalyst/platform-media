@@ -36,14 +36,18 @@ class MigrationPlatformMediaInstallMedia extends Migration {
 			$table->integer('type_id');
 			// $table->integer('uploaded_by'); # only if we do it the current way :c
 			$table->string('name');
-			$table->string('path');
-			$table->string('extension');
-			$table->string('mime_type');
+			$table->string('file_path');
+			$table->string('file_name');
+			$table->string('file_extension');
+			$table->string('mime');
 			$table->integer('size')->nullable();
 			$table->integer('width')->nullable();
 			$table->integer('height')->nullable();
+			$table->timestamps();+
 
-			$table->timestamps();
+			// We'll need to ensure that MySQL uses the InnoDB engine to
+			// support the indexes, other engines aren't affected.
+			$table->engine = 'InnoDB';
 		});
 	}
 

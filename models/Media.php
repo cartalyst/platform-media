@@ -29,4 +29,20 @@ class Media extends Model {
 	 */
 	public $table = 'media';
 
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
+	protected $fillable = array(
+		'name',
+		'size',
+		'mime',
+		'file_name',
+		'file_path',
+		'file_extension',
+		'width',
+		'height',
+	);
+
 }

@@ -55,6 +55,7 @@ class MediaController extends AdminController {
 		return DataGrid::make($response['media'], array(
 			'id',
 			'name',
+			'mime',
 			'created_at',
 		));
 	}
