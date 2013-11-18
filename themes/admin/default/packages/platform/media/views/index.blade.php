@@ -9,6 +9,9 @@
 {{-- Queue assets --}}
 {{ Asset::queue('underscore', 'js/underscore/underscore.js', 'jquery') }}
 {{ Asset::queue('data-grid', 'js/cartalyst/data-grid.js', 'underscore') }}
+{{ Asset::queue('dropzone.js', 'platform/media::js/dropzone/dropzone.js') }}
+{{ Asset::queue('dropzone.css', 'platform/media::css/dropzone.css') }}
+{{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', 'dropzone') }}
 
 {{-- Inline scripts --}}
 @section('scripts')
@@ -29,6 +32,8 @@ $(function() {
 
 		}
 	});
+
+	$.mediamanager('#mediaUploader');
 
 });
 </script>
@@ -89,8 +94,41 @@ $(function() {
 		</div>
 
 		<div class="col-lg-2 text-right">
-			<a class="btn btn-warning" href="{{ URL::toAdmin('media/create') }}"><i class="fa fa-plus"></i> Upload</a>
+			<span class="btn btn-warning" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Upload</span>
 		</div>
+
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+	<div class="modal-dialog">
+
+		<div class="modal-content">
+
+			<div id="dropzone">
+				<form action="{{ URL::toAdmin('media/upload') }}" class="media-dropzone dz-clickable" id="mediaUploader">
+					<div class="dz-default dz-message">
+						<span>Drop files here to upload</span>
+					</div>
+				</form>
+			</div>
+
+			<div class="modal-footer" style="margin-top: 0;">
+				<span class="pull-left">
+					<span data-media-queued>0</span> Queued Files |
+					<span data-media-total>0</span> bytes
+				</span>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-success" data-media-upload>Upload</button>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+
 
 	</div>
 
