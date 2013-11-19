@@ -26,6 +26,7 @@ use Input;
 use Lang;
 use Platform\Admin\Controllers\Admin\AdminController;
 use Redirect;
+use Response;
 use View;
 
 class MediaController extends AdminController {
@@ -89,26 +90,22 @@ class MediaController extends AdminController {
 	/**
 	 * Media upload form processing.
 	 *
-	 * @return \Redirect
+	 * @return mixed
+	 * @todo Check if it's an AJAX request..
 	 */
 	public function postUpload()
 	{
 		try
 		{
 			// Upload the file
-			API::post('v1/media', array('files' => Input::file()));
+			API::post('v1/media');
 
-			// Set the success message
-			# TODO !
+			return Response::json('success');
 		}
 		catch (ApiHttpException $e)
 		{
-			// Set the error message
-			# TODO !
+			return Response::json('error', 400);
 		}
-
-		// Redirect to the media management page
-		return Redirect::toAdmin('media');
 	}
 
 

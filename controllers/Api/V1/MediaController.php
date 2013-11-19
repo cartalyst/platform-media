@@ -22,19 +22,12 @@ use Input;
 use Platform\Routing\Controllers\ApiController;
 use Response;
 
+use Media;
+
 class MediaController extends ApiController {
 
 	/**
-	 * Holds the form validation rules.
-	 *
-	 * @var array
-	 */
-	protected $validationRules = array(
-
-	);
-
-	/**
-	 *
+	 * Holds the media model.
 	 *
 	 * @var \Platform\Media\Models\Media
 	 */
@@ -74,24 +67,29 @@ class MediaController extends ApiController {
 	/**
 	 * Uploads a new media file.
 	 *
-	 * @return Cartalyst\Api\Http\Response
-	 * @todo   Implement validation
+	 * @return \Cartalyst\Api\Http\Response
 	 */
 	public function create()
 	{
 		$file = Input::file('file');
 
+		$data = Media::upload($file->getPathName(), $file->getClientOriginalName());
+
+		return Response::api('success');
+
+
+
 		$upload_success = Input::file('file')->move(public_path().'/media/', $file->getClientOriginalName());
 
 		if($upload_success)
 		{
-			return Response::json('success', 200);
+			return Response::api('success');
 		}
 
-		return Response::json('error', 400);
+		return Response::api('error', 400);
 
 
-
+		/*
 		if (\Input::hasFile('files'))
 		{
 			//
@@ -141,6 +139,7 @@ class MediaController extends ApiController {
 				'message' => 'something went wrong here...'
 			), 500);
 		}
+		*/
 	}
 
 	/**
