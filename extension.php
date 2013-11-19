@@ -195,7 +195,6 @@ return array(
 		$app['cartalyst/media']->boot();
 		unset($app['cartalyst/media']);
 
-		require_once __DIR__.'/helpers.php';
 /*
 		// Register @media blade extension.
 		$blade = $app['view']->getEngineResolver()->resolve('blade')->getCompiler();
