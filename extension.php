@@ -169,7 +169,10 @@ return array(
 
 	'register' => function(ExtensionInterface $extension, Application $app)
 	{
+		$app->instance('cartalyst/media', $media = new Cartalyst\Media\MediaServiceProvider($app));
+		$app->register($media);
 
+		Illuminate\Foundation\AliasLoader::getInstance()->alias('Media', 'Cartalyst\Media\Facades\Laravel');
 	},
 
 	/*
@@ -189,6 +192,8 @@ return array(
 
 	'boot' => function(ExtensionInterface $extension, Application $app)
 	{
+		$app['cartalyst/media']->boot();
+		unset($app['cartalyst/media']);
 
 		require_once __DIR__.'/helpers.php';
 /*
