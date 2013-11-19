@@ -96,9 +96,13 @@
 
 			});
 
-			self.dropzone.on('complete', function(file) {
+			self.dropzone.on('success', function(file) {
 
 				self.dropzone.removeFile(file);
+
+			});
+
+			self.dropzone.on('complete', function(file) {
 
 				self.dropzone.processQueue();
 
