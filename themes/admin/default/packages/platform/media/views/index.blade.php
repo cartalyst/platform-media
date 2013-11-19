@@ -118,8 +118,7 @@ $(function() {
 					<div data-media-total-files></div>
 					<div data-media-total-size></div>
 				</span>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-success" data-media-upload>Upload</button>
+				<button type="button" class="btn btn-success" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
 			</div>
 
 		</div>
