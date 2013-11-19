@@ -33,7 +33,9 @@ $(function() {
 		}
 	});
 
-	$.mediamanager('#mediaUploader');
+	$.mediamanager('#mediaUploader', {
+		acceptedFiles : "{{ implode(', ', Config::get('platform/media::allowed')) }}"
+	});
 
 });
 </script>
@@ -103,7 +105,7 @@ $(function() {
 
 	<div class="modal-dialog">
 
-		<div class="modal-content">
+		<div class="modal-content" style="width: 650px;">
 
 			<div id="dropzone">
 				<form action="{{ URL::toAdmin('media/upload') }}" class="media-dropzone dz-clickable" id="mediaUploader">
@@ -115,8 +117,8 @@ $(function() {
 
 			<div class="modal-footer" style="margin-top: 0;">
 				<span class="pull-left">
-					<span data-media-queued>0</span> Queued Files |
-					<span data-media-total>0</span> bytes
+					<span data-media-queued></span><br />
+					<span data-media-total></span>
 				</span>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-success" data-media-upload>Upload</button>
