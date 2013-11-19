@@ -116,9 +116,9 @@ $(function() {
 			</div>
 
 			<div class="modal-footer" style="margin-top: 0;">
-				<span class="pull-left">
-					<span data-media-queued></span><br />
-					<span data-media-total></span>
+				<span class="pull-left text-left">
+					<div data-media-queued></div>
+					<div data-media-total></div>
 				</span>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-success" data-media-upload>Upload</button>
