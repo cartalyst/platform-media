@@ -71,75 +71,31 @@ class MediaController extends ApiController {
 	 */
 	public function create()
 	{
-		$file = Input::file('file');
-
-		$data = Media::upload($file->getPathName(), $file->getClientOriginalName());
-
-		return Response::api('success');
-
-
-
-		$upload_success = Input::file('file')->move(public_path().'/media/', $file->getClientOriginalName());
-
-		if($upload_success)
+		try
 		{
+			$file = Input::file('file');
+
+			$data = Media::upload($file->getPathName(), $file->getClientOriginalName());
+
+			$imageSize = $data->getImageSize();
+
+			$this->model->create(array(
+				'name'           => $data->getName(),
+				'file_path'      => $data->getFullPath(),
+				'file_name'      => $file->getClientOriginalName(),
+				'file_extension' => $data->getExtension(),
+				'mime'           => $data->getMimetype(),
+				'size'           => $data->getSize(),
+				'width'          => $imageSize['width'],
+				'height'         => $imageSize['height']
+			));
+
 			return Response::api('success');
 		}
-
-		return Response::api('error', 400);
-
-
-		/*
-		if (\Input::hasFile('files'))
+		catch (\Flysystem\FileExistsException $e)
 		{
-			//
-			$file = \Input::file('files');
-
-			//
-			$mediaPath = media_storage_directory(); # maybe change this, later, not sure!
-
-			//
-			$newPath = $mediaPath . $file->getClientOriginalName();
-
-			// Move the uploaded file to the media storage directory
-			if ($file->move($mediaPath, $newPath))
-			{
-				//
-				$info = array(
-					'name'           => $file->getClientOriginalName(),
-					'file_path'      => '', # this will be stored on the media folder root, for now!
-					'file_name'      => $file->getClientOriginalName(),
-					'file_extension' => $file->getClientOriginalExtension(),
-					'file_mime_type' => $file->getClientMimeType(),
-					'file_size'      => $file->getClientSize()
-				);
-
-				// Validate image
-				if (in_array($file->getClientMimeType(), array('image/jpeg', 'image/png', 'image/gif', 'image/bmp')) and $size = getimagesize($newPath))
-				{
-					$info['width']  = $size[0];
-					$info['height'] = $size[1];
-				}
-
-
-				$media = new Media($info);
-
-				if($media->save())
-				{
-					//
-					return $this->response('');
-				}
-			}
-
-			# we are because something went wrong :c
-
-			# echo '<pre>';
-			# print_r($info);
-			return $this->response(array(
-				'message' => 'something went wrong here...'
-			), 500);
+			return Response::api('File already exists.', 400);
 		}
-		*/
 	}
 
 	/**
@@ -150,17 +106,7 @@ class MediaController extends ApiController {
 	 */
 	public function show($mediaId)
 	{
-		// Do we have the media slug?
-		if ( ! is_numeric($mediaId))
-		{
-			$media = $this->model->where('slug', '=', $mediaId);
-		}
-
-		// We must have the media id
-		else
-		{
-			$media = $this->model->where('id', '=', $mediaId);
-		}
+		$media = $this->model->where('id', $mediaId);
 
 		// Check if the media exists
 		if ( ! is_null($media = $media->first()))

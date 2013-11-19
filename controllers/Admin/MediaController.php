@@ -91,20 +91,18 @@ class MediaController extends AdminController {
 	 * Media upload form processing.
 	 *
 	 * @return mixed
-	 * @todo Check if it's an AJAX request..
 	 */
 	public function postUpload()
 	{
 		try
 		{
-			// Upload the file
 			API::post('v1/media');
 
 			return Response::json('success');
 		}
 		catch (ApiHttpException $e)
 		{
-			return Response::json('error', 400);
+			return Response::json($e->getMessage(), 400);
 		}
 	}
 
@@ -113,7 +111,7 @@ class MediaController extends AdminController {
 	 * Remove the specified media.
 	 *
 	 * @param  int  $id
-	 * @return |Redirect
+	 * @return \Redirect
 	 */
 	public function getDelete($id = null)
 	{
