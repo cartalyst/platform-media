@@ -109,16 +109,14 @@ $(function() {
 
 			<div id="dropzone">
 				<form action="{{ URL::toAdmin('media/upload') }}" class="media-dropzone dz-clickable" id="mediaUploader">
-					<div class="dz-default dz-message">
-						<span>Drop files here to upload</span>
-					</div>
+					<div class="dz-default dz-message"></div>
 				</form>
 			</div>
 
 			<div class="modal-footer" style="margin-top: 0;">
 				<span class="pull-left text-left">
-					<div data-media-queued></div>
-					<div data-media-total></div>
+					<div data-media-total-files></div>
+					<div data-media-total-size></div>
 				</span>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-success" data-media-upload>Upload</button>

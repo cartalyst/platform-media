@@ -11,11 +11,13 @@
 		autoProcessQueue : false,
 		addRemoveLinks : true,
 		parallelUploads : 6,
+		dictRemoveFile : 'Cancel',
+		dictCancelUpload : 'Cancel',
 
 		languages : {
 			file : 'File',
 			files : 'Files',
-			inQueue : ':amount :files in the queue'
+			inQueue : '<strong>:amount</strong> :files in the queue'
 		}
 	};
 
@@ -69,8 +71,8 @@
 
 			var totalSize = 0;
 
-			$('[data-media-queued]').html(self.totalFiles(totalFiles));
-			$('[data-media-total]').html(self.dropzone.filesize(totalSize));
+			$('[data-media-total-files]').html(self.totalFiles(totalFiles));
+			$('[data-media-total-size]').html(self.dropzone.filesize(totalSize));
 
 			self.dropzone.on('addedfile', function(file) {
 
@@ -78,8 +80,8 @@
 
 				totalSize += file.size;
 
-				$('[data-media-queued]').html(self.totalFiles(totalFiles));
-				$('[data-media-total]').html(self.dropzone.filesize(totalSize));
+				$('[data-media-total-files]').html(self.totalFiles(totalFiles));
+				$('[data-media-total-size]').html(self.dropzone.filesize(totalSize));
 
 			});
 
@@ -89,8 +91,8 @@
 
 				totalSize -= file.size;
 
-				$('[data-media-queued]').html(self.totalFiles(totalFiles));
-				$('[data-media-total]').html(self.dropzone.filesize(totalSize));
+				$('[data-media-total-files]').html(self.totalFiles(totalFiles));
+				$('[data-media-total-size]').html(self.dropzone.filesize(totalSize));
 
 			});
 
