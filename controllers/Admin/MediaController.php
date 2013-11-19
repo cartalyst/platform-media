@@ -96,7 +96,7 @@ class MediaController extends AdminController {
 		try
 		{
 			// Upload the file
-			API::post('media', array('files' => Input::file()));
+			API::post('v1/media', array('files' => Input::file()));
 
 			// Set the success message
 			# TODO !

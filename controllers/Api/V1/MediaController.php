@@ -79,6 +79,19 @@ class MediaController extends ApiController {
 	 */
 	public function create()
 	{
+		$file = Input::file('file');
+
+		$upload_success = Input::file('file')->move(public_path().'/media/', $file->getClientOriginalName());
+
+		if($upload_success)
+		{
+			return Response::json('success', 200);
+		}
+
+		return Response::json('error', 400);
+
+
+
 		if (\Input::hasFile('files'))
 		{
 			//
