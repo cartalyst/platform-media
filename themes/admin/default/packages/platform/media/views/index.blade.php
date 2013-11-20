@@ -107,38 +107,8 @@ $(function() {
 		</div>
 
 		<div class="col-lg-2 text-right">
-			<span class="btn btn-warning" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Upload</span>
+			<span class="btn btn-warning" data-toggle="modal" data-target="#mediaModal"><i class="fa fa-plus"></i> Upload</span>
 		</div>
-
-
-
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-
-	<div class="modal-dialog">
-
-		<div class="modal-content" style="width: 650px;">
-
-			<div id="dropzone">
-				<form action="{{ URL::toAdmin('media/upload') }}" class="media-dropzone dz-clickable" id="mediaUploader">
-					<div class="dz-default dz-message"></div>
-				</form>
-			</div>
-
-			<div class="modal-footer" style="margin-top: 0;">
-				<span class="pull-left text-left">
-					<div data-media-total-files></div>
-					<div data-media-total-size></div>
-				</span>
-				<button type="button" class="btn btn-success" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
-			</div>
-
-		</div>
-
-	</div>
-
-</div>
-
-
 
 	</div>
 
@@ -164,5 +134,31 @@ $(function() {
 @include('platform/media::data-grid_pagination-tmpl')
 @include('platform/media::data-grid_applied-tmpl')
 @include('platform/media::data-grid_no-results-tmpl')
+
+<div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="mediaModalLabel" aria-hidden="true">
+
+	<div class="modal-dialog">
+
+		<div class="modal-content" style="width: 660px;">
+
+			<div id="dropzone" style="height: 360px;overflow-y:scroll;">
+				<form action="{{ URL::toAdmin('media/upload') }}" class="media-dropzone dz-clickable" id="mediaUploader">
+					<div class="dz-default dz-message"></div>
+				</form>
+			</div>
+
+			<div class="modal-footer" style="margin-top: 0;">
+				<span class="pull-left text-left">
+					<div data-media-total-files></div>
+					<div data-media-total-size></div>
+				</span>
+				<button type="button" class="btn btn-success" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
 
 @stop
