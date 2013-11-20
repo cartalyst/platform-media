@@ -46,7 +46,6 @@
 			"controllers",
 			"database/migrations",
 			"models",
-			"plugins",
 			"tests",
 			"widgets"
 		]

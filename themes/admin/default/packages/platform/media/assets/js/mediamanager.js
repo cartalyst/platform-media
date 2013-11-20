@@ -8,15 +8,13 @@
 	 * @var array
 	 */
 	var defaults = {
-		onComplete : function() {},
 		onSuccess : function() {},
-
+		onComplete : function() {},
 		autoProcessQueue : false,
 		addRemoveLinks : true,
 		parallelUploads : 6,
 		dictRemoveFile : 'Cancel',
 		dictCancelUpload : 'Cancel',
-
 		languages : {
 			file : 'File',
 			files : 'Files',
