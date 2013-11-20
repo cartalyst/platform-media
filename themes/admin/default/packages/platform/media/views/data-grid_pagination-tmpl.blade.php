@@ -14,7 +14,7 @@
 
 					<% } else { %>
 
-						<li class="disabled"><a><i class="fa fa-chevron-left"></i></a></li>
+						<li class="disabled"><span><i class="fa fa-chevron-left"></i></span></li>
 
 					<% } %>
 
@@ -24,7 +24,7 @@
 
 					<% } else { %>
 
-						<li class="disabled"><a><i class="fa fa-chevron-right"></i></a></li>
+						<li class="disabled"><span><i class="fa fa-chevron-right"></i></span></li>
 
 					<% } %>
 
