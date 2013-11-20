@@ -8,6 +8,9 @@
 	 * @var array
 	 */
 	var defaults = {
+		onComplete : function() {},
+		onSuccess : function() {},
+
 		autoProcessQueue : false,
 		addRemoveLinks : true,
 		parallelUploads : 6,
@@ -100,11 +103,15 @@
 
 				self.dropzone.removeFile(file);
 
+				self.opt.onSuccess();
+
 			});
 
 			self.dropzone.on('complete', function(file) {
 
 				self.dropzone.processQueue();
+
+				self.opt.onComplete();
 
 			});
 

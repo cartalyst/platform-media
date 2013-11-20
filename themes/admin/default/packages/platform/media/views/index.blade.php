@@ -19,7 +19,7 @@
 <script>
 $(function() {
 
-	$.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
+	var datagrid = $.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
 		loader: '.loading',
 		paginationType: 'single',
 		defaultSort: {
@@ -34,7 +34,12 @@ $(function() {
 	});
 
 	$.mediamanager('#mediaUploader', {
-		acceptedFiles : "{{ implode(', ', Config::get('platform/media::allowed')) }}"
+		acceptedFiles : "{{ implode(', ', Config::get('platform/media::allowed')) }}",
+		onSuccess : function() {
+
+			datagrid._reset();
+
+		}
 	});
 
 });

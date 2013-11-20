@@ -24,8 +24,8 @@ return array(
 	'file_name'      => 'File Name',
 	'file_path'      => 'File Path',
 	'file_extension' => 'File Extension',
-	'file_mime_type' => 'MIME Type',
-	'file_size'      => 'Size',
+	'mime'           => 'MIME Type',
+	'size'           => 'Size',
 	'width'          => 'Width',
 	'height'         => 'Height',
 	'created_at'     => 'Uploaded at'
