@@ -32,13 +32,9 @@ class MigrationPlatformMediaInstallMedia extends Migration {
 		Schema::create('media', function($table)
 		{
 			$table->increments('id');
-			$table->string('type');
-			$table->integer('type_id');
-			// $table->integer('uploaded_by'); # only if we do it the current way :c
 			$table->string('name');
-			$table->string('file_path');
-			$table->string('file_name');
-			$table->string('file_extension');
+			$table->string('path');
+			$table->string('extension');
 			$table->string('mime');
 			$table->integer('size')->nullable();
 			$table->integer('width')->nullable();

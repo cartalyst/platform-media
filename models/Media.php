@@ -36,11 +36,10 @@ class Media extends Model {
 	 */
 	protected $fillable = array(
 		'name',
-		'size',
+		'path',
+		'extension',
 		'mime',
-		'file_name',
-		'file_path',
-		'file_extension',
+		'size',
 		'width',
 		'height',
 	);

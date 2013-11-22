@@ -83,14 +83,13 @@ class MediaController extends ApiController {
 			$imageSize = $data->getImageSize();
 
 			$this->model->create(array(
-				'name'           => $data->getName(),
-				'file_path'      => $data->getPath(),
-				'file_name'      => $file->getClientOriginalName(),
-				'file_extension' => $data->getExtension(),
-				'mime'           => $data->getMimetype(),
-				'size'           => $data->getSize(),
-				'width'          => $imageSize['width'],
-				'height'         => $imageSize['height']
+				'name'      => $file->getClientOriginalName(),
+				'path'      => $data->getPath(),
+				'extension' => $data->getExtension(),
+				'mime'      => $data->getMimetype(),
+				'size'      => $data->getSize(),
+				'width'     => $imageSize['width'],
+				'height'    => $imageSize['height']
 			));
 
 			return Response::api('success');
