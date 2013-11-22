@@ -32,13 +32,17 @@ return array(
 	|
 	| Supported Placeholders:
 	|
-	|	:year
-	|	:month
-	|	:day
-	|	:file_mime
-	|	:extension
-	|	:extension.vendor
-	|	:extension.slug
+	|	Current Year
+	|	  :yyyy  ->  2013
+	|	  :yy    ->  13
+	|
+	|	Current Month
+	|     :mmmm  ->  Nov
+	|	  :mm    ->  11
+	|
+	|	Current Day
+	|	  :dddd  ->  Fri
+	|	  :dd    ->  24
 	|
 	*/
 

@@ -61,32 +61,6 @@ class MediaController extends AdminController {
 		));
 	}
 
-
-
-	/**
-	 *
-	 *
-	 * @param  int  $id
-	 * @return mixed
-	 */
-	public function _getView($id = null)
-	{
-		try
-		{
-			// Get the media information
-			$response = API::get("media/$id");
-			$media    = $response['media'];
-
-			// Show the page
-			return View::make('platform/media::view', compact('media'));
-		}
-		catch (ApiHttpException $e)
-		{
-			// Redirect to the media management page
-			return Redirect::toAdmin('media');
-		}
-	}
-
 	/**
 	 * Media upload form processing.
 	 *
@@ -106,7 +80,6 @@ class MediaController extends AdminController {
 		}
 	}
 
-
 	/**
 	 * Remove the specified media.
 	 *
@@ -118,7 +91,7 @@ class MediaController extends AdminController {
 		try
 		{
 			// Delete the media
-			API::delete("media/{$id}");
+			API::delete("v1/media/{$id}");
 
 			// Set the success message
 			$bag = with(new Bag)->add('success', Lang::get('platform/media::message.success.delete'));

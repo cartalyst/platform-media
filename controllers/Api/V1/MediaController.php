@@ -18,6 +18,7 @@
  * @link       http://cartalyst.com
  */
 
+use Config;
 use Input;
 use Platform\Routing\Controllers\ApiController;
 use Response;
@@ -73,15 +74,17 @@ class MediaController extends ApiController {
 	{
 		try
 		{
+			$dispersion = Config::get('platform/media::dispersion');
+
 			$file = Input::file('file');
 
-			$data = Media::upload($file->getPathName(), $file->getClientOriginalName());
+			$data = Media::setDispersion($dispersion)->upload($file->getPathName(), $file->getClientOriginalName());
 
 			$imageSize = $data->getImageSize();
 
 			$this->model->create(array(
 				'name'           => $data->getName(),
-				'file_path'      => $data->getFullPath(),
+				'file_path'      => $data->getPath(),
 				'file_name'      => $file->getClientOriginalName(),
 				'file_extension' => $data->getExtension(),
 				'mime'           => $data->getMimetype(),
@@ -99,58 +102,29 @@ class MediaController extends ApiController {
 	}
 
 	/**
-	 * Returns information about the given media.
-	 *
-	 * @param  int  $mediaId
-	 * @return Cartalyst\Api\Http\Response
-	 */
-	public function show($mediaId)
-	{
-		$media = $this->model->where('id', $mediaId);
-
-		// Check if the media exists
-		if ( ! is_null($media = $media->first()))
-		{
-			return $this->response(compact('media'));
-		}
-
-		// Content does not exist
-		return $this->response(array(
-			'message' => \Lang::get('platform/media::messages.does_not_exist', compact('mediaId'))
-		), 404);
-	}
-
-
-
-
-	/**
 	 * Deletes the given media.
 	 *
 	 * @param  int  $mediaId
-	 * @return Cartalyst\Api\Http\Response
+	 * @return \Cartalyst\Api\Http\Response
 	 */
 	public function destroy($mediaId)
 	{
 		// Check if the media exists
 		if (is_null($media = $this->model->find($mediaId)))
 		{
-			return $this->response(array(
-				'message' => \Lang::get('platform/media::messages.does_not_exist', compact('mediaId'))
-			), 404);
+			return Response::api(Lang::get('platform/media::messages.does_not_exist', compact('mediaId')), 404);
 		}
+
+		Media::delete($media->file_path);
 
 		// Was the media deleted?
 		if ($media->delete())
 		{
-			return $this->response(array(
-				'message' => \Lang::get('platform/media::messages.delete.success')
-			));
+			return Response::api(Lang::get('platform/media::messages.delete.success'));
 		}
 
 		// There was a problem deleting the media
-		return $this->response(array(
-			'message' => \Lang::get('platform/media::messages.delete.error')
-		), 500);
+		return Response::api(Lang::get('platform/media::messages.delete.error'), 500);
 	}
 
 }
