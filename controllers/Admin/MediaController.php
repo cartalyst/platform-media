@@ -34,7 +34,7 @@ class MediaController extends AdminController {
 	 *
 	 * @var \Platform\Media\Repositories\MediaRepositoryInterface
 	 */
-	protected $content;
+	protected $media;
 
 	/**
 	 * Constructor.
