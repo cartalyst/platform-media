@@ -18,13 +18,11 @@
  * @link       http://cartalyst.com
  */
 
-use API;
-use Cartalyst\Api\Http\ApiHttpException;
 use DataGrid;
-use Illuminate\Support\MessageBag as Bag;
 use Input;
 use Lang;
 use Platform\Admin\Controllers\Admin\AdminController;
+use Platform\Media\Repositories\MediaRepositoryInterface;
 use Redirect;
 use Response;
 use View;
@@ -32,11 +30,31 @@ use View;
 class MediaController extends AdminController {
 
 	/**
-	 * Content management main page.
+	 * Media repository.
 	 *
-	 * @return \View
+	 * @var \Platform\Media\Repositories\MediaRepositoryInterface
 	 */
-	public function getIndex()
+	protected $content;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface
+	 * @return void
+	 */
+	public function __construct(MediaRepositoryInterface $media)
+	{
+		parent::__construct();
+
+		$this->media = $media;
+	}
+
+	/**
+	 * Display a listing of media files.
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function index()
 	{
 		// Show the page
 		return View::make('platform/media::index');
@@ -47,13 +65,9 @@ class MediaController extends AdminController {
 	 *
 	 * @return \Cartalyst\DataGrid\DataGrid
 	 */
-	public function getGrid()
+	public function grid()
 	{
-		// Get the all the media
-		$response = API::get('v1/media');
-
-		// Return the Data Grid object
-		return DataGrid::make($response['media'], array(
+		return DataGrid::make($this->media->grid(), array(
 			'id',
 			'name',
 			'mime',
@@ -84,26 +98,17 @@ class MediaController extends AdminController {
 	 * Remove the specified media.
 	 *
 	 * @param  int  $id
-	 * @return \Redirect
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function getDelete($id = null)
 	{
-		try
+		// Delete the media
+		if ($this->media->delete($id))
 		{
-			// Delete the media
-			API::delete("v1/media/{$id}");
-
-			// Set the success message
-			$bag = with(new Bag)->add('success', Lang::get('platform/media::message.success.delete'));
-		}
-		catch (ApiHttpException $e)
-		{
-			// Set the error message
-			$bag = with(new Bag)->add('error', Lang::get('platform/media::message.error.delete'));
+			return Redirect::toAdmin('media')->withSuccess(Lang::get('platform/media::message.success.delete'));
 		}
 
-		// Redirect to the media management page
-		return Redirect::toAdmin('media')->withNotifications($bag);
+		return Redirect::toAdmin('media')->withErrors(Lang::get('platform/media::message.error.delete'));
 	}
 
 }

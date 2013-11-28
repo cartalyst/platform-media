@@ -45,10 +45,11 @@
 		"classmap": [
 			"controllers",
 			"migrations",
-			"models",
-			"tests",
 			"widgets"
-		]
+		],
+		"psr-0": {
+			"Platform\\Media" : "src/"
+		}
 	},
 	"extra": {
 		"component": "extension",
