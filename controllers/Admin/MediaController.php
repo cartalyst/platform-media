@@ -80,18 +80,15 @@ class MediaController extends AdminController {
 	 *
 	 * @return mixed
 	 */
-	public function postUpload()
+	public function upload()
 	{
-		try
+		if ($this->media->upload(Input::file('file')))
 		{
-			API::post('v1/media');
-
 			return Response::json('success');
 		}
-		catch (ApiHttpException $e)
-		{
-			return Response::json($e->getMessage(), 400);
-		}
+
+		# make the message dynamic
+		return Response::json('File already exists!', 400);
 	}
 
 	/**
@@ -100,7 +97,7 @@ class MediaController extends AdminController {
 	 * @param  int  $id
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function getDelete($id = null)
+	public function delete($id = null)
 	{
 		// Delete the media
 		if ($this->media->delete($id))

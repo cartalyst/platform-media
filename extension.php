@@ -152,6 +152,11 @@ return array(
 		$app->register($media);
 
 		Illuminate\Foundation\AliasLoader::getInstance()->alias('Media', 'Cartalyst\Media\Facades\Laravel');
+
+		$app->bind('Platform\Media\Repositories\MediaRepositoryInterface', function($app)
+		{
+			return new Platform\Media\Repositories\DbMediaRepository(get_class($app['Platform\Media\Media']));
+		});
 	},
 
 	/*
@@ -197,7 +202,7 @@ return array(
 		{
 			Route::get('/', 'MediaController@index');
 			Route::get('grid', 'MediaController@grid');
-			Route::post('update', 'MediaController@store');
+			Route::post('upload', 'MediaController@upload');
 			Route::get('{id}/delete', 'MediaController@delete');
 		});
 

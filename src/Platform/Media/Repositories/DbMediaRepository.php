@@ -18,10 +18,13 @@
  * @link       http://cartalyst.com
  */
 
+use Config;
+use Media;
+
 class DbMediaRepository implements MediaRepositoryInterface {
 
 	/**
-	 * The Eloquent mediaß model
+	 * The Eloquent media model
 	 *
 	 * @var string
 	 */
@@ -46,6 +49,34 @@ class DbMediaRepository implements MediaRepositoryInterface {
 		return $this->createModel();
 	}
 
+	public function upload($file)
+	{
+		try
+		{
+			$dispersion = Config::get('platform/media::dispersion');
+
+			$data = Media::setDispersion($dispersion)->upload($file->getPathName(), $file->getClientOriginalName());
+
+			$imageSize = $data->getImageSize();
+
+			$this->model->create(array(
+				'name'      => $file->getClientOriginalName(),
+				'path'      => $data->getPath(),
+				'extension' => $data->getExtension(),
+				'mime'      => $data->getMimetype(),
+				'size'      => $data->getSize(),
+				'width'     => $imageSize['width'],
+				'height'    => $imageSize['height']
+			));
+
+			return true;
+		}
+		catch (\Flysystem\FileExistsException $e)
+		{
+			return false;
+		}
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -53,12 +84,26 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	{
 		if ($model = $this->find($id))
 		{
+			Media::delete($model->file_path);
+
 			$model->delete();
 
 			return true;
 		}
 
 		return false;
+	}
+
+	/**
+	 * Create a new instance of the model.
+	 *
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function createModel()
+	{
+		$class = '\\'.ltrim($this->model, '\\');
+
+		return new $class;
 	}
 
 }
