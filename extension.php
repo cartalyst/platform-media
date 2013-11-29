@@ -197,7 +197,6 @@ return array(
 
 	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
-
 		Route::group(array('prefix' => admin_uri().'/media', 'namespace' => 'Platform\Media\Controllers\Admin'), function()
 		{
 			Route::get('/', 'MediaController@index');
@@ -205,7 +204,6 @@ return array(
 			Route::post('upload', 'MediaController@upload');
 			Route::get('{id}/delete', 'MediaController@delete');
 		});
-
 	},
 
 	/*
