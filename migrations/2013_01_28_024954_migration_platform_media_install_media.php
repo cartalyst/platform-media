@@ -39,7 +39,7 @@ class MigrationPlatformMediaInstallMedia extends Migration {
 			$table->integer('size')->nullable();
 			$table->integer('width')->nullable();
 			$table->integer('height')->nullable();
-			$table->timestamps();+
+			$table->timestamps();
 
 			// We'll need to ensure that MySQL uses the InnoDB engine to
 			// support the indexes, other engines aren't affected.
