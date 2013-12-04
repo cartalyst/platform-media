@@ -67,6 +67,25 @@ $(function() {
 
 		<span class="pull-right">
 
+			<span class="btn btn-warning" data-toggle="modal" data-target="#mediaModal"><i class="fa fa-plus"></i> Upload</span>
+
+		</span>
+
+		<h1>{{{ trans('platform/media::general.title') }}}</h1>
+
+	</div>
+
+	<div class="row">
+
+		{{-- Data Grid : Applied Filters --}}
+		<div class="col-lg-7">
+
+			<div class="data-grid_applied" data-grid="main"></div>
+
+		</div>
+
+		<div class="col-lg-5 text-right">
+
 			<form method="post" action="" accept-charset="utf-8" data-search data-grid="main" class="form-inline" role="form">
 
 				<div class="form-group">
@@ -91,23 +110,6 @@ $(function() {
 
 			</form>
 
-		</span>
-
-		<h1>{{{ trans('platform/media::general.title') }}}</h1>
-
-	</div>
-
-	<div class="row">
-
-		{{-- Data Grid : Applied Filters --}}
-		<div class="col-lg-10">
-
-			<div class="data-grid_applied" data-grid="main"></div>
-
-		</div>
-
-		<div class="col-lg-2 text-right">
-			<span class="btn btn-warning" data-toggle="modal" data-target="#mediaModal"><i class="fa fa-plus"></i> Upload</span>
 		</div>
 
 	</div>
