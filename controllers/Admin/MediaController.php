@@ -39,7 +39,7 @@ class MediaController extends AdminController {
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface
+	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
 	 * @return void
 	 */
 	public function __construct(MediaRepositoryInterface $media)
