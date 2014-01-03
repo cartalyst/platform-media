@@ -1,6 +1,8 @@
 #Platform Media
 
-Media management for Platform. Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.md). Code well, rock on.
+Media management for Platform. 
+
+Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.txt). Code well, rock on.
 
 ##Package Story
 
