@@ -32,23 +32,24 @@ return array(
 	|
 	| Supported Placeholders:
 	|
-	|   File information
-	|     :name      -> foo
-	|     :extension -> jpg
+	|	File information
+	|		:name      -> foo
+	|		:extension -> jpg
+	|		:mime      -> image/jpeg
 	|
 	|	Current Year
-	|     :yyyy  ->  2013
-	|     :yy    ->  13
+	|		:yyyy  ->  2013
+	|		:yy    ->  13
 	|
 	|	Current Month
-	|     :mmmm  ->  November
-	|     :mmm   ->  Nov
-	|     :mm    ->  11
+	|		:mmmm  ->  November
+	|		:mmm   ->  Nov
+	|		:mm    ->  11
 	|
-	|	current(array) Day
-	|     :dddd  ->  Friday
-	|     :ddd   ->  Fri
-	|     :dd    ->  24
+	|	Current Day
+	|		:dddd  ->  Friday
+	|		:ddd   ->  Fri
+	|		:dd    ->  24
 	|
 	| Example:
 	|
