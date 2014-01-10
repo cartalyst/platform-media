@@ -37,12 +37,24 @@ return array(
 	|	  :yy    ->  13
 	|
 	|	Current Month
-	|     :mmmm  ->  Nov
+	|     :mmmm  ->  November
+	|     :mmm   ->  Nov
 	|	  :mm    ->  11
 	|
 	|	Current Day
-	|	  :dddd  ->  Fri
+	|	  :dddd  ->  Friday
+	|	  :ddd   ->  Fri
 	|	  :dd    ->  24
+	|
+	| Example:
+	|
+	|	'dispersion' => ':yyyy/:mm'
+	|
+	|	All your media files will be stored on:
+	|
+	|		public/media/2014/01/foo.jpg
+	|		public/media/2014/01/bar.png
+	|		public/media/2014/01/test.pdf
 	|
 	*/
 
@@ -72,6 +84,9 @@ return array(
 	*/
 
 	'allowed' => array(
+
+		// Audio & Video
+		'audio/ogg', 'video/mp4', 'video/ogg',
 
 		// Application
 		'application/zip', 'application/pdf',
