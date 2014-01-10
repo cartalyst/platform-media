@@ -33,18 +33,18 @@ return array(
 	| Supported Placeholders:
 	|
 	|	Current Year
-	|	  :yyyy  ->  2013
-	|	  :yy    ->  13
+	|     :yyyy  ->  2013
+	|     :yy    ->  13
 	|
 	|	Current Month
 	|     :mmmm  ->  November
 	|     :mmm   ->  Nov
-	|	  :mm    ->  11
+	|     :mm    ->  11
 	|
-	|	Current Day
-	|	  :dddd  ->  Friday
-	|	  :ddd   ->  Fri
-	|	  :dd    ->  24
+	|	current(array) Day
+	|     :dddd  ->  Friday
+	|     :ddd   ->  Fri
+	|     :dd    ->  24
 	|
 	| Example:
 	|
