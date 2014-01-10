@@ -145,7 +145,12 @@ $(function() {
 
 			<div id="dropzone" style="height: 360px;overflow-y:scroll;">
 				<form action="{{ URL::toAdmin('media/upload') }}" class="media-dropzone dz-clickable" id="mediaUploader">
+
+					{{-- CSRF Token --}}
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
 					<div class="dz-default dz-message"></div>
+
 				</form>
 			</div>
 
