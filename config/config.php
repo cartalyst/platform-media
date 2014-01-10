@@ -32,6 +32,10 @@ return array(
 	|
 	| Supported Placeholders:
 	|
+	|   File information
+	|     :name      -> foo
+	|     :extension -> jpg
+	|
 	|	Current Year
 	|     :yyyy  ->  2013
 	|     :yy    ->  13

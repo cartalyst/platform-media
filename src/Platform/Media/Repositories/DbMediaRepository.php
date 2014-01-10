@@ -20,6 +20,7 @@
 
 use Config;
 use Media;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class DbMediaRepository implements MediaRepositoryInterface {
 
@@ -55,7 +56,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 		{
 			$dispersion = Config::get('platform/media::dispersion');
 
-			$data = Media::setDispersion($dispersion)->upload($file->getPathName(), $file->getClientOriginalName());
+			$data = Media::setDispersion($dispersion)->upload($file);
 
 			$imageSize = $data->getImageSize();
 
