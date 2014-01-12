@@ -50,6 +50,13 @@ class DbMediaRepository implements MediaRepositoryInterface {
 		return $this->createModel();
 	}
 
+	public function validForUpload($file)
+	{
+		Media::validateFile($file);
+
+		die;
+	}
+
 	public function upload($file)
 	{
 		try
@@ -71,6 +78,10 @@ class DbMediaRepository implements MediaRepositoryInterface {
 			));
 
 			return true;
+		}
+		catch (\Cartalyst\Media\Exceptions\InvalidFileException $e)
+		{
+			return false;
 		}
 		catch (\Flysystem\FileExistsException $e)
 		{

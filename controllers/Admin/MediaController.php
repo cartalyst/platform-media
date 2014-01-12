@@ -82,7 +82,11 @@ class MediaController extends AdminController {
 	 */
 	public function upload()
 	{
-		if ($this->media->upload(Input::file('file')))
+		$file = Input::file('file');
+
+		$this->media->validForUpload($file);
+
+		if ($this->media->upload($file))
 		{
 			return Response::json('success');
 		}
