@@ -34,7 +34,6 @@ $(function() {
 	});
 
 	$.mediamanager('#mediaUploader', {
-		//acceptedFiles : "{{ implode(', ', Config::get('platform/media::allowed')) }}",
 		onSuccess : function() {
 
 			datagrid._refresh();

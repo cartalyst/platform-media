@@ -96,9 +96,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	{
 		try
 		{
-			$dispersion = Config::get('platform/media::dispersion');
-
-			$data = Media::setDispersion($dispersion)->upload($file);
+			$data = Media::upload($file);
 
 			$imageSize = $data->getImageSize();
 
