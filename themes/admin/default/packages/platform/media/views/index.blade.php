@@ -34,7 +34,6 @@ $(function() {
 	});
 
 	$.mediamanager('#mediaUploader', {
-		deleteUrl : '{{ URL::toAdmin('media/:id/delete') }}',
 		onSuccess : function() {
 
 			datagrid._refresh();

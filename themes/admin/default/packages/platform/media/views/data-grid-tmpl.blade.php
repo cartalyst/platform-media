@@ -7,7 +7,7 @@
 			<td><%= r.mime %></td>
 			<td><%= r.created_at %></td>
 			<td>
-				<span class="btn btn-danger tip" data-media-delete="<%= r.id %>" title="{{{ trans('button.delete') }}}"><i class="fa fa-trash-o"></i></span>
+				<a class="btn btn-danger tip" data-media-delete href="{{ URL::toAdmin('media/<%= r.id %>/delete') }}" title="{{{ trans('button.delete') }}}"><i class="fa fa-trash-o"></i></a>
 			</td>
 		</tr>
 

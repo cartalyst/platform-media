@@ -19,8 +19,7 @@
 			file : 'File',
 			files : 'Files',
 			inQueue : '<strong>:amount</strong> :files in the queue'
-		},
-		deleteUrl : ''
+		}
 	};
 
 	function MediaManager(manager, options) {
@@ -124,15 +123,13 @@
 
 			});
 
-			$document.on('click', '[data-media-delete]', function() {
+			$document.on('click', '[data-media-delete]', function(e) {
 
-				var itemId = $(this).data('media-delete');
-
-				var url = self.opt.deleteUrl.replace(':id', itemId);
+				e.preventDefault();
 
 				$.ajax({
 					type: "GET",
-					url: url,
+					url: $(this).attr('href'),
 					success: function()
 					{
 						self.opt.onSuccess();
