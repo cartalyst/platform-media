@@ -84,15 +84,15 @@ class MediaController extends AdminController {
 	{
 		$file = Input::file('file');
 
-		$this->media->validForUpload($file);
-
-		if ($this->media->upload($file))
+		if ($this->media->validForUpload($file))
 		{
-			return Response::json('success');
+			if ($this->media->upload($file))
+			{
+				return Response::json('success');
+			}
 		}
 
-		# make the message dynamic
-		return Response::json('File already exists!', 400);
+		return Response::json($this->media->getError(), 400);
 	}
 
 	/**

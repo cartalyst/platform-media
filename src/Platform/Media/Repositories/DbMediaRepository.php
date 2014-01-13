@@ -32,6 +32,13 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	protected $model;
 
 	/**
+	 * Holds the occurred error.
+	 *
+	 * @var string
+	 */
+	protected $error;
+
+	/**
 	 * Start it up.
 	 *
 	 * @param  string  $model
@@ -52,9 +59,36 @@ class DbMediaRepository implements MediaRepositoryInterface {
 
 	public function validForUpload($file)
 	{
-		Media::validateFile($file);
+		try
+		{
+			Media::validateFile($file);
 
-		die;
+			return true;
+		}
+		catch (\Cartalyst\Media\Exceptions\InvalidFileException $e)
+		{
+			$this->setError('Invalid file.');
+		}
+		catch (\Cartalyst\Media\Exceptions\InvalidMimeTypeException $e)
+		{
+			$this->setError('Invalid mime type.');
+		}
+		catch (\Cartalyst\Media\Exceptions\MaxFileSizeExceededException $e)
+		{
+			$this->setError('File is to big.');
+		}
+
+		return false;
+	}
+
+	public function getError()
+	{
+		return $this->error;
+	}
+
+	public function setError($error)
+	{
+		$this->error = $error;
 	}
 
 	public function upload($file)
@@ -79,12 +113,10 @@ class DbMediaRepository implements MediaRepositoryInterface {
 
 			return true;
 		}
-		catch (\Cartalyst\Media\Exceptions\InvalidFileException $e)
-		{
-			return false;
-		}
 		catch (\Flysystem\FileExistsException $e)
 		{
+			$this->setError('File already exists.');
+
 			return false;
 		}
 	}
