@@ -18,6 +18,8 @@
  * @link       http://cartalyst.com
  */
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 interface MediaRepositoryInterface {
 
 	/**
@@ -28,11 +30,45 @@ interface MediaRepositoryInterface {
 	public function grid();
 
 	/**
+	 * Determine if the given file is valid for upload.
+	 *
+	 * @param  Symfony\Component\HttpFoundation\File\UploadedFile  $file
+	 * @return bool
+	 * @throws Cartalyst\Media\Exceptions\InvalidFileException
+	 * @throws Cartalyst\Media\Exceptions\MaxFileSizeExceededException
+	 * @throws Cartalyst\Media\Exceptions\InvalidMimeTypeException
+	 */
+	public function validForUpload(UploadedFile $file);
+
+	/**
+	 * Upload the given file.
+	 *
+	 * @param  Symfony\Component\HttpFoundation\File\UploadedFile  $file
+	 * @return bool
+	 */
+	public function upload(UploadedFile $file);
+
+	/**
 	 * Deletes the given media.
 	 *
 	 * @param  int  $id
 	 * @return bool
 	 */
 	public function delete($id);
+
+	/**
+	 * Return the occurred error.
+	 *
+	 * @return string
+	 */
+	public function getError();
+
+	/**
+	 * Set the occurred error.
+	 *
+	 * @param  string  $error
+	 * @return void
+	 */
+	public function setError($error);
 
 }

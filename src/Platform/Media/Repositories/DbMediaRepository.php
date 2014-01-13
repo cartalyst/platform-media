@@ -18,7 +18,12 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Media\Exceptions\InvalidFileException;
+use Cartalyst\Media\Exceptions\InvalidMimeTypeException;
+use Cartalyst\Media\Exceptions\MaxFileSizeExceededException;
 use Config;
+use Flysystem\FileExistsException;
+use Lang;
 use Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -57,7 +62,10 @@ class DbMediaRepository implements MediaRepositoryInterface {
 		return $this->createModel();
 	}
 
-	public function validForUpload($file)
+	/**
+	 * {@inheritDoc}
+	 */
+	public function validForUpload(UploadedFile $file)
 	{
 		try
 		{
@@ -65,33 +73,26 @@ class DbMediaRepository implements MediaRepositoryInterface {
 
 			return true;
 		}
-		catch (\Cartalyst\Media\Exceptions\InvalidFileException $e)
+		catch (InvalidFileException $e)
 		{
-			$this->setError('Invalid file.');
+			$this->setError(Lang::get('platform/media::message.invalid_file'));
 		}
-		catch (\Cartalyst\Media\Exceptions\InvalidMimeTypeException $e)
+		catch (MaxFileSizeExceededException $e)
 		{
-			$this->setError('Invalid mime type.');
+			$this->setError(Lang::get('platform/media::message.file_size_exceeded'));
 		}
-		catch (\Cartalyst\Media\Exceptions\MaxFileSizeExceededException $e)
+		catch (InvalidMimeTypeException $e)
 		{
-			$this->setError('File is to big.');
+			$this->setError(Lang::get('platform/media::message.invalid_mime'));
 		}
 
 		return false;
 	}
 
-	public function getError()
-	{
-		return $this->error;
-	}
-
-	public function setError($error)
-	{
-		$this->error = $error;
-	}
-
-	public function upload($file)
+	/**
+	 * {@inheritDoc}
+	 */
+	public function upload(UploadedFile $file)
 	{
 		try
 		{
@@ -113,9 +114,9 @@ class DbMediaRepository implements MediaRepositoryInterface {
 
 			return true;
 		}
-		catch (\Flysystem\FileExistsException $e)
+		catch (FileExistsException $e)
 		{
-			$this->setError('File already exists.');
+			$this->setError(Lang::get('platform/media::messages.file_exists'));
 
 			return false;
 		}
@@ -136,6 +137,22 @@ class DbMediaRepository implements MediaRepositoryInterface {
 		}
 
 		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getError()
+	{
+		return $this->error;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setError($error)
+	{
+		$this->error = $error;
 	}
 
 	/**

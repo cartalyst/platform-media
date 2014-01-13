@@ -20,16 +20,19 @@
 
 return array(
 
+	'file_exists' => 'File already exists.',
+
+	'file_size_exceded' => 'File size exceeded',
+
+	'invalid_file' => 'Invalid uploaded file.',
+
+	'invalid_mime' => 'Invalid Mime Type.',
+
 	'does_not_exist' => 'Media [:mediaId] does not exist.',
 
-	'upload' => array(
-		'error'   => 'Media was not uploaded, please try again.',
-		'success' => 'Media uploaded successfully.'
-	),
-
 	'delete' => array(
-		'error'      => 'There was an issue deleting the media. Please try again.',
-		'success'    => 'The media was deleted successfully.'
+		'error'   => 'There was an issue deleting the media. Please try again.',
+		'success' => 'The media was deleted successfully.'
 	)
 
 );
