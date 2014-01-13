@@ -34,6 +34,7 @@ $(function() {
 	});
 
 	$.mediamanager('#mediaUploader', {
+		deleteUrl : '{{ URL::toAdmin('media/:id/delete') }}',
 		onSuccess : function() {
 
 			datagrid._refresh();
@@ -96,7 +97,7 @@ $(function() {
 				<div class="form-group">
 					<select class="form-control" name="column">
 						<option value="all">{{{ trans('general.all') }}}</option>
-						<option value="name">{{{ trans('platform/media::table.name') }}}</option>
+						<option value="name">{{{ trans('platform/media::table.file_name') }}}</option>
 						<option value="created_at">{{{ trans('platform/media::table.created_at') }}}</option>
 					</select>
 				</div>
@@ -121,6 +122,7 @@ $(function() {
 				<th data-sort="name" data-grid="main" class="col-md-3 sortable">{{{ trans('platform/media::table.file_name') }}}</th>
 				<th data-sort="mime" data-grid="main" class="col-md-3 sortable">{{{ trans('platform/media::table.mime') }}}</th>
 				<th data-sort="created_at" data-grid="main" class="col-md-3 sortable">{{{ trans('platform/media::table.created_at') }}}</th>
+				<th class="col-md-2"></th>
 			</tr>
 		</thead>
 		<tbody></tbody>

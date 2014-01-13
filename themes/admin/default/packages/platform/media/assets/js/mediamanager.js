@@ -19,7 +19,8 @@
 			file : 'File',
 			files : 'Files',
 			inQueue : '<strong>:amount</strong> :files in the queue'
-		}
+		},
+		deleteUrl : ''
 	};
 
 	function MediaManager(manager, options) {
@@ -68,6 +69,8 @@
 			// Avoid scope issues
 			var self = this;
 
+			var $document = $(document);
+
 			var totalFiles = 0;
 
 			var totalSize = 0;
@@ -113,11 +116,28 @@
 
 			});
 
-			$('[data-media-upload]').on('click', function(e) {
+			$document.on('click', '[data-media-upload]', function(e) {
 
 				e.preventDefault();
 
 				self.dropzone.processQueue();
+
+			});
+
+			$document.on('click', '[data-media-delete]', function() {
+
+				var itemId = $(this).data('media-delete');
+
+				var url = self.opt.deleteUrl.replace(':id', itemId);
+
+				$.ajax({
+					type: "GET",
+					url: url,
+					success: function()
+					{
+						self.opt.onSuccess();
+					}
+				});
 
 			});
 

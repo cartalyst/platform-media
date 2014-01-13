@@ -106,10 +106,10 @@ class MediaController extends AdminController {
 		// Delete the media
 		if ($this->media->delete($id))
 		{
-			return Redirect::toAdmin('media')->withSuccess(Lang::get('platform/media::message.success.delete'));
+			return Response::json('success');
 		}
 
-		return Redirect::toAdmin('media')->withErrors(Lang::get('platform/media::message.error.delete'));
+		return Response::json($this->media->getError(), 400);
 	}
 
 }

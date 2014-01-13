@@ -75,15 +75,15 @@ class DbMediaRepository implements MediaRepositoryInterface {
 		}
 		catch (InvalidFileException $e)
 		{
-			$this->setError(Lang::get('platform/media::message.invalid_file'));
+			$this->setError(Lang::get('platform/media::messages.invalid_file'));
 		}
 		catch (MaxFileSizeExceededException $e)
 		{
-			$this->setError(Lang::get('platform/media::message.file_size_exceeded'));
+			$this->setError(Lang::get('platform/media::messages.file_size_exceeded'));
 		}
 		catch (InvalidMimeTypeException $e)
 		{
-			$this->setError(Lang::get('platform/media::message.invalid_mime'));
+			$this->setError(Lang::get('platform/media::messages.invalid_mime'));
 		}
 
 		return false;
@@ -125,14 +125,16 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	 */
 	public function delete($id)
 	{
-		if ($model = $this->find($id))
+		if ($model = $this->createModel()->find($id))
 		{
-			Media::delete($model->file_path);
+			Media::delete($model->path);
 
 			$model->delete();
 
 			return true;
 		}
+
+		$this->setError(Lang::get('platform/media::messages.error.delete'));
 
 		return false;
 	}
