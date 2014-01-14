@@ -139,12 +139,10 @@ $(function() {
 			<tbody></tbody>
 		</table>
 
-		<button type="submit" class="btn btn-danger btn-xs">{{{ trans('button.delete_selected') }}}</button>
+		{{-- Data Grid : Pagination --}}
+		<div class="data-grid_pagination" data-grid="main"></div>
 
 	</form>
-
-	{{-- Data Grid : Pagination --}}
-	<div class="data-grid_pagination" data-grid="main"></div>
 
 </div>
 
