@@ -47,6 +47,12 @@ $(function() {
 
 	});
 
+	$('#checkAll').click(function() {
+
+		$('input:checkbox').not(this).prop('checked', this.checked);
+
+	});
+
 });
 </script>
 @stop
@@ -115,17 +121,27 @@ $(function() {
 
 	<br />
 
-	<table data-source="{{ URL::toAdmin('media/grid') }}" data-grid="main" class="data-grid table table-striped table-bordered table-hover">
-		<thead>
-			<tr>
-				<th data-sort="name" data-grid="main" class="col-md-3 sortable">{{{ trans('platform/media::table.file_name') }}}</th>
-				<th data-sort="mime" data-grid="main" class="col-md-3 sortable">{{{ trans('platform/media::table.mime') }}}</th>
-				<th data-sort="created_at" data-grid="main" class="col-md-3 sortable">{{{ trans('platform/media::table.created_at') }}}</th>
-				<th class="col-md-2"></th>
-			</tr>
-		</thead>
-		<tbody></tbody>
-	</table>
+	<form action="{{ URL::toAdmin('media/delete') }}" method="post">
+
+		{{-- CSRF Token --}}
+		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+		<table data-source="{{ URL::toAdmin('media/grid') }}" data-grid="main" class="data-grid table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<th><input type="checkbox" name="checkAll" id="checkAll"></th>
+					<th data-sort="name" data-grid="main" class="col-md-3 sortable">{{{ trans('platform/media::table.file_name') }}}</th>
+					<th data-sort="mime" data-grid="main" class="col-md-3 sortable">{{{ trans('platform/media::table.mime') }}}</th>
+					<th data-sort="created_at" data-grid="main" class="col-md-3 sortable">{{{ trans('platform/media::table.created_at') }}}</th>
+					<th class="col-md-2"></th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+
+		<button type="submit" class="btn btn-danger btn-xs">Delete selected</button>
+
+	</form>
 
 	{{-- Data Grid : Pagination --}}
 	<div class="data-grid_pagination" data-grid="main"></div>

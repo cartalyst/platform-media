@@ -203,6 +203,7 @@ return array(
 			Route::get('grid', 'MediaController@grid');
 			Route::post('upload', 'MediaController@upload');
 			Route::get('{id}/delete', 'MediaController@delete');
+			Route::post('delete', 'MediaController@massDelete');
 		});
 	},
 

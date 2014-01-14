@@ -2,39 +2,37 @@
 
 	<% _.each(pagination, function(p) { %>
 
-		<div>
+		<br>
 
-			<div class="pull-right">
+		<div class="pull-right">
 
-				<ul class="pagination pagination-sm">
+			<ul class="pagination pagination-sm">
 
-					<% if (p.prevPage !== null) { %>
+				<% if (p.prevPage !== null) { %>
 
-						<li><a data-grid="main" data-page="<%= p.prevPage %>"><i class="fa fa-chevron-left"></i></a></li>
+					<li><a data-grid="main" data-page="<%= p.prevPage %>"><i class="fa fa-chevron-left"></i></a></li>
 
-					<% } else { %>
+				<% } else { %>
 
-						<li class="disabled"><span><i class="fa fa-chevron-left"></i></span></li>
+					<li class="disabled"><span><i class="fa fa-chevron-left"></i></span></li>
 
-					<% } %>
+				<% } %>
 
-					<% if (p.nextPage !== null) { %>
+				<% if (p.nextPage !== null) { %>
 
-						<li><a data-grid="main" data-page="<%= p.nextPage %>"><i class="fa fa-chevron-right"></i></a></li>
+					<li><a data-grid="main" data-page="<%= p.nextPage %>"><i class="fa fa-chevron-right"></i></a></li>
 
-					<% } else { %>
+				<% } else { %>
 
-						<li class="disabled"><span><i class="fa fa-chevron-right"></i></span></li>
+					<li class="disabled"><span><i class="fa fa-chevron-right"></i></span></li>
 
-					<% } %>
+				<% } %>
 
-				</ul>
-
-			</div>
-
-			{{{ trans('general.showing') }}} <%= p.pageStart %> {{{ trans('general.to') }}} <%= p.pageLimit %> {{{ trans('general.of') }}} <span class="total"><%= p.filteredCount %></span>
+			</ul>
 
 		</div>
+
+		{{{ trans('general.showing') }}} <%= p.pageStart %> {{{ trans('general.to') }}} <%= p.pageLimit %> {{{ trans('general.of') }}} <span class="total"><%= p.filteredCount %></span>
 
 	<% }); %>
 

@@ -112,4 +112,29 @@ class MediaController extends AdminController {
 		return Response::json($this->media->getError(), 400);
 	}
 
+	/**
+	 * Deletes the given media files.
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function massDelete()
+	{
+		$deleted = 0;
+
+		foreach (Input::get('media', array()) as $id)
+		{
+			if ($item = $this->media->delete($id))
+			{
+				$deleted += 1;
+			}
+		}
+
+		if ($deleted > 0)
+		{
+			return Redirect::toAdmin('media')->withSuccess("{$deleted} item(s) were successfully removed.");
+		}
+
+		return Redirect::toAdmin('media');
+	}
+
 }

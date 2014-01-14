@@ -3,6 +3,7 @@
 	<% _.each(results, function(r) { %>
 
 		<tr>
+			<td><input type="checkbox" name="media[]" value="<%= r.id %>"></td>
 			<td><%= r.name %></td>
 			<td><%= r.mime %></td>
 			<td><%= r.created_at %></td>
