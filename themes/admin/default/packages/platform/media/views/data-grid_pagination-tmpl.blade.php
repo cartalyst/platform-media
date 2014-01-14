@@ -2,7 +2,7 @@
 
 	<% _.each(pagination, function(p) { %>
 
-		<button<%= p.totalCount < 1 ? ' disabled="disabled"' : '' %> type="submit" class="btn btn-danger btn-xs">{{{ trans('button.delete_selected') }}}</button>
+		<button<%= p.filteredCount < 1 ? ' disabled="disabled"' : '' %> type="submit" class="btn btn-danger btn-xs">{{{ trans('button.delete_selected') }}}</button>
 
 		<br><br>
 
