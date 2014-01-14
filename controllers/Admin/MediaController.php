@@ -131,7 +131,7 @@ class MediaController extends AdminController {
 
 		if ($deleted > 0)
 		{
-			return Redirect::toAdmin('media')->withSuccess("{$deleted} item(s) were successfully removed.");
+			return Redirect::toAdmin('media')->withSuccess(Lang::get('platform/media::messages.delete.multiple', array('items' => $deleted)));
 		}
 
 		return Redirect::toAdmin('media');

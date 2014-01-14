@@ -31,8 +31,8 @@ return array(
 	'does_not_exist' => 'Media [:mediaId] does not exist.',
 
 	'delete' => array(
-		'error'   => 'There was an issue deleting the media. Please try again.',
-		'success' => 'The media was deleted successfully.'
-	)
+		'error'    => 'There was an issue deleting the media. Please try again.',
+		'multiple' =>  ":items item(s) were successfully removed.",
+	),
 
 );

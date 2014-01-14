@@ -139,7 +139,7 @@ $(function() {
 			<tbody></tbody>
 		</table>
 
-		<button type="submit" class="btn btn-danger btn-xs">Delete selected</button>
+		<button type="submit" class="btn btn-danger btn-xs">{{{ trans('button.delete_selected') }}}</button>
 
 	</form>
 
