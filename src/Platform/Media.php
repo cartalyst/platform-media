@@ -42,6 +42,59 @@ class Media extends Model {
 		'size',
 		'width',
 		'height',
+		'groups',
 	);
+
+	/**
+	 * Get mutator for the "groups" attribute.
+	 *
+	 * @param  mixed  $groups
+	 * @return array
+	 * @throws \InvalidArgumentException
+	 */
+	public function getGroupsAttribute($groups)
+	{
+		if ( ! $groups)
+		{
+			return array();
+		}
+
+		if (is_array($groups))
+		{
+			return $groups;
+		}
+
+		if ( ! $_groups = json_decode($groups, true))
+		{
+			throw new InvalidArgumentException("Cannot JSON decode groups [{$groups}].");
+		}
+
+		return $_groups;
+	}
+
+	/**
+	 * Set mutator for the "groups" attribute.
+	 *
+	 * @param  array  $groups
+	 * @return void
+	 */
+	public function setGroupsAttribute($groups)
+	{
+		// If we get a string, let's just ensure it's a proper JSON string
+		if ( ! is_array($groups))
+		{
+			$groups = $this->getGroupsAttribute($groups);
+		}
+
+		if ( ! empty($groups))
+		{
+			$groups = array_values(array_map('intval', $groups));
+			$this->attributes['groups'] = json_encode($groups);
+		}
+		else
+		{
+			$this->attributes['groups'] = '';
+		}
+	}
 
 }

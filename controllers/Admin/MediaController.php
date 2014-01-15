@@ -25,6 +25,7 @@ use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 use Redirect;
 use Response;
+use Sentry;
 use View;
 
 class MediaController extends AdminController {
@@ -96,6 +97,60 @@ class MediaController extends AdminController {
 	}
 
 	/**
+	 * Shows the form for updating a media.
+	 *
+	 * @param  int $id
+	 * @return mixed
+	 */
+	public function edit($id)
+	{
+		// Get the media information
+		if ( ! $media = $this->media->find($id))
+		{
+			return Redirect::toAdmin('media')->withErrors(Lang::get('platform/media::message.not_found', compact('id')));
+		}
+
+		// Get a list of all the available groups
+		$groups = Sentry::getGroupRepository()->createModel()->all();
+
+		// Show the page
+		return View::make('platform/media::form', compact('media', 'groups'));
+	}
+
+	/**
+	 * Processes the form for updating a media.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function update($id)
+	{
+		// Get the input data
+		$input = Input::all();
+
+		// Check if the input is valid
+		$messages = $this->media->validForUpdate($id, $input);
+
+		// Do we have any errors?
+		if ($messages->isEmpty())
+		{
+			// Update the media
+			$media = $this->media->update($id, $input);
+		}
+
+		// Do we have any errors?
+		if ($messages->isEmpty())
+		{
+			// Prepare the success message
+			$message = Lang::get('platform/media::message.success.update');
+
+			return Redirect::toAdmin("media/{$media->id}/edit")->withSuccess($message);
+		}
+
+		return Redirect::back()->withInput()->withErrors($messages);
+	}
+
+	/**
 	 * Remove the specified media.
 	 *
 	 * @param  int  $id
@@ -131,7 +186,7 @@ class MediaController extends AdminController {
 
 		if ($deleted > 0)
 		{
-			return Redirect::toAdmin('media')->withSuccess(Lang::choice('platform/media::messages.delete.multiple', $deleted, array('items' => $deleted)));
+			return Redirect::toAdmin('media')->withSuccess(Lang::choice('platform/media::message.error.multiple', $deleted, array('items' => $deleted)));
 		}
 
 		return Redirect::toAdmin('media');

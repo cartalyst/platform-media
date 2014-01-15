@@ -30,6 +30,11 @@ $(function() {
 
 			$('.tip').tooltip();
 
+			if ( ! $('input:checkbox').is(':checked'))
+			{
+				$('#delete-selected').prop('disabled', true);
+			}
+
 		}
 	});
 
@@ -51,7 +56,19 @@ $(function() {
 
 		$('input:checkbox').not(this).prop('checked', this.checked);
 
+		$('#delete-selected').prop('disabled', ! this.checked);
+
 	});
+
+	$(document).on('click', '.selectedId', function(i, v){
+
+		var checkCount = $('input:checkbox').length - 1;
+
+		$('#checkAll').prop('checked',$('.selectedId:checked').length  == checkCount);
+
+		$('#delete-selected').prop('disabled', $('.selectedId:checked').length > 0 ? false : true);
+
+    });
 
 });
 </script>
@@ -130,10 +147,9 @@ $(function() {
 			<thead>
 				<tr>
 					<th class="col-md-1"><input type="checkbox" name="checkAll" id="checkAll"></th>
-					<th data-sort="name" data-grid="main" class="col-md-4 sortable">{{{ trans('platform/media::table.file_name') }}}</th>
-					<th data-sort="mime" data-grid="main" class="col-md-3 sortable">{{{ trans('platform/media::table.mime') }}}</th>
+					<th data-sort="name" data-grid="main" class="col-md-6 sortable">{{{ trans('platform/media::table.file_name') }}}</th>
 					<th data-sort="created_at" data-grid="main" class="col-md-3 sortable">{{{ trans('platform/media::table.created_at') }}}</th>
-					<th class="col-md-1"></th>
+					<th class="col-md-2"></th>
 				</tr>
 			</thead>
 			<tbody></tbody>

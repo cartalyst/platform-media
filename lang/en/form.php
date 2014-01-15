@@ -14,13 +14,16 @@
  * @version    2.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011 - 2013, Cartalyst LLC
+ * @copyright  (c) 2011-2014, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
 return array(
 
-	'title'  => 'Media Management',
-	'update' => 'Update Media',
+	'name'        => 'Name',
+	'name_help'   => 'Type a descriptive name for your media.',
+
+	'groups'      => 'Groups',
+	'groups_help' => 'Select the groups to assign to this media file.',
 
 );

@@ -26,6 +26,7 @@ use Flysystem\FileExistsException;
 use Lang;
 use Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Validator;
 
 class DbMediaRepository implements MediaRepositoryInterface {
 
@@ -35,6 +36,15 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	 * @var string
 	 */
 	protected $model;
+
+	/**
+	 * Holds the form validation rules.
+	 *
+	 * @var array
+	 */
+	protected $rules = array(
+		'name' => 'required',
+	);
 
 	/**
 	 * Holds the occurred error.
@@ -65,6 +75,22 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function find($id)
+	{
+		return $this->createModel()->find($id);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function validForUpdate($id, array $data)
+	{
+		return $this->validateMedia($data, $id);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function validForUpload(UploadedFile $file)
 	{
 		try
@@ -75,15 +101,15 @@ class DbMediaRepository implements MediaRepositoryInterface {
 		}
 		catch (InvalidFileException $e)
 		{
-			$this->setError(Lang::get('platform/media::messages.invalid_file'));
+			$this->setError(Lang::get('platform/media::message.invalid_file'));
 		}
 		catch (MaxFileSizeExceededException $e)
 		{
-			$this->setError(Lang::get('platform/media::messages.file_size_exceeded'));
+			$this->setError(Lang::get('platform/media::message.file_size_exceeded'));
 		}
 		catch (InvalidMimeTypeException $e)
 		{
-			$this->setError(Lang::get('platform/media::messages.invalid_mime'));
+			$this->setError(Lang::get('platform/media::message.invalid_mime'));
 		}
 
 		return false;
@@ -114,7 +140,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 		}
 		catch (FileExistsException $e)
 		{
-			$this->setError(Lang::get('platform/media::messages.file_exists'));
+			$this->setError(Lang::get('platform/media::message.file_exists'));
 
 			return false;
 		}
@@ -123,9 +149,21 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function update($id, array $data)
+	{
+		$model = $this->find($id);
+
+		$model->fill($data)->save();
+
+		return $model;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function delete($id)
 	{
-		if ($model = $this->createModel()->find($id))
+		if ($model = $this->find($id))
 		{
 			Media::delete($model->path);
 
@@ -134,7 +172,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 			return true;
 		}
 
-		$this->setError(Lang::get('platform/media::messages.error.delete'));
+		$this->setError(Lang::get('platform/media::message.error.delete'));
 
 		return false;
 	}
@@ -153,6 +191,24 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	public function setError($error)
 	{
 		$this->error = $error;
+	}
+
+	/**
+	 * Validates a media.
+	 *
+	 * @param  array  $data
+	 * @param  mixed  $id
+	 * @return \Illuminate\Support\MessageBag
+	 */
+	protected function validateMedia($data, $id = null)
+	{
+		$rules = $this->rules;
+
+		$validator = Validator::make($data, $rules);
+
+		$validator->passes();
+
+		return $validator->errors();
 	}
 
 	/**

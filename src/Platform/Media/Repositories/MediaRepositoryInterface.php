@@ -30,6 +30,14 @@ interface MediaRepositoryInterface {
 	public function grid();
 
 	/**
+	 * Get a media by it's primary key.
+	 *
+	 * @param  int  $id
+	 * @return \Platform\Media\Media
+	 */
+	public function find($id);
+
+	/**
 	 * Determine if the given file is valid for upload.
 	 *
 	 * @param  Symfony\Component\HttpFoundation\File\UploadedFile  $file
@@ -41,12 +49,30 @@ interface MediaRepositoryInterface {
 	public function validForUpload(UploadedFile $file);
 
 	/**
+	 * Determine if the given media is valid for updating.
+	 *
+	 * @param  int    $id
+	 * @param  array  $data
+	 * @return \Illuminate\Support\MessageBag
+	 */
+	public function validForUpdate($id, array $data);
+
+	/**
 	 * Upload the given file.
 	 *
 	 * @param  Symfony\Component\HttpFoundation\File\UploadedFile  $file
 	 * @return bool
 	 */
 	public function upload(UploadedFile $file);
+
+	/**
+	 * Updates a media with the given data.
+	 *
+	 * @param  int    $id
+	 * @param  array  $data
+	 * @return \Cartalyst\Media\Media
+	 */
+	public function update($id, array $data);
 
 	/**
 	 * Deletes the given media.

@@ -14,25 +14,15 @@
  * @version    2.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011 - 2013, Cartalyst LLC
+ * @copyright  (c) 2011-2014, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
 return array(
 
-	'file_exists' => 'File already exists.',
-
-	'file_size_exceded' => 'File size exceeded',
-
-	'invalid_file' => 'Invalid uploaded file.',
-
-	'invalid_mime' => 'Invalid Mime Type.',
-
-	'does_not_exist' => 'Media [:mediaId] does not exist.',
-
-	'delete' => array(
-		'error'    => 'There was an issue deleting the media. Please try again.',
-		'multiple' => '{1} 1 item was successfully removed.|[2,Inf] :items items were successfully removed.',
-	),
+	'index'  => 'List Media',
+	'upload' => 'Upload Media',
+	'edit'   => 'Edit Media',
+	'delete' => 'Delete Media',
 
 );

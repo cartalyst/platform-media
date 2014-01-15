@@ -202,6 +202,8 @@ return array(
 			Route::get('/', 'MediaController@index');
 			Route::get('grid', 'MediaController@grid');
 			Route::post('upload', 'MediaController@upload');
+			Route::get('{id}/edit', 'MediaController@edit');
+			Route::post('{id}/edit', 'MediaController@update');
 			Route::get('{id}/delete', 'MediaController@delete');
 			Route::post('delete', 'MediaController@massDelete');
 		});
@@ -242,7 +244,14 @@ return array(
 
 	'permissions' => function()
 	{
+		return array(
 
+			'Platform\Media\Controllers\Admin\MediaController@index,grid'  => Lang::get('platform/media::permissions.index'),
+			'Platform\Media\Controllers\Admin\MediaController@upload'      => Lang::get('platform/media::permissions.upload'),
+			'Platform\Media\Controllers\Admin\MediaController@edit,update' => Lang::get('platform/media::permissions.edit'),
+			'Platform\Media\Controllers\Admin\MediaController@delete'      => Lang::get('platform/media::permissions.delete'),
+
+		);
 	},
 
 	/*
