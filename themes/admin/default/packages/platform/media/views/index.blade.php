@@ -26,6 +26,9 @@ $(function() {
 			column: 'created_at',
 			direction: 'desc'
 		},
+		dividend: 1,
+		threshold: 1,
+		throttle: 12,
 		callback: function() {
 
 			$('.tip').tooltip();
@@ -52,24 +55,6 @@ $(function() {
 
 	});
 
-	$('#checkAll').click(function() {
-
-		$('input:checkbox').not(this).prop('checked', this.checked);
-
-		$('#delete-selected').prop('disabled', ! this.checked);
-
-	});
-
-	$(document).on('click', '.selectedId', function(i, v){
-
-		var checkCount = $('input:checkbox').length - 1;
-
-		$('#checkAll').prop('checked',$('.selectedId:checked').length  == checkCount);
-
-		$('#delete-selected').prop('disabled', $('.selectedId:checked').length > 0 ? false : true);
-
-    });
-
 });
 </script>
 @stop
@@ -77,6 +62,39 @@ $(function() {
 {{-- Inline styles --}}
 @section('styles')
 @parent
+<style type="text/css">
+.thumbnail:hover a.delete {
+	display: block;
+	opacity: 1;
+}
+.thumbnail a.delete {
+	position: absolute;
+	xtop: 2px;
+	xright: 2px;
+	background: white;
+	letter-spacing: -99999px;
+	width: 15px;
+	height: 15px;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
+	-webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
+	-webkit-border-radius: 0px 2px 0px 0px;
+	-moz-border-radius: 0px 2px 0px 0px;
+	border-radius: 0px 2px 0px 0px;
+	-webkit-border-radius: 0px 0px 0px 3px;
+	-moz-border-radius: 0px 0px 0px 3px;
+	border-radius: 0px 0px 0px 3px;
+	cursor: pointer;
+	display: none;
+	opacity: 0;
+}
+
+.media-name {
+	background:#eee; border-top: 1px dotted #ccc; xmargin:1em; padding:5px;
+	overflow:hidden; white-space:nowrap; text-overflow:ellipsis; width: 169px;
+	border-radius: 0 0 3px 3px;
+}
+</style>
 @stop
 
 {{-- Page content --}}
@@ -97,7 +115,7 @@ $(function() {
 
 	</div>
 
-	<div class="row">
+	<div class="row hide">
 
 		{{-- Data Grid : Applied Filters --}}
 		<div class="col-lg-7">
@@ -143,17 +161,40 @@ $(function() {
 		{{-- CSRF Token --}}
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-		<table data-source="{{ URL::toAdmin('media/grid') }}" data-grid="main" class="data-grid table table-striped table-bordered table-hover">
-			<thead>
-				<tr>
-					<th class="col-md-1"><input type="checkbox" name="checkAll" id="checkAll"></th>
-					<th data-sort="name" data-grid="main" class="col-md-6 sortable">{{{ trans('platform/media::table.file_name') }}}</th>
-					<th data-sort="created_at" data-grid="main" class="col-md-3 sortable">{{{ trans('platform/media::table.created_at') }}}</th>
-					<th class="col-md-2"></th>
-				</tr>
-			</thead>
-			<tbody></tbody>
-		</table>
+		<div class="col-md-9">
+		<div class="data-grid" data-source="{{ URL::toAdmin('media/grid') }}" data-grid="main"></div>
+</div>
+
+<div class="col-md-3">
+
+	<div data-media-delete-box class="hide">
+
+		<h4>Mass <small>Delete</small></h4>
+
+		1 item(s) selected
+		<br>
+
+		<button data-media-delete-selected id="delete-selected" type="submit" class="btn btn-danger btn-xs">{{{ trans('button.delete_selected') }}}</button>
+
+	</div>
+
+	<!--
+	<h4>Assign Tags <small>to selected items</small></h4>
+
+	form
+
+
+	<h4>Tags <small>Filter by Tag</small></h4>
+
+	<hr>
+
+	<ul class="nav nav-pills nav-stacked">
+		<li><a href="#">Foo</a></li>
+	</ul>
+	-->
+
+</div>
+		<div class="clearfix"></div>
 
 		{{-- Data Grid : Pagination --}}
 		<div class="data-grid_pagination" data-grid="main"></div>

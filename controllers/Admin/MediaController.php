@@ -72,6 +72,7 @@ class MediaController extends AdminController {
 			'id',
 			'name',
 			'mime',
+			'path',
 			'created_at',
 		));
 	}

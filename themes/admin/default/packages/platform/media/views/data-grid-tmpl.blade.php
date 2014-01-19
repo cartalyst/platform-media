@@ -2,16 +2,22 @@
 
 	<% _.each(results, function(r) { %>
 
-		<tr>
-			<td><input class="selectedId" type="checkbox" name="media[]" value="<%= r.id %>"></td>
-			<td><%= r.name %></td>
-			<td><%= r.created_at %></td>
-			<td>
-				<a class="btn btn-primary tip" href="{{ URL::toAdmin('media/<%= r.id %>/edit') }}" title="{{{ trans('button.edit') }}}"><i class="fa fa-edit"></i></a>
+	<div class="col-xs-6 col-md-3" style="margin-bottom: 20px;">
 
-				<a class="btn btn-danger tip" data-media-delete href="{{ URL::toAdmin('media/<%= r.id %>/delete') }}" title="{{{ trans('button.delete') }}}"><i class="fa fa-trash-o"></i></a>
-			</td>
-		</tr>
+		<span class="thumbnail" style="padding: 0" data-media="<%= r.id %>">
+			<span class="btn delete" data-media-delete="<%= r.id %>">&times;</span>
+
+			<!--<img src="http://placehold.it/170x160&text=Foo">-->
+			<img src="{{ asset('media/<%= r.path %>') }}" style="width: 169px; height: 169px;">
+
+			<div class="media-name">
+				<input class="selectedId" type="checkbox" name="media" value="<%= r.id %>">
+
+				<%= r.name %>
+			</div>
+		</span>
+
+	</div>
 
 	<% }); %>
 

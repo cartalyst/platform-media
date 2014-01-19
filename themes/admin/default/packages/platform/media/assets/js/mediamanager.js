@@ -127,15 +127,72 @@
 
 				e.preventDefault();
 
-				$.ajax({
-					type: "GET",
-					url: $(this).attr('href'),
-					success: function()
-					{
-						self.opt.onSuccess();
-					}
+				var id = $(this).data('media-delete');
+
+				self.deleteMedia(id);
+
+			});
+
+			/*$('#checkAll').click(function() {
+
+				$('input:checkbox').not(this).prop('checked', this.checked);
+
+				$('#delete-selected').prop('disabled', ! this.checked);
+
+			});*/
+
+			$(document).on('click', '.selectedId', function(i, v){
+
+				var checkCount = $('input:checkbox').length - 1;
+
+				$('#checkAll').prop('checked',$('.selectedId:checked').length  == checkCount);
+
+				var checked = $('.selectedId:checked').length > 0 ? false : true;
+
+				if (checked)
+				{
+					$('[data-media-delete-box').addClass('hide');
+				}
+				else
+				{
+					$('[data-media-delete-box').removeClass('hide');
+				}
+
+				$('#delete-selected').prop('disabled', checked);
+
+			});
+
+			$(document).on('click', '[data-media]', function() {
+
+				//alert('y');
+
+			});
+
+			$(document).on('click', '[data-media-delete-selected]', function(e) {
+
+				e.preventDefault();
+
+				$("input:checkbox[name=media]:checked").each(function()
+				{
+					self.deleteMedia($(this).val());
 				});
 
+			});
+
+		},
+
+		deleteMedia : function(id) {
+
+			// Avoid scope issues
+			var self = this;
+
+			$.ajax({
+				type: "GET",
+				url: 'media/' + id + '/delete',
+				success: function()
+				{
+					self.opt.onSuccess();
+				}
 			});
 
 		},
