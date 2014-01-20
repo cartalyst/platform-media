@@ -1,0 +1,63 @@
+.media {
+	padding: 4px;
+	line-height: 1.428571429;
+	background-color: #ffffff;
+	border: 1px solid #dddddd;
+	border-radius: 4px;
+
+	display: block;
+	padding: 0;
+	width: 171px;
+	height: 202px;
+
+	.delete {
+		float: left;
+		top: 0;
+		position: absolute;
+		color: #fff;
+		background: grey;
+		padding: 1px;
+		cursor: pointer;
+	}
+
+	.thumb {
+		width: 169px;
+		height: 169px;
+
+		&.other {
+			background: url('http://placehold.it/169x169&text=Other') no-repeat;
+
+			&.pdf {
+				background: url('http://placehold.it/169x169&text=pdf') no-repeat;
+			}
+
+			&.txt {
+				background: url('http://placehold.it/169x169&text=txt') no-repeat;
+			}
+		}
+	}
+
+	.name {
+		background:#eee;
+		xmargin:1em;
+		padding:6px;
+		overflow:hidden;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+		width: 169px;
+		border-radius: 0 0 3px 3px;
+		cursor: default;
+	}
+
+	.form {
+		padding: 0;
+		width: 171px;
+		height: 202px;
+	}
+
+}
+
+.media > img {
+	margin-left: auto;
+	margin-right: auto;
+}

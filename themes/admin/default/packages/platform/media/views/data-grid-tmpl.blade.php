@@ -2,22 +2,33 @@
 
 	<% _.each(results, function(r) { %>
 
-	<div class="col-xs-6 col-md-3" style="margin-bottom: 20px;">
+		<div class="col-xs-6 col-md-3" style="margin-bottom: 20px;" data-media="<%= r.id %>">
 
-		<span class="thumbnail" style="padding: 0" data-media="<%= r.id %>">
-			<span class="btn delete" data-media-delete="<%= r.id %>">&times;</span>
+			<span class="media">
 
-			<!--<img src="http://placehold.it/170x160&text=Foo">-->
-			<img src="{{ asset('media/<%= r.path %>') }}" style="width: 169px; height: 169px;">
+				<div class="xbtn xbtn-xs delete" data-media-delete="<%= r.id %>">&times;</div>
 
-			<div class="media-name">
-				<input class="selectedId" type="checkbox" name="media" value="<%= r.id %>">
+				<div class="thumb <%= (r.is_image == 1 ? 'image' : 'other') %> <%= r.extension %>">
+					<% if (r.is_image == 1) { %>
+						<img src="{{ asset('media/<%= r.path %>') }}" style="border-radius: 3px 3px 0 0; width: 169px; height: 169px;">
+					<% } %>
+				</div>
 
-				<%= r.name %>
-			</div>
-		</span>
+				<div class="name" data-media-name="<%= r.id %>">
+					<input class="selectedId" type="checkbox" name="media" value="<%= r.id %>">
 
-	</div>
+					<%= r.name %>
+				</div>
+
+				<div class="form" data-media-form="<%= r.id %>">
+
+					Foo
+
+				</div>
+
+			</span>
+
+		</div>
 
 	<% }); %>
 

@@ -35,6 +35,7 @@ class Media extends Model {
 		'path',
 		'extension',
 		'mime',
+		'is_image',
 		'size',
 		'width',
 		'height',

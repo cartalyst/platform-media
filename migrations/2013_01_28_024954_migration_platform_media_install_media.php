@@ -37,6 +37,7 @@ class MigrationPlatformMediaInstallMedia extends Migration {
 			$table->string('extension');
 			$table->string('mime');
 			$table->integer('size')->nullable();
+			$table->boolean('is_image')->default(0);
 			$table->integer('width')->nullable();
 			$table->integer('height')->nullable();
 			$table->text('groups')->nullable();

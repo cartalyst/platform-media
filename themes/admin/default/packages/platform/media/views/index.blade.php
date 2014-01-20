@@ -12,6 +12,7 @@
 {{ Asset::queue('dropzone.js', 'platform/media::js/dropzone/dropzone.js') }}
 {{ Asset::queue('dropzone.css', 'platform/media::css/dropzone.css') }}
 {{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', 'dropzone') }}
+{{ Asset::queue('media', 'platform/media::css/media.less') }}
 
 {{-- Inline scripts --}}
 @section('scripts')
@@ -35,6 +36,8 @@ $(function() {
 
 			if ( ! $('input:checkbox').is(':checked'))
 			{
+				$('[data-media-delete-box]').addClass('hide');
+
 				$('#delete-selected').prop('disabled', true);
 			}
 
@@ -62,39 +65,6 @@ $(function() {
 {{-- Inline styles --}}
 @section('styles')
 @parent
-<style type="text/css">
-.thumbnail:hover a.delete {
-	display: block;
-	opacity: 1;
-}
-.thumbnail a.delete {
-	position: absolute;
-	xtop: 2px;
-	xright: 2px;
-	background: white;
-	letter-spacing: -99999px;
-	width: 15px;
-	height: 15px;
-	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
-	-webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
-	-moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
-	-webkit-border-radius: 0px 2px 0px 0px;
-	-moz-border-radius: 0px 2px 0px 0px;
-	border-radius: 0px 2px 0px 0px;
-	-webkit-border-radius: 0px 0px 0px 3px;
-	-moz-border-radius: 0px 0px 0px 3px;
-	border-radius: 0px 0px 0px 3px;
-	cursor: pointer;
-	display: none;
-	opacity: 0;
-}
-
-.media-name {
-	background:#eee; border-top: 1px dotted #ccc; xmargin:1em; padding:5px;
-	overflow:hidden; white-space:nowrap; text-overflow:ellipsis; width: 169px;
-	border-radius: 0 0 3px 3px;
-}
-</style>
 @stop
 
 {{-- Page content --}}
@@ -155,50 +125,53 @@ $(function() {
 	</div>
 
 	<br />
-
+<div class="row">
 	<form action="{{ URL::toAdmin('media/delete') }}" method="post">
 
 		{{-- CSRF Token --}}
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 		<div class="col-md-9">
-		<div class="data-grid" data-source="{{ URL::toAdmin('media/grid') }}" data-grid="main"></div>
+
+			<div class="data-grid" data-source="{{ URL::toAdmin('media/grid') }}" data-grid="main"></div>
+
+		</div>
+
+		<div class="col-md-3">
+
+			<div data-media-delete-box class="hide">
+
+				<h4>Mass <small>Delete</small></h4>
+
+				1 item(s) selected
+				<br>
+
+				<button data-media-delete-selected id="delete-selected" type="submit" class="btn btn-danger btn-xs">{{{ trans('button.delete_selected') }}}</button>
+
+			</div>
+
+			<!--
+			<h4>Assign Tags <small>to selected items</small></h4>
+
+			form
+
+
+			<h4>Tags <small>Filter by Tag</small></h4>
+
+			<hr>
+
+			<ul class="nav nav-pills nav-stacked">
+				<li><a href="#">Foo</a></li>
+			</ul>
+			-->
+
+		</div>
 </div>
 
-<div class="col-md-3">
-
-	<div data-media-delete-box class="hide">
-
-		<h4>Mass <small>Delete</small></h4>
-
-		1 item(s) selected
-		<br>
-
-		<button data-media-delete-selected id="delete-selected" type="submit" class="btn btn-danger btn-xs">{{{ trans('button.delete_selected') }}}</button>
-
-	</div>
-
-	<!--
-	<h4>Assign Tags <small>to selected items</small></h4>
-
-	form
-
-
-	<h4>Tags <small>Filter by Tag</small></h4>
-
-	<hr>
-
-	<ul class="nav nav-pills nav-stacked">
-		<li><a href="#">Foo</a></li>
-	</ul>
-	-->
-
-</div>
 		<div class="clearfix"></div>
 
 		{{-- Data Grid : Pagination --}}
 		<div class="data-grid_pagination" data-grid="main"></div>
-
 	</form>
 
 </div>

@@ -151,22 +151,46 @@
 
 				if (checked)
 				{
-					$('[data-media-delete-box').addClass('hide');
+					$('[data-media-delete-box]').addClass('hide');
 				}
 				else
 				{
-					$('[data-media-delete-box').removeClass('hide');
+					$('[data-media-delete-box]').removeClass('hide');
 				}
 
 				$('#delete-selected').prop('disabled', checked);
 
 			});
 
-			$(document).on('click', '[data-media]', function() {
+			/*$(document).on('click', '[data-media]', function() {
 
-				//alert('y');
+				var id = $(this).data('media');
+
+				$(this).addClass('on_edit');
+
+				$('[data-media-thumb="' + id + '"]').addClass('hide');
+
+				$('[data-media-form="' + id + '"]').removeClass('hide');
 
 			});
+
+			/*
+			$(document).on('click', function() {
+
+				$('.on_edit').each(function() {
+
+					var id = $(this).data('media');
+
+					$(this).removeClass('on_edit');
+
+					$('[data-media-thumb="' + id + '"]').removeClass('hide');
+
+					$('[data-media-form="' + id + '"]').addClass('hide');
+
+				});
+
+			});
+			*/
 
 			$(document).on('click', '[data-media-delete-selected]', function(e) {
 

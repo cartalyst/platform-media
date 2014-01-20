@@ -132,6 +132,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 				'extension' => $data->getExtension(),
 				'mime'      => $data->getMimetype(),
 				'size'      => $data->getSize(),
+				'is_image'  => $data->isImage(),
 				'width'     => $imageSize['width'],
 				'height'    => $imageSize['height']
 			));
