@@ -6,11 +6,11 @@
 
 			<span class="media">
 
-				<div class="xbtn xbtn-xs delete" data-media-delete="<%= r.id %>">&times;</div>
+				<div class="delete" data-media-delete="<%= r.id %>">&times;</div>
 
 				<div class="thumb <%= (r.is_image == 1 ? 'image' : 'other') %> <%= r.extension %>">
 					<% if (r.is_image == 1) { %>
-						<img src="{{ asset('media/<%= r.path %>') }}" style="border-radius: 3px 3px 0 0; width: 169px; height: 169px;">
+						<img src="{{ asset('media/<%= r.path %>') }}">
 					<% } %>
 				</div>
 

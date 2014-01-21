@@ -11,16 +11,19 @@
 	height: 202px;
 
 	.delete {
-		float: left;
-		top: 0;
 		position: absolute;
+		top: 1px;
+		right: 21px;
 		color: #fff;
 		background: grey;
-		padding: 1px;
+		padding: 0 4px;
 		cursor: pointer;
+		border-radius: 0 4px 0 4px;
+		z-index: 10;
 	}
 
 	.thumb {
+		position: relative;
 		width: 169px;
 		height: 169px;
 
@@ -34,6 +37,12 @@
 			&.txt {
 				background: url('http://placehold.it/169x169&text=txt') no-repeat;
 			}
+		}
+
+		img {
+			border-radius: 3px 3px 0 0;
+			width: 169px;
+			height: 169px;
 		}
 	}
 
