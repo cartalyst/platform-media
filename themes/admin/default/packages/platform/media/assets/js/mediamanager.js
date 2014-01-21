@@ -8,6 +8,7 @@
 	 * @var array
 	 */
 	var defaults = {
+		updateUrl : null,
 		deleteUrl : null,
 		token : null,
 		onSuccess : function() {},
@@ -139,19 +140,25 @@
 
 				var id = $(this).data('media-form');
 
-				alert(id);
+				var data = $(this).serializeArray();
+				data.push({
+					name  : '_token',
+					value : self.opt.token,
+				});
+
+				$.ajax({
+					type : 'POST',
+					data : data,
+					url : self.opt.updateUrl.replace(':id', id),
+					success : function()
+					{
+						self.opt.onSuccess();
+					}
+				});
 
 				return false;
 
 			});
-
-			/*$('#checkAll').click(function() {
-
-				$('input:checkbox').not(this).prop('checked', this.checked);
-
-				$('#delete-selected').prop('disabled', ! this.checked);
-
-			});*/
 
 			$document.on('click', '.selectedId', function() {
 
@@ -169,8 +176,6 @@
 				{
 					$('[data-media-delete-box]').removeClass('hide');
 				}
-
-				$('#delete-selected').prop('disabled', checked);
 
 			});
 

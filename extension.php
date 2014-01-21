@@ -204,7 +204,6 @@ return array(
 			Route::post('upload', 'MediaController@upload');
 			Route::post('{id}/edit', 'MediaController@update');
 			Route::post('{id}/delete', 'MediaController@delete');
-			Route::post('delete', 'MediaController@massDelete');
 		});
 	},
 

@@ -45,6 +45,7 @@ $(function() {
 	});
 
 	$.mediamanager('#mediaUploader', {
+		updateUrl : '{{ URL::toAdmin('media/:id/edit') }}',
 		deleteUrl : '{{ URL::toAdmin('media/:id/delete') }}',
 		token : '{{ csrf_token() }}',
 		onSuccess : function() {

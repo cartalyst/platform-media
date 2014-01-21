@@ -105,7 +105,7 @@ class MediaController extends AdminController {
 	 * @param  int $id
 	 * @return mixed
 	 */
-	public function edit($id)
+	/*public function edit($id)
 	{
 		// Get the media information
 		if ( ! $media = $this->media->find($id))
@@ -118,7 +118,7 @@ class MediaController extends AdminController {
 
 		// Show the page
 		return View::make('platform/media::form', compact('media', 'groups'));
-	}
+	}*/
 
 	/**
 	 * Processes the form for updating a media.
@@ -147,10 +147,10 @@ class MediaController extends AdminController {
 			// Prepare the success message
 			$message = Lang::get('platform/media::message.success.update');
 
-			return Redirect::toAdmin("media/{$media->id}/edit")->withSuccess($message);
+			#return Redirect::toAdmin("media/{$media->id}/edit")->withSuccess($message);
 		}
 
-		return Redirect::back()->withInput()->withErrors($messages);
+		#return Redirect::back()->withInput()->withErrors($messages);
 	}
 
 	/**
@@ -168,31 +168,6 @@ class MediaController extends AdminController {
 		}
 
 		return Response::json($this->media->getError(), 400);
-	}
-
-	/**
-	 * Deletes the given media files.
-	 *
-	 * @return \Illuminate\Http\RedirectResponse
-	 */
-	public function massDelete()
-	{
-		$deleted = 0;
-
-		foreach (Input::get('media', array()) as $id)
-		{
-			if ($item = $this->media->delete($id))
-			{
-				$deleted += 1;
-			}
-		}
-
-		if ($deleted > 0)
-		{
-			return Redirect::toAdmin('media')->withSuccess(Lang::choice('platform/media::message.error.multiple', $deleted, array('items' => $deleted)));
-		}
-
-		return Redirect::toAdmin('media');
 	}
 
 }
