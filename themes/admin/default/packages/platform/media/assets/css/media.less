@@ -7,42 +7,47 @@
 
 	display: block;
 	padding: 0;
-	width: 171px;
-	height: 202px;
+	width: 176px;
+	height: 210px;
 
 	.delete {
+		display: none;
+	}
+
+	&:hover > .delete {
+		display: block;
 		position: absolute;
-		top: 1px;
+		top: 5px;
 		right: 21px;
 		color: #fff;
 		background: grey;
 		padding: 0 4px;
 		cursor: pointer;
-		border-radius: 0 4px 0 4px;
+		border-radius: 3px;
 		z-index: 10;
 	}
 
 	.thumb {
 		position: relative;
-		width: 169px;
-		height: 169px;
+		width: 176px;
+		height: 176px;
 
 		&.other {
-			background: url('http://placehold.it/169x169&text=Other') no-repeat;
+			background: url('http://placehold.it/176x176&text=Other') no-repeat;
 
 			&.pdf {
-				background: url('http://placehold.it/169x169&text=pdf') no-repeat;
+				background: url('http://placehold.it/176x176&text=pdf') no-repeat;
 			}
 
 			&.txt {
-				background: url('http://placehold.it/169x169&text=txt') no-repeat;
+				background: url('http://placehold.it/176x176&text=txt') no-repeat;
 			}
 		}
 
 		img {
 			border-radius: 3px 3px 0 0;
-			width: 169px;
-			height: 169px;
+			width: 176px;
+			height: 176px;
 		}
 	}
 
@@ -53,15 +58,12 @@
 		overflow:hidden;
 		white-space: nowrap;
 		text-overflow:ellipsis;
-		width: 169px;
 		border-radius: 0 0 3px 3px;
 		cursor: default;
 	}
 
 	.form {
-		padding: 0;
-		width: 171px;
-		height: 202px;
+		padding: 10px;
 	}
 
 }

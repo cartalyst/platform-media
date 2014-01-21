@@ -8,7 +8,7 @@
 
 				<div class="delete" data-media-delete="<%= r.id %>">&times;</div>
 
-				<div class="thumb <%= (r.is_image == 1 ? 'image' : 'other') %> <%= r.extension %>">
+				<div class="thumb <%= (r.is_image == 1 ? 'image' : 'other') %> <%= r.extension %>" data-media-thumb="<%= r.id %>">
 					<% if (r.is_image == 1) { %>
 						<img src="{{ asset('media/<%= r.path %>') }}">
 					<% } %>
@@ -20,7 +20,7 @@
 					<%= r.name %>
 				</div>
 
-				<div class="form" data-media-form="<%= r.id %>">
+				<div class="form hide" data-media-form="<%= r.id %>">
 
 					Foo
 

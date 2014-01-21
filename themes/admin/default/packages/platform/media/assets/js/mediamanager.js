@@ -162,13 +162,15 @@
 
 			});
 
-			/*$(document).on('click', '[data-media]', function() {
+			$(document).on('click', '[data-media-name]', function() {
 
-				var id = $(this).data('media');
+				var id = $(this).data('media-name');
 
-				$(this).addClass('on_edit');
+				$('[data-media="' + id + '"]').addClass('on_edit');
 
 				$('[data-media-thumb="' + id + '"]').addClass('hide');
+
+				$('[data-media-name="' + id + '"]').addClass('hide');
 
 				$('[data-media-form="' + id + '"]').removeClass('hide');
 
