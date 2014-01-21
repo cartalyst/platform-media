@@ -1,36 +1,34 @@
 .media {
-	padding: 4px;
-	line-height: 1.428571429;
 	background-color: #ffffff;
 	border: 1px solid #dddddd;
 	border-radius: 4px;
-
 	display: block;
+	height: 208px;
+	line-height: 1.428571429;
 	padding: 0;
 	width: 176px;
-	height: 210px;
 
 	.delete {
 		display: none;
 	}
 
 	&:hover > .delete {
-		display: block;
-		position: absolute;
-		top: 5px;
-		right: 21px;
-		color: #fff;
 		background: grey;
-		padding: 0 4px;
-		cursor: pointer;
 		border-radius: 3px;
+		color: #ffffff;
+		cursor: pointer;
+		display: block;
+		padding: 0 4px;
+		position: absolute;
+		right: 21px;
+		top: 5px;
 		z-index: 10;
 	}
 
 	.thumb {
+		height: 176px;
 		position: relative;
 		width: 176px;
-		height: 176px;
 
 		&.other {
 			background: url('http://placehold.it/176x176&text=Other') no-repeat;
@@ -46,20 +44,20 @@
 
 		img {
 			border-radius: 3px 3px 0 0;
-			width: 176px;
 			height: 176px;
+			width: 176px;
 		}
 	}
 
 	.name {
-		background:#eee;
-		xmargin:1em;
-		padding:6px;
-		overflow:hidden;
-		white-space: nowrap;
-		text-overflow:ellipsis;
+		background: #eeeeee;
 		border-radius: 0 0 3px 3px;
 		cursor: default;
+		font-size: 11px;
+		padding: 6px;
+		overflow:hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.form {

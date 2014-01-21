@@ -32,6 +32,7 @@ class MigrationPlatformMediaInstallMedia extends Migration {
 		Schema::create('media', function($table)
 		{
 			$table->increments('id');
+			$table->string('unique_id');
 			$table->string('name');
 			$table->string('path');
 			$table->string('extension');

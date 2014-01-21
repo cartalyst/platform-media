@@ -126,7 +126,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 
 			$imageSize = $data->getImageSize();
 
-			with($model = $this->createModel())->create(array(
+			$media = with($model = $this->createModel())->create(array(
 				'name'      => $file->getClientOriginalName(),
 				'path'      => $data->getPath(),
 				'extension' => $data->getExtension(),
@@ -136,6 +136,9 @@ class DbMediaRepository implements MediaRepositoryInterface {
 				'width'     => $imageSize['width'],
 				'height'    => $imageSize['height']
 			));
+
+			$media->unique_id = $model->generateUniqueId($media->id);
+			$media->save();
 
 			return true;
 		}
