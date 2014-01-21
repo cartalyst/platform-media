@@ -202,9 +202,8 @@ return array(
 			Route::get('/', 'MediaController@index');
 			Route::get('grid', 'MediaController@grid');
 			Route::post('upload', 'MediaController@upload');
-			Route::get('{id}/edit', 'MediaController@edit');
 			Route::post('{id}/edit', 'MediaController@update');
-			Route::get('{id}/delete', 'MediaController@delete');
+			Route::post('{id}/delete', 'MediaController@delete');
 			Route::post('delete', 'MediaController@massDelete');
 		});
 	},

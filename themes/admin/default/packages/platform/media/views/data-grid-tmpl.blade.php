@@ -24,11 +24,16 @@
 
 				</div>
 
-				<div class="form hide" data-media-form="<%= r.id %>">
 
-					form here
+				<form class="form hide"method="post" data-media-form="<%= r.id %>">
 
-				</div>
+					<div class="content">
+						foo
+					</div>
+
+					<input type="text" class="name" name="name" id="name_<%= r.id %>" value="<%= r.name %>" />
+
+				</form>
 
 			</div>
 

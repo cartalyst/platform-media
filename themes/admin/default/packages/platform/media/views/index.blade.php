@@ -45,6 +45,8 @@ $(function() {
 	});
 
 	$.mediamanager('#mediaUploader', {
+		deleteUrl : '{{ URL::toAdmin('media/:id/delete') }}',
+		token : '{{ csrf_token() }}',
 		onSuccess : function() {
 
 			datagrid._refresh();
@@ -125,8 +127,8 @@ $(function() {
 	</div>
 
 	<br />
-<div class="row">
-	<form action="{{ URL::toAdmin('media/delete') }}" method="post">
+
+	<div class="row">
 
 		{{-- CSRF Token --}}
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -166,13 +168,13 @@ $(function() {
 			-->
 
 		</div>
-</div>
 
-		<div class="clearfix"></div>
+	</div>
 
-		{{-- Data Grid : Pagination --}}
-		<div class="data-grid_pagination" data-grid="main"></div>
-	</form>
+	<div class="clearfix"></div>
+
+	{{-- Data Grid : Pagination --}}
+	<div class="data-grid_pagination" data-grid="main"></div>
 
 </div>
 

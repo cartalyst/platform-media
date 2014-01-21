@@ -8,6 +8,8 @@
 	 * @var array
 	 */
 	var defaults = {
+		deleteUrl : null,
+		token : null,
 		onSuccess : function() {},
 		onComplete : function() {},
 		autoProcessQueue : false,
@@ -133,6 +135,16 @@
 
 			});
 
+			$document.on('submit', 'form', function() {
+
+				var id = $(this).data('media-form');
+
+				alert(id);
+
+				return false;
+
+			});
+
 			/*$('#checkAll').click(function() {
 
 				$('input:checkbox').not(this).prop('checked', this.checked);
@@ -141,7 +153,7 @@
 
 			});*/
 
-			$(document).on('click', '.selectedId', function(i, v){
+			$document.on('click', '.selectedId', function() {
 
 				var checkCount = $('input:checkbox').length - 1;
 
@@ -162,35 +174,21 @@
 
 			});
 
-			$(document).on('click', '.selectedId', function(e) {
+			$document.on('click', '.selectedId', function(e) {
 
 				e.stopPropagation();
 
 			});
 
-			$(document).on('click', function(e) {
+			$document.on('click', function() {
 
-				e.stopPropagation();
-
-				var selected = $('.on_edit').data('media');
-
-				$('.on_edit').each(function() {
-
-					var id = $(this).data('media');
-
-					self.closeMediaForm(id);
-
-				});
+				self.closeMediaForms();
 
 			});
 
-			$(document).on('click', '[data-media-form]', function(e) {
+			$document.on('click', '[data-media-name]', function(e) {
 
 				e.stopPropagation();
-
-			});
-
-			$(document).on('click', '[data-media-name]', function(e) {
 
 				var id = $(this).data('media-name');
 
@@ -198,15 +196,19 @@
 
 				self.showMediaForm(id);
 
+			});
+
+			$document.on('click', '[data-media-form]', function(e) {
+
 				e.stopPropagation();
 
 			});
 
-			$(document).on('click', '[data-media-delete-selected]', function(e) {
+			$document.on('click', '[data-media-delete-selected]', function(e) {
 
 				e.preventDefault();
 
-				$("input:checkbox[name=media]:checked").each(function()
+				$('input:checkbox[name=media]:checked').each(function()
 				{
 					self.deleteMedia($(this).val());
 				});
@@ -246,7 +248,7 @@
 
 			$('[data-media-file="' + id + '"]').addClass('hide');
 
-			$('[data-media-form="' + id + '"]').removeClass('hide');
+			$('[data-media-form="' + id + '"]').removeClass('hide').find('.name').focus();
 
 		},
 
@@ -256,9 +258,10 @@
 			var self = this;
 
 			$.ajax({
-				type: "GET",
-				url: 'media/' + id + '/delete',
-				success: function()
+				type : 'POST',
+				data : { '_token' : self.opt.token },
+				url : self.opt.deleteUrl.replace(':id', id),
+				success : function()
 				{
 					self.opt.onSuccess();
 				}
