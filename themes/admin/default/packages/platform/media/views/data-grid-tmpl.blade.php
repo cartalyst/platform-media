@@ -36,7 +36,7 @@
 							<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::form.groups_help') }}}"></i>
 
 							<div class="controls">
-								<select name="groups[]" id="groups" class="form-control" multiple="true">
+								<select name="groups[]" id="groups_<%= r.id %>" class="form-control" multiple="true">
 								@foreach ($groups as $group)
 									<option value="{{{ $group->id }}}"<%= (_.contains(r.groups, {{ $group->id }}) ? ' selected="selected"' : '') %>>{{{ $group->name }}}</option>
 								@endforeach

@@ -111,6 +111,8 @@ class MediaController extends AdminController {
 	 */
 	public function update($id)
 	{
+		Input::merge(array('groups' => Input::get('groups', array())));
+
 		$input = Input::all();
 
 		if ($this->media->validForUpdate($id, $input))
