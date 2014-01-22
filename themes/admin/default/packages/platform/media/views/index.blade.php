@@ -37,8 +37,6 @@ $(function() {
 			if ( ! $('input:checkbox').is(':checked'))
 			{
 				$('[data-media-delete-box]').addClass('hide');
-
-				$('#delete-selected').prop('disabled', true);
 			}
 
 		}

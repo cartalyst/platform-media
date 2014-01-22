@@ -41,6 +41,7 @@ class MigrationPlatformMediaInstallMedia extends Migration {
 			$table->boolean('is_image')->default(0);
 			$table->integer('width')->nullable();
 			$table->integer('height')->nullable();
+			$table->boolean('private')->default(0);
 			$table->text('groups')->nullable();
 			$table->timestamps();
 

@@ -57,8 +57,11 @@ class MediaController extends AdminController {
 	 */
 	public function index()
 	{
+		// Get a list of all the available groups
+		$groups = Sentry::getGroupRepository()->createModel()->all();
+
 		// Show the page
-		return View::make('platform/media::index');
+		return View::make('platform/media::index', compact('groups'));
 	}
 
 	/**
@@ -73,6 +76,7 @@ class MediaController extends AdminController {
 			'name',
 			'mime',
 			'path',
+			'groups',
 			'is_image',
 			'extension',
 			'created_at',
@@ -100,27 +104,6 @@ class MediaController extends AdminController {
 	}
 
 	/**
-	 * Shows the form for updating a media.
-	 *
-	 * @param  int $id
-	 * @return mixed
-	 */
-	/*public function edit($id)
-	{
-		// Get the media information
-		if ( ! $media = $this->media->find($id))
-		{
-			return Redirect::toAdmin('media')->withErrors(Lang::get('platform/media::message.not_found', compact('id')));
-		}
-
-		// Get a list of all the available groups
-		$groups = Sentry::getGroupRepository()->createModel()->all();
-
-		// Show the page
-		return View::make('platform/media::form', compact('media', 'groups'));
-	}*/
-
-	/**
 	 * Processes the form for updating a media.
 	 *
 	 * @param  int  $id
@@ -128,29 +111,16 @@ class MediaController extends AdminController {
 	 */
 	public function update($id)
 	{
-		// Get the input data
 		$input = Input::all();
 
-		// Check if the input is valid
-		$messages = $this->media->validForUpdate($id, $input);
-
-		// Do we have any errors?
-		if ($messages->isEmpty())
+		if ($this->media->validForUpdate($id, $input))
 		{
-			// Update the media
-			$media = $this->media->update($id, $input);
+			$this->media->update($id, $input);
+
+			return Response::json('success');
 		}
 
-		// Do we have any errors?
-		if ($messages->isEmpty())
-		{
-			// Prepare the success message
-			$message = Lang::get('platform/media::message.success.update');
-
-			#return Redirect::toAdmin("media/{$media->id}/edit")->withSuccess($message);
-		}
-
-		#return Redirect::back()->withInput()->withErrors($messages);
+		return Response::json($this->media->getError(), 400);
 	}
 
 	/**

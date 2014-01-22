@@ -28,7 +28,23 @@
 				<form class="form hide"method="post" data-media-form="<%= r.id %>">
 
 					<div class="content">
-						foo
+
+						{{-- Groups --}}
+						<div class="form-group">
+							<label class="control-label" for="groups">{{{ trans('platform/media::form.groups') }}}</label>
+
+							<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::form.groups_help') }}}"></i>
+
+							<div class="controls">
+								<select name="groups[]" id="groups" class="form-control" multiple="true">
+								@foreach ($groups as $group)
+									<option value="{{{ $group->id }}}"<%= (_.contains(r.groups, {{ $group->id }}) ? ' selected="selected"' : '') %>>{{{ $group->name }}}</option>
+								@endforeach
+								</select>
+							</div>
+						</div>
+
+
 					</div>
 
 					<input type="text" class="name" name="name" id="name_<%= r.id %>" value="<%= r.name %>" />

@@ -160,7 +160,9 @@
 
 			});
 
-			$document.on('click', '.selectedId', function() {
+			$document.on('click', '.selectedId', function(e) {
+
+				e.stopPropagation();
 
 				var checkCount = $('input:checkbox').length - 1;
 
@@ -176,12 +178,6 @@
 				{
 					$('[data-media-delete-box]').removeClass('hide');
 				}
-
-			});
-
-			$document.on('click', '.selectedId', function(e) {
-
-				e.stopPropagation();
 
 			});
 
