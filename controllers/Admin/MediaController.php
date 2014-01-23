@@ -76,6 +76,7 @@ class MediaController extends AdminController {
 			'name',
 			'mime',
 			'path',
+			'private',
 			'groups',
 			'is_image',
 			'extension',

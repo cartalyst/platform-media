@@ -39,6 +39,7 @@ class Media extends Model {
 		'size',
 		'width',
 		'height',
+		'private',
 		'groups',
 	);
 

@@ -29,12 +29,13 @@
 
 					<div class="content">
 
+						<select name="private" class="form-control">
+							<option value="0"<%= (r.private == 0 ? ' selected="selected"' : '') %>>Public</option>
+							<option value="1"<%= (r.private == 1 ? ' selected="selected"' : '') %>>Private</option>
+						</select>
+
 						{{-- Groups --}}
 						<div class="form-group">
-							<label class="control-label" for="groups">{{{ trans('platform/media::form.groups') }}}</label>
-
-							<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::form.groups_help') }}}"></i>
-
 							<div class="controls">
 								<select name="groups[]" id="groups_<%= r.id %>" class="form-control" multiple="true">
 								@foreach ($groups as $group)
