@@ -204,12 +204,14 @@ return array(
 			Route::post('upload', 'MediaController@upload');
 			Route::post('{id}/edit', 'MediaController@update');
 			Route::post('{id}/delete', 'MediaController@delete');
+			Route::get('thumbnail/{id}/{size}', 'MediaController@thumbnail');
 		});
 
 		Route::group(array('prefix' => 'media', 'namespace' => 'Platform\Media\Controllers\Frontend'), function()
 		{
-			Route::get('{id}/{file?}', 'MediaController@view');
-			Route::get('thumbnail/{id}/{size}', 'MediaController@thumbnail');
+			Route::get('share/{id}', 'MediaController@share');
+			Route::get('download/{id}', 'MediaController@download');
+			Route::get('{id}/{size?}', 'MediaController@view');
 		});
 	},
 

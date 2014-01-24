@@ -90,18 +90,6 @@ class MediaController extends BaseController {
 
 		$file = Media::getFileSystem()->read($media->path);
 
-		if (Input::get('download'))
-		{
-			$response = Response::make($file, 200);
-
-			$response->header('Content-Disposition', 'attachment; filename="'.$media->name.'"');
-			$response->header('Content-Type', $media->mime);
-			$response->header('Content-Length', strlen($file));
-			$response->header('Connection', 'close');
-
-			return $response;
-		}
-
 		if ( ! $media->is_image)
 		{
 			$response = Response::make($file, 200);
@@ -136,6 +124,54 @@ class MediaController extends BaseController {
 		});
 
 		return $img->response();
+	}
+
+	public function share($id)
+	{
+		// To implement :)
+	}
+
+	public function download($id)
+	{
+		if ( ! $media = $this->media->findByUniqueId($id))
+		{
+			throw new HttpException(404, 'Media does not exist.');
+		}
+
+		if ($media->private)
+		{
+			$pass = false;
+
+			if (Sentry::check())
+			{
+				$pass = true;
+
+				$mediaGroups = $media->groups;
+
+				$userGroups = Sentry::getUser()->groups->lists('id');
+
+				if ( ! empty($mediaGroups) and ! array_intersect($mediaGroups, $userGroups))
+				{
+					$pass = false;
+				}
+			}
+
+			if ( ! $pass)
+			{
+				throw new HttpException(403, "You don't have permission.");
+			}
+		}
+
+		$file = Media::getFileSystem()->read($media->path);
+
+		$response = Response::make($file, 200);
+
+		$response->header('Content-Disposition', 'attachment; filename="'.$media->name.'"');
+		$response->header('Content-Type', $media->mime);
+		$response->header('Content-Length', strlen($file));
+		$response->header('Connection', 'close');
+
+		return $response;
 	}
 
 }

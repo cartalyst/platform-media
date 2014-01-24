@@ -13,7 +13,7 @@
 					<a href="{{ URL::to('media/<%= r.unique_id %>') }}" target="_blank">
 						<div class="thumb <%= (r.is_image == 1 ? 'image' : 'other') %> <%= r.extension %>">
 							<% if (r.is_image == 1) { %>
-								<img src="{{ URL::to('media/<%= r.unique_id %>/176x176?crop=true') }}">
+								<img src="{{ URL::toAdmin('media/thumbnail/<%= r.unique_id %>/176x176?crop=true') }}">
 							<% } %>
 						</div>
 					</a>
