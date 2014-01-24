@@ -26,6 +26,7 @@ use Platform\Foundation\Controllers\BaseController;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 use Response;
 use Sentry;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class MediaController extends BaseController {
 
@@ -55,14 +56,36 @@ class MediaController extends BaseController {
 	 * @param  string  $id
 	 * @param  string  $size
 	 * @return void
-	 * @TODO: Check if the media is private and check the groups
-	 * @TODO: Rework the exception and throw proper responses with proper status
 	 */
 	public function view($id, $size = null)
 	{
 		if ( ! $media = $this->media->findByUniqueId($id))
 		{
-			throw new Exception('Not found');
+			throw new HttpException(404, 'Media does not exist.');
+		}
+
+		if ($media->private)
+		{
+			$pass = false;
+
+			if (Sentry::check())
+			{
+				$pass = true;
+
+				$mediaGroups = $media->groups;
+
+				$userGroups = Sentry::getUser()->groups->lists('id');
+
+				if ( ! empty($mediaGroups) and ! array_intersect($mediaGroups, $userGroups))
+				{
+					$pass = false;
+				}
+			}
+
+			if ( ! $pass)
+			{
+				throw new HttpException(403, "You don't have permission.");
+			}
 		}
 
 		$file = Media::getFileSystem()->read($media->path);
