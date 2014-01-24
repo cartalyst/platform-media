@@ -64,6 +64,11 @@ class DbMediaRepository implements MediaRepositoryInterface {
 		$this->model = $model;
 	}
 
+	public function all()
+	{
+		return $this->createModel();
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
