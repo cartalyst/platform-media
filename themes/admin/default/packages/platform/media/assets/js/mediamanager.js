@@ -199,6 +199,25 @@
 
 			});
 
+			$document.on('change', '[data-media-private]', function() {
+
+				var id = $(this).data('media-private');
+
+				var value = $(this).val();
+
+				if (value == 1)
+				{
+					$('[data-media-groups="' + id + '"').removeClass('hide');
+				}
+				else
+				{
+					$('[data-media-groups="' + id + '"').addClass('hide');
+				}
+
+				//self.updateMedia(id);
+
+			});
+
 			$document.on('click', '[data-media-form]', function(e) {
 
 				e.stopPropagation();

@@ -30,6 +30,14 @@
 		position: relative;
 		width: 176px;
 
+		&.image {
+			max-height: 176px;
+			display: table-cell;
+			vertical-align: middle;
+			overflow: hidden;
+			cursor: pointer;
+		}
+
 		&.other {
 			background: url('http://placehold.it/176x176&text=Other') no-repeat;
 
@@ -42,10 +50,10 @@
 			}
 		}
 
-		img {
-			border-radius: 3px 3px 0 0;
-			height: 176px;
-			width: 176px;
+		_img {
+			max-height: 100%;
+			display: block;
+			margin: 0px auto;
 		}
 	}
 
@@ -64,7 +72,7 @@
 
 		.content {
 			padding: 10px;
-			height: 175px;
+			height: 176px;
 			border-bottom: 1px solid #dddddd;
 		}
 

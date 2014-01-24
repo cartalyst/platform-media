@@ -83,6 +83,14 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function findByUniqueId($id)
+	{
+		return $this->createModel()->where('unique_id', $id)->first();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function validForUpdate($id, array $data)
 	{
 		return $this->validateMedia($data, $id);

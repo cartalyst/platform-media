@@ -80,6 +80,7 @@ class MediaController extends AdminController {
 			'groups',
 			'is_image',
 			'extension',
+			'unique_id',
 			'created_at',
 		));
 	}

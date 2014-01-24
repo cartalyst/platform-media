@@ -38,6 +38,14 @@ interface MediaRepositoryInterface {
 	public function find($id);
 
 	/**
+	 * Get a media by it's unique id.
+	 *
+	 * @param  string  $id
+	 * @return \Platform\Media\Media
+	 */
+	public function findByUniqueId($id);
+
+	/**
 	 * Determine if the given file is valid for upload.
 	 *
 	 * @param  Symfony\Component\HttpFoundation\File\UploadedFile  $file
