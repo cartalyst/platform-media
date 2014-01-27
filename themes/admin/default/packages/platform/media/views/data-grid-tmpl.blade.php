@@ -10,10 +10,10 @@
 
 				<div data-media-file="<%= r.id %>">
 
-					<a href="{{ URL::to('media/<%= r.unique_id %>') }}" target="_blank">
+					<a href="{{ URL::to('<%= r.thumbnail %>') }}" target="_blank">
 						<div class="thumb <%= (r.is_image == 1 ? 'image' : 'other') %> <%= r.extension %>">
 							<% if (r.is_image == 1) { %>
-								<img src="{{ URL::to('media/thumbnail/<%= r.id %>?width=176&height=176&crop=true') }}">
+								<img src="{{ URL::to('<%= r.thumbnail %>') }}">
 							<% } %>
 						</div>
 					</a>

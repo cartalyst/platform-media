@@ -38,12 +38,12 @@ interface MediaRepositoryInterface {
 	public function find($id);
 
 	/**
-	 * Get a media by it's unique id.
+	 * Get a media by it's file path.
 	 *
-	 * @param  string  $id
+	 * @param  string  $path
 	 * @return \Platform\Media\Media
 	 */
-	public function findByUniqueId($id);
+	public function findByPath($path);
 
 	/**
 	 * Determine if the given file is valid for upload.

@@ -82,7 +82,7 @@ class MediaController extends AdminController {
 			'groups',
 			'is_image',
 			'extension',
-			'unique_id',
+			'thumbnail',
 			'created_at',
 		));
 	}
@@ -145,52 +145,5 @@ class MediaController extends AdminController {
 
 		return Response::json($this->media->getError(), 400);
 	}
-
-
-	public function thumbnail($id, $size = null)
-	{
-		if ( ! $media = $this->media->findByUniqueId($id))
-		{
-			throw new HttpException(404, 'Media does not exist.');
-		}
-
-		$file = Media::getFileSystem()->read($media->path);
-
-		if ( ! $media->is_image)
-		{
-			$response = Response::make($file, 200);
-
-			$response->header('Content-Type', $media->mime);
-
-			return $response;
-		}
-
-		$img = Image::make($file);
-
-		if ($size)
-		{
-			$matches = explode('x', $size);
-
-			$width = array_get($matches, 0);
-
-			$height = array_get($matches, 1) ?: $width;
-
-			if (Input::get('crop'))
-			{
-				$img->crop($width, $height);
-			}
-			else
-			{
-				$img->resize($width, $height, true);
-			}
-		}
-
-		$img->cache(function($image) use ($img) {
-			return $image->make($img);
-		});
-
-		return $img->response();
-	}
-
 
 }

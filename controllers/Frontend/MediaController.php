@@ -54,39 +54,16 @@ class MediaController extends BaseController {
 	 * Return the given media file.
 	 *
 	 * @param  string  $id
-	 * @param  string  $size
 	 * @return void
 	 */
-	public function view($id, $size = null)
+	public function view($id)
 	{
-		if ( ! $media = $this->media->findByUniqueId($id))
+		if ( ! $media = $this->media->findByPath($id))
 		{
 			throw new HttpException(404, 'Media does not exist.');
 		}
 
-		if ($media->private)
-		{
-			$pass = false;
-
-			if (Sentry::check())
-			{
-				$pass = true;
-
-				$mediaGroups = $media->groups;
-
-				$userGroups = Sentry::getUser()->groups->lists('id');
-
-				if ( ! empty($mediaGroups) and ! array_intersect($mediaGroups, $userGroups))
-				{
-					$pass = false;
-				}
-			}
-
-			if ( ! $pass)
-			{
-				throw new HttpException(403, "You don't have permission.");
-			}
-		}
+		$this->checkIsPrivate($media);
 
 		$file = Media::getFileSystem()->read($media->path);
 
@@ -101,34 +78,11 @@ class MediaController extends BaseController {
 
 		$img = Image::make($file);
 
-		if ($size)
-		{
-			$matches = explode('x', $size);
-
-			$width = array_get($matches, 0);
-
-			$height = array_get($matches, 1) ?: $width;
-
-			if (Input::get('crop'))
-			{
-				$img->crop($width, $height);
-			}
-			else
-			{
-				$img->resize($width, $height, true);
-			}
-		}
-
 		$img->cache(function($image) use ($img) {
 			return $image->make($img);
 		});
 
 		return $img->response();
-	}
-
-	public function share($id)
-	{
-		// To implement :)
 	}
 
 	public function download($id)
@@ -138,6 +92,22 @@ class MediaController extends BaseController {
 			throw new HttpException(404, 'Media does not exist.');
 		}
 
+		$this->checkIsPrivate($media);
+
+		$file = Media::getFileSystem()->read($media->path);
+
+		$response = Response::make($file, 200);
+
+		$response->header('Content-Disposition', 'attachment; filename="'.$media->name.'"');
+		$response->header('Content-Type', $media->mime);
+		$response->header('Content-Length', strlen($file));
+		$response->header('Connection', 'close');
+
+		return $response;
+	}
+
+	protected function checkIsPrivate($media)
+	{
 		if ($media->private)
 		{
 			$pass = false;
@@ -158,20 +128,9 @@ class MediaController extends BaseController {
 
 			if ( ! $pass)
 			{
-				throw new HttpException(403, "You don't have permission.");
+				throw new HttpException(403, "You don't have permission to access this file.");
 			}
 		}
-
-		$file = Media::getFileSystem()->read($media->path);
-
-		$response = Response::make($file, 200);
-
-		$response->header('Content-Disposition', 'attachment; filename="'.$media->name.'"');
-		$response->header('Content-Type', $media->mime);
-		$response->header('Content-Length', strlen($file));
-		$response->header('Connection', 'close');
-
-		return $response;
 	}
 
 }

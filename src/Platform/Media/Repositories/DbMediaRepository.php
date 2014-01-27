@@ -88,9 +88,9 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function findByUniqueId($id)
+	public function findByPath($path)
 	{
-		return $this->createModel()->where('unique_id', $id)->first();
+		return $this->createModel()->where('path', $path)->first();
 	}
 
 	/**
@@ -149,9 +149,6 @@ class DbMediaRepository implements MediaRepositoryInterface {
 				'width'     => $imageSize['width'],
 				'height'    => $imageSize['height']
 			));
-
-			$media->unique_id = $model->generateUniqueId($media->id);
-			$media->save();
 
 			return true;
 		}
