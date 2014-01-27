@@ -181,6 +181,12 @@ return array(
 	{
 		$app['cartalyst/media']->boot();
 		unset($app['cartalyst/media']);
+
+
+		function media_cache_path($media)
+		{
+			return 'cache/media/' . $media; # make this a config option
+		}
 	},
 
 	/*
@@ -209,11 +215,17 @@ return array(
 			Route::post('{id}/delete', 'MediaController@delete');
 		});
 
-		Route::group(array('prefix' => 'media', 'namespace' => 'Platform\Media\Controllers\Frontend'), function()
+		Route::group(array('namespace' => 'Platform\Media\Controllers\Frontend'), function()
 		{
-			Route::get('download/{id}', 'MediaController@download')->where('id', '.*?');
-			Route::get('{id}', 'MediaController@view')->where('id', '.*?');
+			Route::get('cache/media/{id}', 'MediaController@cached')->where('id', '.*?');
+
+			Route::group(array('prefix' => 'media'), function()
+			{
+				Route::get('download/{id}', 'MediaController@download')->where('id', '.*?');
+				Route::get('{id}', 'MediaController@view')->where('id', '.*?');
+			});
 		});
+
 	},
 
 	/*

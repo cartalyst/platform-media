@@ -29,40 +29,44 @@ class MediaEventHandler {
 
 	public function onUpload($file, $original)
 	{
-		# make these values configurable?!
-		$width = 176;
-		$height = 176;
-
-		$filePath = $file->getPath();
-
-		$extension = $file->getExtension();
-
 		$imageSize = $file->getImageSize();
 
-		$filename = str_replace(".{$extension}", '', $original->getClientOriginalName());
+		$path = null;
 
-		$name = implode(array($filename, $width, $height ?: $width), ' ');
-
-		$path = media_cache_path() . Str::slug($name) . '.' . $extension;
-
-		if ( ! File::exists($path))
+		if ($file->isImage())
 		{
-			$data = Media::getFileSystem()->read($filePath);
+			# make these values configurable?!
+			$width = 176;
+			$height = 176;
 
-			$img = Image::make($data)->crop($width, $height, true)->save($path);
+			$extension = $file->getExtension();
 
-			$media = $this->media->create(array(
-				'name'      => $original->getClientOriginalName(),
-				'path'      => $file->getPath(),
-				'extension' => $file->getExtension(),
-				'mime'      => $file->getMimetype(),
-				'size'      => $file->getSize(),
-				'is_image'  => $file->isImage(),
-				'width'     => $imageSize['width'],
-				'height'    => $imageSize['height'],
-				'thumbnail' => $path,
-			));
+			$filename = str_replace(".{$extension}", '', $original->getClientOriginalName());
+
+			$name = implode(array($filename, $width, $height ?: $width), ' ');
+
+			#$path = media_cache_path() . Str::slug($name) . '.' . $extension;
+			$path = Str::slug($name) . '.' . $extension;
+
+			if ( ! File::exists(media_cache_path($path)))
+			{
+				$data = Media::getFileSystem()->read($file->getPath());
+
+				Image::make($data)->crop($width, $height, true)->save(media_cache_path($path));
+			}
 		}
+
+		$media = $this->media->create(array(
+			'name'      => $original->getClientOriginalName(),
+			'path'      => $file->getPath(),
+			'extension' => $file->getExtension(),
+			'mime'      => $file->getMimetype(),
+			'size'      => $file->getSize(),
+			'is_image'  => $file->isImage(),
+			'width'     => $imageSize['width'],
+			'height'    => $imageSize['height'],
+			'thumbnail' => $path,
+		));
 	}
 
 	public function subscribe($events)
@@ -70,10 +74,4 @@ class MediaEventHandler {
 		$events->listen('cartalyst.media.uploaded', 'Platform\Media\Handlers\MediaEventHandler@onUpload');
 	}
 
-}
-
-
-function media_cache_path()
-{
-	return 'cache/media/'; # make this a config option
 }

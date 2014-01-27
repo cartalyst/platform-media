@@ -98,6 +98,15 @@ class MediaController extends BaseController {
 		return $response;
 	}
 
+	public function cached($path)
+	{
+		if ( ! $media = $this->media->findByPath($path))
+		{
+			throw new HttpException(404, 'Media does not exist.');
+		}
+		echo $path;
+	}
+
 	/**
 	 * Determines if the logged in user has access
 	 * to the given media file.

@@ -10,19 +10,19 @@
 
 						<div class="delete" data-media-delete="<%= r.id %>">&times;</div>
 
-						<a href="{{ URL::to('<%= r.thumbnail %>') }}" target="_blank"><i class="fa fa-clipboard"></i></a>
+						<a href="{{ URL::to(media_cache_path('<%= r.thumbnail %>')) }}" target="_blank"><i class="fa fa-clipboard"></i></a>
 
 						<a href="{{ URL::to('media/download/<%= r.path %>') }}" target="_blank"><i class="fa fa-cloud-download"></i></a>
 
 					</div>
-				<div data-media-file="<%= r.id %>">
 
+				<div data-media-file="<%= r.id %>">
 
 					<a href="{{ URL::to('media/<%= r.path %>') }}" target="_blank">
 						<div class="thumb <%= (r.is_image == 1 ? 'image' : 'other') %> <%= r.extension %>">
 
 							<% if (r.is_image == 1) { %>
-								<img src="{{ URL::to('<%= r.thumbnail %>') }}">
+								<img src="{{ URL::to(media_cache_path('<%= r.thumbnail %>')) }}">
 							<% } %>
 
 						</div>
