@@ -18,9 +18,6 @@
  * @link       http://cartalyst.com
  */
 
-use Exception;
-use Image;
-use Input;
 use Media;
 use Platform\Foundation\Controllers\BaseController;
 use Platform\Media\Repositories\MediaRepositoryInterface;
@@ -54,7 +51,7 @@ class MediaController extends BaseController {
 	 * Returns the given media file.
 	 *
 	 * @param  string  $path
-	 * @return void
+	 * @return \Illuminate\Http\Response
 	 */
 	public function view($path)
 	{
@@ -67,29 +64,18 @@ class MediaController extends BaseController {
 
 		$file = Media::getFileSystem()->read($media->path);
 
-		if ( ! $media->is_image)
-		{
-			$response = Response::make($file, 200);
+		$response = Response::make($file, 200);
 
-			$response->header('Content-Type', $media->mime);
+		$response->header('Content-Type', $media->mime);
 
-			return $response;
-		}
-
-		$img = Image::make($file);
-
-		$img->cache(function($image) use ($img) {
-			return $image->make($img);
-		});
-
-		return $img->response();
+		return $response;
 	}
 
 	/**
 	 * Downloads the given media file.
 	 *
 	 * @param  string  $path
-	 * @return void
+	 * @return \Illuminate\Http\Response
 	 */
 	public function download($path)
 	{
@@ -112,6 +98,13 @@ class MediaController extends BaseController {
 		return $response;
 	}
 
+	/**
+	 * Determines if the logged in user has access
+	 * to the given media file.
+	 *
+	 * @param  \Platform\Media\Media  $media
+	 * @return bool
+	 */
 	protected function checkPermission($media)
 	{
 		if ($media->private)

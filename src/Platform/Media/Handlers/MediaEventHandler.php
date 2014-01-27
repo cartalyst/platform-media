@@ -39,7 +39,7 @@ class MediaEventHandler {
 
 		$imageSize = $file->getImageSize();
 
-		$filename = str_replace(".{$extension}", '', $filePath);
+		$filename = str_replace(".{$extension}", '', $original->getClientOriginalName());
 
 		$name = implode(array($filename, $width, $height ?: $width), ' ');
 
@@ -49,7 +49,7 @@ class MediaEventHandler {
 		{
 			$data = Media::getFileSystem()->read($filePath);
 
-			$img = Image::make($data)->resize($width, $height, true)->save($path);
+			$img = Image::make($data)->crop($width, $height, true)->save($path);
 
 			$media = $this->media->create(array(
 				'name'      => $original->getClientOriginalName(),
