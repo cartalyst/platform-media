@@ -51,19 +51,19 @@ class MediaController extends BaseController {
 	}
 
 	/**
-	 * Return the given media file.
+	 * Returns the given media file.
 	 *
-	 * @param  string  $id
+	 * @param  string  $path
 	 * @return void
 	 */
-	public function view($id)
+	public function view($path)
 	{
-		if ( ! $media = $this->media->findByPath($id))
+		if ( ! $media = $this->media->findByPath($path))
 		{
 			throw new HttpException(404, 'Media does not exist.');
 		}
 
-		$this->checkIsPrivate($media);
+		$this->checkPermission($media);
 
 		$file = Media::getFileSystem()->read($media->path);
 
@@ -85,14 +85,20 @@ class MediaController extends BaseController {
 		return $img->response();
 	}
 
-	public function download($id)
+	/**
+	 * Downloads the given media file.
+	 *
+	 * @param  string  $path
+	 * @return void
+	 */
+	public function download($path)
 	{
-		if ( ! $media = $this->media->findByUniqueId($id))
+		if ( ! $media = $this->media->findByPath($path))
 		{
 			throw new HttpException(404, 'Media does not exist.');
 		}
 
-		$this->checkIsPrivate($media);
+		$this->checkPermission($media);
 
 		$file = Media::getFileSystem()->read($media->path);
 
@@ -106,7 +112,7 @@ class MediaController extends BaseController {
 		return $response;
 	}
 
-	protected function checkIsPrivate($media)
+	protected function checkPermission($media)
 	{
 		if ($media->private)
 		{

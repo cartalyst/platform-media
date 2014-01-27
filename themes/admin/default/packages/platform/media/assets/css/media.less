@@ -8,27 +8,45 @@
 	padding: 0;
 	width: 176px;
 
-	.delete {
-		display: none;
-	}
-
-	&:hover > .delete {
-		background: grey;
-		border-radius: 3px;
-		color: #ffffff;
-		cursor: pointer;
-		display: block;
-		padding: 0 4px;
-		position: absolute;
-		right: 21px;
-		top: 5px;
-		z-index: 10;
-	}
-
 	.thumb {
 		height: 176px;
 		position: relative;
 		width: 176px;
+		border-bottom: 1px solid #dddddd;
+
+		.icons {
+			display: none;
+		}
+
+		&:hover > .icons {
+			background: grey;
+			border-radius: 3px;
+			color: #ffffff;
+			cursor: pointer;
+			display: block;
+			padding: 0 4px;
+			position: absolute;
+			right: 10px;
+			bottom: 7px;
+			z-index: 10;
+
+			i {
+				padding: 2px;
+			}
+
+			.delete {
+				background: grey;
+				border-radius: 3px;
+				color: #ffffff;
+				cursor: pointer;
+				display: block;
+				padding: 0 4px;
+				position: absolute;
+				right: 0px;
+				top: 0px;
+			}
+		}
+
 
 		&.image {
 			max-height: 176px;
@@ -58,7 +76,7 @@
 	}
 
 	.name {
-		background: #eeeeee;
+		background: #ffffff;
 		border-radius: 0 0 3px 3px;
 		cursor: default;
 		font-size: 11px;
@@ -81,6 +99,7 @@
 			background: #ffffff;
 			border: none;
 			cursor: text;
+			padding: 8px;
 
 			&:focus { outline: none; }
 		}

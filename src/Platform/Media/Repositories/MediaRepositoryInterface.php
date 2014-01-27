@@ -74,6 +74,14 @@ interface MediaRepositoryInterface {
 	public function upload(UploadedFile $file);
 
 	/**
+	 * Creates a media with the given data.
+	 *
+	 * @param  array  $data
+	 * @return \Cartalyst\Media\Media
+	 */
+	public function create($data);
+
+	/**
 	 * Updates a media with the given data.
 	 *
 	 * @param  int    $id

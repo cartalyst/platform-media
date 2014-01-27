@@ -64,11 +64,6 @@ class DbMediaRepository implements MediaRepositoryInterface {
 		$this->model = $model;
 	}
 
-	public function all()
-	{
-		return $this->createModel();
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -135,20 +130,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	{
 		try
 		{
-			$data = Media::upload($file);
-
-			$imageSize = $data->getImageSize();
-
-			$media = with($model = $this->createModel())->create(array(
-				'name'      => $file->getClientOriginalName(),
-				'path'      => $data->getPath(),
-				'extension' => $data->getExtension(),
-				'mime'      => $data->getMimetype(),
-				'size'      => $data->getSize(),
-				'is_image'  => $data->isImage(),
-				'width'     => $imageSize['width'],
-				'height'    => $imageSize['height']
-			));
+			Media::upload($file);
 
 			return true;
 		}
@@ -158,6 +140,14 @@ class DbMediaRepository implements MediaRepositoryInterface {
 
 			return false;
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function create($data)
+	{
+		return with($model = $this->createModel())->create($data);
 	}
 
 	/**

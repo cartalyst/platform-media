@@ -157,6 +157,9 @@ return array(
 		{
 			return new Platform\Media\Repositories\DbMediaRepository(get_class($app['Platform\Media\Media']));
 		});
+
+		// Register our event handler
+		$app['events']->subscribe(get_class(app('Platform\Media\Handlers\MediaEventHandler')));
 	},
 
 	/*
@@ -208,7 +211,7 @@ return array(
 
 		Route::group(array('prefix' => 'media', 'namespace' => 'Platform\Media\Controllers\Frontend'), function()
 		{
-			Route::get('download/{id}', 'MediaController@download');
+			Route::get('download/{id}', 'MediaController@download')->where('id', '.*?');
 			Route::get('{id}', 'MediaController@view')->where('id', '.*?');
 		});
 	},

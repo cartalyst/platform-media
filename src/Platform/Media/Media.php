@@ -41,6 +41,7 @@ class Media extends Model {
 		'height',
 		'private',
 		'groups',
+		'thumbnail',
 	);
 
 	/**
