@@ -33,6 +33,14 @@ use View;
 class MediaController extends AdminController {
 
 	/**
+	 * {@inheritDoc}
+	 */
+	protected $csrfWhitelist = array(
+		'update',
+		'delete',
+	);
+
+	/**
 	 * Media repository.
 	 *
 	 * @var \Platform\Media\Repositories\MediaRepositoryInterface

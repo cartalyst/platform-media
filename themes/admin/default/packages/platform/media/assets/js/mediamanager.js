@@ -10,7 +10,6 @@
 	var defaults = {
 		updateUrl : null,
 		deleteUrl : null,
-		token : null,
 		onSuccess : function() {},
 		onComplete : function() {},
 		autoProcessQueue : false,
@@ -140,15 +139,9 @@
 
 				var id = $(this).data('media-form');
 
-				var data = $(this).serializeArray();
-				data.push({
-					name  : '_token',
-					value : self.opt.token,
-				});
-
 				$.ajax({
 					type : 'POST',
-					data : data,
+					data : $(this).serializeArray(),
 					url : self.opt.updateUrl.replace(':id', id),
 					success : function()
 					{
@@ -279,7 +272,6 @@
 
 			$.ajax({
 				type : 'POST',
-				data : { '_token' : self.opt.token },
 				url : self.opt.deleteUrl.replace(':id', id),
 				success : function()
 				{

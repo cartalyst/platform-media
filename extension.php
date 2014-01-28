@@ -225,7 +225,6 @@ return array(
 				Route::get('{id}', 'MediaController@view')->where('id', '.*?');
 			});
 		});
-
 	},
 
 	/*
