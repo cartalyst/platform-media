@@ -98,7 +98,7 @@ class MediaController extends AdminController {
 	/**
 	 * Media upload form processing.
 	 *
-	 * @return mixed
+	 * @return \Illuminate\Http\Response
 	 */
 	public function upload()
 	{
@@ -119,7 +119,7 @@ class MediaController extends AdminController {
 	 * Processes the form for updating a media.
 	 *
 	 * @param  int  $id
-	 * @return \Illuminate\Http\RedirectResponse
+	 * @return \Illuminate\Http\Response
 	 */
 	public function update($id)
 	{
@@ -141,7 +141,7 @@ class MediaController extends AdminController {
 	 * Remove the specified media.
 	 *
 	 * @param  int  $id
-	 * @return \Illuminate\Http\RedirectResponse
+	 * @return \Illuminate\Http\Response
 	 */
 	public function delete($id = null)
 	{
