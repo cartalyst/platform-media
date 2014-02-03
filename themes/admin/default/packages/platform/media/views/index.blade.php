@@ -34,9 +34,10 @@ $(function() {
 
 			$('.tip').tooltip();
 
-			if ( ! $('input:checkbox').is(':checked'))
+			if ( $('#delete').is(':checked') )
 			{
-				$('[data-media-delete-box]').addClass('hide');
+				//$('[data-media-delete-box]').addClass('hide');
+				$('.selected').addClass('selected--delete');
 			}
 
 		}
@@ -57,6 +58,13 @@ $(function() {
 		$(document.body).animate({ scrollTop: $('.data-grid').offset().top }, 200);
 
 	});
+
+	if ( $('#delete').is(':checked') ) {
+
+		alert('checked');
+		//$('[data-media-delete-box]').addClass('hide');
+		$('.selected').addClass('selected--delete');
+	}
 
 });
 </script>
@@ -103,20 +111,15 @@ $(function() {
 
 	</div>
 
-	<br />
+	<hr>
+
 
 	<div class="row">
 
 		{{-- CSRF Token --}}
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-		<div class="col-md-9">
-
-			<div class="data-grid" data-source="{{ URL::toAdmin('media/grid') }}" data-grid="main"></div>
-
-		</div>
-
-		<div class="col-md-3">
+		<div class="col-md-12">
 
 			<div data-media-delete-box class="hide">
 
@@ -129,20 +132,15 @@ $(function() {
 
 			</div>
 
-			<!--
-			<h4>Assign Tags <small>to selected items</small></h4>
+		</div>
 
-			form
+	</div>
 
+	<div class="row">
 
-			<h4>Tags <small>Filter by Tag</small></h4>
+		<div class="col-md-12">
 
-			<hr>
-
-			<ul class="nav nav-pills nav-stacked">
-				<li><a href="#">Foo</a></li>
-			</ul>
-			-->
+			<div class="data-grid" data-source="{{ URL::toAdmin('media/grid') }}" data-grid="main"></div>
 
 		</div>
 

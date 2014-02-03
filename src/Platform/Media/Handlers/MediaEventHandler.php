@@ -36,8 +36,8 @@ class MediaEventHandler {
 		if ($file->isImage())
 		{
 			# make these values configurable?!
-			$width = 176;
-			$height = 176;
+			$width = 300;
+			$height = 300;
 
 			$extension = $file->getExtension();
 

@@ -2,74 +2,57 @@
 
 	<% _.each(results, function(r) { %>
 
-		<div class="col-xs-6 col-md-3" style="margin-bottom: 20px;" data-media="<%= r.id %>">
+		<div class="col-lg-3 col-md-4 col-xs-6">
+			<div class="media" data-media-id="<%= r.id %>">
 
-			<div class="media">
-
-					<div class="icons">
-
-						<div class="delete" data-media-delete="<%= r.id %>">&times;</div>
-
-						<a href="{{ URL::to(media_cache_path('<%= r.thumbnail %>')) }}" target="_blank"><i class="fa fa-clipboard"></i></a>
-
-						<a href="{{ URL::to('media/download/<%= r.path %>') }}" target="_blank"><i class="fa fa-cloud-download"></i></a>
-
+				<div class="media__type">
+					<div class="media__type--<%= r.extension %>">
+						<% if (r.is_image == 1) { %>
+							<img src="{{ URL::to(media_cache_path('<%= r.thumbnail %>')) }}" />
+						<% } %>
 					</div>
+				</div>
 
-				<div data-media-file="<%= r.id %>">
+				<div class="media__mask">
 
-					<a href="{{ URL::to('media/<%= r.path %>') }}" target="_blank">
-						<div class="thumb <%= (r.is_image == 1 ? 'image' : 'other') %> <%= r.extension %>">
+					<h2><%= r.name %></h2>
+					<p>@media('<%= r.id %>')</p>
 
-							<% if (r.is_image == 1) { %>
-								<img src="{{ URL::to(media_cache_path('<%= r.thumbnail %>')) }}">
-							<% } %>
-
-						</div>
-					</a>
-
-					<div class="name" data-media-name="<%= r.id %>">
-						<input class="selectedId" type="checkbox" name="media" value="<%= r.id %>">
-
-						<%= r.name %>
-					</div>
+					<ul class="media__actions">
+						<li class="action">
+							<a href="{{ URL::to('media/<%= r.path %>') }}" target="_blank">
+								<i class="fa fa-link tip" data-placement="bottom" title="View"></i>
+							</a>
+						</li>
+						<li class="action">
+							<a href="{{ URL::to('media/download/<%= r.path %>') }}">
+								<i class="fa fa-download tip" data-placement="bottom" title="Download"></i>
+							</a>
+						</li>
+						<li class="action action--checkbox">
+							<label>
+								<input name="privacy" type="checkbox" value="">
+								<i class="fa fa-lock tip" data-placement="bottom" title="Privacy"></i>
+							</label>
+						</li>
+						<li class="action action--checkbox">
+							<label>
+								<input id="delete" type="checkbox" value="">
+								<i class="fa fa-trash-o tip" data-placement="bottom" title="Delete"></i>
+							</label>
+						</li>
+					</ul>
 
 				</div>
 
-				<form class="form hide"method="post" data-media-form="<%= r.id %>">
-
-					<div class="content">
-
-						<div class="form-group" data-media-groups="<%= r.id %>">
-
-							<select name="private" class="form-control" data-media-private="<%= r.id %>">
-								<option value="0"<%= (r.private == 0 ? ' selected="selected"' : '') %>>Public</option>
-								<option value="1"<%= (r.private == 1 ? ' selected="selected"' : '') %>>Private</option>
-							</select>
-
-						</div>
-
-						<div class="form-group<%= (r.private == 0 ? ' hide' : '') %>" data-media-groups="<%= r.id %>">
-
-							<div class="controls">
-								<select name="groups[]" id="groups_<%= r.id %>" class="form-control" multiple="true">
-								@foreach ($groups as $group)
-									<option value="{{{ $group->id }}}"<%= (_.contains(r.groups, {{ $group->id }}) ? ' selected="selected"' : '') %>>{{{ $group->name }}}</option>
-								@endforeach
-								</select>
-							</div>
-						</div>
-
-					</div>
-
-					<input type="text" class="name" name="name" id="name_<%= r.id %>" value="<%= r.name %>" />
-
-				</form>
+				<div class="media__selected"></div>
 
 			</div>
-
 		</div>
 
 	<% }); %>
 
 </script>
+
+
+
