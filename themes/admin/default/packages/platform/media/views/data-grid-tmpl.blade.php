@@ -39,7 +39,7 @@
 					<input id="media_<%= r.id %>" name="media"  type="checkbox" value="<%= r.id %>">
 				</label>
 
-				<div class="media__status media__status--private <%= r.private == 1 ? 'media__status--private' : null %>"></div>
+				<div class="media__status <%= r.private == 1 ? 'media__status--private' : null %>"></div>
 
 			</div>
 
