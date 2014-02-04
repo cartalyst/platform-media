@@ -154,6 +154,8 @@
 	border-color: transparent #eea236 transparent transparent;
 	color:#fff;
 
+	cursor: pointer;
+
 	-webkit-transition: all 0.2s linear;
 	-moz-transition: all 0.2s linear;
 	-o-transition: all 0.2s linear;
@@ -165,6 +167,12 @@
 		left:40px;
 		top:4px;
 		content: "\f096";
+	}
+
+	input {
+		position:absolute;
+		top:9999px;
+		display: none;
 	}
 
 	&.media__select--checked {
@@ -247,23 +255,6 @@
 			text-align: center;
 			vertical-align: middle;
 
-			&.action--checkbox {
-
-				i {
-					cursor:pointer;
-				}
-
-				input {
-					position:absolute;
-					top:9999px;
-					display: none;
-				}
-
-			}
-
-			&.action-delete {
-				color:#d9534f;
-			}
 
 			&:hover {
 				opacity:0.9;

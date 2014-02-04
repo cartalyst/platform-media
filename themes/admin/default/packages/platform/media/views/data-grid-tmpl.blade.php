@@ -31,18 +31,13 @@
 								<i class="fa fa-download tip" data-placement="bottom" title="Download"></i>
 							</a>
 						</li>
-						<li class="action action--checkbox">
-							<label data-media-marked="<%= r.id %>">
-								<input class="selectedId" name="marked" id="marked_<%= r.id %>" type="checkbox" value="<%= r.id %>">
-
-								<i class="fa fa-pencil-square tip" data-placement="bottom" title="Edit"></i>
-							</label>
-						</li>
 					</ul>
 
 				</div>
 
-				<div class="media__select media__select--unchecked"></div>
+				<label class="media__select" data-media-marked="<%= r.id %>">
+					<input class="selectedId" name="marked" id="marked_<%= r.id %>" type="checkbox" value="<%= r.id %>">
+				</label>
 
 				<div class="media__status media__status--private <%= r.private == 1 ? 'media__status--private' : null %>"></div>
 
