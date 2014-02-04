@@ -2,17 +2,18 @@
 
 {{-- Page title --}}
 @section('title')
-{{{ trans('platform/media::general.title') }}} ::
-@parent
+	@parent
+	: {{{ trans('platform/media::general.title') }}}
 @stop
 
 {{-- Queue assets --}}
-{{ Asset::queue('underscore', 'js/underscore/underscore.js', 'jquery') }}
-{{ Asset::queue('data-grid', 'js/cartalyst/data-grid.js', 'underscore') }}
-{{ Asset::queue('dropzone.js', 'platform/media::js/dropzone/dropzone.js') }}
 {{ Asset::queue('dropzone.css', 'platform/media::css/dropzone.css') }}
-{{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', 'dropzone') }}
 {{ Asset::queue('media', 'platform/media::css/media.less') }}
+
+{{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
+{{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'underscore') }}
+{{ Asset::queue('dropzone.js', 'platform/media::js/dropzone/dropzone.js') }}
+{{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', 'dropzone') }}
 
 {{-- Inline scripts --}}
 @section('scripts')
