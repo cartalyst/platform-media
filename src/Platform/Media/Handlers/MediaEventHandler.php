@@ -35,9 +35,8 @@ class MediaEventHandler {
 
 		if ($file->isImage())
 		{
-			# make these values configurable?!
-			$width = 300;
-			$height = 300;
+			$width = 245;
+			$height = 200;
 
 			$extension = $file->getExtension();
 
@@ -45,15 +44,15 @@ class MediaEventHandler {
 
 			$name = implode(array($filename, $width, $height ?: $width), ' ');
 
-			#$path = media_cache_path() . Str::slug($name) . '.' . $extension;
-			$path = Str::slug($name) . '.' . $extension;
+			$path = Str::slug($name).'.'.$extension;
 
-			if ( ! File::exists(media_cache_path($path)))
-			{
-				$data = Media::getFileSystem()->read($file->getPath());
+			$data = Media::getFileSystem()->read($file->getPath());
 
-				Image::make($data)->crop($width, $height, true)->save(media_cache_path($path));
-			}
+			$img = Image::make($data);
+
+			$img->resize($width, $height, true);
+
+			$img->save(media_cache_path($path));
 		}
 
 		$media = $this->media->create(array(

@@ -131,13 +131,24 @@
 
 			});
 
+			$document.on('change', '#private', function() {
+
+				if ($(this).val() == 1)
+				{
+					$('[data-media-groups]').removeClass('hide');
+				}
+				else
+				{
+					$('[data-media-groups]').addClass('hide');
+				}
+
+			});
+
 			$document.on('click', '[data-media]', function() {
 
 				var id = $(this).data('media');
 
 				var media = $('#media_' + id);
-
-				console.log(media);
 
 				if (media.prop('checked') == false)
 				{
@@ -150,15 +161,17 @@
 					media.parent().removeClass('media__select--checked');
 				}
 
-				var checked = $('.media__select input:checked').length > 0 ? false : true;
+				var totalSelected = $('.media__select input:checked').length;
 
-				if (checked)
+				$('[data-media-total-selected]').html(totalSelected);
+
+				if (totalSelected > 0 ? false : true)
 				{
-					$('[data-media-delete-box]').addClass('hide');
+					$('[data-media-sidebar]').addClass('hide');
 				}
 				else
 				{
-					$('[data-media-delete-box]').removeClass('hide');
+					$('[data-media-sidebar]').removeClass('hide');
 				}
 
 			});
@@ -167,7 +180,7 @@
 
 				e.preventDefault();
 
-				$('input:checkbox[name=marked]:checked').each(function()
+				$('input:checkbox[name=media]:checked').each(function()
 				{
 					self.deleteMedia($(this).val());
 				});

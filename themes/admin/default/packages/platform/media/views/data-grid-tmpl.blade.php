@@ -7,11 +7,15 @@
 			<div class="media">
 
 				<div class="media__type">
+
 					<div class="media__type--<%= r.extension %>">
+
 						<% if (r.is_image == 1) { %>
 							<img src="{{ URL::to(media_cache_path('<%= r.thumbnail %>')) }}" />
 						<% } %>
+
 					</div>
+
 				</div>
 
 				<div class="media__mask" data-media="<%= r.id %>">
@@ -36,7 +40,7 @@
 				</div>
 
 				<label class="media__select">
-					<input id="media_<%= r.id %>" name="media"  type="checkbox" value="<%= r.id %>">
+					<input id="media_<%= r.id %>" name="media" type="checkbox" value="<%= r.id %>">
 				</label>
 
 				<div class="media__status <%= r.private == 1 ? 'media__status--private' : null %>"></div>

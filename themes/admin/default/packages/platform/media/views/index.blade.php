@@ -36,7 +36,7 @@
 
 				if ( ! $('input:checkbox').is(':checked'))
 				{
-					$('[data-media-delete-box]').addClass('hide');
+					$('[data-media-sidebar]').addClass('hide');
 				}
 
 			}
@@ -77,8 +77,6 @@
 
 		<div class="pull-right">
 
-
-
 			<form method="post" action="" accept-charset="utf-8" data-search data-grid="main" class="form-inline" role="form">
 
 				<div class="form-group">
@@ -117,21 +115,50 @@
 			<div class="data-grid" data-source="{{ URL::toAdmin('media/grid') }}" data-grid="main"></div>
 		</div>
 
-		<div class="col-xs-6 col-sm-3" >
+		<div class="col-xs-6 col-sm-3">
 
-
-
-
+			{{-- Data Grid : Applied Filters --}}
 			<div class="data-grid_applied" data-grid="main"></div>
 
-
 			{{-- CSRF Token --}}
+			<!--
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
+			-->
 
-			<div data-media-delete-box class="hide">
+			<div data-media-sidebar class="hide">
 
-				<button data-media-delete-selected id="delete-selected" type="submit" class="btn btn-danger btn-xs">{{{ trans('button.delete_selected') }}}</button>
+				<h4><span data-media-total-selected></span> selected</h4>
 
+				<hr />
+
+				<div class="form-group">
+
+					<select name="private" id="private" class="form-control">
+						<option value="0">Public</option>
+						<option value="1">Private</option>
+					</select>
+
+				</div>
+
+				<div class="form-group hide" data-media-groups>
+
+					<div class="controls">
+						<select name="groups[]" id="groups" class="form-control" multiple="true">
+						@foreach ($groups as $group)
+							<option value="{{{ $group->id }}}">{{{ $group->name }}}</option>
+						@endforeach
+						</select>
+					</div>
+
+				</div>
+
+				<div class="form-actions">
+
+					<button data-media-update-selected id="update-selected" type="submit" class="btn btn-info btn-xs">Save changes</button>
+
+					<button data-media-delete-selected id="delete-selected" type="submit" class="btn btn-danger btn-xs">{{{ trans('button.delete_selected') }}}</button>
+
+					</div>
 			</div>
 
 		</div>
