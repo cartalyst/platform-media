@@ -190,6 +190,9 @@
 					self.updateMedia($(this).val(), data);
 				});
 
+				$('#private').val(0);
+				$('#groups').val('');
+
 			});
 
 			$document.on('click', '[data-media-delete-selected]', function(e) {

@@ -36,7 +36,7 @@
 
 				if ( ! $('input:checkbox').is(':checked'))
 				{
-					$('[data-media-sidebar]').addClass('hide');
+					$('[data-media-sidebar], [data-media-groups]').addClass('hide');
 				}
 
 			}
