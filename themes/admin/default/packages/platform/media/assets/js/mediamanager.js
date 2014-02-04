@@ -133,11 +133,11 @@
 
 				if ($('#marked_' + id).prop('checked') == false)
 				{
-					media.find('.media__selected').removeClass('media__selected--marked');
+					media.find('.media__select').removeClass('media__select--checked');
 				}
 				else
 				{
-					media.find('.media__selected').addClass('media__selected--marked');
+					media.find('.media__select').addClass('media__select--checked');
 				}
 
 				var checked = $('.selectedId:checked').length > 0 ? false : true;

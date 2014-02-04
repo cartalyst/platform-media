@@ -35,14 +35,16 @@
 							<label data-media-marked="<%= r.id %>">
 								<input class="selectedId" name="marked" id="marked_<%= r.id %>" type="checkbox" value="<%= r.id %>">
 
-								<i class="fa fa-check-square-o tip" data-placement="bottom" title="Select"></i>
+								<i class="fa fa-pencil-square tip" data-placement="bottom" title="Edit"></i>
 							</label>
 						</li>
 					</ul>
 
 				</div>
 
-				<div class="media__selected<%= r.private == 1 ? ' media__selected--is_private' : null %>"></div>
+				<div class="media__select media__select--unchecked"></div>
+
+				<div class="media__status media__status--private <%= r.private == 1 ? 'media__status--private' : null %>"></div>
 
 			</div>
 

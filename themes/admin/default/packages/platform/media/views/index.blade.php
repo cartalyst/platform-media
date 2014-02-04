@@ -72,6 +72,19 @@ $(function() {
 
 <div class="col-md-12">
 
+	{{-- Page header --}}
+	<div class="page-header">
+
+		<span class="pull-right">
+
+			<a class="btn btn-warning" data-toggle="modal" data-target="#mediaModal"><i class="fa fa-plus"></i> Upload</a>
+
+		</span>
+
+		<h1>{{{ trans('platform/media::general.title') }}}</h1>
+
+	</div>
+
 	<div class="row">
 
 		{{-- Data Grid : Applied Filters --}}
@@ -83,6 +96,7 @@ $(function() {
 
 		<div class="col-lg-5 text-right">
 
+
 			<form method="post" action="" accept-charset="utf-8" data-search data-grid="main" class="form-inline" role="form">
 
 				<div class="form-group">
@@ -92,19 +106,24 @@ $(function() {
 				</div>
 
 				<div class="form-group">
+					<select class="form-control" name="column">
+						<option value="all">{{{ trans('general.all') }}}</option>
+						<option value="name">{{{ trans('platform/media::table.file_name') }}}</option>
+						<option value="mime">{{{ trans('platform/media::table.mime') }}}</option>
+					</select>
+				</div>
+
+				<div class="form-group">
 					<input name="filter" type="text" placeholder="{{{ trans('general.search') }}}" class="form-control">
 				</div>
 
-				<span class="btn btn-warning" data-toggle="modal" data-target="#mediaModal"><i class="fa fa-plus"></i> Upload</span>
+				<button class="btn btn-default"><i class="fa fa-search"></i></button>
 
 			</form>
 
 		</div>
 
 	</div>
-
-	<hr>
-
 
 	<div class="row">
 
