@@ -18,47 +18,47 @@
 @section('scripts')
 @parent
 <script>
-$(function() {
+	$(function() {
 
-	var datagrid = $.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
-		loader: '.loading',
-		paginationType: 'single',
-		defaultSort: {
-			column: 'created_at',
-			direction: 'desc'
-		},
-		dividend: 1,
-		threshold: 1,
-		throttle: 12,
-		callback: function() {
+		var datagrid = $.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
+			loader: '.loading',
+			paginationType: 'single',
+			defaultSort: {
+				column: 'created_at',
+				direction: 'desc'
+			},
+			dividend: 1,
+			threshold: 1,
+			throttle: 24,
+			callback: function() {
 
-			$('.tip').tooltip();
+				$('.tip').tooltip({animation: false});
 
-			if ( ! $('input:checkbox').is(':checked'))
-			{
-				$('[data-media-delete-box]').addClass('hide');
+				if ( ! $('input:checkbox').is(':checked'))
+				{
+					$('[data-media-delete-box]').addClass('hide');
+				}
+
 			}
+		});
 
-		}
+		$.mediamanager('#mediaUploader', {
+			updateUrl : '{{ URL::toAdmin('media/:id/edit') }}',
+			deleteUrl : '{{ URL::toAdmin('media/:id/delete') }}',
+			onSuccess : function() {
+
+				datagrid._refresh();
+
+			}
+		});
+
+		$('.data-grid_pagination').on('click', 'a', function() {
+
+			$(document.body).animate({ scrollTop: $('.data-grid').offset().top }, 200);
+
+		});
+
 	});
-
-	$.mediamanager('#mediaUploader', {
-		updateUrl : '{{ URL::toAdmin('media/:id/edit') }}',
-		deleteUrl : '{{ URL::toAdmin('media/:id/delete') }}',
-		onSuccess : function() {
-
-			datagrid._refresh();
-
-		}
-	});
-
-	$('.data-grid_pagination').on('click', 'a', function() {
-
-		$(document.body).animate({ scrollTop: $('.data-grid').offset().top }, 200);
-
-	});
-
-});
 </script>
 @stop
 
@@ -75,26 +75,8 @@ $(function() {
 	{{-- Page header --}}
 	<div class="page-header">
 
-		<span class="pull-right">
+		<div class="pull-right">
 
-			<a class="btn btn-warning" data-toggle="modal" data-target="#mediaModal"><i class="fa fa-plus"></i> Upload</a>
-
-		</span>
-
-		<h1>{{{ trans('platform/media::general.title') }}}</h1>
-
-	</div>
-
-	<div class="row">
-
-		{{-- Data Grid : Applied Filters --}}
-		<div class="col-lg-7">
-
-			<div class="data-grid_applied" data-grid="main"></div>
-
-		</div>
-
-		<div class="col-lg-5 text-right">
 
 
 			<form method="post" action="" accept-charset="utf-8" data-search data-grid="main" class="form-inline" role="form">
@@ -105,7 +87,7 @@ $(function() {
 
 				</div>
 
-				<div class="form-group">
+				<div class="form-group" style="display:none;">
 					<select class="form-control" name="column">
 						<option value="all">{{{ trans('general.all') }}}</option>
 						<option value="name">{{{ trans('platform/media::table.file_name') }}}</option>
@@ -119,25 +101,34 @@ $(function() {
 
 				<button class="btn btn-default"><i class="fa fa-search"></i></button>
 
+				<button class="btn btn-info" data-toggle="modal" data-target="#mediaModal"><i class="fa fa-plus"></i> Upload</button>
+
 			</form>
 
 		</div>
+
+		<h1>{{{ trans('platform/media::general.title') }}}</h1>
 
 	</div>
 
 	<div class="row">
 
-		{{-- CSRF Token --}}
-		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+		<div class="col-xs-12 col-sm-9">
+			<div class="data-grid" data-source="{{ URL::toAdmin('media/grid') }}" data-grid="main"></div>
+		</div>
 
-		<div class="col-md-12">
+		<div class="col-xs-6 col-sm-3" >
+
+
+
+
+			<div class="data-grid_applied" data-grid="main"></div>
+
+
+			{{-- CSRF Token --}}
+			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 			<div data-media-delete-box class="hide">
-
-				<h4>Mass <small>Delete</small></h4>
-
-				1 item(s) selected
-				<br>
 
 				<button data-media-delete-selected id="delete-selected" type="submit" class="btn btn-danger btn-xs">{{{ trans('button.delete_selected') }}}</button>
 
@@ -145,59 +136,47 @@ $(function() {
 
 		</div>
 
-	</div>
+		<div class="clearfix"></div>
 
-	<div class="row">
-
-		<div class="col-md-12">
-
-			<div class="data-grid" data-source="{{ URL::toAdmin('media/grid') }}" data-grid="main"></div>
-
-		</div>
+		{{-- Data Grid : Pagination --}}
+		<div class="data-grid_pagination" data-grid="main"></div>
 
 	</div>
-
-	<div class="clearfix"></div>
-
-	{{-- Data Grid : Pagination --}}
-	<div class="data-grid_pagination" data-grid="main"></div>
-
 </div>
+	@include('platform/media::data-grid-tmpl')
+	@include('platform/media::data-grid_pagination-tmpl')
+	@include('platform/media::data-grid_applied-tmpl')
+	@include('platform/media::data-grid_no-results-tmpl')
 
-@include('platform/media::data-grid-tmpl')
-@include('platform/media::data-grid_pagination-tmpl')
-@include('platform/media::data-grid_applied-tmpl')
-@include('platform/media::data-grid_no-results-tmpl')
+	<div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="mediaModalLabel" aria-hidden="true">
 
-<div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="mediaModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
 
-	<div class="modal-dialog">
+			<div class="modal-content" style="width: 660px;">
 
-		<div class="modal-content" style="width: 660px;">
+				<div id="dropzone" style="height: 360px;overflow-y:scroll;">
+					<form action="{{ URL::toAdmin('media/upload') }}" class="media-dropzone dz-clickable" id="mediaUploader">
 
-			<div id="dropzone" style="height: 360px;overflow-y:scroll;">
-				<form action="{{ URL::toAdmin('media/upload') }}" class="media-dropzone dz-clickable" id="mediaUploader">
+						{{-- CSRF Token --}}
+						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-					{{-- CSRF Token --}}
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+						<div class="dz-default dz-message"></div>
 
-					<div class="dz-default dz-message"></div>
+					</form>
+				</div>
 
-				</form>
-			</div>
+				<div class="modal-footer" style="margin-top: 0;">
+					<span class="pull-left text-left">
+						<div data-media-total-files></div>
+						<div data-media-total-size></div>
+					</span>
+					<button type="button" class="btn btn-success" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
+				</div>
 
-			<div class="modal-footer" style="margin-top: 0;">
-				<span class="pull-left text-left">
-					<div data-media-total-files></div>
-					<div data-media-total-size></div>
-				</span>
-				<button type="button" class="btn btn-success" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
 			</div>
 
 		</div>
 
 	</div>
 
-</div>
-
-@stop
+	@stop
