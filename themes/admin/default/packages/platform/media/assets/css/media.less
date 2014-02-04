@@ -230,26 +230,17 @@
 	.media__actions {
 		list-style: none;
 		position: relative;
-		float: left;
 		display: block;
-		left: 50%;
 		top:52%;
 		padding:0;
 		margin:0;
-		border-spacing: 4px;
-		border-collapse: separate;
 
 		.action {
-			position: relative;
-			display: table-cell;
-			right: 50%;
+			display: inline-block;
 			font-size:20px;
-			padding:2px 8px;
 			background:#eea236;
 			color:#fff;
 			text-align: center;
-			vertical-align: middle;
-
 
 			&:hover {
 				opacity:0.9;
@@ -257,6 +248,10 @@
 
 			a {
 				color:#fff;
+
+				i {
+					padding:4px 8px;
+				}
 			}
 		}
 	}
