@@ -65,7 +65,7 @@
 	}
 
 	.media__selected {
-		//display:none;
+		display:none;
 		position: absolute;
 		right: 0px;
 		top: 0px;
@@ -79,24 +79,23 @@
 
 		border-style: solid;
 		border-width: 0 60px 60px 0;
-		border-color: transparent #ff4400 transparent transparent;
+		border-color: transparent grey transparent transparent;
 
 		&:before {
 			position: absolute;
 			left:40px;
 			top:4px;
 			content: "\f14a";
-
 		}
 
-		&.media__selected--delete {
+		&.media__selected--marked {
 			display: block;
 			border-color: transparent #ff0000 transparent transparent;
 		}
 
-		&.media__selected--privacy {
+		&.media__selected--is_private {
 			display: block;
-			border-color: transparent #EE0000 transparent transparent;
+			//border-color: transparent #EE0000 transparent transparent;
 		}
 
 	}

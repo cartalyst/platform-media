@@ -3,7 +3,8 @@
 	<% _.each(results, function(r) { %>
 
 		<div class="col-lg-3 col-md-4 col-xs-6">
-			<div class="media" data-media-id="<%= r.id %>">
+
+			<div class="media" data-media="<%= r.id %>">
 
 				<div class="media__type">
 					<div class="media__type--<%= r.extension %>">
@@ -16,6 +17,7 @@
 				<div class="media__mask">
 
 					<h2><%= r.name %></h2>
+
 					<p>@media('<%= r.id %>')</p>
 
 					<ul class="media__actions">
@@ -30,24 +32,20 @@
 							</a>
 						</li>
 						<li class="action action--checkbox">
-							<label>
-								<input name="privacy" type="checkbox" value="">
-								<i class="fa fa-lock tip" data-placement="bottom" title="Privacy"></i>
-							</label>
-						</li>
-						<li class="action action--checkbox">
-							<label>
-								<input id="delete" type="checkbox" value="">
-								<i class="fa fa-trash-o tip" data-placement="bottom" title="Delete"></i>
+							<label data-media-marked="<%= r.id %>">
+								<input class="selectedId" name="marked" id="marked_<%= r.id %>" type="checkbox" value="<%= r.id %>">
+
+								<i class="fa fa-check-square-o tip" data-placement="bottom" title="Select"></i>
 							</label>
 						</li>
 					</ul>
 
 				</div>
 
-				<div class="media__selected"></div>
+				<div class="media__selected<%= r.private == 1 ? ' media__selected--is_private' : null %>"></div>
 
 			</div>
+
 		</div>
 
 	<% }); %>

@@ -125,41 +125,20 @@
 
 			});
 
-			$document.on('click', '[data-media-delete]', function(e) {
+			$document.on('click', '[data-media-marked]', function() {
 
-				e.preventDefault();
+				var id = $(this).data('media-marked');
 
-				var id = $(this).data('media-delete');
+				var media = $('[data-media="' + id + '"]');
 
-				self.deleteMedia(id);
-
-			});
-
-			$document.on('submit', 'form', function() {
-
-				var id = $(this).data('media-form');
-
-				$.ajax({
-					type : 'POST',
-					data : $(this).serializeArray(),
-					url : self.opt.updateUrl.replace(':id', id),
-					success : function()
-					{
-						self.opt.onSuccess();
-					}
-				});
-
-				return false;
-
-			});
-
-			$document.on('click', '.selectedId', function(e) {
-
-				e.stopPropagation();
-
-				var checkCount = $('input:checkbox').length - 1;
-
-				$('#checkAll').prop('checked',$('.selectedId:checked').length  == checkCount);
+				if ($('#marked_' + id).prop('checked') == false)
+				{
+					media.find('.media__selected').removeClass('media__selected--marked');
+				}
+				else
+				{
+					media.find('.media__selected').addClass('media__selected--marked');
+				}
 
 				var checked = $('.selectedId:checked').length > 0 ? false : true;
 
@@ -174,54 +153,11 @@
 
 			});
 
-			$document.on('click', function() {
-
-				self.closeMediaForms();
-
-			});
-
-			$document.on('click', '[data-media-name]', function(e) {
-
-				e.stopPropagation();
-
-				var id = $(this).data('media-name');
-
-				self.closeMediaForms();
-
-				self.showMediaForm(id);
-
-			});
-
-			$document.on('change', '[data-media-private]', function() {
-
-				var id = $(this).data('media-private');
-
-				var value = $(this).val();
-
-				if (value == 1)
-				{
-					$('[data-media-groups="' + id + '"').removeClass('hide');
-				}
-				else
-				{
-					$('[data-media-groups="' + id + '"').addClass('hide');
-				}
-
-				//self.updateMedia(id);
-
-			});
-
-			$document.on('click', '[data-media-form]', function(e) {
-
-				e.stopPropagation();
-
-			});
-
 			$document.on('click', '[data-media-delete-selected]', function(e) {
 
 				e.preventDefault();
 
-				$('input:checkbox[name=media]:checked').each(function()
+				$('input:checkbox[name=marked]:checked').each(function()
 				{
 					self.deleteMedia($(this).val());
 				});

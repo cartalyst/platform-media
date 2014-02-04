@@ -34,10 +34,9 @@ $(function() {
 
 			$('.tip').tooltip();
 
-			if ( $('#delete').is(':checked') )
+			if ( ! $('input:checkbox').is(':checked'))
 			{
-				//$('[data-media-delete-box]').addClass('hide');
-				$('.selected').addClass('selected--delete');
+				$('[data-media-delete-box]').addClass('hide');
 			}
 
 		}
@@ -58,13 +57,6 @@ $(function() {
 		$(document.body).animate({ scrollTop: $('.data-grid').offset().top }, 200);
 
 	});
-
-	if ( $('#delete').is(':checked') ) {
-
-		alert('checked');
-		//$('[data-media-delete-box]').addClass('hide');
-		$('.selected').addClass('selected--delete');
-	}
 
 });
 </script>
