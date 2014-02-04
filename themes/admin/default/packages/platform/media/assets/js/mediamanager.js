@@ -125,6 +125,12 @@
 
 			});
 
+			$document.on('click', '.media__actions', function(e) {
+
+				e.stopPropagation();
+
+			});
+
 			$document.on('click', '[data-media]', function() {
 
 				var id = $(this).data('media');
