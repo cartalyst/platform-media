@@ -176,6 +176,22 @@
 
 			});
 
+			$document.on('click', '[data-media-update-selected]', function(e) {
+
+				e.preventDefault();
+
+				var data = {
+					'private' : $('#private').val(),
+					'groups'  : $('#groups').val()
+				}
+
+				$('input:checkbox[name=media]:checked').each(function()
+				{
+					self.updateMedia($(this).val(), data);
+				});
+
+			});
+
 			$document.on('click', '[data-media-delete-selected]', function(e) {
 
 				e.preventDefault();
@@ -189,38 +205,20 @@
 
 		},
 
-		closeMediaForms : function() {
+		updateMedia : function(id, data) {
 
 			// Avoid scope issues
 			var self = this;
 
-			$('.on_edit').each(function() {
-
-				var id = $(this).data('media');
-
-				self.closeMediaForm(id);
-
+			$.ajax({
+				type : 'POST',
+				url : self.opt.updateUrl.replace(':id', id),
+				data : data,
+				success : function()
+				{
+					self.opt.onSuccess();
+				}
 			});
-
-		},
-
-		closeMediaForm : function(id) {
-
-			$('[data-media="' + id + '"]').removeClass('on_edit');
-
-			$('[data-media-file="' + id + '"]').removeClass('hide');
-
-			$('[data-media-form="' + id + '"]').addClass('hide');
-
-		},
-
-		showMediaForm : function(id) {
-
-			$('[data-media="' + id + '"]').addClass('on_edit');
-
-			$('[data-media-file="' + id + '"]').addClass('hide');
-
-			$('[data-media-form="' + id + '"]').removeClass('hide').find('.name').focus();
 
 		},
 
