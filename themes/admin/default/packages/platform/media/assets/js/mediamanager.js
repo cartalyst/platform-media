@@ -125,22 +125,26 @@
 
 			});
 
-			$document.on('click', '[data-media-marked]', function() {
+			$document.on('click', '[data-media]', function() {
 
-				var id = $(this).data('media-marked');
+				var id = $(this).data('media');
 
-				var media = $('[data-media="' + id + '"]');
+				var media = $('#media_' + id);
 
-				if ($('#marked_' + id).prop('checked') == false)
+				console.log(media);
+
+				if (media.prop('checked') == false)
 				{
-					media.find('.media__select').removeClass('media__select--checked');
+					media.prop('checked', true);
+					media.parent().addClass('media__select--checked');
 				}
 				else
 				{
-					media.find('.media__select').addClass('media__select--checked');
+					media.prop('checked', false);
+					media.parent().removeClass('media__select--checked');
 				}
 
-				var checked = $('.selectedId:checked').length > 0 ? false : true;
+				var checked = $('.media__select input:checked').length > 0 ? false : true;
 
 				if (checked)
 				{

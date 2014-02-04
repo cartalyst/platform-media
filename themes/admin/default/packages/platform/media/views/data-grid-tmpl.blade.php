@@ -4,7 +4,7 @@
 
 		<div class="col-lg-3 col-md-4 col-xs-6">
 
-			<div class="media" data-media="<%= r.id %>">
+			<div class="media">
 
 				<div class="media__type">
 					<div class="media__type--<%= r.extension %>">
@@ -14,7 +14,7 @@
 					</div>
 				</div>
 
-				<div class="media__mask">
+				<div class="media__mask" data-media="<%= r.id %>">
 
 					<h2><%= r.name %></h2>
 
@@ -35,8 +35,8 @@
 
 				</div>
 
-				<label class="media__select" data-media-marked="<%= r.id %>">
-					<input class="selectedId" name="marked" id="marked_<%= r.id %>" type="checkbox" value="<%= r.id %>">
+				<label class="media__select">
+					<input id="media_<%= r.id %>" name="media"  type="checkbox" value="<%= r.id %>">
 				</label>
 
 				<div class="media__status media__status--private <%= r.private == 1 ? 'media__status--private' : null %>"></div>
