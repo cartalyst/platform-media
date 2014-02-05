@@ -19,10 +19,8 @@
  */
 
 use DataGrid;
-use Image;
 use Input;
 use Lang;
-use Media;
 use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 use Redirect;
