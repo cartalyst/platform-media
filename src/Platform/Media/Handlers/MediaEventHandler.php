@@ -48,24 +48,25 @@ class MediaEventHandler {
 
 			$data = Media::getFileSystem()->read($file->getPath());
 
-			$img = Image::make($data);
-
-			$img->resize($width, $height, true);
-
-			$img->save(media_cache_path($path));
+			$img = Image::make($data)
+				->resize($width, $height, true)
+				->save(media_cache_path($path));
 		}
 
-		$media = $this->media->create(array(
-			'name'      => $original->getClientOriginalName(),
-			'path'      => $file->getPath(),
-			'extension' => $file->getExtension(),
-			'mime'      => $file->getMimetype(),
-			'size'      => $file->getSize(),
-			'is_image'  => $file->isImage(),
-			'width'     => $imageSize['width'],
-			'height'    => $imageSize['height'],
-			'thumbnail' => $path,
-		));
+		if ( ! $this->media->findByPath($file->getPath()))
+		{
+			$media = $this->media->create(array(
+				'name'      => $original->getClientOriginalName(),
+				'path'      => $file->getPath(),
+				'extension' => $file->getExtension(),
+				'mime'      => $file->getMimetype(),
+				'size'      => $file->getSize(),
+				'is_image'  => $file->isImage(),
+				'width'     => $imageSize['width'],
+				'height'    => $imageSize['height'],
+				'thumbnail' => $path,
+			));
+		}
 	}
 
 	public function subscribe($events)
