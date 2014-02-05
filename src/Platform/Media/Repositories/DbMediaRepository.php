@@ -100,7 +100,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 			$tags = array_merge($_tags, $tags);
 		}
 
-		return $tags;
+		return array_unique($tags);
 	}
 
 	/**
