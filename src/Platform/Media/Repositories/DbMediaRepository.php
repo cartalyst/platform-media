@@ -186,8 +186,6 @@ class DbMediaRepository implements MediaRepositoryInterface {
 		{
 			Media::delete($model->path);
 
-			$model->delete();
-
 			return true;
 		}
 
