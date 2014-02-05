@@ -187,6 +187,15 @@ return array(
 		{
 			return 'cache/media/' . $media; # make this a config option
 		}
+
+		// Register @media blade extension
+		$blade = $app['view']->getEngineResolver()->resolve('blade')->getCompiler();
+		$blade->extend(function($value) use ($blade)
+		{
+			$matcher = $blade->createMatcher('media');
+
+			return preg_replace($matcher, "<?php echo with(new Platform\Media\Widgets\Media(app('Platform\Media\Repositories\MediaRepositoryInterface')))->show$2; ?>", $value);
+		});
 	},
 
 	/*
