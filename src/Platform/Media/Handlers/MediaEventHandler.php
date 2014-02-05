@@ -49,7 +49,7 @@ class MediaEventHandler {
 			$data = Media::getFileSystem()->read($file->getPath());
 
 			$img = Image::make($data)
-				->resize($width, $height, true)
+				->resize(null, $height, true, false)
 				->save(media_cache_path($path));
 		}
 

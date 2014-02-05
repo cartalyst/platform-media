@@ -8,7 +8,7 @@
 
 				<div class="media__type">
 
-					<div class="media__type--<%= r.extension %>">
+					<div class="media__type--<%= r.is_image == 1 ? 'image' : r.extension %>">
 
 						<% if (r.is_image == 1) { %>
 							<img src="{{ URL::to(media_cache_path('<%= r.thumbnail %>')) }}" />
