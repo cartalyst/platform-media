@@ -43,6 +43,7 @@ class MigrationPlatformMediaInstallMedia extends Migration {
 			$table->integer('height')->nullable();
 			$table->boolean('private')->default(0);
 			$table->text('groups')->nullable();
+			$table->text('tags')->nullable();
 			$table->timestamps();
 
 			// We'll need to ensure that MySQL uses the InnoDB engine to

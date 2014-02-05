@@ -121,16 +121,20 @@
 			{{-- Data Grid : Applied Filters --}}
 			<div class="data-grid_applied" data-grid="main"></div>
 
-			{{-- CSRF Token --}}
-			<!--
-			<input type="hidden" name="_token" value="{{ csrf_token() }}">
-			-->
+			<span data-media-tags>
 
-			<div data-media-sidebar class="hide">
+				<h4># Tags</h4>
 
-				<h4><span data-media-total-selected></span> selected</h4>
+				@foreach ($tags as $tag)
+				<span class="label label-info" data-filter="tags:{{{ $tag }}}" data-grid="main">{{{ $tag }}}</span>
+				@endforeach
+			</span>
+
+			<span data-media-sidebar class="hide">
 
 				<hr />
+
+				<h4><span data-media-total-selected></span> selected</h4>
 
 				<div class="form-group">
 
@@ -159,8 +163,9 @@
 
 					<button data-media-delete-selected id="delete-selected" type="submit" class="btn btn-danger btn-xs">{{{ trans('button.delete_selected') }}}</button>
 
-					</div>
-			</div>
+				</div>
+
+			</span>
 
 		</div>
 

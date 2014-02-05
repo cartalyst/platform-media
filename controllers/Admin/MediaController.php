@@ -27,6 +27,7 @@ use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 use Redirect;
 use Response;
+use Request;
 use Sentry;
 use View;
 
@@ -67,11 +68,14 @@ class MediaController extends AdminController {
 	 */
 	public function index()
 	{
+		// Get a list of all the available tags
+		$tags = $this->media->getTags();
+
 		// Get a list of all the available groups
 		$groups = Sentry::getGroupRepository()->createModel()->all();
 
 		// Show the page
-		return View::make('platform/media::index', compact('groups'));
+		return View::make('platform/media::index', compact('tags', 'groups'));
 	}
 
 	/**
@@ -116,6 +120,30 @@ class MediaController extends AdminController {
 	}
 
 	/**
+	 * Shows the form for updating a media.
+	 *
+	 * @param  int $id
+	 * @return mixed
+	 */
+	public function edit($id)
+	{
+		// Get the media information
+		if ( ! $media = $this->media->find($id))
+		{
+			return Redirect::toAdmin('media')->withErrors(Lang::get('platform/media::message.not_found', compact('id')));
+		}
+
+		// Get a list of all the available tags
+		$tags = $this->media->getTags();
+
+		// Get a list of all the available groups
+		$groups = Sentry::getGroupRepository()->createModel()->all();
+
+		// Show the page
+		return View::make('platform/media::form', compact('media', 'tags', 'groups'));
+	}
+
+	/**
 	 * Processes the form for updating a media.
 	 *
 	 * @param  int  $id
@@ -131,10 +159,20 @@ class MediaController extends AdminController {
 		{
 			$this->media->update($id, $input);
 
-			return Response::json('success');
+			if (Request::ajax())
+			{
+				return Response::json('success');
+			}
+
+			return Redirect::toAdmin('media')->withSuccess(Lang::get('platform/media::message.success.update'));
 		}
 
-		return Response::json($this->media->getError(), 400);
+		if (Request::ajax())
+		{
+			return Response::json($this->media->getError(), 400);
+		}
+
+		return Redirect::back()->withErrors($this->media->getError());
 	}
 
 	/**

@@ -46,6 +46,13 @@ interface MediaRepositoryInterface {
 	public function findByPath($path);
 
 	/**
+	 * Returns a list of the available tags.
+	 *
+	 * @return array
+	 */
+	public function getTags();
+
+	/**
 	 * Determine if the given file is valid for upload.
 	 *
 	 * @param  Symfony\Component\HttpFoundation\File\UploadedFile  $file

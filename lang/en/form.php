@@ -20,8 +20,14 @@
 
 return array(
 
-	'name'        => 'Name',
-	'name_help'   => 'Type a descriptive name for your media.',
+	'name'      => 'Name',
+	'name_help' => 'Type a descriptive name for your media.',
+
+	'tags'      => 'Tags',
+	'tags_help' => 'Choose your media tags.',
+
+	'private'      => 'Private',
+	'private_help' => 'What is this media status?',
 
 	'groups'      => 'Groups',
 	'groups_help' => 'Select the groups to assign to this media file.',

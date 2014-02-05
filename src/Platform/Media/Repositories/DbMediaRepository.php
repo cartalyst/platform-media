@@ -91,6 +91,21 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function getTags()
+	{
+		$tags = array();
+
+		foreach ($this->createModel()->lists('tags') as $_tags)
+		{
+			$tags = array_merge($_tags, $tags);
+		}
+
+		return $tags;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function validForUpdate($id, array $data)
 	{
 		return $this->validateMedia($data, $id);

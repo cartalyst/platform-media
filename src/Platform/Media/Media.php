@@ -41,6 +41,7 @@ class Media extends Model {
 		'height',
 		'private',
 		'groups',
+		'tags',
 		'thumbnail',
 	);
 
@@ -96,22 +97,55 @@ class Media extends Model {
 		}
 	}
 
-	public function generateUniqueId($in)
+	/**
+	 * Get mutator for the "tags" attribute.
+	 *
+	 * @param  mixed  $tags
+	 * @return array
+	 * @throws \InvalidArgumentException
+	 */
+	public function getTagsAttribute($tags)
 	{
-		$in    = $in .time().rand();
-		$out   = '';
-		$index = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$base  = strlen($index);
-
-		for ($t = ($in != 0 ? floor(log($in, $base)) : 0); $t >= 0; $t--)
+		if ( ! $tags)
 		{
-			$bcp = bcpow($base, $t);
-			$a   = floor($in / $bcp) % $base;
-			$out = $out . substr($index, $a, 1);
-			$in  = $in - ($a * $bcp);
+			return array();
 		}
 
-		return $out;
+		if (is_array($tags))
+		{
+			return $tags;
+		}
+
+		if ( ! $_tags = json_decode($tags, true))
+		{
+			throw new InvalidArgumentException("Cannot JSON decode tags [{$tags}].");
+		}
+
+		return $_tags;
+	}
+
+	/**
+	 * Set mutator for the "tags" attribute.
+	 *
+	 * @param  array  $tags
+	 * @return void
+	 */
+	public function setTagsAttribute($tags)
+	{
+		// If we get a string, let's just ensure it's a proper JSON string
+		if ( ! is_array($tags))
+		{
+			$tags = $this->getTagsAttribute($tags);
+		}
+
+		if ( ! empty($tags))
+		{
+			$this->attributes['tags'] = json_encode($tags);
+		}
+		else
+		{
+			$this->attributes['tags'] = '';
+		}
 	}
 
 }
