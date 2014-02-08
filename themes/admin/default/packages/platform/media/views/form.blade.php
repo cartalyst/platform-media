@@ -47,116 +47,112 @@ jQuery(document).ready(function($) {
 {{-- Page content --}}
 @section('content')
 
-<div class="col-lg-12">
+{{-- Page header --}}
+<div class="page-header">
 
-	{{-- Page header --}}
-	<div class="page-header">
+	<h1>{{{ trans('platform/media::general.update') }}}</h1>
 
-		<h1>{{{ trans('platform/media::general.update') }}}</h1>
+</div>
+
+{{-- Media form --}}
+<form id="media-form" action="{{ Request::fullUrl() }}" method="post" accept-char="UTF-8" autocomplete="off">
+
+	{{-- CSRF Token --}}
+	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+	<div class="row">
+
+		{{-- Name --}}
+		<div class="col-lg-7">
+
+			<div class="form-group">
+				<label class="control-label" for="name">{{{ trans('platform/media::form.name') }}}</label>
+
+				<div class="controls">
+					<input type="text" name="name" id="name" class="form-control" value="{{ $media->name }}">
+				</div>
+			</div>
+
+		</div>
+
+		{{-- Tags --}}
+		<div class="col-lg-5">
+
+			<div class="form-group">
+				<label class="control-label" for="tags">{{{ trans('platform/media::form.tags') }}}</label>
+
+				<div class="controls">
+					<select id="tags" name="tags[]" multiple="multiple" tabindex="-1">
+					@foreach ($tags as $tag)
+						<option value="{{{ $tag }}}"{{ in_array($tag, $media->tags) ? ' selected="selected"' : null }}>{{{ $tag }}}</option>
+					@endforeach
+					</select>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	{{-- Private --}}
+	<div class="row">
+
+		<div class="col-lg-4">
+
+			<div class="form-group">
+				<label class="control-label" for="private">{{{ trans('platform/media::form.private') }}}</label>
+
+				<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::form.private_help') }}}"></i>
+
+				<div class="controls">
+					<select name="private" id="private" class="form-control">
+						<option value="0"{{ Input::old('private', $media->private) == 0 ? ' selected="selected"' : null }}>Public</option>
+						<option value="1"{{ Input::old('private', $media->private) == 1 ? ' selected="selected"' : null }}>Private</option>
+					</select>
+				</div>
+			</div>
+
+		</div>
 
 	</div>
 
-	{{-- Media form --}}
-	<form id="media-form" action="{{ Request::fullUrl() }}" method="post" accept-char="UTF-8" autocomplete="off">
+	{{-- Groups --}}
+	<div class="row">
 
-		{{-- CSRF Token --}}
-		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+		<div class="col-lg-4">
 
-		<div class="row">
+			<div class="form-group{{ Input::old('private', $media->private) == 0 ? ' hide' : null }}" data-groups>
+				<label class="control-label" for="groups">{{{ trans('platform/media::form.groups') }}}</label>
 
-			{{-- Name --}}
-			<div class="col-lg-7">
+				<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::form.groups_help') }}}"></i>
 
-				<div class="form-group">
-					<label class="control-label" for="name">{{{ trans('platform/media::form.name') }}}</label>
-
-					<div class="controls">
-						<input type="text" name="name" id="name" class="form-control" value="{{ $media->name }}">
-					</div>
+				<div class="controls">
+					<select name="groups[]" id="groups" class="form-control" multiple="true">
+					@foreach ($groups as $group)
+						<option value="{{{ $group->id }}}"{{ in_array($group->id, $media->groups) ? ' selected="selected"' : null }}>{{{ $group->name }}}</option>
+					@endforeach
+					</select>
 				</div>
-
 			</div>
 
-			{{-- Tags --}}
-			<div class="col-lg-5">
-
-				<div class="form-group">
-					<label class="control-label" for="tags">{{{ trans('platform/media::form.tags') }}}</label>
-
-					<div class="controls">
-						<select id="tags" name="tags[]" multiple="multiple" tabindex="-1">
-						@foreach ($tags as $tag)
-							<option value="{{{ $tag }}}"{{ in_array($tag, $media->tags) ? ' selected="selected"' : null }}>{{{ $tag }}}</option>
-						@endforeach
-						</select>
-					</div>
-				</div>
-
-			</div>
 		</div>
 
-		{{-- Private --}}
-		<div class="row">
+	</div>
 
-			<div class="col-lg-4">
+	{{-- Form actions --}}
+	<div class="row">
 
-				<div class="form-group">
-					<label class="control-label" for="private">{{{ trans('platform/media::form.private') }}}</label>
+		<div class="col-lg-12">
 
-					<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::form.private_help') }}}"></i>
+			{{-- Form actions --}}
+			<div class="form-group">
 
-					<div class="controls">
-						<select name="private" id="private" class="form-control">
-							<option value="0"{{ Input::old('private', $media->private) == 0 ? ' selected="selected"' : null }}>Public</option>
-							<option value="1"{{ Input::old('private', $media->private) == 1 ? ' selected="selected"' : null }}>Private</option>
-						</select>
-					</div>
-				</div>
+				<button class="btn btn-success" type="submit">{{{ trans('button.update') }}}</button>
 
 			</div>
 
 		</div>
 
-		{{-- Groups --}}
-		<div class="row">
-
-			<div class="col-lg-4">
-
-				<div class="form-group{{ Input::old('private', $media->private) == 0 ? ' hide' : null }}" data-groups>
-					<label class="control-label" for="groups">{{{ trans('platform/media::form.groups') }}}</label>
-
-					<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::form.groups_help') }}}"></i>
-
-					<div class="controls">
-						<select name="groups[]" id="groups" class="form-control" multiple="true">
-						@foreach ($groups as $group)
-							<option value="{{{ $group->id }}}"{{ in_array($group->id, $media->groups) ? ' selected="selected"' : null }}>{{{ $group->name }}}</option>
-						@endforeach
-						</select>
-					</div>
-				</div>
-
-			</div>
-
-		</div>
-
-		{{-- Form actions --}}
-		<div class="row">
-
-			<div class="col-lg-12">
-
-				{{-- Form actions --}}
-				<div class="form-group">
-
-					<button class="btn btn-success" type="submit">{{{ trans('button.update') }}}</button>
-
-				</div>
-
-			</div>
-
-		</div>
-	</form>
-
-</div>
+	</div>
+</form>
 
 @stop
