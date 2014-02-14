@@ -1,5 +1,9 @@
 <script type="text/template" data-grid="main" id="no-results-tmpl">
-	<tr>
-		<td colspan="4">{{{ trans('table.no_results') }}}</td>
-	</tr>
+	<div class="well">
+		<p></p>
+		<p></p>
+		<p>{{{ trans('table.no_results') }}}</p>
+		<p></p>
+		<p></p>
+	</div>
 </script>

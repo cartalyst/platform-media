@@ -19,47 +19,47 @@
 @section('scripts')
 @parent
 <script>
-	$(function() {
+$(function() {
 
-		var datagrid = $.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
-			loader: '.loading',
-			paginationType: 'single',
-			defaultSort: {
-				column: 'created_at',
-				direction: 'desc'
-			},
-			dividend: 1,
-			threshold: 1,
-			throttle: 24,
-			callback: function() {
+	var datagrid = $.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
+		loader: '.loading',
+		paginationType: 'single',
+		defaultSort: {
+			column: 'created_at',
+			direction: 'desc'
+		},
+		dividend: 1,
+		threshold: 1,
+		throttle: 24,
+		callback: function() {
 
-				$('.tip').tooltip({animation: false});
+			$('.tip').tooltip({animation: false});
 
-				if ( ! $('input:checkbox').is(':checked'))
-				{
-					$('[data-media-sidebar], [data-media-groups]').addClass('hide');
-				}
-
+			if ( ! $('input:checkbox').is(':checked'))
+			{
+				$('[data-media-sidebar], [data-media-groups]').addClass('hide');
 			}
-		});
 
-		$.mediamanager('#mediaUploader', {
-			updateUrl : '{{ URL::toAdmin('media/:id/edit') }}',
-			deleteUrl : '{{ URL::toAdmin('media/:id/delete') }}',
-			onSuccess : function() {
+		}
+	});
 
-				datagrid._refresh();
+	$.mediamanager('#mediaUploader', {
+		updateUrl : '{{ URL::toAdmin('media/:id/edit') }}',
+		deleteUrl : '{{ URL::toAdmin('media/:id/delete') }}',
+		onSuccess : function() {
 
-			}
-		});
+			datagrid._refresh();
 
-		$('.data-grid_pagination').on('click', 'a', function() {
+		}
+	});
 
-			$(document.body).animate({ scrollTop: $('.data-grid').offset().top }, 200);
+	$('.data-grid_pagination').on('click', 'a', function() {
 
-		});
+		$(document.body).animate({ scrollTop: $('.data-grid').offset().top }, 200);
 
 	});
+
+});
 </script>
 @stop
 
@@ -119,6 +119,7 @@
 		{{-- Data Grid : Applied Filters --}}
 		<div class="data-grid_applied" data-grid="main"></div>
 
+		@if (count($tags) > 0)
 		<span data-media-tags>
 
 			<h4># Tags</h4>
@@ -126,11 +127,13 @@
 			@foreach ($tags as $tag)
 			<span class="label label-info" data-filter="tags:{{{ $tag }}}" data-grid="main">{{{ $tag }}}</span>
 			@endforeach
+
 		</span>
+		@endif
 
 		<span data-media-sidebar class="hide">
 
-			<hr />
+			@if (count($tags) > 0)<hr />@endif
 
 			<h4><span data-media-total-selected></span> selected</h4>
 
@@ -170,7 +173,11 @@
 	<div class="clearfix"></div>
 
 	{{-- Data Grid : Pagination --}}
-	<div class="data-grid_pagination" data-grid="main"></div>
+	<div class="col-lg-12">
+
+		<div class="data-grid_pagination" data-grid="main"></div>
+
+	</div>
 
 </div>
 
