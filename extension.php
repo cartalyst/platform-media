@@ -182,10 +182,12 @@ return array(
 		$app['cartalyst/media']->boot();
 		unset($app['cartalyst/media']);
 
-
-		function media_cache_path($media)
+		if ( ! function_exists('media_cache_path'))
 		{
-			return 'cache/media/' . $media; # make this a config option
+			function media_cache_path($media)
+			{
+				return 'cache/media/' . $media; # make this a config option
+			}
 		}
 
 		// Register @media blade extension
