@@ -227,14 +227,17 @@ return array(
 			Route::post('{id}/delete', 'MediaController@delete');
 		});
 
-		Route::group(array('namespace' => 'Platform\Media\Controllers\Frontend'), function()
+		App::before(function()
 		{
-			Route::get('cache/media/{id}', 'MediaController@cached')->where('id', '.*?');
-
-			Route::group(array('prefix' => 'media'), function()
+			Route::group(array('namespace' => 'Platform\Media\Controllers\Frontend'), function()
 			{
-				Route::get('download/{id}', 'MediaController@download')->where('id', '.*?');
-				Route::get('{id}', 'MediaController@view')->where('id', '.*?');
+				Route::get('cache/media/{id}', 'MediaController@cached')->where('id', '.*?');
+
+				Route::group(array('prefix' => 'media'), function()
+				{
+					Route::get('download/{id}', 'MediaController@download')->where('id', '.*?');
+					Route::get('{id}', 'MediaController@view')->where('id', '.*?');
+				});
 			});
 		});
 	},
