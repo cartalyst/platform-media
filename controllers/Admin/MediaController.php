@@ -120,7 +120,7 @@ class MediaController extends AdminController {
 	/**
 	 * Shows the form for updating a media.
 	 *
-	 * @param  int $id
+	 * @param  int  $id
 	 * @return mixed
 	 */
 	public function edit($id)

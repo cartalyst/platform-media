@@ -125,7 +125,7 @@ $(function() {
 			<h4># Tags</h4>
 
 			@foreach ($tags as $tag)
-			<span class="label label-info" data-filter="tags:{{{ $tag }}}" data-grid="main">{{{ $tag }}}</span>
+			<span class="label label-info" style="cursor: pointer;" data-filter="tags:{{{ $tag }}}" data-grid="main">{{{ $tag }}}</span>
 			@endforeach
 
 		</span>
