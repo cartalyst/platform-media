@@ -91,6 +91,21 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function findAllByTag($tags)
+	{
+		$query = $this->createModel();
+
+		foreach ((array) $tags as $tag)
+		{
+			$query->where('tags', 'LIKE', "%{$tag}%");
+		}
+
+		return $query->get();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function getTags()
 	{
 		$tags = array();

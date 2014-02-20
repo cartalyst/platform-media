@@ -46,6 +46,14 @@ interface MediaRepositoryInterface {
 	public function findByPath($path);
 
 	/**
+	 * Returns all the media files by the given tags.
+	 *
+	 * @param  mixed  $tags
+	 * @return \Platform\Media\Media
+	 */
+	public function findAllByTag($tags);
+
+	/**
 	 * Returns a list of the available tags.
 	 *
 	 * @return array
