@@ -91,7 +91,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function findAllByTag($tags)
+	public function findAllByTags($tags)
 	{
 		$query = $this->createModel();
 
