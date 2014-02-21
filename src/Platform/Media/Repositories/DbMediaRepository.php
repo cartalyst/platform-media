@@ -93,7 +93,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	 */
 	public function findAllByTags($tags)
 	{
-		$query = $this->createModel();
+		$query = $this->createModel()->newQuery();
 
 		foreach ((array) $tags as $tag)
 		{
