@@ -108,9 +108,9 @@ class MediaController extends AdminController {
 
 		if ($this->media->validForUpload($file))
 		{
-			if ($this->media->upload($file))
+			if ($media = $this->media->upload($file))
 			{
-				return Response::json('success');
+				return Response::json($media);
 			}
 		}
 

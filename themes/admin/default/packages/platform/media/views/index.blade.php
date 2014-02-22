@@ -46,7 +46,7 @@ $(function() {
 	$.mediamanager('#mediaUploader', {
 		updateUrl : '{{ URL::toAdmin('media/:id/edit') }}',
 		deleteUrl : '{{ URL::toAdmin('media/:id/delete') }}',
-		onSuccess : function() {
+		onSuccess : function(response) {
 
 			datagrid._refresh();
 

@@ -37,7 +37,7 @@ class MediaEventHandler {
 		}
 	}
 
-	public function onUpload($file, $original)
+	public function onUpload($media, $file, $original)
 	{
 		$imageSize = $file->getImageSize();
 
@@ -61,28 +61,16 @@ class MediaEventHandler {
 			$img = Image::make($data)
 				->resize(null, $height, true, false)
 				->save(media_cache_path($path));
-		}
 
-		if ( ! $this->media->findByPath($file->getPath()))
-		{
-			$media = $this->media->create(array(
-				'name'      => $original->getClientOriginalName(),
-				'path'      => $file->getPath(),
-				'extension' => $file->getExtension(),
-				'mime'      => $file->getMimetype(),
-				'size'      => $file->getSize(),
-				'is_image'  => $file->isImage(),
-				'width'     => $imageSize['width'],
-				'height'    => $imageSize['height'],
-				'thumbnail' => $path,
-			));
+			$media->thumbnail = $path;
+			$media->save();
 		}
 	}
 
 	public function subscribe($events)
 	{
 		$events->listen('cartalyst.media.deleted', 'Platform\Media\Handlers\MediaEventHandler@onDelete');
-		$events->listen('cartalyst.media.uploaded', 'Platform\Media\Handlers\MediaEventHandler@onUpload');
+		$events->listen('platform.media.uploaded', 'Platform\Media\Handlers\MediaEventHandler@onUpload');
 	}
 
 }

@@ -22,6 +22,7 @@ use Cartalyst\Media\Exceptions\InvalidFileException;
 use Cartalyst\Media\Exceptions\InvalidMimeTypeException;
 use Cartalyst\Media\Exceptions\MaxFileSizeExceededException;
 use Config;
+use Event;
 use Lang;
 use League\Flysystem\FileExistsException;
 use Media;
@@ -160,9 +161,27 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	{
 		try
 		{
-			Media::upload($file);
+			$uploaded = Media::upload($file);
 
-			return true;
+			if ( ! $media = $this->findByPath($uploaded->getPath()))
+			{
+				$imageSize = $uploaded->getImageSize();
+
+				$media = $this->createModel()->create(array(
+					'name'      => $file->getClientOriginalName(),
+					'path'      => $uploaded->getPath(),
+					'extension' => $uploaded->getExtension(),
+					'mime'      => $uploaded->getMimetype(),
+					'size'      => $uploaded->getSize(),
+					'is_image'  => $uploaded->isImage(),
+					'width'     => $imageSize['width'],
+					'height'    => $imageSize['height'],
+				));
+
+				Event::fire('platform.media.uploaded', array($media, $uploaded, $file));
+			}
+
+			return $media->toArray();
 		}
 		catch (FileExistsException $e)
 		{

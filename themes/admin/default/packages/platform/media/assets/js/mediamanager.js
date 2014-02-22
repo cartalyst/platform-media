@@ -101,19 +101,19 @@
 
 			});
 
-			self.dropzone.on('success', function(file) {
+			self.dropzone.on('success', function(file, response) {
 
 				self.dropzone.removeFile(file);
 
-				self.opt.onSuccess();
+				self.opt.onSuccess(response);
 
 			});
 
-			self.dropzone.on('complete', function(file) {
+			self.dropzone.on('complete', function(file, response) {
 
 				self.dropzone.processQueue();
 
-				self.opt.onComplete();
+				self.opt.onComplete(response);
 
 			});
 
