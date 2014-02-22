@@ -14,7 +14,7 @@ class Media {
 
 	public function show($id)
 	{
-		if ($media = $this->media->find($id))
+		if ($media = $this->media->find((int) $id))
 		{
 			return URL::to("media/{$media->path}");
 		}

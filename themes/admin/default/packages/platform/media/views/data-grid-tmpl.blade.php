@@ -22,7 +22,7 @@
 
 					<h2><%= r.name %></h2>
 
-					<p>@media('<%= r.id %>')</p>
+					<p>&commat;media('<%= r.id %>')</p>
 
 					<ul class="media__actions">
 						<li class="action">
