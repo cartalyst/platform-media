@@ -12,11 +12,11 @@ class Media {
 		$this->media = $media;
 	}
 
-	public function show($id, $column = null)
+	public function show($id, $thumbnail = false)
 	{
 		if ($media = $this->media->find((int) $id))
 		{
-			if ($column == 'thumbnail')
+			if ($thumbnail)
 			{
 				$result = media_cache_path($media->thumbnail);
 			}
@@ -25,7 +25,7 @@ class Media {
 				$result = "media/{$media->path}";
 			}
 
-			return URL::to("{$result}");
+			return URL::to($result);
 		}
 	}
 
