@@ -12,20 +12,32 @@ class Media {
 		$this->media = $media;
 	}
 
-	public function show($id, $thumbnail = false)
+	public function show($id, $type = null)
 	{
 		if ($media = $this->media->find((int) $id))
 		{
-			if ($thumbnail)
+			switch ($type)
 			{
-				$result = media_cache_path($media->thumbnail);
-			}
-			else
-			{
-				$result = "media/{$media->path}";
+				case 'thumbnail':
+
+					$url = media_cache_path($media->thumbnail);
+
+					break;
+
+				case 'download':
+
+					$url = "media/download/{$media->path}";
+
+					break;
+
+				default:
+
+					$url = "media/{$media->path}";
+
+					break;
 			}
 
-			return URL::to($result);
+			return URL::to($url);
 		}
 	}
 
