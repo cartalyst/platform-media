@@ -194,7 +194,7 @@ return array(
 		$blade = $app['view']->getEngineResolver()->resolve('blade')->getCompiler();
 		$blade->extend(function($value) use ($blade)
 		{
-			$matcher = $blade->createMatcher('media');
+			$matcher = '/(\s*)@media(\(.*?\)\s*)/';
 
 			return preg_replace($matcher, "<?php echo with(new Platform\Media\Widgets\Media(app('Platform\Media\Repositories\MediaRepositoryInterface')))->show$2; ?>", $value);
 		});
