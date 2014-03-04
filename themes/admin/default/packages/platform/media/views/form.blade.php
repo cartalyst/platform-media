@@ -55,7 +55,7 @@ jQuery(document).ready(function($) {
 </div>
 
 {{-- Media form --}}
-<form id="media-form" action="{{ Request::fullUrl() }}" method="post" accept-char="UTF-8" autocomplete="off">
+<form id="media-form" action="{{ Request::fullUrl() }}" method="post" accept-char="UTF-8" autocomplete="off" enctype="multipart/form-data">
 
 	{{-- CSRF Token --}}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -66,11 +66,13 @@ jQuery(document).ready(function($) {
 		<div class="col-lg-7">
 
 			<div class="form-group">
+
 				<label class="control-label" for="name">{{{ trans('platform/media::form.name') }}}</label>
 
 				<div class="controls">
 					<input type="text" name="name" id="name" class="form-control" value="{{ $media->name }}">
 				</div>
+
 			</div>
 
 		</div>
@@ -79,6 +81,7 @@ jQuery(document).ready(function($) {
 		<div class="col-lg-5">
 
 			<div class="form-group">
+
 				<label class="control-label" for="tags">{{{ trans('platform/media::form.tags') }}}</label>
 
 				<div class="controls">
@@ -88,17 +91,19 @@ jQuery(document).ready(function($) {
 					@endforeach
 					</select>
 				</div>
+
 			</div>
 
 		</div>
 	</div>
 
-	{{-- Private --}}
 	<div class="row">
 
+		{{-- Private --}}
 		<div class="col-lg-4">
 
 			<div class="form-group">
+
 				<label class="control-label" for="private">{{{ trans('platform/media::form.private') }}}</label>
 
 				<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::form.private_help') }}}"></i>
@@ -109,6 +114,25 @@ jQuery(document).ready(function($) {
 						<option value="1"{{ Input::old('private', $media->private) == 1 ? ' selected="selected"' : null }}>Private</option>
 					</select>
 				</div>
+
+			</div>
+
+		</div>
+
+		<div class="col-lg-4">
+
+			<div class="form-group">
+
+				<label class="control-label" for="name">{{{ trans('platform/media::form.file') }}}</label>
+
+				<div class="controls">
+
+					<span class="btn btn-warning btn-file">
+						Browse <input type="file" name="file" id="file">
+					</span>
+
+				</div>
+
 			</div>
 
 		</div>

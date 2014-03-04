@@ -23,6 +23,7 @@ use Cartalyst\Media\Exceptions\InvalidMimeTypeException;
 use Cartalyst\Media\Exceptions\MaxFileSizeExceededException;
 use Config;
 use Event;
+use File;
 use Lang;
 use League\Flysystem\FileExistsException;
 use Media;
@@ -202,11 +203,39 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function update($id, array $data)
+	public function update($id, array $data, $file = null)
 	{
 		$model = $this->find($id);
 
-		$model->fill($data)->save();
+		if ($file instanceof UploadedFile)
+		{
+			// Delete the old media file
+			Media::delete($model->path);
+
+			File::delete(media_cache_path($model->thumbnail));
+
+			// Upload the new file
+			$uploaded = Media::upload($file);
+
+			Event::fire('platform.media.uploaded', array($model, $uploaded, $file));
+
+			$imageSize = $uploaded->getImageSize();
+
+			// Update the media entry
+			$model->fill(array(
+				'path'      => $uploaded->getPath(),
+				'extension' => $uploaded->getExtension(),
+				'mime'      => $uploaded->getMimetype(),
+				'size'      => $uploaded->getSize(),
+				'is_image'  => $uploaded->isImage(),
+				'width'     => $imageSize['width'],
+				'height'    => $imageSize['height'],
+			));
+		}
+
+		$model->fill($data);
+
+		$model->save();
 
 		return $model;
 	}
@@ -219,6 +248,10 @@ class DbMediaRepository implements MediaRepositoryInterface {
 		if ($model = $this->find($id))
 		{
 			Media::delete($model->path);
+
+			File::delete(media_cache_path($model->thumbnail));
+
+			$model->delete();
 
 			return true;
 		}

@@ -27,16 +27,6 @@ class MediaEventHandler {
 		$this->media = $media;
 	}
 
-	public function onDelete($file)
-	{
-		if ($media = $this->media->findByPath($file->getPath()))
-		{
-			File::delete(media_cache_path($media->thumbnail));
-
-			$media->delete();
-		}
-	}
-
 	public function onUpload($media, $file, $original)
 	{
 		$imageSize = $file->getImageSize();
@@ -69,7 +59,6 @@ class MediaEventHandler {
 
 	public function subscribe($events)
 	{
-		$events->listen('cartalyst.media.deleted', 'Platform\Media\Handlers\MediaEventHandler@onDelete');
 		$events->listen('platform.media.uploaded', 'Platform\Media\Handlers\MediaEventHandler@onUpload');
 	}
 

@@ -151,11 +151,11 @@ class MediaController extends AdminController {
 	{
 		Input::merge(array('groups' => Input::get('groups', array())));
 
-		$input = Input::all();
+		$input = Input::except('file');
 
 		if ($this->media->validForUpdate($id, $input))
 		{
-			$this->media->update($id, $input);
+			$this->media->update($id, $input, Input::file('file'));
 
 			if (Request::ajax())
 			{

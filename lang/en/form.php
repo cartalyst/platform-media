@@ -23,6 +23,8 @@ return array(
 	'name'      => 'Name',
 	'name_help' => 'Type a descriptive name for your media.',
 
+	'file' => 'File',
+
 	'tags'      => 'Tags',
 	'tags_help' => 'Choose your media tags.',
 
