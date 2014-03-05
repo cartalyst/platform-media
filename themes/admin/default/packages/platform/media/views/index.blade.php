@@ -59,7 +59,21 @@ $(function() {
 
 	});
 
+
 });
+
+function bytesToSize(bytes)
+{
+	var k = 1000;
+
+	var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+
+	if (bytes === 0) return '0 Bytes';
+
+	var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)),10);
+
+	return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+}
 </script>
 @stop
 
@@ -204,11 +218,14 @@ $(function() {
 			</div>
 
 			<div class="modal-footer" style="margin-top: 0;">
+
 				<span class="pull-left text-left">
 					<div data-media-total-files></div>
 					<div data-media-total-size></div>
 				</span>
+
 				<button type="button" class="btn btn-success" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
+
 			</div>
 
 		</div>

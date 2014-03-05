@@ -8,7 +8,9 @@
 
 				<div class="media__type">
 
-					<div class="media__type--<%= r.is_image == 1 ? 'image' : r.extension %>">
+					<div class="media__type--<%= r.is_image == 1 ? 'image' : '' %>">
+
+						<h2><%= r.name %></h2>
 
 						<% if (r.is_image == 1) { %>
 							<img src="{{ URL::to(media_cache_path('<%= r.thumbnail %>')) }}" />
@@ -20,9 +22,9 @@
 
 				<div class="media__mask" data-media="<%= r.id %>">
 
-					<h2><%= r.name %></h2>
-
 					<p>&commat;media('<%= r.id %>')</p>
+
+					<p><%= bytesToSize(r.size) %><p/>
 
 					<ul class="media__actions">
 						<li class="action">
