@@ -158,7 +158,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function upload(UploadedFile $file)
+	public function upload(UploadedFile $file, $tags = array())
 	{
 		try
 		{
@@ -177,6 +177,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 					'is_image'  => $uploaded->isImage(),
 					'width'     => $imageSize['width'],
 					'height'    => $imageSize['height'],
+					'tags'      => $tags,
 				));
 
 				Event::fire('platform.media.uploaded', array($media, $uploaded, $file));

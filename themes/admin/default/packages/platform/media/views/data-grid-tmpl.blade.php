@@ -2,7 +2,7 @@
 
 	<% _.each(results, function(r) { %>
 
-		<div class="col-6 col-sm-6 col-lg-4">
+		<div class="col-sm-6 col-lg-4">
 
 			<div class="media">
 

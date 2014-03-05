@@ -9,11 +9,13 @@
 {{-- Queue assets --}}
 {{ Asset::queue('dropzone.css', 'platform/media::css/dropzone.css') }}
 {{ Asset::queue('media', 'platform/media::css/media.less') }}
+{{ Asset::queue('selectize', 'selectize/css/selectize.css', 'styles') }}
 
 {{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
 {{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'underscore') }}
 {{ Asset::queue('dropzone.js', 'platform/media::js/dropzone/dropzone.js') }}
 {{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', 'dropzone') }}
+{{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
 
 {{-- Inline scripts --}}
 @section('scripts')
@@ -59,6 +61,10 @@ $(function() {
 
 	});
 
+	$('#tags').selectize({
+		maxItems: 4,
+		create: true
+	});
 
 });
 
@@ -211,6 +217,8 @@ function bytesToSize(bytes)
 
 					{{-- CSRF Token --}}
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+					<select placeholder="Chose your media tags." id="tags" name="tags[]" multiple="multiple" tabindex="-1"></select>
 
 					<div class="dz-default dz-message"></div>
 

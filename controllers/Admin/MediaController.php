@@ -107,9 +107,11 @@ class MediaController extends AdminController {
 	{
 		$file = Input::file('file');
 
+		$tags = Input::get('tags', array());
+
 		if ($this->media->validForUpload($file))
 		{
-			if ($media = $this->media->upload($file))
+			if ($media = $this->media->upload($file, $tags))
 			{
 				return Response::json($media);
 			}
