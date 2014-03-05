@@ -234,6 +234,8 @@ function bytesToSize(bytes)
 
 				<button type="button" class="btn btn-success" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
 
+				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+
 			</div>
 
 		</div>
