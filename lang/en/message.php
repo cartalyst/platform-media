@@ -22,7 +22,7 @@ return array(
 
 	'file_exists' => 'File already exists.',
 
-	'file_size_exceded' => 'File size exceeded',
+	'file_size_exceeded' => 'File size exceeded',
 
 	'invalid_file' => 'Invalid uploaded file.',
 

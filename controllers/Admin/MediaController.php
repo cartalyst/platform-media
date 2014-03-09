@@ -158,14 +158,15 @@ class MediaController extends AdminController {
 
 		if ($this->media->validForUpdate($id, $input))
 		{
-			$this->media->update($id, $input, Input::file('file'));
-
-			if (Request::ajax())
+			if ($this->media->update($id, $input, Input::file('file')))
 			{
-				return Response::json('success');
-			}
+				if (Request::ajax())
+				{
+					return Response::json('success');
+				}
 
-			return Redirect::toAdmin('media')->withSuccess(Lang::get('platform/media::message.success.update'));
+				return Redirect::toAdmin('media')->withSuccess(Lang::get('platform/media::message.success.update'));
+			}
 		}
 
 		if (Request::ajax())
