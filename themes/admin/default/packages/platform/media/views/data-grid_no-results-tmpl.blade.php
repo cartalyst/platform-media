@@ -1,4 +1,4 @@
-<script type="text/template" data-grid="main" id="no-results-tmpl">
+<script type="text/template" data-grid="main" id="no-results-tmpl" data-template="no-results">
 	<div class="well">
 		<p></p>
 		<p></p>
