@@ -1,4 +1,4 @@
-<script type="text/template" data-grid="main" id="data-grid_pagination-tmpl">
+<script type="text/template" data-grid="main" id="data-grid_pagination-tmpl" data-template="pagination">
 
 	<% _.each(pagination, function(p) { %>
 
