@@ -50,7 +50,7 @@ $(function() {
 		deleteUrl : '{{ URL::toAdmin('media/:id/delete') }}',
 		onSuccess : function(response) {
 
-			datagrid._refresh();
+			datagrid.refresh();
 
 		}
 	});
