@@ -21,7 +21,7 @@
 use Cartalyst\Extensions\ExtensionInterface;
 use Illuminate\Foundation\Application;
 
-return array(
+return [
 
 	/*
 	|--------------------------------------------------------------------------
@@ -99,11 +99,11 @@ return array(
 	|
 	*/
 
-	'require' => array(
+	'require' => [
 
 		'platform/admin',
 
-	),
+	],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -155,7 +155,7 @@ return array(
 
 		$app->bind('Platform\Media\Repositories\MediaRepositoryInterface', function($app)
 		{
-			return new Platform\Media\Repositories\DbMediaRepository(get_class($app['Platform\Media\Media']));
+			return new Platform\Media\Repositories\DbMediaRepository(get_class($app['Platform\Media\Models\Media']));
 		});
 
 		// Register our event handler
@@ -217,7 +217,7 @@ return array(
 
 	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
-		Route::group(array('prefix' => admin_uri().'/media', 'namespace' => 'Platform\Media\Controllers\Admin'), function()
+		Route::group(['prefix' => admin_uri().'/media', 'namespace' => 'Platform\Media\Controllers\Admin'], function()
 		{
 			Route::get('/', 'MediaController@index');
 			Route::get('grid', 'MediaController@grid');
@@ -229,11 +229,11 @@ return array(
 
 		App::before(function()
 		{
-			Route::group(array('namespace' => 'Platform\Media\Controllers\Frontend'), function()
+			Route::group(['namespace' => 'Platform\Media\Controllers\Frontend'], function()
 			{
 				Route::get('cache/media/{id}', 'MediaController@cached')->where('id', '.*?');
 
-				Route::group(array('prefix' => 'media'), function()
+				Route::group(['prefix' => 'media'], function()
 				{
 					Route::get('download/{id}', 'MediaController@download')->where('id', '.*?');
 					Route::get('{id}', 'MediaController@view')->where('id', '.*?');
@@ -290,14 +290,14 @@ return array(
 
 	'permissions' => function()
 	{
-		return array(
+		return [
 
 			'Platform\Media\Controllers\Admin\MediaController@index,grid'  => Lang::get('platform/media::permissions.index'),
 			'Platform\Media\Controllers\Admin\MediaController@upload'      => Lang::get('platform/media::permissions.upload'),
 			'Platform\Media\Controllers\Admin\MediaController@edit,update' => Lang::get('platform/media::permissions.edit'),
 			'Platform\Media\Controllers\Admin\MediaController@delete'      => Lang::get('platform/media::permissions.delete'),
 
-		);
+		];
 	},
 
 	/*
@@ -313,7 +313,7 @@ return array(
 	|
 	*/
 
-	'widgets' => array(),
+	'widgets' => [],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -348,20 +348,20 @@ return array(
 	|
 	*/
 
-	'menus' => array(
+	'menus' => [
 
-		'admin' => array(
+		'admin' => [
 
-			array(
+			[
 				'slug'  => 'admin-media',
 				'name'  => 'Media',
 				'class' => 'fa fa-picture-o',
 				'uri'   => 'media',
 				'regex' => '/admin\/media/i',
-			),
+			],
 
-		),
+		],
 
-	),
+	],
 
-);
+];

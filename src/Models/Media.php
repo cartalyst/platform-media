@@ -1,4 +1,4 @@
-<?php namespace Platform\Media;
+<?php namespace Platform\Media\Models;
 /**
  * Part of the Platform application.
  *
