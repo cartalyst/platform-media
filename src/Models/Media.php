@@ -30,7 +30,7 @@ class Media extends Model {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected $fillable = array(
+	protected $fillable = [
 		'name',
 		'path',
 		'extension',
@@ -43,7 +43,7 @@ class Media extends Model {
 		'groups',
 		'tags',
 		'thumbnail',
-	);
+	];
 
 	/**
 	 * Get mutator for the "groups" attribute.
@@ -56,7 +56,7 @@ class Media extends Model {
 	{
 		if ( ! $groups)
 		{
-			return array();
+			return [];
 		}
 
 		if (is_array($groups))
@@ -108,7 +108,7 @@ class Media extends Model {
 	{
 		if ( ! $tags)
 		{
-			return array();
+			return [];
 		}
 
 		if (is_array($tags))

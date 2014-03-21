@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-return array(
+return [
 
 	'name'      => 'Name',
 	'name_help' => 'Type a descriptive name for your media.',
@@ -34,4 +34,4 @@ return array(
 	'groups'      => 'Groups',
 	'groups_help' => 'Select the groups to assign to this media file.',
 
-);
+];

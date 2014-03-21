@@ -18,11 +18,11 @@
  * @link       http://cartalyst.com
  */
 
-return array(
+return [
 
 	'index'  => 'List Media',
 	'upload' => 'Upload Media',
 	'edit'   => 'Edit Media',
 	'delete' => 'Delete Media',
 
-);
+];

@@ -44,9 +44,9 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	 *
 	 * @var array
 	 */
-	protected $rules = array(
+	protected $rules = [
 		'name' => 'required',
-	);
+	];
 
 	/**
 	 * Holds the occurred error.
@@ -110,7 +110,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	 */
 	public function getTags()
 	{
-		$tags = array();
+		$tags = [];
 
 		foreach ($this->createModel()->lists('tags') as $_tags)
 		{
@@ -158,7 +158,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function upload(UploadedFile $file, $tags = array())
+	public function upload(UploadedFile $file, $tags = [])
 	{
 		try
 		{
@@ -168,7 +168,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 			{
 				$imageSize = $uploaded->getImageSize();
 
-				$media = $this->createModel()->create(array(
+				$media = $this->createModel()->create([
 					'name'      => $file->getClientOriginalName(),
 					'path'      => $uploaded->getPath(),
 					'extension' => $uploaded->getExtension(),
@@ -178,9 +178,9 @@ class DbMediaRepository implements MediaRepositoryInterface {
 					'width'     => $imageSize['width'],
 					'height'    => $imageSize['height'],
 					'tags'      => $tags,
-				));
+				]);
 
-				Event::fire('platform.media.uploaded', array($media, $uploaded, $file));
+				Event::fire('platform.media.uploaded', [$media, $uploaded, $file]);
 			}
 
 			return $media->toArray();
@@ -220,12 +220,12 @@ class DbMediaRepository implements MediaRepositoryInterface {
 				// Upload the new file
 				$uploaded = Media::upload($file);
 
-				Event::fire('platform.media.uploaded', array($model, $uploaded, $file));
+				Event::fire('platform.media.uploaded', [$model, $uploaded, $file]);
 
 				$imageSize = $uploaded->getImageSize();
 
 				// Update the media entry
-				$model->fill(array(
+				$model->fill([
 					'path'      => $uploaded->getPath(),
 					'extension' => $uploaded->getExtension(),
 					'mime'      => $uploaded->getMimetype(),
@@ -233,7 +233,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 					'is_image'  => $uploaded->isImage(),
 					'width'     => $imageSize['width'],
 					'height'    => $imageSize['height'],
-				));
+				]);
 			}
 			else
 			{

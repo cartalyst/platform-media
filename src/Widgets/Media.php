@@ -5,7 +5,7 @@ use URL;
 
 class Media {
 
-	protected $data = array();
+	protected $data = [];
 
 	public function __construct(MediaRepositoryInterface $media)
 	{

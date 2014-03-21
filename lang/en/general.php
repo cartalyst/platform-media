@@ -18,9 +18,9 @@
  * @link       http://cartalyst.com
  */
 
-return array(
+return [
 
 	'title'  => 'Media Management',
 	'update' => 'Update Media',
 
-);
+];

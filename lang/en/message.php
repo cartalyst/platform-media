@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-return array(
+return [
 
 	'file_exists' => 'File already exists.',
 
@@ -31,16 +31,16 @@ return array(
 	'not_found' => 'Media [:id] does not exist.',
 
 	// Success messages
-	'success' => array(
+	'success' => [
 		'update' => 'Media was successfully updated.',
 		'delete' => 'Media was successfully deleted.',
-	),
+	],
 
 	// Error messages
-	'error' => array(
+	'error' => [
 		'update'   => 'There was an issue updating the media. Please try again.',
 		'delete'   => 'There was an issue deleting the media. Please try again.',
 		'multiple' => '{1} 1 item was successfully removed.|[2,Inf] :items items were successfully removed.',
-	),
+	],
 
-);
+];

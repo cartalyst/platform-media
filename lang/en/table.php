@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-return array(
+return [
 
 	'id'             => 'Id',
 	'file_name'      => 'File Name',
@@ -30,4 +30,4 @@ return array(
 	'height'         => 'Height',
 	'created_at'     => 'Uploaded at'
 
-);
+];

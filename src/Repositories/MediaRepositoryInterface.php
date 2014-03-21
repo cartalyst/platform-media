@@ -23,25 +23,25 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 interface MediaRepositoryInterface {
 
 	/**
-	 * Return a dataset compatible with the data grid.
+	 * Returns a dataset compatible with data grid.
 	 *
 	 * @return mixed
 	 */
 	public function grid();
 
 	/**
-	 * Get a media by it's primary key.
+	 * Returns a media by its primary key.
 	 *
 	 * @param  int  $id
-	 * @return \Platform\Media\Media
+	 * @return \Platform\Media\Models\Media
 	 */
 	public function find($id);
 
 	/**
-	 * Get a media by it's file path.
+	 * Returns a media by its file path.
 	 *
 	 * @param  string  $path
-	 * @return \Platform\Media\Media
+	 * @return \Platform\Media\Models\Media
 	 */
 	public function findByPath($path);
 
@@ -49,7 +49,7 @@ interface MediaRepositoryInterface {
 	 * Returns all the media files by the given tags.
 	 *
 	 * @param  mixed  $tags
-	 * @return \Platform\Media\Media
+	 * @return \Platform\Media\Models\Media
 	 */
 	public function findAllByTags($tags);
 
@@ -92,7 +92,7 @@ interface MediaRepositoryInterface {
 	 * Creates a media with the given data.
 	 *
 	 * @param  array  $data
-	 * @return \Cartalyst\Media\Media
+	 * @return \Platform\Media\Models\Media
 	 */
 	public function create($data);
 
@@ -101,7 +101,7 @@ interface MediaRepositoryInterface {
 	 *
 	 * @param  int    $id
 	 * @param  array  $data
-	 * @return \Cartalyst\Media\Media
+	 * @return \Platform\Media\Models\Media
 	 */
 	public function update($id, array $data);
 

@@ -148,10 +148,10 @@ return [
 
 	'register' => function(ExtensionInterface $extension, Application $app)
 	{
-		$app->instance('cartalyst/media', $media = new Cartalyst\Media\MediaServiceProvider($app));
+		$app->instance('cartalyst/media', $media = new Cartalyst\Media\Laravel\MediaServiceProvider($app));
 		$app->register($media);
 
-		Illuminate\Foundation\AliasLoader::getInstance()->alias('Media', 'Cartalyst\Media\Facades\Laravel');
+		Illuminate\Foundation\AliasLoader::getInstance()->alias('Media', 'Cartalyst\Media\Laravel\Facades\Media');
 
 		$app->bind('Platform\Media\Repositories\MediaRepositoryInterface', function($app)
 		{
@@ -305,15 +305,17 @@ return [
 	| Widgets
 	|--------------------------------------------------------------------------
 	|
-	| List of custom widgets associated with the extension. Like routes, the
-	| value for the widget key may either be a closure or a class & method
-	| name (joined with an @ symbol). Of course, Platform will guess the
+	| Closure that is called when the extension is started. You can register
+	| all your custom widgets here. Of course, Platform will guess the
 	| widget class for you, this is just for custom widgets or if you
 	| do not wish to make a new class for a very small widget.
 	|
 	*/
 
-	'widgets' => [],
+	'widgets' => function()
+	{
+
+	},
 
 	/*
 	|--------------------------------------------------------------------------
