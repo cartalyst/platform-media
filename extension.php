@@ -148,7 +148,7 @@ return [
 
 	'register' => function(ExtensionInterface $extension, Application $app)
 	{
-		$app->instance('cartalyst/media', $media = new Cartalyst\Media\MediaServiceProvider($app));
+		$app->instance('cartalyst/media', $media = new Cartalyst\Media\Laravel\MediaServiceProvider($app));
 		$app->register($media);
 
 		Illuminate\Foundation\AliasLoader::getInstance()->alias('Media', 'Cartalyst\Media\Facades\Laravel');
