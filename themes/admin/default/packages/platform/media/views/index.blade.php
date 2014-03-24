@@ -8,7 +8,6 @@
 
 {{-- Queue assets --}}
 {{ Asset::queue('dropzone.css', 'platform/media::css/dropzone.css') }}
-{{ Asset::queue('media', 'platform/media::css/media.less') }}
 {{ Asset::queue('selectize', 'selectize/css/selectize.css', 'styles') }}
 
 {{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
@@ -22,7 +21,7 @@
 @section('scripts')
 @parent
 <script>
-	$(function()
+	jQuery(document).ready(function($)
 	{
 		var dg = $.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
 			loader: '.loading',
@@ -99,23 +98,32 @@
 
 			var action = $(this).data('action');
 
+			var url = '{{ URL::toAdmin('media') }}';
+
 			var entries = $.map($('input[name="entries[]"]:checked'), function(e, i)
 			{
 				return +e.value;
 			});
 
-			$.ajax({
-				type: 'POST',
-				url: '{{ URL::toAdmin('content') }}',
-				data: {
-					action : action,
-					entries: entries
-				},
-				success: function(response)
-				{
-					dg.refresh();
-				}
-			});
+			if (action == 'email')
+			{
+				window.location = url + '/' + entries.join(',') + '/email';
+			}
+			else
+			{
+				$.ajax({
+					type: 'POST',
+					url: url,
+					data: {
+						action : action,
+						entries: entries
+					},
+					success: function(response)
+					{
+						dg.refresh();
+					}
+				});
+			}
 		});
 
 		/*$(document).bind('selectstart dragstart', function(e)

@@ -15,27 +15,25 @@
 @section('scripts')
 @parent
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+	jQuery(document).ready(function($)
+	{
+		$('#tags').selectize({
+			maxItems: 4,
+			create: true
+		});
 
-	$('#tags').selectize({
-		maxItems: 4,
-		create: true
-	});
-
-	$('#private').on('change', function() {
-
-		if ($(this).val() == 1)
+		$('#private').on('change', function()
 		{
-			$('[data-groups]').removeClass('hide');
-		}
-		else
-		{
-			$('[data-groups]').addClass('hide');
-		}
-
+			if ($(this).val() == 1)
+			{
+				$('[data-groups]').removeClass('hide');
+			}
+			else
+			{
+				$('[data-groups]').addClass('hide');
+			}
+		});
 	});
-
-});
 </script>
 @stop
 
@@ -177,6 +175,7 @@ jQuery(document).ready(function($) {
 		</div>
 
 	</div>
+
 </form>
 
 @stop

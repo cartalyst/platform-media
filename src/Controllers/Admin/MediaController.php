@@ -34,10 +34,10 @@ class MediaController extends AdminController {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected $csrfWhitelist = array(
-		'update',
-		'delete',
-	);
+	protected $csrfWhitelist = [
+		'executeAction',
+		//'update',
+	];
 
 	/**
 	 * Media repository.
@@ -45,6 +45,15 @@ class MediaController extends AdminController {
 	 * @var \Platform\Media\Repositories\MediaRepositoryInterface
 	 */
 	protected $media;
+
+	/**
+	 * Holds all the mass actions we can execute.
+	 *
+	 * @var array
+	 */
+	protected $actions = [
+		'delete',
+	];
 
 	/**
 	 * Constructor.
@@ -140,7 +149,9 @@ class MediaController extends AdminController {
 		// Get the media information
 		if ( ! $media = $this->media->find($id))
 		{
-			return Redirect::toAdmin('media')->withErrors(Lang::get('platform/media::message.not_found', compact('id')));
+			$message = Lang::get('platform/media::message.not_found', compact('id'));
+
+			return Redirect::toAdmin('media')->withErrors($message);
 		}
 
 		// Get a list of all the available tags
@@ -161,7 +172,7 @@ class MediaController extends AdminController {
 	 */
 	public function update($id)
 	{
-		Input::merge(array('groups' => Input::get('groups', [])));
+		Input::merge(['groups' => Input::get('groups', [])]);
 
 		$input = Input::except('file');
 
@@ -174,7 +185,9 @@ class MediaController extends AdminController {
 					return Response::json('success');
 				}
 
-				return Redirect::toAdmin('media')->withSuccess(Lang::get('platform/media::message.success.update'));
+				$message = Lang::get('platform/media::message.success.update');
+
+				return Redirect::toAdmin('media')->withSuccess($message);
 			}
 		}
 
@@ -187,20 +200,44 @@ class MediaController extends AdminController {
 	}
 
 	/**
-	 * Remove the specified media.
+	 * Executes the mass action.
 	 *
-	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function delete($id = null)
+	public function executeAction()
 	{
-		// Delete the media
-		if ($this->media->delete($id))
+		$action = Input::get('action');
+
+		if (in_array($action, $this->actions))
 		{
-			return Response::json('success');
+			foreach (Input::get('entries', []) as $entry)
+			{
+				$this->media->{$action}($entry);
+			}
+
+			return Response::json('Success');
 		}
 
-		return Response::json($this->media->getError(), 400);
+		return Response::json('Failed', 500);
+	}
+
+
+
+	public function email($id)
+	{
+		$items = [];
+
+		foreach (explode(',', $id) as $item)
+		{
+			$items[] = $this->media->find($item);
+		}
+
+		if (empty($items))
+		{
+			return Redirect::toAdmin('media');
+		}
+
+		return View::make('platform/media::email', compact('items'));
 	}
 
 }

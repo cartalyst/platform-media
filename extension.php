@@ -220,10 +220,13 @@ return [
 		Route::group(['prefix' => admin_uri().'/media', 'namespace' => 'Platform\Media\Controllers\Admin'], function()
 		{
 			Route::get('/', 'MediaController@index');
+			Route::post('/', 'MediaController@executeAction');
 			Route::get('grid', 'MediaController@grid');
 			Route::post('upload', 'MediaController@upload');
 			Route::get('{id}/edit', 'MediaController@edit');
 			Route::post('{id}/edit', 'MediaController@update');
+			Route::get('{id}/email', 'MediaController@email');
+			Route::post('{id}/email', 'MediaController@processEmail');
 			Route::post('{id}/delete', 'MediaController@delete');
 		});
 
