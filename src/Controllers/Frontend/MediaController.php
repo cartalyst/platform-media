@@ -1,0 +1,144 @@
+<?php namespace Platform\Media\Controllers\Frontend;
+/**
+ * Part of the Platform application.
+ *
+ * NOTICE OF LICENSE
+ *
+ * Licensed under the 3-clause BSD License.
+ *
+ * This source file is subject to the 3-clause BSD License that is
+ * bundled with this package in the LICENSE file.  It is also available at
+ * the following URL: http://www.opensource.org/licenses/BSD-3-Clause
+ *
+ * @package    Platform
+ * @version    2.0.0
+ * @author     Cartalyst LLC
+ * @license    BSD License (3-clause)
+ * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @link       http://cartalyst.com
+ */
+
+use Media;
+use Platform\Foundation\Controllers\BaseController;
+use Platform\Media\Repositories\MediaRepositoryInterface;
+use Response;
+use Sentry;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
+class MediaController extends BaseController {
+
+	/**
+	 * Media repository.
+	 *
+	 * @var \Platform\Media\Repositories\MediaRepositoryInterface
+	 */
+	protected $media;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
+	 * @return void
+	 */
+	public function __construct(MediaRepositoryInterface $media)
+	{
+		parent::__construct();
+
+		$this->media = $media;
+	}
+
+	/**
+	 * Returns the given media file.
+	 *
+	 * @param  string  $path
+	 * @return \Illuminate\Http\Response
+	 */
+	public function view($path)
+	{
+		if ( ! $media = $this->media->findByPath($path))
+		{
+			throw new HttpException(404, 'Media does not exist.');
+		}
+
+		$this->checkPermission($media);
+
+		$file = Media::getFileSystem()->read($media->path);
+
+		$response = Response::make($file, 200);
+
+		$response->header('Content-Type', $media->mime);
+
+		return $response;
+	}
+
+	/**
+	 * Downloads the given media file.
+	 *
+	 * @param  string  $path
+	 * @return \Illuminate\Http\Response
+	 */
+	public function download($path)
+	{
+		if ( ! $media = $this->media->findByPath($path))
+		{
+			throw new HttpException(404, 'Media does not exist.');
+		}
+
+		$this->checkPermission($media);
+
+		$file = Media::getFileSystem()->read($media->path);
+
+		$response = Response::make($file, 200);
+
+		$response->header('Content-Disposition', 'attachment; filename="'.$media->name.'"');
+		$response->header('Content-Type', $media->mime);
+		$response->header('Content-Length', strlen($file));
+		$response->header('Connection', 'close');
+
+		return $response;
+	}
+
+	public function cached($path)
+	{
+		if ( ! $media = $this->media->findByPath($path))
+		{
+			throw new HttpException(404, 'Media does not exist.');
+		}
+		echo $path;
+	}
+
+	/**
+	 * Determines if the logged in user has access
+	 * to the given media file.
+	 *
+	 * @param  \Platform\Media\Media  $media
+	 * @return bool
+	 */
+	protected function checkPermission($media)
+	{
+		if ($media->private)
+		{
+			$pass = false;
+
+			if (Sentry::check())
+			{
+				$pass = true;
+
+				$mediaGroups = $media->groups;
+
+				$userGroups = Sentry::getUser()->groups->lists('id');
+
+				if ( ! empty($mediaGroups) and ! array_intersect($mediaGroups, $userGroups))
+				{
+					$pass = false;
+				}
+			}
+
+			if ( ! $pass)
+			{
+				throw new HttpException(403, "You don't have permission to access this file.");
+			}
+		}
+	}
+
+}

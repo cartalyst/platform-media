@@ -1,0 +1,62 @@
+{
+	"name": "platform/media",
+	"type": "platform-extension",
+	"description": "Media management for Platform.",
+	"keywords": [
+		"cartalyst",
+		"platform",
+		"laravel",
+		"extension",
+		"media"
+	],
+	"license": "BSD License (3-clause)",
+	"authors": [
+		{
+			"name": "Cartalyst LLC",
+			"email": "help@cartalyst.com"
+		},
+		{
+			"name": "Ben Corlett",
+			"email": "ben.corlett@cartalyst.com",
+			"role": "Developer"
+		},
+		{
+			"name": "Bruno Gaspar",
+			"email": "bruno.gaspar@cartalyst.com",
+			"role": "Developer"
+		},
+		{
+			"name": "Dan Syme",
+			"email": "dan.syme@cartalyst.com",
+			"role": "Creator & Designer"
+		}
+	],
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "http://packages.cartalyst.com"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0",
+		"cartalyst/composer-installers": "1.0.*",
+		"cartalyst/media": "1.0.*",
+		"platform/admin": "dev-master"
+	},
+	"autoload": {
+		"classmap": [
+			"database/migrations",
+			"database/seeds"
+		],
+		"psr-4": {
+			"Platform\\Media\\" : "src/"
+		}
+	},
+	"extra": {
+		"component": "extension",
+		"branch-alias": {
+			"dev-master": "1.0.x-dev"
+		}
+	},
+	"minimum-stability": "dev"
+}
