@@ -96,6 +96,7 @@ class MediaController extends AdminController {
 
 		$columns = [
 			'id',
+			'tags',
 			'name',
 			'mime',
 			'path',

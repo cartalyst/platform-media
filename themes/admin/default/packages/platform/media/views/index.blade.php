@@ -184,14 +184,14 @@ tr { cursor: default; }
 
 <div class="row">
 
-	<div class="col-lg-7">
+	<div class="col-lg-6">
 
 		{{-- Data Grid : Applied Filters --}}
 		<div class="data-grid_applied" data-grid="main"></div>
 
 	</div>
 
-	<div class="col-lg-5 text-right">
+	<div class="col-lg-6 text-right">
 
 		<form method="post" action="" accept-charset="utf-8" data-search data-grid="main" class="form-inline" role="form">
 
@@ -200,6 +200,22 @@ tr { cursor: default; }
 				<div class="loading"></div>
 
 			</div>
+
+			@if ( ! empty($tags))
+			<div class="btn-group text-left">
+
+				<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+					Tags <span class="caret"></span>
+				</button>
+
+				<ul class="dropdown-menu" role="menu">
+					@foreach ($tags as $tag)
+					<li><a href="#" data-grid="main" data-filter="tags:{{{ $tag }}}">{{{ $tag }}}</a></li>
+					@endforeach
+				</ul>
+
+			</div>
+			@endif
 
 			<div class="btn-group text-left">
 

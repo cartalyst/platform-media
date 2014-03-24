@@ -13,9 +13,9 @@
 			</td>
 			<td class="col-md-9">
 
-				<span class="pull-right">
+				<span class="pull-right text-right">
 
-					<div class="btn-group dropup">
+					<div class="btn-group dropup text-left">
 
 						<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
 							{{{ trans('general.actions') }}} <span class="caret"></span>
@@ -28,6 +28,14 @@
 						</ul>
 
 					</div>
+
+					<br />
+
+					<small>
+					<% _.each(r.tags, function(tag) { %>
+						<span class="label label-info"><%= tag %></span>
+					<% }); %>
+					</small>
 
 				</span>
 
