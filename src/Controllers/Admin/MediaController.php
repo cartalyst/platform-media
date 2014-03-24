@@ -225,12 +225,10 @@ class MediaController extends AdminController {
 
 	public function email($id)
 	{
-		$items = [];
-
-		foreach (explode(',', $id) as $item)
+		$items = array_map(function($item)
 		{
-			$items[] = $this->media->find($item);
-		}
+			return $this->media->find($item);
+		}, explode(',', $id));
 
 		if (empty($items))
 		{

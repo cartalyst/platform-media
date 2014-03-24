@@ -2,8 +2,8 @@
 
 {{-- Page title --}}
 @section('title')
-{{{ trans('platform/media::general.update') }}} ::
-@parent
+	@parent
+	: {{{ trans('platform/media::general.update') }}}
 @stop
 
 {{-- Queue assets --}}

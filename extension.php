@@ -232,15 +232,10 @@ return [
 
 		App::before(function()
 		{
-			Route::group(['namespace' => 'Platform\Media\Controllers\Frontend'], function()
+			Route::group(['prefix' => 'media', 'namespace' => 'Platform\Media\Controllers\Frontend'], function()
 			{
-				Route::get('cache/media/{id}', 'MediaController@cached')->where('id', '.*?');
-
-				Route::group(['prefix' => 'media'], function()
-				{
-					Route::get('download/{id}', 'MediaController@download')->where('id', '.*?');
-					Route::get('{id}', 'MediaController@view')->where('id', '.*?');
-				});
+				Route::get('download/{id}', 'MediaController@download')->where('id', '.*?');
+				Route::get('{id}', 'MediaController@view')->where('id', '.*?');
 			});
 		});
 	},
