@@ -72,7 +72,7 @@
 
 						<% } else { %>
 
-						<li><a data-grid="main" data-page="<%= i %>"><%= i %></a></li>
+						<li><a href="#" data-grid="main" data-page="<%= i %>"><%= i %></a></li>
 
 						<% } %>
 
@@ -80,9 +80,9 @@
 
 					<% if (p.nextPage !== null) { %>
 
-						<li><a data-grid="main" data-page="<%= p.nextPage %>"><i class="fa fa-chevron-right"></i></a></li>
+						<li><a href="#" data-grid="main" data-page="<%= p.nextPage %>"><i class="fa fa-chevron-right"></i></a></li>
 
-						<li><a data-grid="main" data-page="<%= p.totalPages %>"><i class="fa fa-angle-double-right"></i></a></li>
+						<li><a href="#" data-grid="main" data-page="<%= p.totalPages %>"><i class="fa fa-angle-double-right"></i></a></li>
 
 					<% } else { %>
 
