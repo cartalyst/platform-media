@@ -63,11 +63,11 @@ interface MediaRepositoryInterface {
 	/**
 	 * Determine if the given file is valid for upload.
 	 *
-	 * @param  Symfony\Component\HttpFoundation\File\UploadedFile  $file
+	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $file
 	 * @return bool
-	 * @throws Cartalyst\Media\Exceptions\InvalidFileException
-	 * @throws Cartalyst\Media\Exceptions\MaxFileSizeExceededException
-	 * @throws Cartalyst\Media\Exceptions\InvalidMimeTypeException
+	 * @throws \Cartalyst\Media\Exceptions\InvalidFileException
+	 * @throws \Cartalyst\Media\Exceptions\MaxFileSizeExceededException
+	 * @throws \Cartalyst\Media\Exceptions\InvalidMimeTypeException
 	 */
 	public function validForUpload(UploadedFile $file);
 
@@ -83,7 +83,7 @@ interface MediaRepositoryInterface {
 	/**
 	 * Upload the given file.
 	 *
-	 * @param  Symfony\Component\HttpFoundation\File\UploadedFile  $file
+	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $file
 	 * @return bool
 	 */
 	public function upload(UploadedFile $file);
@@ -114,7 +114,7 @@ interface MediaRepositoryInterface {
 	public function delete($id);
 
 	/**
-	 * Return the occurred error.
+	 * Returns the occurred error.
 	 *
 	 * @return string
 	 */

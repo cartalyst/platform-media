@@ -18,14 +18,13 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Media\Exceptions\FileExistsException;
 use Cartalyst\Media\Exceptions\InvalidFileException;
 use Cartalyst\Media\Exceptions\InvalidMimeTypeException;
 use Cartalyst\Media\Exceptions\MaxFileSizeExceededException;
-use Config;
 use Event;
 use File;
 use Lang;
-use League\Flysystem\FileExistsException;
 use Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Validator;
@@ -56,7 +55,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	protected $error;
 
 	/**
-	 * Start it up.
+	 * Constructor.
 	 *
 	 * @param  string  $model
 	 * @return void
@@ -112,7 +111,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	{
 		$tags = [];
 
-		foreach ($this->createModel()->lists('tags') as $_tags)
+		foreach ($this->createModel()->newQuery()->lists('tags') as $_tags)
 		{
 			$tags = array_merge($_tags, $tags);
 		}
@@ -168,7 +167,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 			{
 				$imageSize = $uploaded->getImageSize();
 
-				$media = $this->createModel()->create([
+				$media = $this->create([
 					'name'      => $file->getClientOriginalName(),
 					'path'      => $uploaded->getPath(),
 					'extension' => $uploaded->getExtension(),
@@ -179,9 +178,9 @@ class DbMediaRepository implements MediaRepositoryInterface {
 					'height'    => $imageSize['height'],
 					'tags'      => $tags,
 				]);
-
-				Event::fire('platform.media.uploaded', [$media, $uploaded, $file]);
 			}
+
+			Event::fire('platform.media.uploaded', [$media, $uploaded, $file]);
 
 			return $media->toArray();
 		}
@@ -294,9 +293,7 @@ class DbMediaRepository implements MediaRepositoryInterface {
 	 */
 	protected function validateMedia($data, $id = null)
 	{
-		$rules = $this->rules;
-
-		$validator = Validator::make($data, $rules);
+		$validator = Validator::make($data, $this->rules);
 
 		$validator->passes();
 

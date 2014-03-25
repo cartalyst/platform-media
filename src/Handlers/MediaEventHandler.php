@@ -35,8 +35,8 @@ class MediaEventHandler {
 
 		if ($file->isImage())
 		{
-			$width = 245;
-			$height = 200;
+			$width = 40;
+			$height = 40;
 
 			$extension = $file->getExtension();
 
@@ -49,7 +49,7 @@ class MediaEventHandler {
 			$data = Media::getFileSystem()->read($file->getPath());
 
 			$img = Image::make($data)
-				->resize(null, $height, true, false)
+				->resize($width, $height)
 				->save(media_cache_path($path));
 
 			$media->thumbnail = $path;

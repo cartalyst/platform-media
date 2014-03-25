@@ -8,84 +8,119 @@
 
 {{-- Queue assets --}}
 {{ Asset::queue('dropzone.css', 'platform/media::css/dropzone.css') }}
-{{ Asset::queue('media', 'platform/media::css/media.less') }}
 {{ Asset::queue('selectize', 'selectize/css/selectize.css', 'styles') }}
 
 {{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
 {{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'underscore') }}
+{{ Asset::queue('moment', 'moment/js/moment.js') }}
 {{ Asset::queue('dropzone.js', 'platform/media::js/dropzone/dropzone.js') }}
-{{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', 'dropzone') }}
+{{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', ['jquery', 'dropzone']) }}
 {{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
 
 {{-- Inline scripts --}}
 @section('scripts')
 @parent
 <script>
-$(function() {
-
-	var datagrid = $.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
-		loader: '.loading',
-		paginationType: 'single',
-		defaultSort: {
-			column: 'created_at',
-			direction: 'desc'
-		},
-		dividend: 1,
-		threshold: 1,
-		throttle: 24,
-		callback: function() {
-
-			$('.tip').tooltip({animation: false});
-
-			if ( ! $('input:checkbox').is(':checked'))
+	jQuery(document).ready(function($)
+	{
+		var dg = $.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
+			loader: '.loading',
+			scroll: '.data-grid',
+			callback: function()
 			{
-				$('[data-media-sidebar], [data-media-groups]').addClass('hide');
+				$('#checkAll').prop('checked', false);
+
+				$('#actions').prop('disabled', true);
 			}
+		});
 
-		}
+		$('#checkAll').click(function()
+		{
+			$('input:checkbox').not(this).prop('checked', this.checked);
+
+			var status = $('input[name="entries[]"]:checked').length > 0;
+
+			$('#actions').prop('disabled', ! status);
+		});
+
+		$(document).on('click', 'input[name="entries[]"]', function()
+		{
+			var status = $('input[name="entries[]"]:checked').length > 0;
+
+			$('#actions').prop('disabled', ! status);
+		});
+
+		$(document).on('click', '[data-action]', function(e)
+		{
+			e.preventDefault();
+
+			var action = $(this).data('action');
+
+			var url = '{{ URL::toAdmin('media') }}';
+
+			var entries = $.map($('input[name="entries[]"]:checked'), function(e, i)
+			{
+				return +e.value;
+			});
+
+			if (action == 'email')
+			{
+				window.location = url + '/' + entries.join(',') + '/email';
+			}
+			else
+			{
+				$.ajax({
+					type: 'POST',
+					url: url,
+					data: {
+						action : action,
+						entries: entries
+					},
+					success: function(response)
+					{
+						dg.refresh();
+					}
+				});
+			}
+		});
+
+		$.mediamanager('#mediaUploader', {
+			updateUrl : '{{ URL::toAdmin('media/:id/edit') }}',
+			deleteUrl : '{{ URL::toAdmin('media/:id/delete') }}',
+			onSuccess : function(response)
+			{
+				dg.refresh();
+			}
+		});
+
+		$('#tags').selectize({
+			maxItems: 4,
+			create: true
+		});
 	});
 
-	$.mediamanager('#mediaUploader', {
-		updateUrl : '{{ URL::toAdmin('media/:id/edit') }}',
-		deleteUrl : '{{ URL::toAdmin('media/:id/delete') }}',
-		onSuccess : function(response) {
+	function bytesToSize(bytes)
+	{
+		if (bytes === 0) return '0 Bytes';
 
-			datagrid.refresh();
+		var k = 1000;
 
-		}
-	});
+		var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
-	$('.data-grid_pagination').on('click', 'a', function() {
+		var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)), 10);
 
-		$(document.body).animate({ scrollTop: $('.data-grid').offset().top }, 200);
-
-	});
-
-	$('#tags').selectize({
-		maxItems: 4,
-		create: true
-	});
-
-});
-
-function bytesToSize(bytes)
-{
-	var k = 1000;
-
-	var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-
-	if (bytes === 0) return '0 Bytes';
-
-	var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)),10);
-
-	return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
-}
+		return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+	}
 </script>
 @stop
 
 {{-- Inline styles --}}
 @section('styles')
 @parent
+<style type="text/css">
+tr { cursor: default; }
+.highlight { background: lightblue; }
+</style>
 @stop
 
 {{-- Page content --}}
@@ -94,7 +129,20 @@ function bytesToSize(bytes)
 {{-- Page header --}}
 <div class="page-header">
 
-	<div class="pull-right">
+	<h1>{{{ trans('platform/media::general.title') }}}</h1>
+
+</div>
+
+<div class="row">
+
+	<div class="col-lg-6">
+
+		{{-- Data Grid : Applied Filters --}}
+		<div class="data-grid_applied" data-grid="main"></div>
+
+	</div>
+
+	<div class="col-lg-6 text-right">
 
 		<form method="post" action="" accept-charset="utf-8" data-search data-grid="main" class="form-inline" role="form">
 
@@ -104,107 +152,72 @@ function bytesToSize(bytes)
 
 			</div>
 
-			<div class="form-group" style="display:none;">
-				<select class="form-control" name="column">
-					<option value="all">{{{ trans('general.all') }}}</option>
-					<option value="name">{{{ trans('platform/media::table.file_name') }}}</option>
-					<option value="mime">{{{ trans('platform/media::table.mime') }}}</option>
-				</select>
+			@if ( ! empty($tags))
+			<div class="btn-group text-left">
+
+				<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+					Tags <span class="caret"></span>
+				</button>
+
+				<ul class="dropdown-menu" role="menu">
+					@foreach ($tags as $tag)
+					<li><a href="#" data-grid="main" data-filter="tags:{{{ $tag }}}">{{{ $tag }}}</a></li>
+					@endforeach
+				</ul>
+
+			</div>
+			@endif
+
+			<div class="btn-group text-left">
+
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					{{{ trans('general.filters') }}} <span class="caret"></span>
+				</button>
+
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="#" data-grid="main" data-filter-reset>{{{ trans('general.show_all') }}}</a></li>
+					<li><a href="#" data-grid="main" data-filter="private:0" data-label="private::Show Public" data-filter-reset>Show Public</a></li>
+					<li><a href="#" data-grid="main" data-filter="private:1" data-label="private::Show Private" data-filter-reset>Show Private</a></li>
+				</ul>
+
 			</div>
 
-			<div class="form-group">
+			<div class="form-group has-feedback">
+
 				<input name="filter" type="text" placeholder="{{{ trans('general.search') }}}" class="form-control">
+
+				<span class="glyphicon fa fa-search form-control-feedback"></span>
+
 			</div>
 
-			<button class="btn btn-default"><i class="fa fa-search"></i></button>
-
-			<button class="btn btn-info" data-toggle="modal" data-target="#mediaModal"><i class="fa fa-plus"></i> Upload</button>
+			<a href="#" class="btn btn-info" data-toggle="modal" data-target="#mediaModal"><i class="fa fa-plus"></i> {{{ trans('button.upload') }}}</a>
 
 		</form>
 
 	</div>
 
-	<h1>{{{ trans('platform/media::general.title') }}}</h1>
-
 </div>
 
-<div class="row">
+<br />
 
-	<div class="col-xs-12 col-sm-9">
-		<div class="data-grid" data-source="{{ URL::toAdmin('media/grid') }}" data-grid="main"></div>
-	</div>
+<table data-source="{{ URL::toAdmin('media/grid') }}" data-grid="main" class="data-grid table _table-striped table-bordered _table-hover">
+	<thead>
+		<tr>
+			<th class="_hide"><input type="checkbox" name="checkAll" id="checkAll"></th>
+			<th data-sort="name" class="sortable" colspan="2">Name</th>
+			<th data-sort="created_at" class="col-md-3 sortable">Uploaded At</th>
+		</tr>
+	</thead>
+	<tbody></tbody>
+</table>
 
-	<div class="col-xs-6 col-sm-3">
+{{-- Data Grid : Pagination --}}
+<div class="data-grid_pagination" data-grid="main"></div>
 
-		{{-- Data Grid : Applied Filters --}}
-		<div class="data-grid_applied" data-grid="main"></div>
-
-		@if (count($tags) > 0)
-		<span data-media-tags>
-
-			<h4># Tags</h4>
-
-			@foreach ($tags as $tag)
-			<span class="label label-info" style="cursor: pointer;" data-filter="tags:{{{ $tag }}}" data-grid="main">{{{ $tag }}}</span>
-			@endforeach
-
-		</span>
-		@endif
-
-		<span data-media-sidebar class="hide">
-
-			@if (count($tags) > 0)<hr />@endif
-
-			<h4><span data-media-total-selected></span> selected</h4>
-
-			<div class="form-group">
-
-				<select name="private" id="private" class="form-control">
-					<option value="0">Public</option>
-					<option value="1">Private</option>
-				</select>
-
-			</div>
-
-			<div class="form-group hide" data-media-groups>
-
-				<div class="controls">
-					<select name="groups[]" id="groups" class="form-control" multiple="true">
-					@foreach ($groups as $group)
-						<option value="{{{ $group->id }}}">{{{ $group->name }}}</option>
-					@endforeach
-					</select>
-				</div>
-
-			</div>
-
-			<div class="form-actions">
-
-				<button data-media-update-selected id="update-selected" type="submit" class="btn btn-info btn-xs">Save changes</button>
-
-				<button data-media-delete-selected id="delete-selected" type="submit" class="btn btn-danger btn-xs">{{{ trans('button.delete_selected') }}}</button>
-
-			</div>
-
-		</span>
-
-	</div>
-
-	<div class="clearfix"></div>
-
-	{{-- Data Grid : Pagination --}}
-	<div class="col-lg-12">
-
-		<div class="data-grid_pagination" data-grid="main"></div>
-
-	</div>
-
-</div>
-
-@include('platform/media::data-grid-tmpl')
-@include('platform/media::data-grid_pagination-tmpl')
-@include('platform/media::data-grid_applied-tmpl')
-@include('platform/media::data-grid_no-results-tmpl')
+@include('platform/media::grid/results')
+@include('platform/media::grid/pagination')
+@include('platform/media::grid/filters')
+@include('platform/media::grid/no-results')
 
 <div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="mediaModalLabel" aria-hidden="true">
 

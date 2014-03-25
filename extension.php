@@ -190,13 +190,27 @@ return [
 			}
 		}
 
+		if ( ! function_exists('formatBytes'))
+		{
+			function formatBytes($size, $precision = 2)
+			{
+				$base = log($size) / log(1024);
+
+				$suffixes = ['', 'KB', 'MB', 'GB', 'TB'];
+
+				$suffix = $suffixes[floor($base)];
+
+				return round(pow(1024, $base - floor($base)), $precision) . " {$suffix}";
+			}
+		}
+
 		// Register @media blade extension
 		$blade = $app['view']->getEngineResolver()->resolve('blade')->getCompiler();
 		$blade->extend(function($value) use ($blade)
 		{
 			$matcher = '/(\s*)@media(\(.*?\)\s*)/';
 
-			return preg_replace($matcher, "<?php echo with(new Platform\Media\Widgets\Media(app('Platform\Media\Repositories\MediaRepositoryInterface')))->show$2; ?>", $value);
+			return preg_replace($matcher, '<?php echo Widget::make("platform/media::media.show", array$2); ?>', $value);
 		});
 	},
 
@@ -220,24 +234,22 @@ return [
 		Route::group(['prefix' => admin_uri().'/media', 'namespace' => 'Platform\Media\Controllers\Admin'], function()
 		{
 			Route::get('/', 'MediaController@index');
+			Route::post('/', 'MediaController@executeAction');
 			Route::get('grid', 'MediaController@grid');
 			Route::post('upload', 'MediaController@upload');
 			Route::get('{id}/edit', 'MediaController@edit');
 			Route::post('{id}/edit', 'MediaController@update');
+			Route::get('{id}/email', 'MediaMailerController@email');
+			Route::post('{id}/email', 'MediaMailerController@process');
 			Route::post('{id}/delete', 'MediaController@delete');
 		});
 
 		App::before(function()
 		{
-			Route::group(['namespace' => 'Platform\Media\Controllers\Frontend'], function()
+			Route::group(['prefix' => 'media', 'namespace' => 'Platform\Media\Controllers\Frontend'], function()
 			{
-				Route::get('cache/media/{id}', 'MediaController@cached')->where('id', '.*?');
-
-				Route::group(['prefix' => 'media'], function()
-				{
-					Route::get('download/{id}', 'MediaController@download')->where('id', '.*?');
-					Route::get('{id}', 'MediaController@view')->where('id', '.*?');
-				});
+				Route::get('download/{id}', 'MediaController@download')->where('id', '.*?');
+				Route::get('{id}', 'MediaController@view')->where('id', '.*?');
 			});
 		});
 	},

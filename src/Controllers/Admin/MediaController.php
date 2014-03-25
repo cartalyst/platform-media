@@ -21,12 +21,14 @@
 use DataGrid;
 use Input;
 use Lang;
+use Media;
 use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Media\Repositories\MediaRepositoryInterface;
+use Platform\Users\Repositories\GroupRepositoryInterface;
+use Platform\Users\Repositories\UserRepositoryInterface;
 use Redirect;
 use Response;
 use Request;
-use Sentry;
 use View;
 
 class MediaController extends AdminController {
@@ -34,10 +36,10 @@ class MediaController extends AdminController {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected $csrfWhitelist = array(
-		'update',
-		'delete',
-	);
+	protected $csrfWhitelist = [
+		'executeAction',
+		//'update',
+	];
 
 	/**
 	 * Media repository.
@@ -47,16 +49,49 @@ class MediaController extends AdminController {
 	protected $media;
 
 	/**
+	 * The Users repository.
+	 *
+	 * @var \Platform\Users\Repositories\UserRepositoryInterface
+	 */
+	protected $users;
+
+	/**
+	 * The Users Groups repository.
+	 *
+	 * @var \Platform\Users\Repositories\GroupRepositoryInterface
+	 */
+	protected $groups;
+
+	/**
+	 * Holds all the mass actions we can execute.
+	 *
+	 * @var array
+	 */
+	protected $actions = [
+		'delete',
+	];
+
+	/**
 	 * Constructor.
 	 *
 	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
+	 * @param  \Platform\Users\Repositories\UserRepositoryInterface  $users
+	 * @param  \Platform\Users\Repositories\GroupRepositoryInterface  $groups
 	 * @return void
 	 */
-	public function __construct(MediaRepositoryInterface $media)
+	public function __construct(
+		MediaRepositoryInterface $media,
+		UserRepositoryInterface $users,
+		GroupRepositoryInterface $groups
+	)
 	{
 		parent::__construct();
 
 		$this->media = $media;
+
+		$this->users = $users;
+
+		$this->groups = $groups;
 	}
 
 	/**
@@ -70,7 +105,7 @@ class MediaController extends AdminController {
 		$tags = $this->media->getTags();
 
 		// Get a list of all the available groups
-		$groups = Sentry::getGroupRepository()->createModel()->all();
+		$groups = $this->groups->findAll();
 
 		// Show the page
 		return View::make('platform/media::index', compact('tags', 'groups'));
@@ -83,19 +118,29 @@ class MediaController extends AdminController {
 	 */
 	public function grid()
 	{
-		return DataGrid::make($this->media->grid(), array(
+		$data = $this->media->grid();
+
+		$columns = [
 			'id',
+			'tags',
 			'name',
 			'mime',
 			'path',
 			'size',
 			'private',
-			'groups',
+			//'groups',
 			'is_image',
-			'extension',
+			//'extension',
 			'thumbnail',
 			'created_at',
-		));
+		];
+
+		$settings = [
+			'sort'      => 'created_at',
+			'direction' => 'desc',
+		];
+
+		return DataGrid::make($data, $columns, $settings);
 	}
 
 	/**
@@ -107,7 +152,7 @@ class MediaController extends AdminController {
 	{
 		$file = Input::file('file');
 
-		$tags = Input::get('tags', array());
+		$tags = Input::get('tags', []);
 
 		if ($this->media->validForUpload($file))
 		{
@@ -131,14 +176,16 @@ class MediaController extends AdminController {
 		// Get the media information
 		if ( ! $media = $this->media->find($id))
 		{
-			return Redirect::toAdmin('media')->withErrors(Lang::get('platform/media::message.not_found', compact('id')));
+			$message = Lang::get('platform/media::message.not_found', compact('id'));
+
+			return Redirect::toAdmin('media')->withErrors($message);
 		}
 
 		// Get a list of all the available tags
 		$tags = $this->media->getTags();
 
 		// Get a list of all the available groups
-		$groups = Sentry::getGroupRepository()->createModel()->all();
+		$groups = $this->groups->findAll();
 
 		// Show the page
 		return View::make('platform/media::form', compact('media', 'tags', 'groups'));
@@ -152,7 +199,7 @@ class MediaController extends AdminController {
 	 */
 	public function update($id)
 	{
-		Input::merge(array('groups' => Input::get('groups', array())));
+		Input::merge(['groups' => Input::get('groups', [])]);
 
 		$input = Input::except('file');
 
@@ -165,7 +212,9 @@ class MediaController extends AdminController {
 					return Response::json('success');
 				}
 
-				return Redirect::toAdmin('media')->withSuccess(Lang::get('platform/media::message.success.update'));
+				$message = Lang::get('platform/media::message.success.update');
+
+				return Redirect::toAdmin('media')->withSuccess($message);
 			}
 		}
 
@@ -178,20 +227,25 @@ class MediaController extends AdminController {
 	}
 
 	/**
-	 * Remove the specified media.
+	 * Executes the mass action.
 	 *
-	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function delete($id = null)
+	public function executeAction()
 	{
-		// Delete the media
-		if ($this->media->delete($id))
+		$action = Input::get('action');
+
+		if (in_array($action, $this->actions))
 		{
-			return Response::json('success');
+			foreach (Input::get('entries', []) as $entry)
+			{
+				$this->media->{$action}($entry);
+			}
+
+			return Response::json('Success');
 		}
 
-		return Response::json($this->media->getError(), 400);
+		return Response::json('Failed', 500);
 	}
 
 }

@@ -55,20 +55,15 @@ class MediaController extends BaseController {
 	 */
 	public function view($path)
 	{
-		if ( ! $media = $this->media->findByPath($path))
-		{
-			throw new HttpException(404, 'Media does not exist.');
-		}
-
-		$this->checkPermission($media);
+		$media = $this->getMedia($path);
 
 		$file = Media::getFileSystem()->read($media->path);
 
-		$response = Response::make($file, 200);
+		$headers = [
+			'Content-Type' => $media->mime,
+		];
 
-		$response->header('Content-Type', $media->mime);
-
-		return $response;
+		return $this->respond($file, $headers);
 	}
 
 	/**
@@ -79,54 +74,45 @@ class MediaController extends BaseController {
 	 */
 	public function download($path)
 	{
-		if ( ! $media = $this->media->findByPath($path))
-		{
-			throw new HttpException(404, 'Media does not exist.');
-		}
-
-		$this->checkPermission($media);
+		$media = $this->getMedia($path);
 
 		$file = Media::getFileSystem()->read($media->path);
 
-		$response = Response::make($file, 200);
+		$headers = [
+			'Connection'          => 'close',
+			'Content-Disposition' => 'attachment; filename="'.$media->name.'"',
+			'Content-Length'      => strlen($file),
+			'Content-Type'        => $media->mime,
+		];
 
-		$response->header('Content-Disposition', 'attachment; filename="'.$media->name.'"');
-		$response->header('Content-Type', $media->mime);
-		$response->header('Content-Length', strlen($file));
-		$response->header('Connection', 'close');
-
-		return $response;
+		return $this->respond($file, $headers);
 	}
 
-	public function cached($path)
+	/**
+	 * Grabs the media file by its path and determines if the
+	 * logged in user  has access to the media file.
+	 *
+	 * @param  string  $path
+	 * @return \Platform\Media\Media
+	 */
+	protected function getMedia($path)
 	{
 		if ( ! $media = $this->media->findByPath($path))
 		{
 			throw new HttpException(404, 'Media does not exist.');
 		}
-		echo $path;
-	}
 
-	/**
-	 * Determines if the logged in user has access
-	 * to the given media file.
-	 *
-	 * @param  \Platform\Media\Media  $media
-	 * @return bool
-	 */
-	protected function checkPermission($media)
-	{
 		if ($media->private)
 		{
 			$pass = false;
 
-			if (Sentry::check())
+			if ($user = Sentry::check())
 			{
 				$pass = true;
 
 				$mediaGroups = $media->groups;
 
-				$userGroups = Sentry::getUser()->groups->lists('id');
+				$userGroups = $user->groups->lists('id');
 
 				if ( ! empty($mediaGroups) and ! array_intersect($mediaGroups, $userGroups))
 				{
@@ -139,6 +125,27 @@ class MediaController extends BaseController {
 				throw new HttpException(403, "You don't have permission to access this file.");
 			}
 		}
+
+		return $media;
+	}
+
+	/**
+	 * Sends the response with the appropriate headers.
+	 *
+	 * @param  string  $file
+	 * @param  array  $headers
+	 * @return \Illuminate\Http\Response
+	 */
+	protected function respond($file, $headers = [])
+	{
+		$response = Response::make($file, 200);
+
+		foreach ($headers as $name => $value)
+		{
+			$response->header($name, $value);
+		}
+
+		return $response;
 	}
 
 }
