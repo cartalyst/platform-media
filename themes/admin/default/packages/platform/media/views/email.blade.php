@@ -83,57 +83,71 @@
 					<div class="media-body">
 						<h4 class="media-heading">{{{ Str::limit($item->name, 30) }}}</h4>
 
-						{{{ $item->size }}}
+						{{{ formatBytes($item->size) }}}
 					</div>
 
 				</div>
 
 				@endforeach
 
-			</div>
+				<div>
+					<hr />
 
-		</div>
-
-		<div class="col-lg-4">
-
-			<div class="form-group">
-
-				<label class="control-label" for="users">Users</label>
-
-				<select name="users[]" id="users"></select>
+					Total: {{{ formatBytes($total) }}}
+				</div>
 
 			</div>
 
 		</div>
 
-		<div class="col-lg-4">
+		<div class="col-lg-8">
 
-			<div class="form-group">
+			<div class="row">
 
-				<label class="control-label" for="groups">Groups</label>
+				<div class="col-lg-6">
 
-				<select name="groups[]" id="groups">
-					<option></option>
-				@foreach ($groups as $group)
-					<option value="{{{ $group->id }}}">{{{ $group->name }}}</option>
-				@endforeach
-				</select>
+					<div class="form-group">
+
+						<label class="control-label" for="users">Users</label>
+
+						<select name="users[]" id="users"></select>
+
+					</div>
+
+				</div>
+
+				<div class="col-lg-6">
+
+					<div class="form-group">
+
+						<label class="control-label" for="groups">Groups</label>
+
+						<select name="groups[]" id="groups">
+							<option></option>
+						@foreach ($groups as $group)
+							<option value="{{{ $group->id }}}">{{{ $group->name }}}</option>
+						@endforeach
+						</select>
+
+					</div>
+
+				</div>
 
 			</div>
-
-		</div>
-
-	</div>
-
-	{{-- Form actions --}}
-	<div class="row">
-
-		<div class="col-lg-12">
 
 			{{-- Form actions --}}
-			<div class="form-group">
+			<div class="row">
 
-				<button class="btn btn-success" type="submit">Send Email</button>
+				<div class="col-lg-8">
+
+					{{-- Form actions --}}
+					<div class="form-group">
+
+						<button class="btn btn-success" type="submit">Send Email</button>
+
+					</div>
+
+				</div>
 
 			</div>
 

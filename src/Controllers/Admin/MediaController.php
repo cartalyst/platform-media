@@ -18,10 +18,13 @@
  * @link       http://cartalyst.com
  */
 
+use Config;
 use DataGrid;
 use Illuminate\Database\Eloquent\Collection;
 use Input;
 use Lang;
+use Mail;
+use Media;
 use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 use Platform\Users\Repositories\GroupRepositoryInterface;
@@ -128,9 +131,9 @@ class MediaController extends AdminController {
 			'path',
 			'size',
 			'private',
-			'groups',
+			//'groups',
 			'is_image',
-			'extension',
+			//'extension',
 			'thumbnail',
 			'created_at',
 		];
@@ -248,8 +251,12 @@ class MediaController extends AdminController {
 		return Response::json('Failed', 500);
 	}
 
-
-
+	/**
+	 *
+	 *
+	 * @param  mixed  $id
+	 * @return \Illuminate\View\View
+	 */
 	public function email($id)
 	{
 		$items = $this->getEmailItems($id);
@@ -259,13 +266,24 @@ class MediaController extends AdminController {
 			return Redirect::toAdmin('media');
 		}
 
+		$total = array_sum(array_map(function($item)
+		{
+			return $item->size;
+		}, $items));
+
 		$users = $this->users->findAll();
 
 		$groups = $this->groups->findAll();
 
-		return View::make('platform/media::email', compact('items', 'users', 'groups'));
+		return View::make('platform/media::email', compact('items', 'total', 'users', 'groups'));
 	}
 
+	/**
+	 *
+	 *
+	 * @param  mixed  $id
+	 * @return \Illuminate\Http\Response
+	 */
 	public function processEmail($id)
 	{
 		$items = $this->getEmailItems($id);
@@ -274,6 +292,15 @@ class MediaController extends AdminController {
 		{
 			return Redirect::toAdmin('media');
 		}
+
+		$view = "platform/media::emails/email";
+
+		$subject = "Some subject";
+
+		$from = array(
+			'email' => Config::get('mail.from.address'),
+			'name'  => Config::get('mail.from.name')
+		);
 
 		// Prepare the recipients
 		$recipients = new Collection;
@@ -290,20 +317,42 @@ class MediaController extends AdminController {
 		{
 			if ($group = $this->groups->find($groupId))
 			{
-				$recipients->add($group);
+				foreach ($group->users as $user)
+				{
+					$recipients->add($user);
+				}
 			}
+		}
+
+		if ($recipients->isEmpty())
+		{
+			$message = "You haven't selected any recipients.";
+
+			return Redirect::toAdmin("media/{$id}/email")->withErrors($message);
 		}
 
 		// Prepare the attachments
 		$attachments = array_filter(array_map(function($attachment)
 		{
-			return \Media::getFile($attachment->path)->getFullpath();
+			return [
+				Media::getFile($attachment->path)->getFullpath(),
+				['mime' => $attachment->mime],
+			];
 		}, $items));
 
+		foreach ($recipients as $recipient)
+		{
+			//if ( ! $recipient->email || ! $recipient->name) continue;
 
-		# do the mailing stuff
-		# make sure we pass the config data regarding the max attachment size
+			$to = array(
+				'email' => $recipient->email,
+				'name'  => "{$recipient->first_name} {$recipient->last_name}",
+			);
 
+			$this->send($view, $subject, $from, $to, [], $attachments);
+		}
+
+		return Redirect::toAdmin('media')->withSuccess('Email succesfully sent.');
 	}
 
 	protected function getEmailItems($id)
@@ -312,6 +361,31 @@ class MediaController extends AdminController {
 		{
 			return $this->media->find($item);
 		}, explode(',', $id)));
+	}
+
+
+	protected function send($view, $subject, $from, $to, $data = [], $attachments = [])
+	{
+		return Mail::send($view, $data, function($mail) use ($subject, $from, $to, $attachments)
+		{
+			$mail->from($from['email'], $from['name']);
+
+			$mail->to($to['email'], $to['name']);
+
+			$mail->subject($subject);
+
+			foreach ($attachments as $attachment)
+			{
+				$options = [];
+
+				if (is_array($attachment))
+				{
+					list($attachment, $options) = $attachment;
+				}
+
+				$mail->attach($attachment, $options);
+			}
+		});
 	}
 
 }
