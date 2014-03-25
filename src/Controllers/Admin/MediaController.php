@@ -19,14 +19,16 @@
  */
 
 use DataGrid;
+use Illuminate\Database\Eloquent\Collection;
 use Input;
 use Lang;
 use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Media\Repositories\MediaRepositoryInterface;
+use Platform\Users\Repositories\GroupRepositoryInterface;
+use Platform\Users\Repositories\UserRepositoryInterface;
 use Redirect;
 use Response;
 use Request;
-use Sentry;
 use View;
 
 class MediaController extends AdminController {
@@ -47,6 +49,20 @@ class MediaController extends AdminController {
 	protected $media;
 
 	/**
+	 * The Users repository.
+	 *
+	 * @var \Platform\Users\Repositories\UserRepositoryInterface
+	 */
+	protected $users;
+
+	/**
+	 * The Users Groups repository.
+	 *
+	 * @var \Platform\Users\Repositories\GroupRepositoryInterface
+	 */
+	protected $groups;
+
+	/**
 	 * Holds all the mass actions we can execute.
 	 *
 	 * @var array
@@ -59,13 +75,23 @@ class MediaController extends AdminController {
 	 * Constructor.
 	 *
 	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
+	 * @param  \Platform\Users\Repositories\UserRepositoryInterface  $users
+	 * @param  \Platform\Users\Repositories\GroupRepositoryInterface  $groups
 	 * @return void
 	 */
-	public function __construct(MediaRepositoryInterface $media)
+	public function __construct(
+		MediaRepositoryInterface $media,
+		UserRepositoryInterface $users,
+		GroupRepositoryInterface $groups
+	)
 	{
 		parent::__construct();
 
 		$this->media = $media;
+
+		$this->users = $users;
+
+		$this->groups = $groups;
 	}
 
 	/**
@@ -79,7 +105,7 @@ class MediaController extends AdminController {
 		$tags = $this->media->getTags();
 
 		// Get a list of all the available groups
-		$groups = Sentry::getGroupRepository()->createModel()->all();
+		$groups = $this->groups->findAll();
 
 		// Show the page
 		return View::make('platform/media::index', compact('tags', 'groups'));
@@ -159,7 +185,7 @@ class MediaController extends AdminController {
 		$tags = $this->media->getTags();
 
 		// Get a list of all the available groups
-		$groups = Sentry::getGroupRepository()->createModel()->all();
+		$groups = $this->groups->findAll();
 
 		// Show the page
 		return View::make('platform/media::form', compact('media', 'tags', 'groups'));
@@ -226,17 +252,66 @@ class MediaController extends AdminController {
 
 	public function email($id)
 	{
-		$items = array_map(function($item)
-		{
-			return $this->media->find($item);
-		}, explode(',', $id));
+		$items = $this->getEmailItems($id);
 
 		if (empty($items))
 		{
 			return Redirect::toAdmin('media');
 		}
 
-		return View::make('platform/media::email', compact('items'));
+		$users = $this->users->findAll();
+
+		$groups = $this->groups->findAll();
+
+		return View::make('platform/media::email', compact('items', 'users', 'groups'));
+	}
+
+	public function processEmail($id)
+	{
+		$items = $this->getEmailItems($id);
+
+		if (empty($items))
+		{
+			return Redirect::toAdmin('media');
+		}
+
+		// Prepare the recipients
+		$recipients = new Collection;
+
+		foreach (Input::get('users', []) as $email)
+		{
+			if ($user = $this->users->findByEmail($email))
+			{
+				$recipients->add($user);
+			}
+		}
+
+		foreach (Input::get('groups', []) as $groupId)
+		{
+			if ($group = $this->groups->find($groupId))
+			{
+				$recipients->add($group);
+			}
+		}
+
+		// Prepare the attachments
+		$attachments = array_filter(array_map(function($attachment)
+		{
+			return \Media::getFile($attachment->path)->getFullpath();
+		}, $items));
+
+
+		# do the mailing stuff
+		# make sure we pass the config data regarding the max attachment size
+
+	}
+
+	protected function getEmailItems($id)
+	{
+		return array_filter(array_map(function($item)
+		{
+			return $this->media->find($item);
+		}, explode(',', $id)));
 	}
 
 }

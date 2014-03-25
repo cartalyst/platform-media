@@ -43,13 +43,15 @@
 
 				<br />
 
-				<small><%= bytesToSize(r.size) %></small>
+				<% if (r.private == 1) { %>
+					<i class="fa fa-lock"></i>
+				<% } else { %>
+					<i class="fa fa-unlock"></i>
+				<% } %>
 
 				&nbsp;
 
-				<% if (r.private == 1) { %>
-					<i class="fa fa-lock"></i>
-				<% } %>
+				<small><%= bytesToSize(r.size) %></small>
 
 			</td>
 			<td><%= moment(r.created_at).format('MMM DD, YYYY') %></td>
