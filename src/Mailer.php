@@ -13,7 +13,7 @@ class Mailer {
 	protected $subject = null;
 
 	/**
-	 *
+	 * The email from address.
 	 *
 	 * @var array
 	 */
@@ -41,14 +41,14 @@ class Mailer {
 	protected $data = [];
 
 	/**
-	 * Holds all the email attachments.
+	 * The email attachments.
 	 *
 	 * @var array
 	 */
 	protected $attachments = [];
 
 	/**
-	 * Holds all the email data attachments.
+	 * The email data attachments.
 	 *
 	 * @var array
 	 */
@@ -57,45 +57,22 @@ class Mailer {
 	/**
 	 * Returns the from address.
 	 *
-	 * @return string
+	 * @return array
 	 */
-	public function getFromAddress()
+	public function getFrom()
 	{
-		return array_get($this->from, 'address', null);
+		return $this->from;
 	}
 
 	/**
 	 * Sets the from address.
 	 *
-	 * @param  string  $address
+	 * @param  string  $from
 	 * @return self
 	 */
-	public function setFromAddress($address)
+	public function setFrom($from)
 	{
-		$this->from['address'] = $address;
-
-		return $this;
-	}
-
-	/**
-	 * Returns the from name.
-	 *
-	 * @return string
-	 */
-	public function getFromName()
-	{
-		return array_get($this->from, 'name', null);
-	}
-
-	/**
-	 * Sets the from name.
-	 *
-	 * @param  string  $name
-	 * @return self
-	 */
-	public function setFromName($name)
-	{
-		$this->from['name'] = $name;
+		$this->from = $from;
 
 		return $this;
 	}
@@ -135,7 +112,7 @@ class Mailer {
 	}
 
 	/**
-	 * Set multiple To recipients.
+	 * Sets multiple "To" recipients.
 	 *
 	 * @param  array  $recipients
 	 * @return self
@@ -146,7 +123,7 @@ class Mailer {
 	}
 
 	/**
-	 * Set a single To recipient.
+	 * Sets a single "To" recipient.
 	 *
 	 * @param  string  $email
 	 * @param  string  $name
@@ -158,7 +135,7 @@ class Mailer {
 	}
 
 	/**
-	 * Set multiple Cc recipients.
+	 * Sets multiple "Cc" recipients.
 	 *
 	 * @param  array  $recipients
 	 * @return self
@@ -169,7 +146,7 @@ class Mailer {
 	}
 
 	/**
-	 * Set a single Cc recipient.
+	 * Sets a single "Cc" recipient.
 	 *
 	 * @param  string  $email
 	 * @param  string  $name
@@ -181,7 +158,7 @@ class Mailer {
 	}
 
 	/**
-	 * Set multiple Bcc recipients.
+	 * Sets multiple "Bcc" recipients.
 	 *
 	 * @param  array  $recipients
 	 * @return self
@@ -192,7 +169,7 @@ class Mailer {
 	}
 
 	/**
-	 * Set a single Bcc recipient.
+	 * Sets a single "Bcc" recipient.
 	 *
 	 * @param  string  $email
 	 * @param  string  $name
@@ -229,53 +206,68 @@ class Mailer {
 	/**
 	 * Sends the email.
 	 *
-	 * @return bool
+	 * @return int
 	 */
 	public function send()
 	{
-		return Mail::send($this->view, $this->data, $this->prepare());
+		return Mail::send($this->view, $this->data, $this->prepareCallback());
 	}
 
-	public function queue()
+	/**
+	 * Queue a new e-mail message for sending.
+	 *
+	 * @param  string  $queue
+	 * @return int
+	 */
+	public function queue($queue = null)
 	{
-		return Mail::queue($this->view, $this->data, $this->prepare());
+		return Mail::queue($this->view, $this->data, $this->prepareCallback(), $queue);
 	}
 
-	public function queueOn($queueName)
+	/**
+	 * Queue a new e-mail message for sending on the given queue.
+	 *
+	 * @param  string  $queue
+	 * @return int
+	 */
+	public function queueOn($queue)
 	{
-		return Mail::queueOn($queueName, $this->view, $this->data, $this->prepare());
+		return Mail::queueOn($queue, $this->view, $this->data, $this->prepareCallback());
 	}
 
-	public function later($seconds)
+	/**
+	 * Queue a new e-mail message for sending after (n) seconds.
+	 *
+	 * @param  int  $delay
+	 * @return int
+	 */
+	public function later($delay)
 	{
-		return Mail::later($seconds, $this->view, $this->data, $this->prepare());
+		return Mail::later($delay, $this->view, $this->data, $this->prepareCallback());
 	}
 
-	protected function prepare()
+	/**
+	 * Prepares the email callback.
+	 *
+	 * @return \Closure
+	 */
+	protected function prepareCallback()
 	{
 		return function($mail)
 		{
 			$mail->subject($this->subject);
 
-			$fromAddress = array_get($this->from, 'address', Config::get('mail.from.address'));
+			$mail->from(
+				array_get($this->from, 'address', Config::get('mail.from.address')),
+				array_get($this->from, 'name', Config::get('mail.from.name'))
+			);
 
-			$fromName = array_get($this->from, 'name', Config::get('mail.from.name'));
-
-			$mail->from($fromAddress, $fromName);
-
-			foreach (array_get($this->recipients, 'to', []) as $recipient)
+			foreach ($this->recipients as $type => $recipients)
 			{
-				$mail->to($recipient['email'], $recipient['name']);
-			}
-
-			foreach (array_get($this->recipients, 'cc', []) as $recipient)
-			{
-				$mail->cc($recipient['email'], $recipient['name']);
-			}
-
-			foreach (array_get($this->recipients, 'bcc', []) as $recipient)
-			{
-				$mail->bcc($recipient['email'], $recipient['name']);
+				foreach ($recipients as $recipient)
+				{
+					$mail->{$type}($recipient['email'], $recipient['name']);
+				}
 			}
 
 			foreach ($this->attachments as $attachment)
@@ -304,20 +296,35 @@ class Mailer {
 		};
 	}
 
+	/**
+	 * Sets multiple recipients by type.
+	 *
+	 * @param  string  $type
+	 * @param  array  $recipients
+	 * @return self
+	 */
 	protected function setRecipients($type, array $recipients = [])
 	{
 		foreach ($recipients as $recipient)
 		{
-			$email = array_get($recipient, 'email');
-
-			$name = array_get($recipient, 'name');
-
-			$this->setRecipient($type, $email, $name);
+			$this->setRecipient(
+				$type,
+				array_get($recipient, 'email'),
+				array_get($recipient, 'name')
+			);
 		}
 
 		return $this;
 	}
 
+	/**
+	 * Sets a single recipient by type.
+	 *
+	 * @param  string  $type
+	 * @param  string  $email
+	 * @param  string  $name
+	 * @return self
+	 */
 	protected function setRecipient($type, $email, $name)
 	{
 		$this->recipients[$type][] = compact('email', 'name');

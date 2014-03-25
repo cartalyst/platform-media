@@ -239,8 +239,8 @@ return [
 			Route::post('upload', 'MediaController@upload');
 			Route::get('{id}/edit', 'MediaController@edit');
 			Route::post('{id}/edit', 'MediaController@update');
-			Route::get('{id}/email', 'MediaController@email');
-			Route::post('{id}/email', 'MediaController@processEmail');
+			Route::get('{id}/email', 'MediaMailerController@email');
+			Route::post('{id}/email', 'MediaMailerController@process');
 			Route::post('{id}/delete', 'MediaController@delete');
 		});
 

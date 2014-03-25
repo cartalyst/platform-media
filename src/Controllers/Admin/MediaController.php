@@ -18,12 +18,9 @@
  * @link       http://cartalyst.com
  */
 
-use Config;
 use DataGrid;
-use Illuminate\Database\Eloquent\Collection;
 use Input;
 use Lang;
-use Mail;
 use Media;
 use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Media\Repositories\MediaRepositoryInterface;
@@ -249,120 +246,6 @@ class MediaController extends AdminController {
 		}
 
 		return Response::json('Failed', 500);
-	}
-
-	/**
-	 *
-	 *
-	 * @param  mixed  $id
-	 * @return \Illuminate\View\View
-	 */
-	public function email($id)
-	{
-		$items = $this->getEmailItems($id);
-
-		if (empty($items))
-		{
-			return Redirect::toAdmin('media');
-		}
-
-		$total = array_sum(array_map(function($item)
-		{
-			return $item->size;
-		}, $items));
-
-		$users = $this->users->findAll();
-
-		$groups = $this->groups->findAll();
-
-		return View::make('platform/media::email', compact('items', 'total', 'users', 'groups'));
-	}
-
-	/**
-	 *
-	 *
-	 * @param  mixed  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function processEmail($id)
-	{
-		$items = $this->getEmailItems($id);
-
-		if (empty($items))
-		{
-			return Redirect::toAdmin('media');
-		}
-
-		$view = "platform/media::emails/email";
-
-		$subject = "Some subject";
-
-		$from = array(
-			'email' => Config::get('mail.from.address'),
-			'name'  => Config::get('mail.from.name')
-		);
-
-		// Prepare the recipients
-		$recipients = new Collection;
-
-		foreach (Input::get('users', []) as $email)
-		{
-			if ($user = $this->users->findByEmail($email))
-			{
-				$recipients->add($user);
-			}
-		}
-
-		foreach (Input::get('groups', []) as $groupId)
-		{
-			if ($group = $this->groups->find($groupId))
-			{
-				foreach ($group->users as $user)
-				{
-					$recipients->add($user);
-				}
-			}
-		}
-
-		if ($recipients->isEmpty())
-		{
-			$message = "You haven't selected any recipients.";
-
-			return Redirect::toAdmin("media/{$id}/email")->withErrors($message);
-		}
-
-		// Prepare the attachments
-		$attachments = array_filter(array_map(function($attachment)
-		{
-			return [
-				Media::getFile($attachment->path)->getFullpath(),
-				['mime' => $attachment->mime],
-			];
-		}, $items));
-
-		$mailer = new \Platform\Media\Mailer;
-		$mailer->setView($view);
-		$mailer->setSubject($subject);
-		$mailer->setAttachments($attachments);
-
-		foreach ($recipients as $recipient)
-		{
-			$mailer->addBcc($recipient->email, "{$recipient->first_name} {$recipient->last_name}");
-		}
-
-		$mailer->send();
-
-		return;
-
-		return Redirect::toAdmin('media')->withSuccess('Email succesfully sent.');
-	}
-
-	protected function getEmailItems($id)
-	{
-		return array_filter(array_map(function($item)
-		{
-			return $this->media->find($item);
-		}, explode(',', $id)));
 	}
 
 }
