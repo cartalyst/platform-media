@@ -187,7 +187,7 @@ class Mailer {
 	 * @param  array  $data
 	 * @return self
 	 */
-	public function setView($view, $data = [])
+	public function setView($view, array $data = [])
 	{
 		$this->view = $view;
 

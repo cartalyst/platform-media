@@ -14,7 +14,7 @@
 {{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'underscore') }}
 {{ Asset::queue('moment', 'moment/js/moment.js') }}
 {{ Asset::queue('dropzone.js', 'platform/media::js/dropzone/dropzone.js') }}
-{{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', 'dropzone') }}
+{{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', ['jquery', 'dropzone']) }}
 {{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
 
 {{-- Inline scripts --}}
@@ -31,48 +31,6 @@
 				$('#checkAll').prop('checked', false);
 
 				$('#actions').prop('disabled', true);
-
-				/*
-				// Get all the table rows except the first one
-				var rows = $('.data-grid tr').not(':first');
-
-				rows.on('click', function(e)
-				{
-					var row = $(this);
-
-					var id = row.data('id');
-
-					if ((e.ctrlKey || e.metaKey) || e.shiftKey)
-					{
-						if (row.hasClass('highlight'))
-						{
-							row.removeClass('highlight');
-
-							$(':checkbox[value=' + id + ']').prop('checked', false);
-						}
-						else
-						{
-							row.addClass('highlight');
-
-							$(':checkbox[value=' + id + ']').prop('checked', true);
-						}
-					}
-					else
-					{
-						rows.removeClass('highlight');
-
-						row.addClass('highlight');
-
-						$(':checkbox').prop('checked', false);
-
-						$(':checkbox[value=' + id + ']').prop('checked', true);
-					}
-
-					var status = $('input[name="entries[]"]:checked').length > 0;
-
-					$('#actions').prop('disabled', ! status);
-				});
-				*/
 			}
 		});
 
@@ -125,13 +83,6 @@
 				});
 			}
 		});
-
-		/*$(document).bind('selectstart dragstart', function(e)
-		{
-			e.preventDefault();
-
-			return false;
-		});*/
 
 		$.mediamanager('#mediaUploader', {
 			updateUrl : '{{ URL::toAdmin('media/:id/edit') }}',
