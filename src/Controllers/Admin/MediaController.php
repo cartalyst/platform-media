@@ -340,17 +340,19 @@ class MediaController extends AdminController {
 			];
 		}, $items));
 
+		$mailer = new \Platform\Media\Mailer;
+		$mailer->setView($view);
+		$mailer->setSubject($subject);
+		$mailer->setAttachments($attachments);
+
 		foreach ($recipients as $recipient)
 		{
-			//if ( ! $recipient->email || ! $recipient->name) continue;
-
-			$to = array(
-				'email' => $recipient->email,
-				'name'  => "{$recipient->first_name} {$recipient->last_name}",
-			);
-
-			$this->send($view, $subject, $from, $to, [], $attachments);
+			$mailer->addBcc($recipient->email, "{$recipient->first_name} {$recipient->last_name}");
 		}
+
+		$mailer->send();
+
+		return;
 
 		return Redirect::toAdmin('media')->withSuccess('Email succesfully sent.');
 	}
@@ -361,31 +363,6 @@ class MediaController extends AdminController {
 		{
 			return $this->media->find($item);
 		}, explode(',', $id)));
-	}
-
-
-	protected function send($view, $subject, $from, $to, $data = [], $attachments = [])
-	{
-		return Mail::send($view, $data, function($mail) use ($subject, $from, $to, $attachments)
-		{
-			$mail->from($from['email'], $from['name']);
-
-			$mail->to($to['email'], $to['name']);
-
-			$mail->subject($subject);
-
-			foreach ($attachments as $attachment)
-			{
-				$options = [];
-
-				if (is_array($attachment))
-				{
-					list($attachment, $options) = $attachment;
-				}
-
-				$mail->attach($attachment, $options);
-			}
-		});
 	}
 
 }
