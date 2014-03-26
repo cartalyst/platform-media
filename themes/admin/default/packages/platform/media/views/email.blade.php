@@ -72,6 +72,7 @@
 
 				<label class="control-label" for="users">Attachments</label>
 
+				<div style="max-height: 285px; overflow: auto">
 				@foreach ($items as $item)
 
 				<div class="media">
@@ -81,6 +82,10 @@
 					</span>
 
 					<div class="media-body">
+						<span class="pull-right">
+							<a href="{{{ URL::current() }}}?remove={{ $item->id }}">&times;</a>
+						</span>
+
 						<h4 class="media-heading">{{{ Str::limit($item->name, 30) }}}</h4>
 
 						{{{ formatBytes($item->size) }}}
@@ -89,6 +94,7 @@
 				</div>
 
 				@endforeach
+				</div>
 
 				<div>
 					<hr />

@@ -55,6 +55,8 @@ class MediaMailerController extends AdminController {
 	 */
 	protected $groups;
 
+	protected $config;
+
 	/**
 	 * Constructor.
 	 *
@@ -76,6 +78,8 @@ class MediaMailerController extends AdminController {
 		$this->users = $users;
 
 		$this->groups = $groups;
+
+		$this->config = Config::get('platform/media::config');
 	}
 
 	/**
@@ -86,11 +90,16 @@ class MediaMailerController extends AdminController {
 	 */
 	public function email($id)
 	{
-		$items = $this->getEmailItems($id);
-
-		if (empty($items))
+		if ( ! $items = $this->getEmailItems($id))
 		{
 			return Redirect::toAdmin('media');
+		}
+
+		if ($remove = Input::get('remove'))
+		{
+			$items = implode(',', array_diff(explode(',', $id), [$remove])) ?: 0;
+
+			return Redirect::toAdmin("media/{$items}/email");
 		}
 
 		$total = array_sum(array_map(function($item)
@@ -113,11 +122,29 @@ class MediaMailerController extends AdminController {
 	 */
 	public function process($id)
 	{
-		$items = $this->getEmailItems($id);
-
-		if (empty($items))
+		if ( ! $items = $this->getEmailItems($id))
 		{
 			return Redirect::toAdmin('media');
+		}
+
+		$maxAttachments = array_get($this->config, 'email.max_attachments');
+
+		$maxAttachmentsSize = array_get($this->config, 'email.attachments_max_size');
+
+		$total = array_sum(array_map(function($item)
+		{
+			return $item->size;
+		}, $items));
+
+		$error = null;
+
+		if (count($items) > $maxAttachments)
+		{
+			$error = "You've exceeded the max of total allowed attachments.";
+		}
+		elseif ($total > $maxAttachmentsSize)
+		{
+			$error = "You've exceeded the max allowed size of attachments.";
 		}
 
 		$view = "platform/media::emails/email";
