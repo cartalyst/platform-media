@@ -181,6 +181,29 @@ class Mailer {
 	}
 
 	/**
+	 * Sets multiple "replyTo" recipients.
+	 *
+	 * @param  array  $recipients
+	 * @return self
+	 */
+	public function setReplyTo(array $recipients = [])
+	{
+		return $this->setRecipients('replyTo', $recipients);
+	}
+
+	/**
+	 * Sets a single "replyTo" recipient.
+	 *
+	 * @param  string  $email
+	 * @param  string  $name
+	 * @return self
+	 */
+	public function addReplyTo($email, $name)
+	{
+		return $this->setRecipient('replyTo', $email, $name);
+	}
+
+	/**
 	 * Sets the email view and view data.
 	 *
 	 * @param  string  $view
