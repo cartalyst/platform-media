@@ -219,9 +219,28 @@ class Mailer {
 		return $this;
 	}
 
+	/**
+	 * Sets multiple attachments.
+	 *
+	 * @param  array  $attachments
+	 * @return self
+	 */
 	public function setAttachments($attachments)
 	{
-		$this->attachments = $attachments;
+		$this->attachments = array_merge($this->attachments, $attachments);
+
+		return $this;
+	}
+
+	/**
+	 * Sets a single attachment.
+	 *
+	 * @param  string  $attachment
+	 * @return self
+	 */
+	public function addAttachment($attachment)
+	{
+		$this->attachments[] = $attachment;
 
 		return $this;
 	}
