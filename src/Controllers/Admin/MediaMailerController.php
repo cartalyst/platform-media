@@ -88,7 +88,7 @@ class MediaMailerController extends AdminController {
 	 * @param  mixed  $id
 	 * @return \Illuminate\View\View
 	 */
-	public function email($id)
+	public function index($id)
 	{
 		if ( ! $items = $this->getEmailItems($id))
 		{

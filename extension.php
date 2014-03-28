@@ -239,7 +239,7 @@ return [
 			Route::post('upload', 'MediaController@upload');
 			Route::get('{id}/edit', 'MediaController@edit');
 			Route::post('{id}/edit', 'MediaController@update');
-			Route::get('{id}/email', 'MediaMailerController@email');
+			Route::get('{id}/email', 'MediaMailerController@index');
 			Route::post('{id}/email', 'MediaMailerController@process');
 			Route::post('{id}/delete', 'MediaController@delete');
 		});
