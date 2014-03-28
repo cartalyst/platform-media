@@ -34,7 +34,7 @@
 			}
 		});
 
-		$('#checkAll').click(function()
+		$(document).on('click', '#checkAll', function()
 		{
 			$('input:checkbox').not(this).prop('checked', this.checked);
 
