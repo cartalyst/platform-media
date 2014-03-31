@@ -11,7 +11,7 @@
 				</button>
 
 				<ul class="dropdown-menu" role="menu">
-					<li><a href="#" data-action="delete">Delete selected</a></li>
+					<li><a href="#" data-action="delete">{{{ trans('button.bulk.delete') }}}</a></li>
 					<li class="divider"></li>
 					<li><a href="#" data-action="email">Email selected</a></li>
 				</ul>
