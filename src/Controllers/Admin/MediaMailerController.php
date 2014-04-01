@@ -25,7 +25,7 @@ use Input;
 use Lang;
 use Media;
 use Platform\Admin\Controllers\Admin\AdminController;
-use Platform\Media\Mailer;
+use Platform\Foundation\Mailer;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 use Platform\Users\Repositories\GroupRepositoryInterface;
 use Platform\Users\Repositories\UserRepositoryInterface;
