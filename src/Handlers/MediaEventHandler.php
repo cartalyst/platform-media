@@ -57,6 +57,12 @@ class MediaEventHandler {
 		}
 	}
 
+	/**
+	 * Register the listeners for the subscriber.
+	 *
+	 * @param  \Illuminate\Events\Dispatcher  $events
+	 * @return void
+	 */
 	public function subscribe($events)
 	{
 		$events->listen('platform.media.uploaded', 'Platform\Media\Handlers\MediaEventHandler@onUpload');
