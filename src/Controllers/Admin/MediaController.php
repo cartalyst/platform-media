@@ -201,6 +201,8 @@ class MediaController extends AdminController {
 	{
 		Input::merge(['groups' => Input::get('groups', [])]);
 
+		Input::merge(['tags' => Input::get('tags', [])]);
+
 		$input = Input::except('file');
 
 		if ($this->media->validForUpdate($id, $input))
