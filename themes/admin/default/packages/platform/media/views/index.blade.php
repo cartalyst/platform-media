@@ -231,7 +231,11 @@ tr { cursor: default; }
 					{{-- CSRF Token --}}
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-					<select placeholder="{{{ trans('platform/media::form.tags_help') }}}" id="tags" name="tags[]" multiple="multiple" tabindex="-1"></select>
+					<select placeholder="{{{ trans('platform/media::form.tags_help') }}}" id="tags" name="tags[]" multiple="multiple" tabindex="-1">
+						@foreach ($tags as $tag)
+						<option value="{{{ $tag }}}">{{{ $tag }}}</option>
+						@endforeach
+					</select>
 
 					<div class="dz-default dz-message"></div>
 
