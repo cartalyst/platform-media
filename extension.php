@@ -230,22 +230,22 @@ return [
 
 	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
-		Route::group(['prefix' => admin_uri().'/media', 'namespace' => 'Platform\Media\Controllers\Admin'], function()
+		Route::group(['namespace' => 'Platform\Media\Controllers'], function()
 		{
-			Route::get('/', 'MediaController@index');
-			Route::post('/', 'MediaController@executeAction');
-			Route::get('grid', 'MediaController@grid');
-			Route::post('upload', 'MediaController@upload');
-			Route::get('{id}/edit', 'MediaController@edit');
-			Route::post('{id}/edit', 'MediaController@update');
-			Route::get('{id}/email', 'MediaMailerController@index');
-			Route::post('{id}/email', 'MediaMailerController@process');
-			Route::post('{id}/delete', 'MediaController@delete');
-		});
+			Route::group(['prefix' => admin_uri().'/media', 'namespace' => 'Admin'], function()
+			{
+				Route::get('/', 'MediaController@index');
+				Route::post('/', 'MediaController@executeAction');
+				Route::get('grid', 'MediaController@grid');
+				Route::post('upload', 'MediaController@upload');
+				Route::get('{id}/edit', 'MediaController@edit');
+				Route::post('{id}/edit', 'MediaController@update');
+				Route::get('{id}/email', 'MediaMailerController@index');
+				Route::post('{id}/email', 'MediaMailerController@process');
+				Route::post('{id}/delete', 'MediaController@delete');
+			});
 
-		App::before(function()
-		{
-			Route::group(['prefix' => 'media', 'namespace' => 'Platform\Media\Controllers\Frontend'], function()
+			Route::group(['prefix' => 'media', 'namespace' => 'Frontend'], function()
 			{
 				Route::get('download/{id}', 'MediaController@download')->where('id', '.*?');
 				Route::get('{id}', 'MediaController@view')->where('id', '.*?');
