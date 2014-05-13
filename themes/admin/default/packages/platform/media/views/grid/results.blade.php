@@ -22,7 +22,7 @@
 						</button>
 
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="{{ URL::to('media/<%= r.path %>') }}" target="_blank">Share</a></li>
+							<li><a href="{{ URL::to('media/view/<%= r.path %>') }}" target="_blank">Share</a></li>
 							<li><a href="{{ URL::to('media/download/<%= r.path %>') }}">Download</a></li>
 							<li><a href="{{ URL::toAdmin('media/<%= r.id %>/email') }}">Email</a></li>
 						</ul>

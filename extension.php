@@ -248,7 +248,7 @@ return [
 			Route::group(['prefix' => 'media', 'namespace' => 'Frontend'], function()
 			{
 				Route::get('download/{id}', 'MediaController@download')->where('id', '.*?');
-				Route::get('{id}', 'MediaController@view')->where('id', '.*?');
+				Route::get('view/{id}', 'MediaController@view')->where('id', '.*?');
 			});
 		});
 	},
