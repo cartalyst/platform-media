@@ -28,11 +28,11 @@
 
 			<ul class="pagination pagination-sm">
 
-				<% if (p.prev_page !== null) { %>
+				<% if (p.previous_page !== null) { %>
 
 					<li><a href="#" data-grid="main" data-page="1"><i class="fa fa-angle-double-left"></i></a></li>
 
-					<li><a href="#" data-grid="main" data-page="<%= p.prev_page %>"><i class="fa fa-chevron-left"></i></a></li>
+					<li><a href="#" data-grid="main" data-page="<%= p.previous_page %>"><i class="fa fa-chevron-left"></i></a></li>
 
 				<% } else { %>
 
