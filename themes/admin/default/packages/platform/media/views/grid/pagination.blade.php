@@ -49,16 +49,16 @@
 					middle   = Math.floor(split / 2);
 
 				var i = p.page - middle > 0 ? p.page - middle : 1,
-					j = p.total;
+					j = p.pages;
 
-				j = p.page + middle > p.total ? j : p.page + middle;
+				j = p.page + middle > p.pages ? j : p.page + middle;
 
 				i = j - i < split ? j - split : i;
 
 				if (i < 1)
 				{
 					i = 1;
-					j = p.total > split ? split + 1 : p.total;
+					j = p.pages > split ? split + 1 : p.pages;
 				}
 
 				%>
@@ -81,7 +81,7 @@
 
 					<li><a href="#" data-grid="main" data-page="<%= p.next_page %>"><i class="fa fa-chevron-right"></i></a></li>
 
-					<li><a href="#" data-grid="main" data-page="<%= p.total %>"><i class="fa fa-angle-double-right"></i></a></li>
+					<li><a href="#" data-grid="main" data-page="<%= p.pages %>"><i class="fa fa-angle-double-right"></i></a></li>
 
 				<% } else { %>
 
