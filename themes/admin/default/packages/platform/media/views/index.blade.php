@@ -175,9 +175,9 @@ tr { cursor: default; }
 				</button>
 
 				<ul class="dropdown-menu" role="menu">
-					<li><a href="#" data-grid="main" data-filter-reset>{{{ trans('general.show_all') }}}</a></li>
-					<li><a href="#" data-grid="main" data-filter="private:0" data-label="private::Show Public" data-filter-reset>Show Public</a></li>
-					<li><a href="#" data-grid="main" data-filter="private:1" data-label="private::Show Private" data-filter-reset>Show Private</a></li>
+					<li><a href="#" data-grid="main" data-reset>{{{ trans('general.show_all') }}}</a></li>
+					<li><a href="#" data-grid="main" data-filter="private:0" data-label="private::Show Public" data-reset>Show Public</a></li>
+					<li><a href="#" data-grid="main" data-filter="private:1" data-label="private::Show Private" data-reset>Show Private</a></li>
 				</ul>
 
 			</div>
