@@ -20,7 +20,7 @@
 
 			&nbsp;&nbsp;
 
-			{{{ trans('general.showing') }}} <%= p.pageStart %> {{{ trans('general.to') }}} <%= p.pageLimit %> {{{ trans('general.of') }}} <span class="total"><%= p.filteredCount %></span>
+			{{{ trans('general.showing') }}} <%= p.page_start %> {{{ trans('general.to') }}} <%= p.page_limit %> {{{ trans('general.of') }}} <span class="total"><%= p.filtered %></span>
 
 		</div>
 
@@ -28,11 +28,11 @@
 
 			<ul class="pagination pagination-sm">
 
-				<% if (p.prevPage !== null) { %>
+				<% if (p.prev_page !== null) { %>
 
 					<li><a href="#" data-grid="main" data-page="1"><i class="fa fa-angle-double-left"></i></a></li>
 
-					<li><a href="#" data-grid="main" data-page="<%= p.prevPage %>"><i class="fa fa-chevron-left"></i></a></li>
+					<li><a href="#" data-grid="main" data-page="<%= p.prev_page %>"><i class="fa fa-chevron-left"></i></a></li>
 
 				<% } else { %>
 
@@ -44,21 +44,21 @@
 
 				<%
 
-				var numPages = 11,
-					split    = numPages - 1,
+				var num_pages = 11,
+					split    = num_pages - 1,
 					middle   = Math.floor(split / 2);
 
 				var i = p.page - middle > 0 ? p.page - middle : 1,
-					j = p.totalPages;
+					j = p.total;
 
-				j = p.page + middle > p.totalPages ? j : p.page + middle;
+				j = p.page + middle > p.total ? j : p.page + middle;
 
 				i = j - i < split ? j - split : i;
 
 				if (i < 1)
 				{
 					i = 1;
-					j = p.totalPages > split ? split + 1 : p.totalPages;
+					j = p.total > split ? split + 1 : p.total;
 				}
 
 				%>
@@ -77,11 +77,11 @@
 
 				<% } %>
 
-				<% if (p.nextPage !== null) { %>
+				<% if (p.next_page !== null) { %>
 
-					<li><a href="#" data-grid="main" data-page="<%= p.nextPage %>"><i class="fa fa-chevron-right"></i></a></li>
+					<li><a href="#" data-grid="main" data-page="<%= p.next_page %>"><i class="fa fa-chevron-right"></i></a></li>
 
-					<li><a href="#" data-grid="main" data-page="<%= p.totalPages %>"><i class="fa fa-angle-double-right"></i></a></li>
+					<li><a href="#" data-grid="main" data-page="<%= p.total %>"><i class="fa fa-angle-double-right"></i></a></li>
 
 				<% } else { %>
 

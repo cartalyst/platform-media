@@ -217,7 +217,7 @@ tr { cursor: default; }
 @include('platform/media::grid/results')
 @include('platform/media::grid/pagination')
 @include('platform/media::grid/filters')
-@include('platform/media::grid/no-results')
+@include('platform/media::grid/no_results')
 
 <div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="mediaModalLabel" aria-hidden="true">
 
