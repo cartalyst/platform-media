@@ -54,6 +54,14 @@ interface MediaRepositoryInterface {
 	public function findAllByTags($tags);
 
 	/**
+	 * Returns a media by the given tags
+	 *
+	 * @param  mixed  $tags
+	 * @return \Platform\Media\Models\Media
+	 */
+	public function findByTags($tags);
+
+	/**
 	 * Returns a list of the available tags.
 	 *
 	 * @return array
