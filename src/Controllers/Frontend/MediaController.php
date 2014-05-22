@@ -56,7 +56,7 @@ class MediaController extends BaseController {
 	{
 		$media = $this->getMedia($path);
 
-		$file = Media::getFileSystem()->read($media->path);
+		$file = Media::read($media->path);
 
 		$headers = [
 			'Content-Type' => $media->mime,
@@ -75,7 +75,7 @@ class MediaController extends BaseController {
 	{
 		$media = $this->getMedia($path);
 
-		$file = Media::getFileSystem()->read($media->path);
+		$file = Media::read($media->path);
 
 		$headers = [
 			'Connection'          => 'close',

@@ -46,7 +46,7 @@ class MediaEventHandler {
 
 			$path = Str::slug($name).'.'.$extension;
 
-			$data = Media::getFileSystem()->read($file->getPath());
+			$data = Media::read($file->getPath());
 
 			$img = Image::make($data)
 				->resize($width, $height)
