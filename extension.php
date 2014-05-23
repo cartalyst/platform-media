@@ -18,7 +18,10 @@
  */
 
 use Cartalyst\Extensions\ExtensionInterface;
+use Cartalyst\Media\Laravel\MediaServiceProvider;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
+use Intervention\Image\ImageServiceProvider;
 
 return [
 
@@ -146,10 +149,10 @@ return [
 
 	'register' => function(ExtensionInterface $extension, Application $app)
 	{
-		$app->instance('cartalyst/media', $media = new Cartalyst\Media\Laravel\MediaServiceProvider($app));
+		$app->instance('cartalyst/media', $media = new MediaServiceProvider($app));
 		$app->register($media);
 
-		Illuminate\Foundation\AliasLoader::getInstance()->alias('Media', 'Cartalyst\Media\Laravel\Facades\Media');
+		AliasLoader::getInstance()->alias('Media', 'Cartalyst\Media\Laravel\Facades\Media');
 
 		$app->bind('Platform\Media\Repositories\MediaRepositoryInterface', function($app)
 		{
@@ -158,6 +161,13 @@ return [
 
 		// Register our event handler
 		$app['events']->subscribe(get_class(app('Platform\Media\Handlers\MediaEventHandler')));
+
+		// Register the Intervention Image service provider.
+		$app->instance('intervention', $provider = new ImageServiceProvider($app));
+		$app->register($provider);
+
+		// Register the Intervention Image class alias
+		AliasLoader::getInstance()->alias('Image', 'Intervention\Image\Facades\Image');
 	},
 
 	/*
@@ -179,6 +189,9 @@ return [
 	{
 		$app['cartalyst/media']->boot();
 		unset($app['cartalyst/media']);
+
+		$app['intervention']->boot();
+		unset($app['intervention']);
 
 		if ( ! function_exists('media_cache_path'))
 		{

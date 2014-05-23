@@ -41,6 +41,8 @@
 		"php": ">=5.4.0",
 		"cartalyst/composer-installers": "1.0.*",
 		"cartalyst/media": "dev-master",
+		"intervention/image": "~2.0",
+		"intervention/imagecache": "~2.0",
 		"platform/admin": "dev-master"
 	},
 	"autoload": {
