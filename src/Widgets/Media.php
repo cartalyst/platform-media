@@ -60,7 +60,7 @@ class Media {
 
 				default:
 
-					$url = "media/{$media->path}";
+					$url = "media/view/{$media->path}";
 
 					break;
 			}
