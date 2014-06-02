@@ -149,10 +149,15 @@ return [
 
 	'register' => function(ExtensionInterface $extension, Application $app)
 	{
-		$app->bind('Platform\Media\Repositories\MediaRepositoryInterface', function($app)
+		$mediaRepository = 'Platform\Media\Repositories\MediaRepositoryInterface';
+
+		if ( ! $app->bound($mediaRepository))
 		{
-			return new Platform\Media\Repositories\DbMediaRepository(get_class($app['Platform\Media\Models\Media']));
-		});
+			$app->bind($mediaRepository, function($app)
+			{
+				return new Platform\Media\Repositories\DbMediaRepository(get_class($app['Platform\Media\Models\Media']));
+			});
+		}
 
 		// Register our event handler
 		$app['events']->subscribe(get_class(app('Platform\Media\Handlers\MediaEventHandler')));
