@@ -21,7 +21,7 @@ use Media;
 use Platform\Foundation\Controllers\BaseController;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 use Response;
-use Sentry;
+use Sentinel;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class MediaController extends BaseController {
@@ -105,7 +105,7 @@ class MediaController extends BaseController {
 		{
 			$pass = false;
 
-			if ($user = Sentry::check())
+			if ($user = Sentinel::check())
 			{
 				$pass = true;
 

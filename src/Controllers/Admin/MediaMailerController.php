@@ -29,7 +29,7 @@ use Platform\Media\Repositories\MediaRepositoryInterface;
 use Platform\Users\Repositories\GroupRepositoryInterface;
 use Platform\Users\Repositories\UserRepositoryInterface;
 use Redirect;
-use Sentry;
+use Sentinel;
 use View;
 
 class MediaMailerController extends AdminController {
@@ -196,7 +196,7 @@ class MediaMailerController extends AdminController {
 		$mailer->setSubject($subject);
 		$mailer->setAttachments($attachments);
 
-		$mailer->addTo(Sentry::getUser()->email, Sentry::getUser()->name);
+		$mailer->addTo(Sentinel::getUser()->email, Sentinel::getUser()->name);
 
 		foreach ($recipients as $recipient)
 		{
