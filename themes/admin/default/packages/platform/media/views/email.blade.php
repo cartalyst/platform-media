@@ -70,7 +70,7 @@
 
 			<div class="form-group">
 
-				<label class="control-label" for="users">Attachments</label>
+				<label class="control-label" for="users">{{{ trans('platform/media::email.attachments') }}}</label>
 
 				<div style="max-height: 285px; overflow: auto">
 				@foreach ($items as $item)
@@ -114,7 +114,7 @@
 
 					<div class="form-group">
 
-						<label class="control-label" for="users">Users</label>
+						<label class="control-label" for="users">{{{ trans('platform/media::email.users') }}}</label>
 
 						<select name="users[]" id="users"></select>
 
@@ -126,7 +126,7 @@
 
 					<div class="form-group">
 
-						<label class="control-label" for="groups">Groups</label>
+						<label class="control-label" for="groups">{{{ trans('platform/media::email.groups') }}}</label>
 
 						<select name="groups[]" id="groups">
 							<option></option>
@@ -149,7 +149,7 @@
 					{{-- Form actions --}}
 					<div class="form-group">
 
-						<button class="btn btn-success" type="submit">Send Email</button>
+						<button class="btn btn-success" type="submit">{{{ trans('platform/media::button.send_email') }}}</button>
 
 					</div>
 
