@@ -184,7 +184,7 @@ class MediaMailerController extends AdminController {
 		$attachments = array_filter(array_map(function($attachment)
 		{
 			return [
-				Media::getFile($attachment->path)->getFullpath(),
+				Media::get($attachment->path)->getFullpath(),
 				[
 					'mime' => $attachment->mime,
 				],
