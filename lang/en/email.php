@@ -23,7 +23,7 @@ return [
 	'total_bytes' => 'Total',
 	
 	'users'       => 'Users',
-	'users_help'  => 'Select users to add as recipients.'
+	'users_help'  => 'Select users to add as recipients.',
 	
 	'groups'      => 'Groups',
 	'groups_help' => 'Select groups to add as recipients'
