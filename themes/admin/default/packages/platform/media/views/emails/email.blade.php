@@ -1,1 +1,1 @@
-Some message here
+{{{ $body }}}

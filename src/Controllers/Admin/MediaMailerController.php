@@ -18,7 +18,6 @@
  */
 
 use Config;
-use DataGrid;
 use Illuminate\Database\Eloquent\Collection;
 use Input;
 use Lang;
@@ -147,11 +146,15 @@ class MediaMailerController extends AdminController {
 			$error = "You've exceeded the max allowed size of attachments.";
 		}
 
-		$view = "platform/media::emails/email";
+		// Prepare the email view
+		# probably have a dropdown where we can select a view..
+		$view = 'platform/media::emails/email';
 
-		// set our subject. If we received a subject through input, use it
-		// if not, then just use the default from config.
+		// Prepare the email subject
 		$subject = Input::get('subject', array_get($this->config, 'email.subject'));
+
+		// Get the email body
+		$body = Input::get('body');
 
 		// Prepare the recipients
 		$recipients = new Collection;
@@ -192,12 +195,12 @@ class MediaMailerController extends AdminController {
 				],
 			];
 		}, $items));
-		
+
 		// set input var, will make accessible to the view
 		$input = Input::except(['_token', 'users']);
 
 		$mailer = new Mailer;
-		$mailer->setView($view);
+		$mailer->setView($view, compact('body'));
 		$mailer->setSubject($subject);
 		$mailer->setAttachments($attachments);
 
