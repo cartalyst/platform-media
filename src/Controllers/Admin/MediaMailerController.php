@@ -149,7 +149,9 @@ class MediaMailerController extends AdminController {
 
 		$view = "platform/media::emails/email";
 
-		$subject = "Some subject";
+		// set our subject. If we received a subject through input, use it
+		// if not, then just use the default from config.
+		$subject = Input::get('subject', array_get($this->config, 'email.subject'));
 
 		// Prepare the recipients
 		$recipients = new Collection;
@@ -190,6 +192,9 @@ class MediaMailerController extends AdminController {
 				],
 			];
 		}, $items));
+		
+		// set input var, will make accessible to the view
+		$input = Input::except(['_token', 'users']);
 
 		$mailer = new Mailer;
 		$mailer->setView($view);
