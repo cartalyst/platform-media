@@ -42,9 +42,9 @@ class MediaEventHandler {
 
 			$filename = str_replace(".{$extension}", '', $original->getClientOriginalName());
 
-			$name = implode(array($filename, $width, $height ?: $width), ' ');
+			$name = Str::slug(implode(array($filename, $width, $height ?: $width), ' '));
 
-			$path = Str::slug($name).'.'.$extension;
+			$path = "{$media->id}_{$name}.{$extension}";
 
 			$data = Media::read($file->getPath());
 
