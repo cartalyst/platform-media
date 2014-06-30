@@ -29,20 +29,20 @@ class MediaEventHandler {
 
 	public function onUpload($media, $file, $original)
 	{
-
 		$path = null;
 
 		if ($file->isImage())
 		{
-			$imageSize = $file->getImageSize();			
 			$width = 40;
 			$height = 40;
 
 			$extension = $file->getExtension();
 
+			$imageSize = $file->getImageSize();
+
 			$filename = str_replace(".{$extension}", '', $original->getClientOriginalName());
 
-			$name = Str::slug(implode(array($filename, $width, $height ?: $width), ' '));
+			$name = Str::slug(implode([$filename, $width, $height ?: $width], ' '));
 
 			$path = "{$media->id}_{$name}.{$extension}";
 
