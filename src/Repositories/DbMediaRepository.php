@@ -179,7 +179,18 @@ class DbMediaRepository implements MediaRepositoryInterface {
 
 			if ( ! $media = $this->findByPath($uploaded->getPath()))
 			{
-				$imageSize = $uploaded->getImageSize();
+				if ($uploaded->isImage()) {
+
+					$imageSize = $uploaded->getImageSize();
+
+				} else {
+
+					$imageSize = array(
+							"width" => 0,
+							"height" => 0
+						);
+					
+				}
 
 				$media = $this->create([
 					'name'      => $file->getClientOriginalName(),

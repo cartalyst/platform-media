@@ -29,12 +29,12 @@ class MediaEventHandler {
 
 	public function onUpload($media, $file, $original)
 	{
-		$imageSize = $file->getImageSize();
 
 		$path = null;
 
 		if ($file->isImage())
 		{
+			$imageSize = $file->getImageSize();			
 			$width = 40;
 			$height = 40;
 
