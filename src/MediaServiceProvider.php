@@ -35,9 +35,7 @@ class MediaServiceProvider extends ServiceProvider {
 		// Register our event handler
 		$app['events']->subscribe(get_class(app('Platform\Media\Handlers\MediaEventHandler')));
 
-		# need to check if the service provider is already registered
-		# as we register it by default on Platform..
-		//$this->registerFilesystemPackage($app);
+		$this->registerFilesystemPackage($app);
 
 		$this->registerInterventionPackage($app);
 	}
@@ -62,10 +60,15 @@ class MediaServiceProvider extends ServiceProvider {
 	 */
 	protected function registerFilesystemPackage($app)
 	{
-		// Register the Filesystem Service provider and class alias
-		$app->register('Cartalyst\Filesystem\Laravel\FilesystemServiceProvider');
+		$serviceProvider = 'Cartalyst\Filesystem\Laravel\FilesystemServiceProvider';
 
-		AliasLoader::getInstance()->alias('Filesystem', 'Cartalyst\Filesystem\Laravel\Facades\Filesystem');
+		if ( ! $app->getRegistered($serviceProvider))
+		{
+			// Register the Filesystem Service provider and class alias
+			$app->register($serviceProvider);
+
+			AliasLoader::getInstance()->alias('Filesystem', 'Cartalyst\Filesystem\Laravel\Facades\Filesystem');
+		}
 	}
 
 	/**
@@ -76,10 +79,15 @@ class MediaServiceProvider extends ServiceProvider {
 	 */
 	protected function registerInterventionPackage($app)
 	{
-		// Register the Intervention Image service provider and class alias
-		$app->register('Intervention\Image\ImageServiceProvider');
+		$serviceProvider = 'Intervention\Image\ImageServiceProvider';
 
-		AliasLoader::getInstance()->alias('Image', 'Intervention\Image\Facades\Image');
+		if ( ! $app->getRegistered($serviceProvider))
+		{
+			// Register the Intervention Image service provider and class alias
+			$app->register($serviceProvider);
+
+			AliasLoader::getInstance()->alias('Image', 'Intervention\Image\Facades\Image');
+		}
 	}
 
 	/**
