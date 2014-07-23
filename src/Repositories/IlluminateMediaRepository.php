@@ -28,7 +28,7 @@ use Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Validator;
 
-class DbMediaRepository implements MediaRepositoryInterface {
+class IlluminateMediaRepository implements MediaRepositoryInterface {
 
 	/**
 	 * The Eloquent media model

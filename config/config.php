@@ -32,4 +32,22 @@ return [
 
 	],
 
+	'styles' => [
+
+		'thumbnail' => [
+
+			'mime-type' => [
+				'image/gif', 'image/jpeg', 'image/png',
+			],
+			'width'   => 40,
+			'height'  => 40,
+			'filters' => [
+				'Platform\Media\Filters\ResizeFilter',
+				'Platform\Media\Filters\ReduceQuality', # this is for testing
+			],
+
+		],
+
+	],
+
 ];

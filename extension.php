@@ -18,10 +18,7 @@
  */
 
 use Cartalyst\Extensions\ExtensionInterface;
-use Cartalyst\Media\Laravel\MediaServiceProvider;
-use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
-use Intervention\Image\ImageServiceProvider;
 
 return [
 
@@ -130,105 +127,23 @@ return [
 	|
 	*/
 
-	'autoload' => 'platform',
+	'autoload' => 'composer',
 
 	/*
 	|--------------------------------------------------------------------------
-	| Register Callback
+	| Service Providers
 	|--------------------------------------------------------------------------
 	|
-	| Closure that is called when the extension is registered. This can do
-	| all the needed custom logic upon registering.
-	|
-	| The closure parameters are:
-	|
-	|	object \Cartalyst\Extensions\ExtensionInterface  $extension
-	|	object \Illuminate\Foundation\Application        $app
+	| Define your extension service providers here. They will be dynamically
+	| registered without having to include them in app/config/app.php.
 	|
 	*/
 
-	'register' => function(ExtensionInterface $extension, Application $app)
-	{
-		$mediaRepository = 'Platform\Media\Repositories\MediaRepositoryInterface';
+	'providers' => [
 
-		if ( ! $app->bound($mediaRepository))
-		{
-			$app->bind($mediaRepository, function($app)
-			{
-				return new Platform\Media\Repositories\DbMediaRepository(get_class($app['Platform\Media\Models\Media']));
-			});
-		}
+		'Platform\Media\MediaServiceProvider',
 
-		// Register our event handler
-		$app['events']->subscribe(get_class(app('Platform\Media\Handlers\MediaEventHandler')));
-
-		// Register the Media Service provider and class alias
-		$app->instance('cartalyst/media', $media = new MediaServiceProvider($app));
-		$app->register($media);
-
-		AliasLoader::getInstance()->alias('Media', 'Cartalyst\Media\Laravel\Facades\Media');
-
-		// Register the Intervention Image service provider and class alias
-		$app->instance('intervention', $provider = new ImageServiceProvider($app));
-		$app->register($provider);
-
-		AliasLoader::getInstance()->alias('Image', 'Intervention\Image\Facades\Image');
-	},
-
-	/*
-	|--------------------------------------------------------------------------
-	| Boot Callback
-	|--------------------------------------------------------------------------
-	|
-	| Closure that is called when the extension is booted. This can do
-	| all the needed custom logic upon booting.
-	|
-	| The closure parameters are:
-	|
-	|	object \Cartalyst\Extensions\ExtensionInterface  $extension
-	|	object \Illuminate\Foundation\Application        $app
-	|
-	*/
-
-	'boot' => function(ExtensionInterface $extension, Application $app)
-	{
-		$app['cartalyst/media']->boot();
-		unset($app['cartalyst/media']);
-
-		$app['intervention']->boot();
-		unset($app['intervention']);
-
-		if ( ! function_exists('media_cache_path'))
-		{
-			function media_cache_path($media)
-			{
-				return 'cache/media/' . $media; # make this a config option
-			}
-		}
-
-		if ( ! function_exists('formatBytes'))
-		{
-			function formatBytes($size, $precision = 2)
-			{
-				$base = log($size) / log(1024);
-
-				$suffixes = ['', 'KB', 'MB', 'GB', 'TB'];
-
-				$suffix = $suffixes[floor($base)];
-
-				return round(pow(1024, $base - floor($base)), $precision) . " {$suffix}";
-			}
-		}
-
-		// Register @media blade extension
-		$blade = $app['view']->getEngineResolver()->resolve('blade')->getCompiler();
-		$blade->extend(function($value) use ($blade)
-		{
-			$matcher = '/(\s*)@media(\(.*?\)\s*)/';
-
-			return preg_replace($matcher, '<?php echo Widget::make("platform/media::media.show", array$2); ?>', $value);
-		});
-	},
+	],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -269,28 +184,6 @@ return [
 			});
 		});
 	},
-
-	/*
-	|--------------------------------------------------------------------------
-	| Database Seeds
-	|--------------------------------------------------------------------------
-	|
-	| Platform provides a very simple way to seed your database with test
-	| data using seed classes. All seed classes should be stored on the
-	| `database/seeds` directory within your extension folder.
-	|
-	| The order you register your seed classes is the order they'll run.
-	|
-	| The seeds array should follow the following structure:
-	|
-	|	Vendor\Namespace\Database\Seeds\FooSeeder
-	|	Vendor\Namespace\Database\Seeds\BarSeeder
-	|
-	*/
-
-	'seeds' => [
-
-	],
 
 	/*
 	|--------------------------------------------------------------------------
