@@ -126,6 +126,23 @@ tr { cursor: default; }
 {{-- Page content --}}
 @section('content')
 
+	<form method="post" action="{{ URL::toAdmin('media/upload') }}" enctype="multipart/form-data">
+
+		{{-- CSRF Token --}}
+		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+		<input type="file" name="file">
+
+		<br />
+
+		<button type="submit">Upload</button>
+
+	</form>
+
+@stop
+
+@section('content_')
+
 {{-- Page header --}}
 <div class="page-header">
 

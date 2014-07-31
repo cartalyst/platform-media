@@ -17,16 +17,15 @@
  * @link       http://cartalyst.com
  */
 
-class ResizeFilter extends Abstractfilter {
+class ReduceQualityFilter extends Abstractfilter {
 
 	/**
 	 * @{inheritDoc}
 	 */
 	public function run()
 	{
-		var_dump($this->config);
 		//var_dump($this->getFile());
-		var_dump('resized');
+		var_dump('quality reduced');
 	}
 
 }

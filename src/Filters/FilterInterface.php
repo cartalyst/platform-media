@@ -23,12 +23,27 @@ use Platform\Media\Models\Media;
 
 interface FilterInterface {
 
+	public function getConfig();
+
+	public function setConfig(array $config);
+
 	public function getMedia();
 
 	public function setMedia(Media $media);
 
+	/**
+	 * Returns the file.
+	 *
+	 * @return \Cartalyst\Filesystem\File
+	 */
 	public function getFile();
 
+	/**
+	 * Sets the file.
+	 *
+	 * @param  \Cartalyst\Filesystem\File  $file
+	 * @return mixed
+	 */
 	public function setFile(File $file);
 
 	/**

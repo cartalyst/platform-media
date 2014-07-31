@@ -24,6 +24,13 @@ use Platform\Media\Models\Media;
 abstract class Abstractfilter implements FilterInterface {
 
 	/**
+	 * The style configuration.
+	 *
+	 * @var array
+	 */
+	protected $config;
+
+	/**
 	 * The Media model instance the file belongs to.
 	 *
 	 * @var \Platform\Media\Models\Media
@@ -50,16 +57,42 @@ abstract class Abstractfilter implements FilterInterface {
 	 * @param  \Intervention\Image\ImageManager  $intervention
 	 * @return void
 	 */
-	public function __construct(ImageManager $intervention)
+	public function __construct(array $config, ImageManager $intervention)
 	{
+		$this->config = $config;
+
 		$this->intervention = $intervention;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getConfig()
+	{
+		return $this->config;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setConfig(array $config)
+	{
+		$this->config = $config;
+
+		return $this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function getMedia()
 	{
 		return $this->media;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function setMedia(Media $media)
 	{
 		$this->media = $media;
@@ -67,11 +100,17 @@ abstract class Abstractfilter implements FilterInterface {
 		return $this;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function getFile()
 	{
 		return $this->file;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function setFile(File $file)
 	{
 		$this->file = $file;
