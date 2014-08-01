@@ -29,6 +29,11 @@
 			"name": "Dan Syme",
 			"email": "dan.syme@cartalyst.com",
 			"role": "Creator & Designer"
+		},
+		{
+			"name": "Suhayb Wardany",
+			"email": "su.wardany@cartalyst.com",
+			"role": "Developer"
 		}
 	],
 	"repositories": [
