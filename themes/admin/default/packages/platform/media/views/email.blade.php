@@ -55,7 +55,7 @@ jQuery(document).ready(function($)
 		},
 	});
 
-	$('#groups').selectize({
+	$('#roles').selectize({
 		persist: false,
 		maxItems: null,
 	});
@@ -142,12 +142,12 @@ jQuery(document).ready(function($)
 
 					<div class="form-group">
 
-						<label class="control-label" for="groups">{{{ trans('platform/media::email.groups') }}}</label>
+						<label class="control-label" for="roles">{{{ trans('platform/media::email.roles') }}}</label>
 
-						<select name="groups[]" id="groups">
+						<select name="roles[]" id="roles">
 							<option></option>
-						@foreach ($groups as $group)
-							<option value="{{{ $group->id }}}">{{{ $group->name }}}</option>
+						@foreach ($roles as $role)
+							<option value="{{{ $role->id }}}">{{{ $role->name }}}</option>
 						@endforeach
 						</select>
 

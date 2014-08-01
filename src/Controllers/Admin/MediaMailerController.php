@@ -25,7 +25,7 @@ use Media;
 use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Foundation\Mailer;
 use Platform\Media\Repositories\MediaRepositoryInterface;
-use Platform\Users\Repositories\GroupRepositoryInterface;
+use Platform\Users\Repositories\RoleRepositoryInterface;
 use Platform\Users\Repositories\UserRepositoryInterface;
 use Redirect;
 use Sentinel;
@@ -48,12 +48,17 @@ class MediaMailerController extends AdminController {
 	protected $users;
 
 	/**
-	 * The Users Groups repository.
+	 * The Users Roles repository.
 	 *
-	 * @var \Platform\Users\Repositories\GroupRepositoryInterface
+	 * @var \Platform\Users\Repositories\RoleRepositoryInterface
 	 */
-	protected $groups;
+	protected $roles;
 
+	/**
+	 * The media configuration.
+	 *
+	 * @var array
+	 */
 	protected $config;
 
 	/**
@@ -61,13 +66,13 @@ class MediaMailerController extends AdminController {
 	 *
 	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
 	 * @param  \Platform\Users\Repositories\UserRepositoryInterface  $users
-	 * @param  \Platform\Users\Repositories\GroupRepositoryInterface  $groups
+	 * @param  \Platform\Users\Repositories\RoleRepositoryInterface  $roles
 	 * @return void
 	 */
 	public function __construct(
 		MediaRepositoryInterface $media,
 		UserRepositoryInterface $users,
-		GroupRepositoryInterface $groups
+		RoleRepositoryInterface $roles
 	)
 	{
 		parent::__construct();
@@ -76,7 +81,7 @@ class MediaMailerController extends AdminController {
 
 		$this->users = $users;
 
-		$this->groups = $groups;
+		$this->roles = $roles;
 
 		$this->config = Config::get('platform/media::config');
 	}
@@ -108,9 +113,9 @@ class MediaMailerController extends AdminController {
 
 		$users = $this->users->findAll();
 
-		$groups = $this->groups->findAll();
+		$roles = $this->roles->findAll();
 
-		return View::make('platform/media::email', compact('items', 'total', 'users', 'groups'));
+		return View::make('platform/media::email', compact('items', 'total', 'users', 'roles'));
 	}
 
 	/**
@@ -167,11 +172,11 @@ class MediaMailerController extends AdminController {
 			}
 		}
 
-		foreach (Input::get('groups', []) as $groupId)
+		foreach (Input::get('roles', []) as $roleId)
 		{
-			if ($group = $this->groups->find($groupId))
+			if ($role = $this->roles->find($roleId))
 			{
-				foreach ($group->users as $user)
+				foreach ($role->users as $user)
 				{
 					$recipients->add($user);
 				}

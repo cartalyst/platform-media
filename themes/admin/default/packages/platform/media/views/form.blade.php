@@ -26,11 +26,11 @@
 		{
 			if ($(this).val() == 1)
 			{
-				$('[data-groups]').removeClass('hide');
+				$('[data-roles]').removeClass('hide');
 			}
 			else
 			{
-				$('[data-groups]').addClass('hide');
+				$('[data-roles]').addClass('hide');
 			}
 		});
 	});
@@ -137,20 +137,20 @@
 
 	</div>
 
-	{{-- Groups --}}
+	{{-- Roles --}}
 	<div class="row">
 
 		<div class="col-lg-4">
 
-			<div class="form-group{{ Input::old('private', $media->private) == 0 ? ' hide' : null }}" data-groups>
-				<label class="control-label" for="groups">{{{ trans('platform/media::form.groups') }}}</label>
+			<div class="form-group{{ Input::old('private', $media->private) == 0 ? ' hide' : null }}" data-roles>
+				<label class="control-label" for="roles">{{{ trans('platform/media::form.roles') }}}</label>
 
-				<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::form.groups_help') }}}"></i>
+				<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::form.roles_help') }}}"></i>
 
 				<div class="controls">
-					<select name="groups[]" id="groups" class="form-control" multiple="true">
-					@foreach ($groups as $group)
-						<option value="{{{ $group->id }}}"{{ in_array($group->id, $media->groups) ? ' selected="selected"' : null }}>{{{ $group->name }}}</option>
+					<select name="roles[]" id="roles" class="form-control" multiple="true">
+					@foreach ($roles as $role)
+						<option value="{{{ $role->id }}}"{{ in_array($role->id, $media->roles) ? ' selected="selected"' : null }}>{{{ $role->name }}}</option>
 					@endforeach
 					</select>
 				</div>

@@ -135,11 +135,11 @@
 
 				if ($(this).val() == 1)
 				{
-					$('[data-media-groups]').removeClass('hide');
+					$('[data-media-roles]').removeClass('hide');
 				}
 				else
 				{
-					$('[data-media-groups]').addClass('hide');
+					$('[data-media-roles]').addClass('hide');
 				}
 
 			});
@@ -182,7 +182,7 @@
 
 				var data = {
 					'private' : $('#private').val(),
-					'groups'  : $('#groups').val()
+					'roles'  : $('#roles').val()
 				}
 
 				$('input:checkbox[name=media]:checked').each(function()
@@ -191,7 +191,7 @@
 				});
 
 				$('#private').val(0);
-				$('#groups').val('');
+				$('#roles').val('');
 
 			});
 

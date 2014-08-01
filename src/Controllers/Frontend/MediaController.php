@@ -17,7 +17,7 @@
  * @link       http://cartalyst.com
  */
 
-use Media;
+use Filesystem;
 use Platform\Foundation\Controllers\BaseController;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 use Response;
@@ -56,7 +56,7 @@ class MediaController extends BaseController {
 	{
 		$media = $this->getMedia($path);
 
-		$file = Media::read($media->path);
+		$file = Filesystem::read($media->path);
 
 		$headers = [
 			'Content-Type' => $media->mime,
@@ -75,7 +75,7 @@ class MediaController extends BaseController {
 	{
 		$media = $this->getMedia($path);
 
-		$file = Media::read($media->path);
+		$file = Filesystem::read($media->path);
 
 		$headers = [
 			'Connection'          => 'close',
@@ -109,11 +109,11 @@ class MediaController extends BaseController {
 			{
 				$pass = true;
 
-				$mediaGroups = $media->groups;
+				$mediaRoles = $media->roles;
 
-				$userGroups = $user->groups->lists('id');
+				$userRoles = $user->roles->lists('id');
 
-				if ( ! empty($mediaGroups) and ! array_intersect($mediaGroups, $userGroups))
+				if ( ! empty($mediaRoles) and ! array_intersect($mediaRoles, $userRoles))
 				{
 					$pass = false;
 				}

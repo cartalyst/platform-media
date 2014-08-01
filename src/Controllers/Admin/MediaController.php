@@ -23,11 +23,11 @@ use Lang;
 use Media;
 use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Media\Repositories\MediaRepositoryInterface;
-use Platform\Users\Repositories\GroupRepositoryInterface;
+use Platform\Users\Repositories\RoleRepositoryInterface;
 use Platform\Users\Repositories\UserRepositoryInterface;
 use Redirect;
-use Response;
 use Request;
+use Response;
 use View;
 
 class MediaController extends AdminController {
@@ -55,11 +55,11 @@ class MediaController extends AdminController {
 	protected $users;
 
 	/**
-	 * The Users Groups repository.
+	 * The Users Roles repository.
 	 *
-	 * @var \Platform\Users\Repositories\GroupRepositoryInterface
+	 * @var \Platform\Users\Repositories\RoleRepositoryInterface
 	 */
-	protected $groups;
+	protected $roles;
 
 	/**
 	 * Holds all the mass actions we can execute.
@@ -75,13 +75,13 @@ class MediaController extends AdminController {
 	 *
 	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
 	 * @param  \Platform\Users\Repositories\UserRepositoryInterface  $users
-	 * @param  \Platform\Users\Repositories\GroupRepositoryInterface  $groups
+	 * @param  \Platform\Users\Repositories\RoleRepositoryInterface  $roles
 	 * @return void
 	 */
 	public function __construct(
 		MediaRepositoryInterface $media,
 		UserRepositoryInterface $users,
-		GroupRepositoryInterface $groups
+		RoleRepositoryInterface $roles
 	)
 	{
 		parent::__construct();
@@ -90,7 +90,7 @@ class MediaController extends AdminController {
 
 		$this->users = $users;
 
-		$this->groups = $groups;
+		$this->roles = $roles;
 	}
 
 	/**
@@ -103,11 +103,11 @@ class MediaController extends AdminController {
 		// Get a list of all the available tags
 		$tags = $this->media->getTags();
 
-		// Get a list of all the available groups
-		$groups = $this->groups->findAll();
+		// Get a list of all the available roles
+		$roles = $this->roles->findAll();
 
 		// Show the page
-		return View::make('platform/media::index', compact('tags', 'groups'));
+		return View::make('platform/media::index', compact('tags', 'roles'));
 	}
 
 	/**
@@ -127,7 +127,7 @@ class MediaController extends AdminController {
 			'path',
 			'size',
 			'private',
-			//'groups',
+			//'roles',
 			'is_image',
 			//'extension',
 			'thumbnail',
@@ -150,8 +150,6 @@ class MediaController extends AdminController {
 	public function upload()
 	{
 		$file = Input::file('file');
-
-		dd($file);
 
 		$tags = Input::get('tags', []);
 
@@ -185,11 +183,11 @@ class MediaController extends AdminController {
 		// Get a list of all the available tags
 		$tags = $this->media->getTags();
 
-		// Get a list of all the available groups
-		$groups = $this->groups->findAll();
+		// Get a list of all the available roles
+		$roles = $this->roles->findAll();
 
 		// Show the page
-		return View::make('platform/media::form', compact('media', 'tags', 'groups'));
+		return View::make('platform/media::form', compact('media', 'tags', 'roles'));
 	}
 
 	/**
@@ -200,7 +198,7 @@ class MediaController extends AdminController {
 	 */
 	public function update($id)
 	{
-		Input::merge(['groups' => Input::get('groups', [])]);
+		Input::merge(['roles' => Input::get('roles', [])]);
 
 		Input::merge(['tags' => Input::get('tags', [])]);
 

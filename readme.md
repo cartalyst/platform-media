@@ -16,7 +16,7 @@ History and future capabilities.
 - User can delete files.
 - User can update a file name.
 - User can set a file visibility to public or private.
-- User can set the groups that can access the file if the visilibity is private.
+- User can set the roles that can access the file if the visilibity is private.
 
 ## Versioning
 

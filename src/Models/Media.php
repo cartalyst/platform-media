@@ -39,60 +39,60 @@ class Media extends Model {
 		'width',
 		'height',
 		'private',
-		'groups',
+		'roles',
 		'tags',
 		'thumbnail',
 	];
 
 	/**
-	 * Get mutator for the "groups" attribute.
+	 * Get mutator for the "roles" attribute.
 	 *
-	 * @param  mixed  $groups
+	 * @param  mixed  $roles
 	 * @return array
 	 * @throws \InvalidArgumentException
 	 */
-	public function getGroupsAttribute($groups)
+	public function getRolesAttribute($roles)
 	{
-		if ( ! $groups)
+		if ( ! $roles)
 		{
 			return [];
 		}
 
-		if (is_array($groups))
+		if (is_array($roles))
 		{
-			return $groups;
+			return $roles;
 		}
 
-		if ( ! $_groups = json_decode($groups, true))
+		if ( ! $_roles = json_decode($roles, true))
 		{
-			throw new InvalidArgumentException("Cannot JSON decode groups [{$groups}].");
+			throw new InvalidArgumentException("Cannot JSON decode roles [{$roles}].");
 		}
 
-		return $_groups;
+		return $_roles;
 	}
 
 	/**
-	 * Set mutator for the "groups" attribute.
+	 * Set mutator for the "roles" attribute.
 	 *
-	 * @param  array  $groups
+	 * @param  array  $roles
 	 * @return void
 	 */
-	public function setGroupsAttribute($groups)
+	public function setRolesAttribute($roles)
 	{
 		// If we get a string, let's just ensure it's a proper JSON string
-		if ( ! is_array($groups))
+		if ( ! is_array($roles))
 		{
-			$groups = $this->getGroupsAttribute($groups);
+			$roles = $this->getRolesAttribute($roles);
 		}
 
-		if ( ! empty($groups))
+		if ( ! empty($roles))
 		{
-			$groups = array_values(array_map('intval', $groups));
-			$this->attributes['groups'] = json_encode($groups);
+			$roles = array_values(array_map('intval', $roles));
+			$this->attributes['roles'] = json_encode($roles);
 		}
 		else
 		{
-			$this->attributes['groups'] = '';
+			$this->attributes['roles'] = '';
 		}
 	}
 

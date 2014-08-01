@@ -1,16 +1,33 @@
 <?php namespace Platform\Media\Handlers;
+/**
+ * Part of the Platform Media extension.
+ *
+ * NOTICE OF LICENSE
+ *
+ * Licensed under the Cartalyst PSL License.
+ *
+ * This source file is subject to the Cartalyst PSL License that is
+ * bundled with this package in the license.txt file.
+ *
+ * @package    Platform Media extension
+ * @version    1.0.0
+ * @author     Cartalyst LLC
+ * @license    Cartalyst PSL
+ * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @link       http://cartalyst.com
+ */
 
-use Platform\Media\Repositories\MediaRepositoryInterface;
 use File;
+use Filesystem;
 use Image;
-use Media;
+use Platform\Media\Repositories\MediaRepositoryInterface;
 use Str;
 use URL;
 
 class MediaEventHandler {
 
 	/**
-	 * Groups repository.
+	 * Media repository.
 	 *
 	 * @var \Platform\Media\Repositories\MediaRepositoryInterface
 	 */
@@ -46,7 +63,7 @@ class MediaEventHandler {
 
 			$path = "{$media->id}_{$name}.{$extension}";
 
-			$data = Media::read($file->getPath());
+			$data = Filesystem::read($file->getPath());
 
 			$img = Image::make($data)
 				->resize($width, $height)

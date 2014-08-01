@@ -25,6 +25,6 @@ return [
 	'users'       => 'Users',
 	'users_help'  => 'Select users to add as recipients.',
 
-	'groups'      => 'Groups',
-	'groups_help' => 'Select groups to add as recipients'
+	'roles'       => 'Roles',
+	'roles_help'  => 'Select roles to add as recipients'
 ];

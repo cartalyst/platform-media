@@ -23,8 +23,8 @@ use Cartalyst\Media\Exceptions\InvalidMimeTypeException;
 use Cartalyst\Media\Exceptions\MaxFileSizeExceededException;
 use Event;
 use File;
+use Filesystem;
 use Lang;
-use Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Validator;
 
@@ -148,7 +148,7 @@ class IlluminateMediaRepository implements MediaRepositoryInterface {
 	{
 		try
 		{
-			Media::validateFile($file);
+			Filesystem::validateFile($file);
 
 			return true;
 		}
@@ -175,7 +175,7 @@ class IlluminateMediaRepository implements MediaRepositoryInterface {
 	{
 		try
 		{
-			$uploaded = Media::upload($file);
+			$uploaded = Filesystem::upload($file);
 
 			if ( ! $media = $this->findByPath($uploaded->getPath()))
 			{
@@ -233,12 +233,12 @@ class IlluminateMediaRepository implements MediaRepositoryInterface {
 			if ($this->validForUpload($file))
 			{
 				// Delete the old media file
-				Media::delete($model->path);
+				Filesystem::delete($model->path);
 
 				File::delete(media_cache_path($model->thumbnail));
 
 				// Upload the new file
-				$uploaded = Media::upload($file);
+				$uploaded = Filesystem::upload($file);
 
 				Event::fire('platform.media.uploaded', [$model, $uploaded, $file]);
 
@@ -275,7 +275,7 @@ class IlluminateMediaRepository implements MediaRepositoryInterface {
 	{
 		if ($model = $this->find($id))
 		{
-			Media::delete($model->path);
+			Filesystem::delete($model->path);
 
 			File::delete(media_cache_path($model->thumbnail));
 
