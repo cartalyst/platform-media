@@ -202,7 +202,7 @@ return [
 		{
 			function media_cache_path($media)
 			{
-				return 'cache/media/' . $media; # make this a config option
+				return public_path('cache/media/' . $media); # make this a config option
 			}
 		}
 
