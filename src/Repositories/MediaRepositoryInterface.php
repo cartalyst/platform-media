@@ -81,11 +81,10 @@ interface MediaRepositoryInterface {
 	/**
 	 * Determine if the given media is valid for updating.
 	 *
-	 * @param  int    $id
 	 * @param  array  $data
 	 * @return \Illuminate\Support\MessageBag
 	 */
-	public function validForUpdate($id, array $data);
+	public function validForUpdate(array $data);
 
 	/**
 	 * Upload the given file.

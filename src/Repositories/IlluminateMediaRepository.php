@@ -21,6 +21,9 @@ use Cartalyst\Media\Exceptions\FileExistsException;
 use Cartalyst\Media\Exceptions\InvalidFileException;
 use Cartalyst\Media\Exceptions\InvalidMimeTypeException;
 use Cartalyst\Media\Exceptions\MaxFileSizeExceededException;
+use Cartalyst\Support\Traits\EventTrait;
+use Cartalyst\Support\Traits\RepositoryTrait;
+use Cartalyst\Support\Traits\ValidatorTrait;
 use Event;
 use File;
 use Filesystem;
@@ -30,21 +33,14 @@ use Validator;
 
 class IlluminateMediaRepository implements MediaRepositoryInterface {
 
+	use EventTrait, RepositoryTrait, ValidatorTrait;
+
 	/**
 	 * The Eloquent media model
 	 *
 	 * @var string
 	 */
 	protected $model;
-
-	/**
-	 * Holds the form validation rules.
-	 *
-	 * @var array
-	 */
-	protected $rules = [
-		'name' => 'required',
-	];
 
 	/**
 	 * Holds the occurred error.
@@ -136,9 +132,10 @@ class IlluminateMediaRepository implements MediaRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function validForUpdate($id, array $data)
+	public function validForUpdate(array $data)
 	{
-		return $this->validateMedia($data, $id);
+		return $this->validator
+			->validate($data);
 	}
 
 	/**
@@ -201,7 +198,7 @@ class IlluminateMediaRepository implements MediaRepositoryInterface {
 				]);
 			}
 
-			Event::fire('platform.media.uploaded', [$media, $uploaded, $file]);
+			$this->fireEvent('platform.media.uploaded', [$media, $uploaded, $file]);
 
 			return $media->toArray();
 		}
@@ -240,7 +237,7 @@ class IlluminateMediaRepository implements MediaRepositoryInterface {
 				// Upload the new file
 				$uploaded = Filesystem::upload($file);
 
-				Event::fire('platform.media.uploaded', [$model, $uploaded, $file]);
+				$this->fireEvent('platform.media.uploaded', [$model, $uploaded, $file]);
 
 				$imageSize = $uploaded->getImageSize();
 
@@ -303,34 +300,6 @@ class IlluminateMediaRepository implements MediaRepositoryInterface {
 	public function setError($error)
 	{
 		$this->error = $error;
-	}
-
-	/**
-	 * Validates a media.
-	 *
-	 * @param  array  $data
-	 * @param  mixed  $id
-	 * @return \Illuminate\Support\MessageBag
-	 */
-	protected function validateMedia($data, $id = null)
-	{
-		$validator = Validator::make($data, $this->rules);
-
-		$validator->passes();
-
-		return $validator->errors();
-	}
-
-	/**
-	 * Create a new instance of the model.
-	 *
-	 * @return \Illuminate\Database\Eloquent\Model
-	 */
-	public function createModel()
-	{
-		$class = '\\'.ltrim($this->model, '\\');
-
-		return new $class;
 	}
 
 }
