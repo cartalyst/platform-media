@@ -65,9 +65,11 @@ class MediaEventHandler {
 
 			$data = Filesystem::read($file->getPath());
 
+			$media_public_path = public_path(media_cache_path($path));
+
 			$img = Image::make($data)
 				->resize($width, $height)
-				->save(media_cache_path($path));
+				->save($media_public_path);
 
 			$media->thumbnail = $path;
 			$media->save();
