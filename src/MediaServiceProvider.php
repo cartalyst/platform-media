@@ -26,46 +26,43 @@ class MediaServiceProvider extends ServiceProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function register()
+	public function boot()
 	{
-		$app = $this->app;
+		$this->package('platform/media', 'platform/media'. __DIR__.'/..');
 
-		$this->registerMediaRepository($app);
+		require __DIR__.'/functions.php';
 
-		// Register our event handler
-		$app['events']->subscribe(get_class(app('Platform\Media\Handlers\MediaEventHandler')));
+		$this->registerBladeMediaWidget();
 
-		$this->registerFilesystemPackage($app);
-
-		$this->registerInterventionPackage($app);
+		// Register the event handler
+		$this->app['events']->subscribe('Platform\Media\Handlers\MediaEventHandler');
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function boot()
+	public function register()
 	{
-		$app = $this->app;
+		$this->registerMediaRepository();
 
-		require __DIR__.'/functions.php';
+		$this->registerFilesystemPackage();
 
-		$this->registerBladeMediaWidget($app);
+		$this->registerInterventionPackage();
 	}
 
 	/**
 	 * Register the Cartalyst Interpret Service Provider and Facade alias.
 	 *
-	 * @param  \Illuminate\Foundation\Application  $app
 	 * @return void
 	 */
-	protected function registerFilesystemPackage($app)
+	protected function registerFilesystemPackage()
 	{
 		$serviceProvider = 'Cartalyst\Filesystem\Laravel\FilesystemServiceProvider';
 
-		if ( ! $app->getRegistered($serviceProvider))
+		if ( ! $this->app->getRegistered($serviceProvider))
 		{
 			// Register the Filesystem Service provider and class alias
-			$app->register($serviceProvider);
+			$this->app->register($serviceProvider);
 
 			AliasLoader::getInstance()->alias('Filesystem', 'Cartalyst\Filesystem\Laravel\Facades\Filesystem');
 		}
@@ -74,17 +71,16 @@ class MediaServiceProvider extends ServiceProvider {
 	/**
 	 * Register the Intervention Image Service Provider and Facade alias.
 	 *
-	 * @param  \Illuminate\Foundation\Application  $app
 	 * @return void
 	 */
-	protected function registerInterventionPackage($app)
+	protected function registerInterventionPackage()
 	{
 		$serviceProvider = 'Intervention\Image\ImageServiceProvider';
 
-		if ( ! $app->getRegistered($serviceProvider))
+		if ( ! $this->app->getRegistered($serviceProvider))
 		{
 			// Register the Intervention Image service provider and class alias
-			$app->register($serviceProvider);
+			$this->app->register($serviceProvider);
 
 			AliasLoader::getInstance()->alias('Image', 'Intervention\Image\Facades\Image');
 		}
@@ -93,16 +89,15 @@ class MediaServiceProvider extends ServiceProvider {
 	/**
 	 * Register the media repository.
 	 *
-	 * @param  \Illuminate\Foundation\Application  $app
 	 * @return void
 	 */
-	protected function registerMediaRepository($app)
+	protected function registerMediaRepository()
 	{
 		$mediaRepository = 'Platform\Media\Repositories\MediaRepositoryInterface';
 
-		if ( ! $app->bound($mediaRepository))
+		if ( ! $this->app->bound($mediaRepository))
 		{
-			$app->bind($mediaRepository, function($app)
+			$this->app->bind($mediaRepository, function($app)
 			{
 				$model = get_class($app['Platform\Media\Models\Media']);
 
@@ -114,13 +109,12 @@ class MediaServiceProvider extends ServiceProvider {
 	/**
 	 * Register the Blade @media extension.
 	 *
-	 * @param  \Illuminate\Foundation\Application  $app
 	 * @return void
 	 */
-	protected function registerBladeMediaWidget($app)
+	protected function registerBladeMediaWidget()
 	{
 		// Register @media blade extension
-		$blade = $app['view']->getEngineResolver()->resolve('blade')->getCompiler();
+		$blade = $this->app['view']->getEngineResolver()->resolve('blade')->getCompiler();
 		$blade->extend(function($value) use ($blade)
 		{
 			$matcher = '/(\s*)@media(\(.*?\)\s*)/';
