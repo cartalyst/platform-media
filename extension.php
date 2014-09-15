@@ -232,23 +232,6 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Widgets
-	|--------------------------------------------------------------------------
-	|
-	| Closure that is called when the extension is started. You can register
-	| all your custom widgets here. Of course, Platform will guess the
-	| widget class for you, this is just for custom widgets or if you
-	| do not wish to make a new class for a very small widget.
-	|
-	*/
-
-	'widgets' => function()
-	{
-
-	},
-
-	/*
-	|--------------------------------------------------------------------------
 	| Settings
 	|--------------------------------------------------------------------------
 	|
@@ -297,5 +280,22 @@ return [
 		],
 
 	],
+
+	/*
+	|--------------------------------------------------------------------------
+	| Widgets
+	|--------------------------------------------------------------------------
+	|
+	| Closure that is called when the extension is started. You can register
+	| all your custom widgets here. Of course, Platform will guess the
+	| widget class for you, this is just for custom widgets or if you
+	| do not wish to make a new class for a very small widget.
+	|
+	*/
+
+	'widgets' => function()
+	{
+
+	},
 
 ];
