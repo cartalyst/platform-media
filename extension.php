@@ -163,7 +163,7 @@ return [
 		$app['events']->subscribe(get_class(app('Platform\Media\Handlers\MediaEventHandler')));
 
 		// Register the Media Service provider and class alias
-		$app->instance('cartalyst/filesystem', $filesystem = new MediaServiceProvider($app));
+		$app->instance('cartalyst/filesystem', $filesystem = new FilesystemServiceProvider($app));
 		$app->register($filesystem);
 
 		AliasLoader::getInstance()->alias('Filesystem', 'Cartalyst\Filesystem\Laravel\Facades\Filesystem');
