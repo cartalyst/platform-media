@@ -17,10 +17,10 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Media\Exceptions\FileExistsException;
-use Cartalyst\Media\Exceptions\InvalidFileException;
-use Cartalyst\Media\Exceptions\InvalidMimeTypeException;
-use Cartalyst\Media\Exceptions\MaxFileSizeExceededException;
+use Cartalyst\Filesystem\Exceptions\FileExistsException;
+use Cartalyst\Filesystem\Exceptions\InvalidFileException;
+use Cartalyst\Filesystem\Exceptions\InvalidMimeTypeException;
+use Cartalyst\Filesystem\Exceptions\MaxFileSizeExceededException;
 use Cartalyst\Support\Traits\EventTrait;
 use Cartalyst\Support\Traits\RepositoryTrait;
 use Cartalyst\Support\Traits\ValidatorTrait;
