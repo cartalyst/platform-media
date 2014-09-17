@@ -20,7 +20,7 @@
 use DataGrid;
 use Input;
 use Lang;
-use Media;
+use Filesystem;
 use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 use Platform\Users\Repositories\GroupRepositoryInterface;

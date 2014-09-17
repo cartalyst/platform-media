@@ -72,9 +72,9 @@ interface MediaRepositoryInterface {
 	 *
 	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $file
 	 * @return bool
-	 * @throws \Cartalyst\Media\Exceptions\InvalidFileException
-	 * @throws \Cartalyst\Media\Exceptions\MaxFileSizeExceededException
-	 * @throws \Cartalyst\Media\Exceptions\InvalidMimeTypeException
+	 * @throws \Cartalyst\Filesystem\Exceptions\InvalidFileException
+	 * @throws \Cartalyst\Filesystem\Exceptions\MaxFileSizeExceededException
+	 * @throws \Cartalyst\Filesystem\Exceptions\InvalidMimeTypeException
 	 */
 	public function validForUpload(UploadedFile $file);
 

@@ -40,7 +40,7 @@
 	"require": {
 		"php": ">=5.4.0",
 		"cartalyst/composer-installers": "1.1.*",
-		"cartalyst/media": "dev-master",
+		"cartalyst/filesystem": "~2.0",
 		"intervention/image": "~2.0",
 		"intervention/imagecache": "~2.0",
 		"platform/admin": "dev-master"

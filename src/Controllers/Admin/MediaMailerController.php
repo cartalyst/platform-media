@@ -21,7 +21,7 @@ use Config;
 use Illuminate\Database\Eloquent\Collection;
 use Input;
 use Lang;
-use Media;
+use Filesystem;
 use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Foundation\Mailer;
 use Platform\Media\Repositories\MediaRepositoryInterface;
@@ -189,7 +189,7 @@ class MediaMailerController extends AdminController {
 		$attachments = array_filter(array_map(function($attachment)
 		{
 			return [
-				Media::get($attachment->path)->getFullpath(),
+				Filesystem::get($attachment->path)->getFullpath(),
 				[
 					'mime' => $attachment->mime,
 				],

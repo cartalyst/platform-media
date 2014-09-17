@@ -18,7 +18,7 @@
  */
 
 use Cartalyst\Extensions\ExtensionInterface;
-use Cartalyst\Media\Laravel\MediaServiceProvider;
+use Cartalyst\Filesystem\Laravel\FilesystemServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Application;
 use Intervention\Image\ImageServiceProvider;
@@ -163,10 +163,10 @@ return [
 		$app['events']->subscribe(get_class(app('Platform\Media\Handlers\MediaEventHandler')));
 
 		// Register the Media Service provider and class alias
-		$app->instance('cartalyst/media', $media = new MediaServiceProvider($app));
-		$app->register($media);
+		$app->instance('cartalyst/filesystem', $filesystem = new MediaServiceProvider($app));
+		$app->register($filesystem);
 
-		AliasLoader::getInstance()->alias('Media', 'Cartalyst\Media\Laravel\Facades\Media');
+		AliasLoader::getInstance()->alias('Filesystem', 'Cartalyst\Filesystem\Laravel\Facades\Filesystem');
 
 		// Register the Intervention Image service provider and class alias
 		$app->instance('intervention', $provider = new ImageServiceProvider($app));
@@ -192,8 +192,8 @@ return [
 
 	'boot' => function(ExtensionInterface $extension, Application $app)
 	{
-		$app['cartalyst/media']->boot();
-		unset($app['cartalyst/media']);
+		$app['cartalyst/filesystem']->boot();
+		unset($app['cartalyst/filesystem']);
 
 		$app['intervention']->boot();
 		unset($app['intervention']);
