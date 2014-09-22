@@ -1,4 +1,4 @@
-<?php namespace Platform\Media;
+<?php namespace Platform\Media\Providers;
 /**
  * Part of the Platform Media extension.
  *

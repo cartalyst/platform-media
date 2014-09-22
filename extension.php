@@ -143,7 +143,7 @@ return [
 
 	'providers' => [
 
-		'Platform\Media\MediaServiceProvider',
+		'Platform\Media\Providers\MediaServiceProvider',
 
 	],
 
