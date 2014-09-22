@@ -28,9 +28,9 @@ class MediaServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('platform/media', 'platform/media'. __DIR__.'/..');
+		$this->package('platform/media', 'platform/media'. __DIR__.'/../..');
 
-		require __DIR__.'/functions.php';
+		require __DIR__.'/../functions.php';
 
 		$this->registerBladeMediaWidget();
 
