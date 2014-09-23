@@ -203,14 +203,38 @@ return [
 
 	'permissions' => function(Permissions $permissions)
 	{
-		return [
+		$permissions->group('media', function($g)
+		{
+			$g->name = 'Media';
 
-			'Platform\Media\Controllers\Admin\MediaController@index,grid'  => Lang::get('platform/media::permissions.index'),
-			'Platform\Media\Controllers\Admin\MediaController@upload'      => Lang::get('platform/media::permissions.upload'),
-			'Platform\Media\Controllers\Admin\MediaController@edit,update' => Lang::get('platform/media::permissions.edit'),
-			'Platform\Media\Controllers\Admin\MediaController@delete'      => Lang::get('platform/media::permissions.delete'),
+			$g->permission('media.index', function($p)
+			{
+				$p->label = trans('platform/media::permissions.index');
 
-		];
+				$p->controller('Platform\Media\Controllers\Admin\MediaController', 'index, grid');
+			});
+
+			$g->permission('media.create', function($p)
+			{
+				$p->label = trans('platform/media::permissions.create');
+
+				$p->controller('Platform\Media\Controllers\Admin\MediaController', 'create, store');
+			});
+
+			$g->permission('media.edit', function($p)
+			{
+				$p->label = trans('platform/media::permissions.edit');
+
+				$p->controller('Platform\Media\Controllers\Admin\MediaController', 'edit, update');
+			});
+
+			$g->permission('media.delete', function($p)
+			{
+				$p->label = trans('platform/media::permissions.delete');
+
+				$p->controller('Platform\Media\Controllers\Admin\MediaController', 'delete');
+			});
+		});
 	},
 
 	/*
