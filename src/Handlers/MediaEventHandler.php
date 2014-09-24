@@ -17,11 +17,12 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Support\Base\EventHandler as BaseHandler;
 use Filesystem;
 use Image;
 use Str;
 
-class MediaEventHandler {
+class MediaEventHandler extends BaseHandler {
 
 	/**
 	 * On upload event.
