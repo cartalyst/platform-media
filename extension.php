@@ -214,11 +214,11 @@ return [
 				$p->controller('Platform\Media\Controllers\Admin\MediaController', 'index, grid');
 			});
 
-			$g->permission('media.create', function($p)
+			$g->permission('media.upload', function($p)
 			{
-				$p->label = trans('platform/media::permissions.create');
+				$p->label = trans('platform/media::permissions.upload');
 
-				$p->controller('Platform\Media\Controllers\Admin\MediaController', 'create, store');
+				$p->controller('Platform\Media\Controllers\Admin\MediaController', 'upload');
 			});
 
 			$g->permission('media.edit', function($p)
