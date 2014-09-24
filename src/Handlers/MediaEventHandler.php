@@ -17,37 +17,22 @@
  * @link       http://cartalyst.com
  */
 
-use File;
 use Filesystem;
 use Image;
-use Platform\Media\Repositories\MediaRepositoryInterface;
 use Str;
-use URL;
 
 class MediaEventHandler {
 
 	/**
-	 * Media repository.
+	 * On upload event.
 	 *
-	 * @var \Platform\Media\Repositories\MediaRepositoryInterface
-	 */
-	protected $media;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
+	 * @param  \Platform\Media\Models\Media  $media
+	 * @param  \Cartalyst\Filesystem\File  $file
+	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $original
 	 * @return void
 	 */
-	public function __construct(MediaRepositoryInterface $media)
-	{
-		$this->media = $media;
-	}
-
 	public function onUpload($media, $file, $original)
 	{
-		$path = null;
-
 		if ($file->isImage())
 		{
 			$width = 40;
