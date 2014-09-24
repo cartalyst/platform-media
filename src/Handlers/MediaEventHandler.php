@@ -17,10 +17,10 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Support\Base\EventHandler as BaseHandler;
-use Filesystem;
-use Image;
 use Str;
+use Image;
+use Filesystem;
+use Cartalyst\Support\Base\EventHandler as BaseHandler;
 
 class MediaEventHandler extends BaseHandler {
 
