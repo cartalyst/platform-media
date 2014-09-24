@@ -48,7 +48,7 @@
 		"cartalyst/filesystem": "~2.0",
 		"intervention/image": "~2.0",
 		"intervention/imagecache": "~2.0",
-		"platform/admin": "dev-feature/settings"
+		"platform/admin": "dev-feature/traits"
 	},
 	"autoload": {
 		"classmap": [
