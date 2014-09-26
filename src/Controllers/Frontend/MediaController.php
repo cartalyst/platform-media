@@ -18,13 +18,13 @@
  */
 
 use Filesystem;
-use Platform\Foundation\Controllers\BaseController;
+use Platform\Foundation\Controllers\Controller;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 use Response;
 use Sentinel;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class MediaController extends BaseController {
+class MediaController extends Controller {
 
 	/**
 	 * Media repository.
