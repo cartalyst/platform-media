@@ -20,9 +20,9 @@
 use Str;
 use Image;
 use Filesystem;
-use Cartalyst\Support\Base\EventHandler as BaseHandler;
+use Cartalyst\Support\Handlers\EventHandler;
 
-class MediaEventHandler extends BaseHandler {
+class MediaEventHandler extends EventHandler {
 
 	/**
 	 * On upload event.
