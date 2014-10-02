@@ -17,12 +17,27 @@
  * @link       http://cartalyst.com
  */
 
-use Str;
-use Image;
-use Filesystem;
+use Illuminate\Support\Str;
+use Cartalyst\Filesystem\File;
+use Platform\Media\Models\Media;
+use Illuminate\Events\Dispatcher;
+use Intervention\Image\Facades\Image;
 use Cartalyst\Support\Handlers\EventHandler;
+use Cartalyst\Filesystem\Laravel\Facades\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MediaEventHandler extends EventHandler {
+
+	/**
+	 * Register the listeners for the subscriber.
+	 *
+	 * @param  \Illuminate\Events\Dispatcher  $dispatcher
+	 * @return void
+	 */
+	public function subscribe(Dispatcher $dispatcher)
+	{
+		$dispatcher->listen('platform.media.uploaded', __CLASS__.'@onUpload');
+	}
 
 	/**
 	 * On upload event.
@@ -32,7 +47,7 @@ class MediaEventHandler extends EventHandler {
 	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $original
 	 * @return void
 	 */
-	public function onUpload($media, $file, $original)
+	public function onUpload(Media $media, File $file, UploadedFile $original)
 	{
 		if ($file->isImage())
 		{
@@ -60,17 +75,6 @@ class MediaEventHandler extends EventHandler {
 			$media->thumbnail = $path;
 			$media->save();
 		}
-	}
-
-	/**
-	 * Register the listeners for the subscriber.
-	 *
-	 * @param  \Illuminate\Events\Dispatcher  $events
-	 * @return void
-	 */
-	public function subscribe($events)
-	{
-		$events->listen('platform.media.uploaded', 'Platform\Media\Handlers\MediaEventHandler@onUpload');
 	}
 
 }

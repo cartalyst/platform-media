@@ -101,7 +101,8 @@ class MediaServiceProvider extends ServiceProvider {
 			{
 				$model = get_class($app['Platform\Media\Models\Media']);
 
-				return new IlluminateMediaRepository($model);
+				return (new IlluminateMediaRepository($model))
+					->setDispatcher($app['events']);
 			});
 		}
 	}
