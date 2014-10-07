@@ -101,7 +101,7 @@ return [
 
 	'require' => [
 
-		'platform/admin',
+		'platform/access',
 
 	],
 
