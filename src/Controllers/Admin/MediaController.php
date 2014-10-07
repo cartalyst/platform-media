@@ -21,7 +21,7 @@ use DataGrid;
 use Input;
 use Lang;
 use Filesystem;
-use Platform\Admin\Controllers\Admin\AdminController;
+use Platform\Access\Controllers\AdminController;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 use Platform\Users\Repositories\RoleRepositoryInterface;
 use Platform\Users\Repositories\UserRepositoryInterface;

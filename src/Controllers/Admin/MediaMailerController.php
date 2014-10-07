@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Input;
 use Lang;
 use Filesystem;
-use Platform\Admin\Controllers\Admin\AdminController;
+use Platform\Access\Controllers\AdminController;
 use Platform\Foundation\Mailer;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 use Platform\Users\Repositories\RoleRepositoryInterface;
