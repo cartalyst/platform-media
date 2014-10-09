@@ -23,7 +23,7 @@ use Lang;
 use Filesystem;
 use Platform\Access\Controllers\AdminController;
 use Platform\Media\Repositories\MediaRepositoryInterface;
-use Platform\Users\Repositories\RoleRepositoryInterface;
+use Platform\Roles\Repositories\RoleRepositoryInterface;
 use Platform\Users\Repositories\UserRepositoryInterface;
 use Redirect;
 use Request;
