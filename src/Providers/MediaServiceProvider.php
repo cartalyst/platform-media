@@ -114,9 +114,7 @@ class MediaServiceProvider extends ServiceProvider {
 	 */
 	protected function registerBladeMediaWidget()
 	{
-		// Register @media blade extension
-		$blade = $this->app['view']->getEngineResolver()->resolve('blade')->getCompiler();
-		$blade->extend(function($value) use ($blade)
+		$this->app['blade.compiler']->extend(function($value)
 		{
 			$matcher = '/(\s*)@media(\(.*?\)\s*)/';
 
