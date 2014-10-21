@@ -17,28 +17,11 @@
  * @link       http://cartalyst.com
  */
 
-use DataGrid;
-use Input;
-use Lang;
-use Filesystem;
 use Platform\Access\Controllers\AdminController;
-use Platform\Media\Repositories\MediaRepositoryInterface;
 use Platform\Roles\Repositories\RoleRepositoryInterface;
-use Platform\Users\Repositories\UserRepositoryInterface;
-use Redirect;
-use Request;
-use Response;
-use View;
+use Platform\Media\Repositories\MediaRepositoryInterface;
 
 class MediaController extends AdminController {
-
-	/**
-	 * {@inheritDoc}
-	 */
-	protected $csrfWhitelist = [
-		'executeAction',
-		//'update',
-	];
 
 	/**
 	 * Media repository.
@@ -48,18 +31,19 @@ class MediaController extends AdminController {
 	protected $media;
 
 	/**
-	 * The Users repository.
-	 *
-	 * @var \Platform\Users\Repositories\UserRepositoryInterface
-	 */
-	protected $users;
-
-	/**
 	 * The Users Roles repository.
 	 *
 	 * @var \Platform\Users\Repositories\RoleRepositoryInterface
 	 */
 	protected $roles;
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected $csrfWhitelist = [
+		'executeAction',
+		//'update',
+	];
 
 	/**
 	 * Holds all the mass actions we can execute.
@@ -74,21 +58,14 @@ class MediaController extends AdminController {
 	 * Constructor.
 	 *
 	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
-	 * @param  \Platform\Users\Repositories\UserRepositoryInterface  $users
 	 * @param  \Platform\Users\Repositories\RoleRepositoryInterface  $roles
 	 * @return void
 	 */
-	public function __construct(
-		MediaRepositoryInterface $media,
-		UserRepositoryInterface $users,
-		RoleRepositoryInterface $roles
-	)
+	public function __construct(MediaRepositoryInterface $media, RoleRepositoryInterface $roles)
 	{
 		parent::__construct();
 
 		$this->media = $media;
-
-		$this->users = $users;
 
 		$this->roles = $roles;
 	}
@@ -107,7 +84,7 @@ class MediaController extends AdminController {
 		$roles = $this->roles->findAll();
 
 		// Show the page
-		return View::make('platform/media::index', compact('tags', 'roles'));
+		return view('platform/media::index', compact('tags', 'roles'));
 	}
 
 	/**
@@ -117,8 +94,6 @@ class MediaController extends AdminController {
 	 */
 	public function grid()
 	{
-		$data = $this->media->grid();
-
 		$columns = [
 			'id',
 			'tags',
@@ -139,7 +114,7 @@ class MediaController extends AdminController {
 			'direction' => 'desc',
 		];
 
-		return DataGrid::make($data, $columns, $settings);
+		return datagrid($this->media->grid(), $columns, $settings);
 	}
 
 	/**
@@ -149,19 +124,19 @@ class MediaController extends AdminController {
 	 */
 	public function upload()
 	{
-		$file = Input::file('file');
+		$file = input()->file('file');
 
-		$tags = Input::get('tags', []);
+		$tags = input('tags', []);
 
 		if ($this->media->validForUpload($file))
 		{
 			if ($media = $this->media->upload($file, $tags))
 			{
-				return Response::json($media);
+				return response($media);
 			}
 		}
 
-		return Response::json($this->media->getError(), 400);
+		return response($this->media->getError(), 400);
 	}
 
 	/**
@@ -175,9 +150,9 @@ class MediaController extends AdminController {
 		// Get the media information
 		if ( ! $media = $this->media->find($id))
 		{
-			$message = Lang::get('platform/media::message.not_found', compact('id'));
-
-			return Redirect::toAdmin('media')->withErrors($message);
+			return redirect()->toAdmin('media')->withErrors(
+				trans('platform/media::message.not_found', compact('id'))
+			);
 		}
 
 		// Get a list of all the available tags
@@ -187,7 +162,7 @@ class MediaController extends AdminController {
 		$roles = $this->roles->findAll();
 
 		// Show the page
-		return View::make('platform/media::form', compact('media', 'tags', 'roles'));
+		return view('platform/media::form', compact('media', 'tags', 'roles'));
 	}
 
 	/**
@@ -198,33 +173,33 @@ class MediaController extends AdminController {
 	 */
 	public function update($id)
 	{
-		Input::merge(['roles' => Input::get('roles', [])]);
+		input()->merge(['roles' => input('roles', [])]);
 
-		Input::merge(['tags' => Input::get('tags', [])]);
+		input()->merge(['tags' => input('tags', [])]);
 
-		$input = Input::except('file');
+		$input = input()->except('file');
 
 		if ($this->media->validForUpdate($id, $input))
 		{
-			if ($this->media->update($id, $input, Input::file('file')))
+			if ($this->media->update($id, $input, input()->file('file')))
 			{
-				if (Request::ajax())
+				if (request()->ajax())
 				{
-					return Response::json('success');
+					return response('success');
 				}
 
-				$message = Lang::get('platform/media::message.success.update');
+				$message = trans('platform/media::message.success.update');
 
-				return Redirect::toAdmin('media')->withSuccess($message);
+				return redirect()->toAdmin('media')->withSuccess($message);
 			}
 		}
 
-		if (Request::ajax())
+		if (request()->ajax())
 		{
-			return Response::json($this->media->getError(), 400);
+			return response($this->media->getError(), 400);
 		}
 
-		return Redirect::back()->withErrors($this->media->getError());
+		return redirect()->back()->withErrors($this->media->getError());
 	}
 
 	/**
@@ -234,19 +209,19 @@ class MediaController extends AdminController {
 	 */
 	public function executeAction()
 	{
-		$action = Input::get('action');
+		$action = input('action');
 
 		if (in_array($action, $this->actions))
 		{
-			foreach (Input::get('entries', []) as $entry)
+			foreach (input('entries', []) as $entry)
 			{
 				$this->media->{$action}($entry);
 			}
 
-			return Response::json('Success');
+			return response('Success');
 		}
 
-		return Response::json('Failed', 500);
+		return response('Failed', 500);
 	}
 
 }

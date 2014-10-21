@@ -17,9 +17,8 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
-use Illuminate\Support\ServiceProvider;
-use Platform\Media\Repositories\IlluminateMediaRepository;
 
 class MediaServiceProvider extends ServiceProvider {
 
@@ -28,14 +27,14 @@ class MediaServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
+		// Register the extension component namespaces
 		$this->package('platform/media', 'platform/media'. __DIR__.'/../..');
 
-		require __DIR__.'/../functions.php';
-
-		$this->registerBladeMediaWidget();
-
 		// Register the event handler
-		$this->app['events']->subscribe('Platform\Media\Handlers\MediaEventHandler');
+		$this->app['events']->subscribe('platform.media.handler.events');
+
+		// Register the Blade @media extension
+		$this->registerBladeMediaWidget();
 	}
 
 	/**
@@ -43,11 +42,17 @@ class MediaServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->registerMediaRepository();
-
+		// Register the Cartalyst Filesystem Service Provider and Facade alias.
 		$this->registerFilesystemPackage();
 
+		// Register the Intervention Service Provider and Facade alias.
 		$this->registerInterventionPackage();
+
+		// Register the repository
+		$this->bindIf('platform.media', 'Platform\Media\Repositories\MediaRepository');
+
+		// Register the event handler
+		$this->bindIf('platform.media.handler.events', 'Platform\Media\Handlers\EventHandler');
 	}
 
 	/**
@@ -83,27 +88,6 @@ class MediaServiceProvider extends ServiceProvider {
 			$this->app->register($serviceProvider);
 
 			AliasLoader::getInstance()->alias('Image', 'Intervention\Image\Facades\Image');
-		}
-	}
-
-	/**
-	 * Register the media repository.
-	 *
-	 * @return void
-	 */
-	protected function registerMediaRepository()
-	{
-		$mediaRepository = 'Platform\Media\Repositories\MediaRepositoryInterface';
-
-		if ( ! $this->app->bound($mediaRepository))
-		{
-			$this->app->bind($mediaRepository, function($app)
-			{
-				$model = get_class($app['Platform\Media\Models\Media']);
-
-				return (new IlluminateMediaRepository($model))
-					->setDispatcher($app['events']);
-			});
 		}
 	}
 

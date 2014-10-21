@@ -20,34 +20,34 @@
 use Illuminate\Support\Str;
 use Cartalyst\Filesystem\File;
 use Platform\Media\Models\Media;
-use Illuminate\Events\Dispatcher;
 use Intervention\Image\Facades\Image;
-use Cartalyst\Support\Handlers\EventHandler;
 use Cartalyst\Filesystem\Laravel\Facades\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class MediaEventHandler extends EventHandler {
+
+use Illuminate\Events\Dispatcher;
+use Cartalyst\Support\Handlers\EventHandler as BaseEventHandler;
+
+
+class EventHandler extends BaseEventHandler implements EventHandlerInterface {
 
 	/**
-	 * Register the listeners for the subscriber.
-	 *
-	 * @param  \Illuminate\Events\Dispatcher  $dispatcher
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	public function subscribe(Dispatcher $dispatcher)
 	{
-		$dispatcher->listen('platform.media.uploaded', __CLASS__.'@onUpload');
+		$dispatcher->listen('platform.media.uploaded', __CLASS__.'@uploaded');
 	}
 
 	/**
 	 * On upload event.
 	 *
-	 * @param  \Platform\Media\Models\Media  $media
-	 * @param  \Cartalyst\Filesystem\File  $file
 	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $original
+	 * @param  \Cartalyst\Filesystem\File  $file
+	 * @param  \Platform\Media\Models\Media  $media
 	 * @return void
 	 */
-	public function onUpload(Media $media, File $file, UploadedFile $original)
+	public function uploaded(UploadedFile $original, File $file, Media $media)
 	{
 		if ($file->isImage())
 		{
@@ -68,9 +68,7 @@ class MediaEventHandler extends EventHandler {
 
 			$media_public_path = public_path(media_cache_path($path));
 
-			$img = Image::make($data)
-				->resize($width, $height)
-				->save($media_public_path);
+			$img = Image::make($data)->resize($width, $height)->save($media_public_path);
 
 			$media->thumbnail = $path;
 			$media->save();

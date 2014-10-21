@@ -19,17 +19,13 @@
 
 use Config;
 use Illuminate\Database\Eloquent\Collection;
-use Input;
-use Lang;
 use Filesystem;
 use Platform\Access\Controllers\AdminController;
 use Platform\Foundation\Mailer;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 use Platform\Users\Repositories\RoleRepositoryInterface;
 use Platform\Users\Repositories\UserRepositoryInterface;
-use Redirect;
 use Sentinel;
-use View;
 
 class MediaMailerController extends AdminController {
 
@@ -96,14 +92,14 @@ class MediaMailerController extends AdminController {
 	{
 		if ( ! $items = $this->getEmailItems($id))
 		{
-			return Redirect::toAdmin('media');
+			return redirect()->toAdmin('media');
 		}
 
-		if ($remove = Input::get('remove'))
+		if ($remove = input('remove'))
 		{
 			$items = implode(',', array_diff(explode(',', $id), [$remove])) ?: 0;
 
-			return Redirect::toAdmin("media/{$items}/email");
+			return redirect()->toAdmin("media/{$items}/email");
 		}
 
 		$total = array_sum(array_map(function($item)
@@ -115,7 +111,7 @@ class MediaMailerController extends AdminController {
 
 		$roles = $this->roles->findAll();
 
-		return View::make('platform/media::email', compact('items', 'total', 'users', 'roles'));
+		return view('platform/media::email', compact('items', 'total', 'users', 'roles'));
 	}
 
 	/**
@@ -128,7 +124,7 @@ class MediaMailerController extends AdminController {
 	{
 		if ( ! $items = $this->getEmailItems($id))
 		{
-			return Redirect::toAdmin('media');
+			return redirect()->toAdmin('media');
 		}
 
 		$maxAttachments = array_get($this->config, 'email.max_attachments');
@@ -156,15 +152,15 @@ class MediaMailerController extends AdminController {
 		$view = 'platform/media::emails/email';
 
 		// Prepare the email subject
-		$subject = Input::get('subject', array_get($this->config, 'email.subject'));
+		$subject = input('subject', array_get($this->config, 'email.subject'));
 
 		// Get the email body
-		$body = Input::get('body');
+		$body = input('body');
 
 		// Prepare the recipients
 		$recipients = new Collection;
 
-		foreach (Input::get('users', []) as $email)
+		foreach (input('users', []) as $email)
 		{
 			if ($user = $this->users->findByEmail($email))
 			{
@@ -172,7 +168,7 @@ class MediaMailerController extends AdminController {
 			}
 		}
 
-		foreach (Input::get('roles', []) as $roleId)
+		foreach (input('roles', []) as $roleId)
 		{
 			if ($role = $this->roles->find($roleId))
 			{
@@ -187,7 +183,7 @@ class MediaMailerController extends AdminController {
 		{
 			$message = "You haven't selected any recipients.";
 
-			return Redirect::toAdmin("media/{$id}/email")->withErrors($message);
+			return redirect()->toAdmin("media/{$id}/email")->withErrors($message);
 		}
 
 		// Prepare the attachments
@@ -202,7 +198,7 @@ class MediaMailerController extends AdminController {
 		}, $items));
 
 		// set input var, will make accessible to the view
-		$input = Input::except(['_token', 'users']);
+		$input = input()->except(['_token', 'users']);
 
 		$mailer = new Mailer;
 		$mailer->setView($view, compact('body'));
@@ -218,7 +214,7 @@ class MediaMailerController extends AdminController {
 
 		$mailer->send();
 
-		return Redirect::toAdmin('media')->withSuccess('Email was succesfully sent.');
+		return redirect()->toAdmin('media')->withSuccess('Email was succesfully sent.');
 	}
 
 	protected function getEmailItems($id)

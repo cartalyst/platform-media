@@ -17,23 +17,21 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Support\Traits;
+use Illuminate\Container\Container;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+
 use Cartalyst\Filesystem\Exceptions\FileExistsException;
 use Cartalyst\Filesystem\Exceptions\InvalidFileException;
 use Cartalyst\Filesystem\Exceptions\InvalidMimeTypeException;
 use Cartalyst\Filesystem\Exceptions\MaxFileSizeExceededException;
-use Cartalyst\Support\Traits\EventTrait;
-use Cartalyst\Support\Traits\RepositoryTrait;
-use Cartalyst\Support\Traits\ValidatorTrait;
-use Event;
 use File;
 use Filesystem;
-use Lang;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Validator;
 
-class IlluminateMediaRepository implements MediaRepositoryInterface {
+class MediaRepository implements MediaRepositoryInterface {
 
-	use EventTrait, RepositoryTrait, ValidatorTrait;
+	use Traits\ContainerTrait, Traits\EventTrait, Traits\RepositoryTrait, Traits\ValidatorTrait;
 
 	/**
 	 * The Eloquent media model
@@ -52,12 +50,16 @@ class IlluminateMediaRepository implements MediaRepositoryInterface {
 	/**
 	 * Constructor.
 	 *
-	 * @param  string  $model
+	 * @param  \Illuminate\Container\Container  $app
 	 * @return void
 	 */
-	public function __construct($model)
+	public function __construct(Container $app)
 	{
-		$this->model = $model;
+		$this->setContainer($app);
+
+		$this->setDispatcher($app['events']);
+
+		$this->setModel(get_class($app['Platform\Media\Models\Media']));
 	}
 
 	/**
@@ -73,7 +75,7 @@ class IlluminateMediaRepository implements MediaRepositoryInterface {
 	 */
 	public function find($id)
 	{
-		return $this->createModel()->find($id);
+		$model = $this->createModel()->rememberForever('platform.media.'.$id)->first();
 	}
 
 	/**
@@ -134,8 +136,7 @@ class IlluminateMediaRepository implements MediaRepositoryInterface {
 	 */
 	public function validForUpdate(array $data)
 	{
-		return $this->validator
-			->validate($data);
+		return $this->validator->validate($data);
 	}
 
 	/**
@@ -151,15 +152,15 @@ class IlluminateMediaRepository implements MediaRepositoryInterface {
 		}
 		catch (InvalidFileException $e)
 		{
-			$this->setError(Lang::get('platform/media::message.invalid_file'));
+			$this->setError(trans('platform/media::message.invalid_file'));
 		}
 		catch (MaxFileSizeExceededException $e)
 		{
-			$this->setError(Lang::get('platform/media::message.file_size_exceeded'));
+			$this->setError(trans('platform/media::message.file_size_exceeded'));
 		}
 		catch (InvalidMimeTypeException $e)
 		{
-			$this->setError(Lang::get('platform/media::message.invalid_mime'));
+			$this->setError(trans('platform/media::message.invalid_mime'));
 		}
 
 		return false;
@@ -204,7 +205,7 @@ class IlluminateMediaRepository implements MediaRepositoryInterface {
 		}
 		catch (FileExistsException $e)
 		{
-			$this->setError(Lang::get('platform/media::message.file_exists'));
+			$this->setError(trans('platform/media::message.file_exists'));
 
 			return false;
 		}
@@ -281,7 +282,7 @@ class IlluminateMediaRepository implements MediaRepositoryInterface {
 			return true;
 		}
 
-		$this->setError(Lang::get('platform/media::message.error.delete'));
+		$this->setError(trans('platform/media::message.error.delete'));
 
 		return false;
 	}
