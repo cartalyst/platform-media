@@ -67,7 +67,7 @@ jQuery(document).ready(function($)
 @section('content')
 
 {{-- Media form --}}
-<form id="media-form" action="{{ Request::fullUrl() }}" method="post" accept-char="UTF-8" autocomplete="off" enctype="multipart/form-data">
+<form id="media-form" action="{{ request()->fullUrl() }}" method="post" accept-char="UTF-8" autocomplete="off" enctype="multipart/form-data">
 
 	{{-- CSRF Token --}}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
