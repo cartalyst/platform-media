@@ -60,6 +60,7 @@ class MediaController extends BaseController {
 
 		$headers = [
 			'Content-Type' => $media->mime,
+			'Content-Length' => strlen($file),
 		];
 
 		return $this->respond($file, $headers);
