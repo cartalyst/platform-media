@@ -24,7 +24,7 @@ use Platform\Media\Repositories\MediaRepositoryInterface;
 class MediaController extends AdminController {
 
 	/**
-	 * Media repository.
+	 * The Media repository.
 	 *
 	 * @var \Platform\Media\Repositories\MediaRepositoryInterface
 	 */
@@ -84,7 +84,7 @@ class MediaController extends AdminController {
 		$roles = $this->roles->findAll();
 
 		// Show the page
-		return view('platform/media::index', compact('tags', 'roles'));
+		return view('platform/media::fileapi', compact('tags', 'roles'));
 	}
 
 	/**
@@ -124,13 +124,11 @@ class MediaController extends AdminController {
 	 */
 	public function upload()
 	{
-		$file = input()->file('file');
-
-		$tags = input('tags', []);
+		$file = request()->file('file');
 
 		if ($this->media->validForUpload($file))
 		{
-			if ($media = $this->media->upload($file, $tags))
+			if ($media = $this->media->upload($file, input('tags', [])))
 			{
 				return response($media);
 			}
@@ -173,11 +171,13 @@ class MediaController extends AdminController {
 	 */
 	public function update($id)
 	{
-		input()->merge(['roles' => input('roles', [])]);
+		$tags = input('tags', []);
 
-		input()->merge(['tags' => input('tags', [])]);
+		$roles = input('roles', []);
 
 		$input = input()->except('file');
+
+		input()->merge(compact('tags', 'roles'));
 
 		if ($this->media->validForUpdate($id, $input))
 		{

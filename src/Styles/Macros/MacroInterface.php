@@ -1,4 +1,4 @@
-<?php namespace Platform\Media\Filters;
+<?php namespace Platform\Media\Styles\Macros;
 /**
  * Part of the Platform Media extension.
  *
@@ -21,11 +21,7 @@ use Cartalyst\Filesystem\File;
 use Intervention\Image\ImageManager;
 use Platform\Media\Models\Media;
 
-interface FilterInterface {
-
-	public function getConfig();
-
-	public function setConfig(array $config);
+interface MacroInterface {
 
 	public function getMedia();
 
@@ -45,21 +41,6 @@ interface FilterInterface {
 	 * @return mixed
 	 */
 	public function setFile(File $file);
-
-	/**
-	 * Returns the Intervention Image instance.
-	 *
-	 * @return \Intervention\Image\ImageManager
-	 */
-	public function getIntervention();
-
-	/**
-	 * Sets the Intervention Image instance.
-	 *
-	 * @param  \Intervention\Image\ImageManager  $intervention
-	 * @return mixed
-	 */
-	public function setIntervention(ImageManager $intervention);
 
 	/**
 	 * Executes the filter.

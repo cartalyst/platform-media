@@ -27,11 +27,17 @@ use Cartalyst\Filesystem\Exceptions\InvalidFileException;
 use Cartalyst\Filesystem\Exceptions\InvalidMimeTypeException;
 use Cartalyst\Filesystem\Exceptions\MaxFileSizeExceededException;
 use File;
-use Filesystem;
 
 class MediaRepository implements MediaRepositoryInterface {
 
 	use Traits\ContainerTrait, Traits\EventTrait, Traits\RepositoryTrait, Traits\ValidatorTrait;
+
+	/**
+	 * The Filesystem instance.
+	 *
+	 * @var \Cartalyst\Filesystem\Filesystem
+	 */
+	protected $filesystem;
 
 	/**
 	 * The Eloquent media model
@@ -58,6 +64,8 @@ class MediaRepository implements MediaRepositoryInterface {
 		$this->setContainer($app);
 
 		$this->setDispatcher($app['events']);
+
+		$this->filesystem = $app['filesystem'];
 
 		$this->setModel(get_class($app['Platform\Media\Models\Media']));
 	}
@@ -146,7 +154,7 @@ class MediaRepository implements MediaRepositoryInterface {
 	{
 		try
 		{
-			Filesystem::validateFile($file);
+			$this->filesystem->validateFile($file);
 
 			return true;
 		}
@@ -169,37 +177,44 @@ class MediaRepository implements MediaRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function upload(UploadedFile $file, $tags = [])
+	public function upload(UploadedFile $uploadedFile, array $input)
 	{
 		try
 		{
-			$uploaded = Filesystem::upload($file);
+			//
+			$file = $this->filesystem->upload($uploadedFile);
 
-			if ( ! $media = $this->findByPath($uploaded->getPath()))
+			if ( ! $media = $this->findByPath($file->getPath()))
 			{
-				if ($uploaded->isImage())
+				if ($file->isImage())
 				{
-					$imageSize = $uploaded->getImageSize();
+					$imageSize = $file->getImageSize();
 				}
 				else
 				{
-					$imageSize = ['width' => 0, 'height' => 0];
+					$imageSize = [ 'width' => 0, 'height' => 0 ];
 				}
 
-				$media = $this->create([
-					'name'      => $file->getClientOriginalName(),
-					'path'      => $uploaded->getPath(),
-					'extension' => $uploaded->getExtension(),
-					'mime'      => $uploaded->getMimetype(),
-					'size'      => $uploaded->getSize(),
-					'is_image'  => $uploaded->isImage(),
+				$data = array_merge([
+					'name'      => \Str::slug($uploadedFile->getClientOriginalName()),
+					'path'      => $file->getPath(),
+					'extension' => $file->getExtension(),
+					'mime'      => $file->getMimetype(),
+					'size'      => $file->getSize(),
+					'is_image'  => $file->isImage(),
 					'width'     => $imageSize['width'],
 					'height'    => $imageSize['height'],
-					'tags'      => $tags,
-				]);
+					//'tags'      => $tags,
+				], $input);
+
+				$media = $this->create($data);
+
+				# merge the $input with some prepared data
 			}
 
-			$this->fireEvent('platform.media.uploaded', [$media, $uploaded, $file]);
+			app('platform.media.manager')->handle($uploadedFile, $file, $media);
+
+			# $this->fireEvent('platform.media.uploaded', [ $uploadedFile, $file, $media ]);
 
 			return $media->toArray();
 		}
@@ -231,12 +246,12 @@ class MediaRepository implements MediaRepositoryInterface {
 			if ($this->validForUpload($file))
 			{
 				// Delete the old media file
-				Filesystem::delete($model->path);
+				$this->filesystem->delete($model->path);
 
 				File::delete(media_cache_path($model->thumbnail));
 
 				// Upload the new file
-				$uploaded = Filesystem::upload($file);
+				$uploaded = $this->filesystem->upload($file);
 
 				$this->fireEvent('platform.media.uploaded', [$model, $uploaded, $file]);
 
@@ -273,7 +288,7 @@ class MediaRepository implements MediaRepositoryInterface {
 	{
 		if ($model = $this->find($id))
 		{
-			Filesystem::delete($model->path);
+			$this->filesystem->delete($model->path);
 
 			File::delete(media_cache_path($model->thumbnail));
 

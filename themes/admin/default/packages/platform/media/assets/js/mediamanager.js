@@ -79,7 +79,33 @@
 			$('[data-media-total-files]').html(self.totalFiles(totalFiles));
 			$('[data-media-total-size]').html(self.dropzone.filesize(totalSize));
 
-			self.dropzone.on('addedfile', function(file) {
+			self.dropzone.on('sendingmultiple', function(file, xhr, formData){
+
+				//console.log(file.name);
+				console.log(formData);
+				//formData.closest('[name="name"]').val(file.name);
+
+			});
+
+			self.dropzone.on('addedfile', function(file)
+			{
+				var divs = Array.prototype.slice.call(file.previewElement.childNodes);
+
+				divs.forEach(function(item)
+				{
+					console.log(item);
+				});
+
+				//console.log(divs);
+
+				//console.log(file);
+
+				//file.previewElement.addEventListener("click", function() { self.dropzone.removeFile(file); });
+
+				//var nodeArray = [].slice.call(file.previewElement.childNodes);
+				//console.log(nodeArray);
+
+				//$(file.previewElement).closest('[name="name"]').value(file.name);
 
 				totalFiles += 1;
 

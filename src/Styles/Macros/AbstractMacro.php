@@ -1,4 +1,4 @@
-<?php namespace Platform\Media\Filters;
+<?php namespace Platform\Media\Styles\Macros;
 /**
  * Part of the Platform Media extension.
  *
@@ -18,17 +18,18 @@
  */
 
 use Cartalyst\Filesystem\File;
-use Intervention\Image\ImageManager;
+use Platform\Media\Styles\Style;
 use Platform\Media\Models\Media;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-abstract class Abstractfilter implements FilterInterface {
+abstract class AbstractMacro implements MacroInterface {
 
 	/**
-	 * The style configuration.
+	 * The Style object.
 	 *
-	 * @var array
+	 * @var \Platform\Media\Styles\Style
 	 */
-	protected $config;
+	protected $style;
 
 	/**
 	 * The Media model instance the file belongs to.
@@ -44,42 +45,22 @@ abstract class Abstractfilter implements FilterInterface {
 	 */
 	protected $file;
 
-	/**
-	 * The Intervention Image instance.
-	 *
-	 * @var \Intervention\Image\ImageManager
-	 */
-	protected $intervention;
+	protected $uploadedFile;
 
 	/**
-	 * Constructor.
-	 *
-	 * @param  \Intervention\Image\ImageManager  $intervention
-	 * @return void
+	 * {@inheritDoc}
 	 */
-	public function __construct(array $config, ImageManager $intervention)
+	public function getStyle()
 	{
-		$this->config = $config;
-
-		$this->intervention = $intervention;
+		return $this->style;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getConfig()
+	public function setStyle($style)
 	{
-		return $this->config;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function setConfig(array $config)
-	{
-		$this->config = $config;
-
-		return $this;
+		$this->style = $style;
 	}
 
 	/**
@@ -121,17 +102,17 @@ abstract class Abstractfilter implements FilterInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getIntervention()
+	public function getUploadedFile()
 	{
-		return $this->intervention;
+		return $this->uploadedFile;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function setIntervention(ImageManager $intervention)
+	public function setUploadedFile(UploadedFile $uploadedFile)
 	{
-		$this->intervention = $intervention;
+		$this->uploadedFile = $uploadedFile;
 
 		return $this;
 	}

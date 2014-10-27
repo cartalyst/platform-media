@@ -56,7 +56,7 @@
 
 			var action = $(this).data('action');
 
-			var url = '{{ URL::toAdmin('media') }}';
+			var url = '{{ url()->toAdmin('media') }}';
 
 			var entries = $.map($('input[name="entries[]"]:checked'), function(e, i)
 			{
@@ -85,8 +85,9 @@
 		});
 
 		$.mediamanager('#mediaUploader', {
-			updateUrl : '{{ URL::toAdmin('media/:id/edit') }}',
-			deleteUrl : '{{ URL::toAdmin('media/:id/delete') }}',
+			previewTemplate : $('[data-name="dropzone-preview"]').html(),
+			updateUrl : '{{ url()->toAdmin('media/:id/edit') }}',
+			deleteUrl : '{{ url()->toAdmin('media/:id/delete') }}',
 			onSuccess : function(response)
 			{
 				dg.refresh();
@@ -125,6 +126,19 @@ tr { cursor: default; }
 
 {{-- Page content --}}
 @section('content')
+
+	<form action="{{ url()->toAdmin('media/upload') }}" method="post" enctype="multipart/form-data">
+
+		{{-- CSRF Token --}}
+		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+		<input type="file" name="file">
+
+		<button type="submit">Send</button>
+
+	</form>
+
+
 
 {{-- Page header --}}
 <div class="page-header">
@@ -200,7 +214,7 @@ tr { cursor: default; }
 
 <br />
 
-<table data-source="{{ URL::toAdmin('media/grid') }}" data-grid="main" class="data-grid table _table-striped table-bordered _table-hover">
+<table data-source="{{ url()->toAdmin('media/grid') }}" data-grid="main" class="data-grid table _table-striped table-bordered _table-hover">
 	<thead>
 		<tr>
 			<th class="_hide"><input type="checkbox" name="checkAll" id="checkAll"></th>
@@ -214,6 +228,24 @@ tr { cursor: default; }
 {{-- Data Grid : Pagination --}}
 <div class="data-grid_pagination" data-grid="main"></div>
 
+<script type="text/template" data-name="dropzone-preview">
+
+	<div class="dz-preview dz-file-preview">
+		<div class="dz-details">
+			<div class="dz-filename"><span data-dz-name></span></div>
+			<div class="dz-size" data-dz-size></div>
+			<img data-dz-thumbnail />
+		</div>
+		<input type="text" name="name" value="" class="poop"> <br />
+		<input type="text" name="tags">
+		<div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+		<div class="dz-success-mark"><span>✔</span></div>
+		<div class="dz-error-mark"><span>✘</span></div>
+		<div class="dz-error-message"><span data-dz-errormessage></span></div>
+	</div>
+
+</script>
+
 @include('platform/media::grid/results')
 @include('platform/media::grid/pagination')
 @include('platform/media::grid/filters')
@@ -226,7 +258,7 @@ tr { cursor: default; }
 		<div class="modal-content" style="width: 660px;">
 
 			<div id="dropzone" style="height: 360px;overflow-y:scroll;">
-				<form action="{{ URL::toAdmin('media/upload') }}" class="media-dropzone dz-clickable" id="mediaUploader">
+				<form action="{{ url()->toAdmin('media/upload') }}" class="media-dropzone dz-clickable" id="mediaUploader">
 
 					{{-- CSRF Token --}}
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">

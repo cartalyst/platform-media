@@ -35,6 +35,18 @@ class MediaServiceProvider extends ServiceProvider {
 
 		// Register the Blade @media extension
 		$this->registerBladeMediaWidget();
+
+		//
+		call_user_func(
+			config('platform/media::config.styles'),
+			$this->app['platform.media.manager']
+		);
+
+		//
+		call_user_func(
+			config('platform/media::config.macros'),
+			$this->app['platform.media.manager']
+		);
 	}
 
 	/**
@@ -53,6 +65,8 @@ class MediaServiceProvider extends ServiceProvider {
 
 		// Register the event handler
 		$this->bindIf('platform.media.handler.events', 'Platform\Media\Handlers\EventHandler');
+
+		$this->bindIf('platform.media.manager', 'Platform\Media\Styles\Manager', true, false);
 	}
 
 	/**

@@ -90,9 +90,10 @@ interface MediaRepositoryInterface {
 	 * Upload the given file.
 	 *
 	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $file
+	 * @param  array  $input
 	 * @return bool
 	 */
-	public function upload(UploadedFile $file);
+	public function upload(UploadedFile $file, array $input);
 
 	/**
 	 * Creates a media with the given data.

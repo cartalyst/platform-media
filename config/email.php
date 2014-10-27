@@ -1,4 +1,4 @@
-<?php namespace Platform\Media\Filters;
+<?php
 /**
  * Part of the Platform Media extension.
  *
@@ -17,15 +17,15 @@
  * @link       http://cartalyst.com
  */
 
-class ReduceQualityFilter extends Abstractfilter {
+return [
 
-	/**
-	 * @{inheritDoc}
-	 */
-	public function run()
-	{
-		//var_dump($this->getFile());
-		var_dump('quality reduced');
-	}
+	// Total of allowed attachments per email
+	'max_attachments' => 10,
 
-}
+	// Limit of the attachments that we'll be sending on the email
+	'attachments_max_size' => 10485760, // 10 mb
+
+	// Default email subject
+	'subject' => "You've Got Media!",
+
+];

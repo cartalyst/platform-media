@@ -18,16 +18,17 @@
  */
 
 use Filesystem;
-use Platform\Foundation\Controllers\Controller;
-use Platform\Media\Repositories\MediaRepositoryInterface;
 use Response;
 use Sentinel;
+#
+use Platform\Foundation\Controllers\Controller;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Platform\Media\Repositories\MediaRepositoryInterface;
 
 class MediaController extends Controller {
 
 	/**
-	 * Media repository.
+	 * The Media repository.
 	 *
 	 * @var \Platform\Media\Repositories\MediaRepositoryInterface
 	 */
@@ -59,7 +60,8 @@ class MediaController extends Controller {
 		$file = Filesystem::read($media->path);
 
 		$headers = [
-			'Content-Type' => $media->mime,
+			'Content-Type'   => $media->mime,
+			'Content-Length' => strlen($file),
 		];
 
 		return $this->respond($file, $headers);
@@ -79,9 +81,9 @@ class MediaController extends Controller {
 
 		$headers = [
 			'Connection'          => 'close',
-			'Content-Disposition' => 'attachment; filename="'.$media->name.'"',
-			'Content-Length'      => strlen($file),
 			'Content-Type'        => $media->mime,
+			'Content-Length'      => strlen($file),
+			'Content-Disposition' => 'attachment; filename="'.$media->name.'"',
 		];
 
 		return $this->respond($file, $headers);

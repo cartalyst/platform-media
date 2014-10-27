@@ -17,37 +17,36 @@
  * @link       http://cartalyst.com
  */
 
+use Platform\Media\Styles\Macro;
+use Platform\Media\Styles\Style;
+use Platform\Media\Styles\Manager;
+
 return [
 
-	'email' => [
+	# this will be used in conjunction with the Filesystem package
+	#'storage' => null,
 
-		// Total of allowed attachments per email
-		'max_attachments' => 10,
+	#'default_style' => 'thumbnail',
 
-		// Limit of the attachments that we'll be sending on the email
-		'attachments_max_size' => 10485760, // 10 mb
+	'styles' => function(Manager $manager)
+	{
+		$manager->setStyle('thumbnail', function(Style $style)
+		{
+			// Setting the style mime types
+			$style->mimes = 'image/gif, image/jpeg, image/png';
 
-		// Default email subject
-		'subject' => "You've Got Media!",
+			// Set the style image width & height
+			$style->width = 40;
+			$style->height = 40;
 
-	],
+			// Set the style macros
+			$style->macros = [ 'resize' ];
+		});
+	},
 
-	'styles' => [
-
-		'thumbnail' => [
-
-			'mime-type' => [
-				'image/gif', 'image/jpeg', 'image/png',
-			],
-			'width'   => 40,
-			'height'  => 40,
-			'filters' => [
-				'Platform\Media\Filters\ResizeFilter',
-				'Platform\Media\Filters\ReduceQuality', # this is for testing
-			],
-
-		],
-
-	],
+	'macros' => function(Manager $manager)
+	{
+		$manager->setMacro('resize', 'Platform\Media\Styles\Macros\ResizeMacro');
+	}
 
 ];

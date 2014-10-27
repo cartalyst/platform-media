@@ -49,30 +49,32 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface {
 	 */
 	public function uploaded(UploadedFile $original, File $file, Media $media)
 	{
-		if ($file->isImage())
-		{
-			$width = 40;
-			$height = 40;
+		//app('platform.media.manager')->handle($original, $file, $media);
 
-			$extension = $file->getExtension();
+		// if ($file->isImage())
+		// {
+		// 	$width = 40;
+		// 	$height = 40;
 
-			$imageSize = $file->getImageSize();
+		// 	$extension = $file->getExtension();
 
-			$filename = str_replace(".{$extension}", '', $original->getClientOriginalName());
+		// 	$imageSize = $file->getImageSize();
 
-			$name = Str::slug(implode([$filename, $width, $height ?: $width], ' '));
+		// 	$filename = str_replace(".{$extension}", '', $original->getClientOriginalName());
 
-			$path = "{$media->id}_{$name}.{$extension}";
+		// 	$name = Str::slug(implode([$filename, $width, $height ?: $width], ' '));
 
-			$data = Filesystem::read($file->getPath());
+		// 	$path = "{$media->id}_{$name}.{$extension}";
 
-			$media_public_path = public_path(media_cache_path($path));
+		// 	$data = Filesystem::read($file->getPath());
 
-			$img = Image::make($data)->resize($width, $height)->save($media_public_path);
+		// 	$media_public_path = public_path(media_cache_path($path));
 
-			$media->thumbnail = $path;
-			$media->save();
-		}
+		// 	$img = Image::make($data)->resize($width, $height)->save($media_public_path);
+
+		// 	$media->thumbnail = $path;
+		// 	$media->save();
+		// }
 	}
 
 }
