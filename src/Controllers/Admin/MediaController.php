@@ -84,7 +84,7 @@ class MediaController extends AdminController {
 		$roles = $this->roles->findAll();
 
 		// Show the page
-		return view('platform/media::fileapi', compact('tags', 'roles'));
+		return view('platform/media::index', compact('tags', 'roles'));
 	}
 
 	/**
@@ -128,7 +128,7 @@ class MediaController extends AdminController {
 
 		if ($this->media->validForUpload($file))
 		{
-			if ($media = $this->media->upload($file, input('tags', [])))
+			if ($media = $this->media->upload($file, input()->get()))
 			{
 				return response($media);
 			}

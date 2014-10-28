@@ -6,7 +6,7 @@
 			<td class="_hide"><input type="checkbox" name="entries[]" value="<%= r.id %>"></td>
 			<td>
 				<% if (r.is_image == 1) { %>
-					<img src="{{ URL::to(media_cache_path('<%= r.thumbnail %>')) }}" />
+					<img src="{{ URL::to('<%= r.thumbnail %>') }}" />
 				<% } else{ %>
 					<i class="fa fa-file fa-3x"></i>
 				<% } %>
