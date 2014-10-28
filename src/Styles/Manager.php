@@ -96,11 +96,17 @@ class Manager {
 	 */
 	public function handle(UploadedFile $uploadedFile, File $storedFile, Media $media)
 	{
+		// Get the uploaded file mime type
+		$mimeType = $uploadedFile->getMimeType();
+
 		// Loop through all the registered styles
 		foreach ($this->getStyles() as $name => $style)
 		{
 			// Initialize the style
 			call_user_func($style, $style = new Style($name));
+
+			// Check if the uploaded file mime type is valid
+			if ($style->mimes && ! in_array($mimeType, $style->mimes)) continue;
 
 			// Loop through the style macros
 			foreach ($style->macros as $name => $macro)

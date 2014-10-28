@@ -19,15 +19,30 @@
 
 use Illuminate\Container\Container;
 
-class ResizeMacro extends AbstractMacro {
+class ResizeMacro extends AbstractMacro implements MacroInterface {
 
-	protected $container;
+	/**
+	 * The Illuminate Container instance.
+	 *
+	 * @var \Illuminate\Container\Container
+	 */
+	protected $app;
 
+	/**
+	 * The Intervention Image Manager instance.
+	 *
+	 * @var \Intervention\Image\ImageManager
+	 */
 	protected $intervention;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param  \Illuminate\Container\Container  $app
+	 * @return void*/
 	public function __construct(Container $app)
 	{
-		$this->container = $app;
+		$this->app = $app;
 
 		$this->intervention = $app['image'];
 	}
@@ -37,8 +52,6 @@ class ResizeMacro extends AbstractMacro {
 	 */
 	public function run()
 	{
-		$style = $this->style;
-
 		$file = $this->getFile();
 
 		$media = $this->getMedia();
@@ -47,27 +60,28 @@ class ResizeMacro extends AbstractMacro {
 
 		if ($file->isImage())
 		{
-			$width = $style->width;
-			$height = $style->height;
+			// Get the style
+			$width = $this->style->width;
+			$height = $this->style->height;
 
 			$extension = $file->getExtension();
 
-			$imageSize = $file->getImageSize();
-
 			$filename = str_replace(".{$extension}", '', $uploadedFile->getClientOriginalName());
 
-			$name = \Str::slug(implode([$filename, $width, $height ?: $width], ' '));
+			$name = \Str::slug(implode([ $filename, $width, $height ?: $width ], ' '));
 
-			$path = "{$media->id}_{$name}.{$extension}";
+			//
+			$path = "{$this->style->storage_path}/{$media->id}_{$name}.{$extension}";
 
-			$data = \Filesystem::read($file->getPath());
-
-			$media_public_path = public_path(media_cache_path($path));
-
-			$img = $this->intervention->make($data)->resize($width, $height)->save($media_public_path);
-
+			// Update the media entry
 			$media->thumbnail = $path;
 			$media->save();
+
+			// Create the thumbnail
+			$this->intervention
+				->make(\Filesystem::read($file->getPath()))
+				->resize($width, $height)
+				->save($path);
 		}
 	}
 

@@ -204,7 +204,6 @@ class MediaRepository implements MediaRepositoryInterface {
 					'is_image'  => $file->isImage(),
 					'width'     => $imageSize['width'],
 					'height'    => $imageSize['height'],
-					//'tags'      => $tags,
 				], $input);
 
 				$media = $this->create($data);

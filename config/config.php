@@ -17,7 +17,6 @@
  * @link       http://cartalyst.com
  */
 
-use Platform\Media\Styles\Macro;
 use Platform\Media\Styles\Style;
 use Platform\Media\Styles\Manager;
 
@@ -41,6 +40,9 @@ return [
 
 			// Set the style macros
 			$style->macros = [ 'resize' ];
+
+			// Set the storage path
+			$style->storage_path = public_path('cache/media');
 		});
 	},
 

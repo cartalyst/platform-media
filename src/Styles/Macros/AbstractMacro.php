@@ -25,11 +25,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 abstract class AbstractMacro implements MacroInterface {
 
 	/**
-	 * The Style object.
+	 * The file that was stored on the filesystem.
 	 *
-	 * @var \Platform\Media\Styles\Style
+	 * @var \Cartalyst\Filesystem\File
 	 */
-	protected $style;
+	protected $file;
 
 	/**
 	 * The Media model instance the file belongs to.
@@ -39,28 +39,35 @@ abstract class AbstractMacro implements MacroInterface {
 	protected $media;
 
 	/**
+	 * The Style object.
 	 *
-	 *
-	 * @var \Cartalyst\Filesystem\File
+	 * @var \Platform\Media\Styles\Style
 	 */
-	protected $file;
+	protected $style;
 
+	/**
+	 * The uploaded file.
+	 *
+	 * @var \Symfony\Component\HttpFoundation\File\UploadedFile
+	 */
 	protected $uploadedFile;
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getStyle()
+	public function getFile()
 	{
-		return $this->style;
+		return $this->file;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function setStyle($style)
+	public function setFile(File $file)
 	{
-		$this->style = $style;
+		$this->file = $file;
+
+		return $this;
 	}
 
 	/**
@@ -84,17 +91,17 @@ abstract class AbstractMacro implements MacroInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getFile()
+	public function getStyle()
 	{
-		return $this->file;
+		return $this->style;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function setFile(File $file)
+	public function setStyle(Style $style)
 	{
-		$this->file = $file;
+		$this->style = $style;
 
 		return $this;
 	}

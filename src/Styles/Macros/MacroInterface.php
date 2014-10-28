@@ -18,14 +18,11 @@
  */
 
 use Cartalyst\Filesystem\File;
-use Intervention\Image\ImageManager;
+use Platform\Media\Styles\Style;
 use Platform\Media\Models\Media;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface MacroInterface {
-
-	public function getMedia();
-
-	public function setMedia(Media $media);
 
 	/**
 	 * Returns the file.
@@ -38,14 +35,59 @@ interface MacroInterface {
 	 * Sets the file.
 	 *
 	 * @param  \Cartalyst\Filesystem\File  $file
-	 * @return mixed
+	 * @return $this
 	 */
 	public function setFile(File $file);
 
 	/**
-	 * Executes the filter.
+	 * Returns the Media.
 	 *
-	 * @return ..
+	 * @return \Platform\Media\Models\Media
+	 */
+	public function getMedia();
+
+	/**
+	 * Sets the Media.
+	 *
+	 * @param  \Platform\Media\Models\Media  $media
+	 * @return $this
+	 */
+	public function setMedia(Media $media);
+
+	/**
+	 * Returns the Style.
+	 *
+	 * @return \Platform\Media\Styles\Style
+	 */
+	public function getStyle();
+
+	/**
+	 * Sets the Style.
+	 *
+	 * @param  \Platform\Media\Styles\Style  $style
+	 * @return $this
+	 */
+	public function setStyle(Style $style);
+
+	/**
+	 * Returns the uploaded file.
+	 *
+	 * @return \Symfony\Component\HttpFoundation\File\UploadedFile
+	 */
+	public function getUploadedFile();
+
+	/**
+	 * Sets the uploaded file.
+	 *
+	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $uploadedFile
+	 * @return $this
+	 */
+	public function setUploadedFile(UploadedFile $uploadedFile);
+
+	/**
+	 * Executes the macro.
+	 *
+	 * @return void
 	 */
 	public function run();
 
