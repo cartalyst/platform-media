@@ -81,10 +81,10 @@ class ResizeMacro extends AbstractMacro implements MacroInterface {
 			$name = \Str::slug(implode([ $filename, $width, $height ?: $width ], ' '));
 
 			//
-			$path = "{$this->style->storage_path}/{$media->id}_{$name}.{$extension}";
+			$path = public_path("{$this->style->storage_path}/{$media->id}_{$name}.{$extension}");
 
 			// Update the media entry
-			$media->thumbnail = $path;
+			$media->thumbnail = str_replace(public_path(), null, $path);
 			$media->save();
 
 			// Create the thumbnail

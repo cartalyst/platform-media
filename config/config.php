@@ -42,7 +42,7 @@ return [
 			$style->macros = [ 'resize' ];
 
 			// Set the storage path
-			$style->storage_path = public_path('cache/media');
+			$style->storage_path = 'cache/media';
 		});
 	},
 
