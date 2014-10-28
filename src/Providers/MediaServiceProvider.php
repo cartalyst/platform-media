@@ -31,7 +31,7 @@ class MediaServiceProvider extends ServiceProvider {
 		$this->package('platform/media', 'platform/media'. __DIR__.'/../..');
 
 		// Register the event handler
-		$this->app['events']->subscribe('platform.media.handler.events');
+		$this->app['events']->subscribe('platform.media.handler.event');
 
 		// Register the Blade @media extension
 		$this->registerBladeMediaWidget();
@@ -55,7 +55,7 @@ class MediaServiceProvider extends ServiceProvider {
 		$this->bindIf('platform.media.manager', 'Platform\Media\Styles\Manager', true, false);
 
 		// Register the event handler
-		$this->bindIf('platform.media.handler.events', 'Platform\Media\Handlers\EventHandler');
+		$this->bindIf('platform.media.handler.event', 'Platform\Media\Handlers\EventHandler');
 	}
 
 	/**
