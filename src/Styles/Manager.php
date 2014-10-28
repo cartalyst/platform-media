@@ -20,6 +20,7 @@
 use Closure;
 use Cartalyst\Filesystem\File;
 use Platform\Media\Models\Media;
+use Illuminate\Container\Container;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Manager {
@@ -37,6 +38,24 @@ class Manager {
 	 * @var array
 	 */
 	protected $macros = [];
+
+	/**
+	 * Constructor.
+	 *
+	 * @param  \Illuminate\Container\Container  $app
+	 * @return void
+	 */
+	public function __construct(Container $app)
+	{
+		// Get the config
+		$config = $app['config']->get('platform/media::config');
+
+		// Register the styles from the config
+		call_user_func(array_get($config, 'styles'), $this);
+
+		// Register the macros from the config
+		call_user_func(array_get($config, 'macros'), $this);
+	}
 
 	/**
 	 * Returns all the registered styles.
