@@ -29,6 +29,13 @@ class ResizeMacro extends AbstractMacro implements MacroInterface {
 	protected $app;
 
 	/**
+	 * The Filesystem instance.
+	 *
+	 * @var \Cartalyst\Filesystem\Filesystem
+	 */
+	protected $filesystem;
+
+	/**
 	 * The Intervention Image Manager instance.
 	 *
 	 * @var \Intervention\Image\ImageManager
@@ -39,12 +46,15 @@ class ResizeMacro extends AbstractMacro implements MacroInterface {
 	 * Constructor.
 	 *
 	 * @param  \Illuminate\Container\Container  $app
-	 * @return void*/
+	 * @return void
+	 */
 	public function __construct(Container $app)
 	{
 		$this->app = $app;
 
 		$this->intervention = $app['image'];
+
+		$this->filesystem = $app['filesystem'];
 	}
 
 	/**
@@ -79,7 +89,7 @@ class ResizeMacro extends AbstractMacro implements MacroInterface {
 
 			// Create the thumbnail
 			$this->intervention
-				->make(\Filesystem::read($file->getPath()))
+				->make($this->filesystem->read($file->getPath()))
 				->resize($width, $height)
 				->save($path);
 		}

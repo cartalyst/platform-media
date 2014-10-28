@@ -145,6 +145,12 @@ class Manager {
 		}
 	}
 
+	/**
+	 * Initialize the given macro.
+	 *
+	 * @param  mixed  $macro
+	 * @return \Platform\Media\Styles\Macros\MacroInterface
+	 */
 	protected function initializeMacro($macro)
 	{
 		// Get the macro class name or class object
