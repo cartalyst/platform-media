@@ -181,8 +181,13 @@ class MediaRepository implements MediaRepositoryInterface {
 	{
 		try
 		{
+			// Sanitize the file name
+			$fileName = $this->sanitizeFileName(
+				array_get($input, 'name', $uploadedFile->getClientOriginalName())
+			);
+
 			//
-			$file = $this->filesystem->upload($uploadedFile);
+			$file = $this->filesystem->upload($uploadedFile, $fileName);
 
 			if ( ! $media = $this->findByPath($file->getPath()))
 			{
@@ -196,7 +201,7 @@ class MediaRepository implements MediaRepositoryInterface {
 				}
 
 				$data = array_merge([
-					'name'      => \Str::slug($uploadedFile->getClientOriginalName()),
+					'name'      => $uploadedFile->getClientOriginalName(),
 					'path'      => $file->getPath(),
 					'extension' => $file->getExtension(),
 					'mime'      => $file->getMimetype(),
@@ -315,6 +320,13 @@ class MediaRepository implements MediaRepositoryInterface {
 	public function setError($error)
 	{
 		$this->error = $error;
+	}
+
+	protected function sanitizeFileName($fileName)
+	{
+		$regex = [ '#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#', '#[ ]#', '![_]+!u' ];
+
+		return preg_replace($regex, '_', strtolower($fileName));
 	}
 
 }
