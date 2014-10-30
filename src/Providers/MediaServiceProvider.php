@@ -51,6 +51,9 @@ class MediaServiceProvider extends ServiceProvider {
 		// Register the repository
 		$this->bindIf('platform.media', 'Platform\Media\Repositories\MediaRepository');
 
+		// Register the validator
+		$this->bindIf('platform.media.validator', 'Platform\Media\Validator\MediaValidator');
+
 		// Register the manager
 		$this->bindIf('platform.media.manager', 'Platform\Media\Styles\Manager', true, false);
 

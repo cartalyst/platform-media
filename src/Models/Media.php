@@ -17,9 +17,12 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Tags\TaggableTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Media extends Model {
+
+	use TaggableTrait;
 
 	/**
 	 * {@inheritDoc}
@@ -40,7 +43,6 @@ class Media extends Model {
 		'height',
 		'private',
 		'roles',
-		'tags',
 		'thumbnail',
 	];
 
@@ -93,57 +95,6 @@ class Media extends Model {
 		else
 		{
 			$this->attributes['roles'] = '';
-		}
-	}
-
-	/**
-	 * Get mutator for the "tags" attribute.
-	 *
-	 * @param  mixed  $tags
-	 * @return array
-	 * @throws \InvalidArgumentException
-	 */
-	public function getTagsAttribute($tags)
-	{
-		if ( ! $tags)
-		{
-			return [];
-		}
-
-		if (is_array($tags))
-		{
-			return $tags;
-		}
-
-		if ( ! $_tags = json_decode($tags, true))
-		{
-			throw new InvalidArgumentException("Cannot JSON decode tags [{$tags}].");
-		}
-
-		return $_tags;
-	}
-
-	/**
-	 * Set mutator for the "tags" attribute.
-	 *
-	 * @param  array  $tags
-	 * @return void
-	 */
-	public function setTagsAttribute($tags)
-	{
-		// If we get a string, let's just ensure it's a proper JSON string
-		if ( ! is_array($tags))
-		{
-			$tags = $this->getTagsAttribute($tags);
-		}
-
-		if ( ! empty($tags))
-		{
-			$this->attributes['tags'] = json_encode($tags);
-		}
-		else
-		{
-			$this->attributes['tags'] = '';
 		}
 	}
 

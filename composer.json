@@ -48,7 +48,8 @@
 		"cartalyst/filesystem": "~2.0",
 		"intervention/image": "~2.0",
 		"intervention/imagecache": "~2.0",
-		"platform/access": "~1.0"
+		"platform/access": "~1.0",
+		"platform/tags": "~1.0"
 	},
 	"autoload": {
 		"classmap": [

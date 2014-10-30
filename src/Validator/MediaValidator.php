@@ -28,4 +28,12 @@ class MediaValidator extends Validator implements MediaValidatorInterface {
 		'name' => 'required',
 	];
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public function onUpdate()
+	{
+
+	}
+
 }

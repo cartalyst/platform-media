@@ -85,7 +85,7 @@
 				<div class="controls">
 					<select id="tags" name="tags[]" multiple="multiple" tabindex="-1">
 					@foreach ($tags as $tag)
-						<option value="{{{ $tag }}}"{{ in_array($tag, $media->tags) ? ' selected="selected"' : null }}>{{{ $tag }}}</option>
+						<option value="{{{ $tag }}}"{{ in_array($tag, $media->tags->lists('name')) ? ' selected="selected"' : null }}>{{{ $tag }}}</option>
 					@endforeach
 					</select>
 				</div>

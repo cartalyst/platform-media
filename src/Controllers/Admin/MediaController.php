@@ -18,6 +18,7 @@
  */
 
 use Platform\Access\Controllers\AdminController;
+use Platform\Tags\Repositories\TagsRepositoryInterface;
 use Platform\Roles\Repositories\RoleRepositoryInterface;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 
@@ -36,6 +37,13 @@ class MediaController extends AdminController {
 	 * @var \Platform\Users\Repositories\RoleRepositoryInterface
 	 */
 	protected $roles;
+
+	/**
+	 * The Tags repository.
+	 *
+	 * @var \Platform\Tags\Repositories\TagsRepositoryInterface
+	 */
+	protected $tags;
 
 	/**
 	 * {@inheritDoc}
@@ -59,15 +67,22 @@ class MediaController extends AdminController {
 	 *
 	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
 	 * @param  \Platform\Users\Repositories\RoleRepositoryInterface  $roles
+	 * @param  \Platform\Tags\Repositories\TagsRepositoryInterface  $tags
 	 * @return void
 	 */
-	public function __construct(MediaRepositoryInterface $media, RoleRepositoryInterface $roles)
+	public function __construct(
+		MediaRepositoryInterface $media,
+		RoleRepositoryInterface $roles,
+		TagsRepositoryInterface $tags
+	)
 	{
 		parent::__construct();
 
 		$this->media = $media;
 
 		$this->roles = $roles;
+
+		$this->tags = $tags;
 	}
 
 	/**
@@ -78,7 +93,7 @@ class MediaController extends AdminController {
 	public function index()
 	{
 		// Get a list of all the available tags
-		$tags = $this->media->getTags();
+		$tags = $this->tags->findAll()->lists('name');
 
 		// Get a list of all the available roles
 		$roles = $this->roles->findAll();
@@ -96,15 +111,12 @@ class MediaController extends AdminController {
 	{
 		$columns = [
 			'id',
-			'tags',
 			'name',
 			'mime',
 			'path',
 			'size',
 			'private',
-			//'roles',
 			'is_image',
-			//'extension',
 			'thumbnail',
 			'created_at',
 		];
@@ -154,7 +166,7 @@ class MediaController extends AdminController {
 		}
 
 		// Get a list of all the available tags
-		$tags = $this->media->getTags();
+		$tags = $this->tags->findAll()->lists('name');
 
 		// Get a list of all the available roles
 		$roles = $this->roles->findAll();
@@ -171,17 +183,11 @@ class MediaController extends AdminController {
 	 */
 	public function update($id)
 	{
-		$tags = input('tags', []);
-
-		$roles = input('roles', []);
-
-		$input = input()->except('file');
-
-		input()->merge(compact('tags', 'roles'));
+		$input = request()->except('file');
 
 		if ($this->media->validForUpdate($id, $input))
 		{
-			if ($this->media->update($id, $input, input()->file('file')))
+			if ($this->media->update($id, $input, request()->file('file')))
 			{
 				if (request()->ajax())
 				{

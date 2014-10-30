@@ -67,6 +67,8 @@ class MediaRepository implements MediaRepositoryInterface {
 
 		$this->filesystem = $app['filesystem'];
 
+		$this->setValidator($app['platform.media.validator']);
+
 		$this->setModel(get_class($app['Platform\Media\Models\Media']));
 	}
 
@@ -83,7 +85,7 @@ class MediaRepository implements MediaRepositoryInterface {
 	 */
 	public function find($id)
 	{
-		$model = $this->createModel()->rememberForever('platform.media.'.$id)->first();
+		return $this->createModel()->rememberForever('platform.media.'.$id)->find($id);
 	}
 
 	/**
@@ -97,52 +99,7 @@ class MediaRepository implements MediaRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function findAllByTags($tags)
-	{
-		$query = $this->createModel()->newQuery();
-
-		foreach ((array) $tags as $tag)
-		{
-			$query->where('tags', 'LIKE', "%{$tag}%");
-		}
-
-		return $query->get();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function findByTags($tags)
-	{
-		$query = $this->createModel()->newQuery();
-
-		foreach ((array) $tags as $tag)
-		{
-			$query->where('tags', 'LIKE', "%{$tag}%");
-		}
-
-		return $query->first();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getTags()
-	{
-		$tags = [];
-
-		foreach ($this->createModel()->newQuery()->lists('tags') as $_tags)
-		{
-			$tags = array_merge($_tags, $tags);
-		}
-
-		return array_unique($tags);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function validForUpdate(array $data)
+	public function validForUpdate($id, array $data)
 	{
 		return $this->validator->validate($data);
 	}
@@ -209,13 +166,14 @@ class MediaRepository implements MediaRepositoryInterface {
 					'is_image'  => $file->isImage(),
 					'width'     => $imageSize['width'],
 					'height'    => $imageSize['height'],
-				], $input);
+				], array_except($input, 'tags'));
 
 				$media = $this->create($data);
 
-				# merge the $input with some prepared data
+				//$media->tag(array_get($input, 'tags', []));
 			}
 
+			# maybe move this to the event handler ?!
 			app('platform.media.manager')->handle($uploadedFile, $file, $media);
 
 			# $this->fireEvent('platform.media.uploaded', [ $uploadedFile, $file, $media ]);
@@ -243,6 +201,8 @@ class MediaRepository implements MediaRepositoryInterface {
 	 */
 	public function update($id, array $data, $file = null)
 	{
+		$tags = array_get($data, 'tags', []);
+
 		$model = $this->find($id);
 
 		if ($file instanceof UploadedFile)
@@ -278,9 +238,15 @@ class MediaRepository implements MediaRepositoryInterface {
 			}
 		}
 
-		$model->fill($data);
+		$model->fill(array_except($data, 'tags'));
+
+		# need to check here what tags should be tagged and
+		# untagged, because we can be removing tags...
+		$model->tag($tags);
 
 		$model->save();
+
+		\Cache::forget('platform.tags.all'); # need to move this
 
 		return $model;
 	}

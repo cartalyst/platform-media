@@ -58,7 +58,7 @@ class ResizeMacro extends AbstractMacro implements MacroInterface {
 	}
 
 	/**
-	 * @{inheritDoc}
+	 * {@inheritDoc}
 	 */
 	public function run()
 	{

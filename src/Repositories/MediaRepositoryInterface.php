@@ -45,29 +45,6 @@ interface MediaRepositoryInterface {
 	public function findByPath($path);
 
 	/**
-	 * Returns all the media files by the given tags.
-	 *
-	 * @param  mixed  $tags
-	 * @return \Platform\Media\Models\Media
-	 */
-	public function findAllByTags($tags);
-
-	/**
-	 * Returns a media by the given tags
-	 *
-	 * @param  mixed  $tags
-	 * @return \Platform\Media\Models\Media
-	 */
-	public function findByTags($tags);
-
-	/**
-	 * Returns a list of the available tags.
-	 *
-	 * @return array
-	 */
-	public function getTags();
-
-	/**
 	 * Determine if the given file is valid for upload.
 	 *
 	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $file
@@ -84,7 +61,7 @@ interface MediaRepositoryInterface {
 	 * @param  array  $data
 	 * @return \Illuminate\Support\MessageBag
 	 */
-	public function validForUpdate(array $data);
+	public function validForUpdate($id, array $data);
 
 	/**
 	 * Upload the given file.
