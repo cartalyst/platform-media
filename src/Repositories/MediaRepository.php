@@ -53,6 +53,8 @@ class MediaRepository implements MediaRepositoryInterface {
 	 */
 	protected $error;
 
+	protected $tags;
+
 	/**
 	 * Constructor.
 	 *
@@ -62,6 +64,8 @@ class MediaRepository implements MediaRepositoryInterface {
 	public function __construct(Container $app)
 	{
 		$this->setContainer($app);
+
+		$this->tags = $app['platform.tags'];
 
 		$this->setDispatcher($app['events']);
 
@@ -143,21 +147,14 @@ class MediaRepository implements MediaRepositoryInterface {
 				array_get($input, 'name', $uploadedFile->getClientOriginalName())
 			);
 
-			//
+			// Upload the file
 			$file = $this->filesystem->upload($uploadedFile, $fileName);
 
 			if ( ! $media = $this->findByPath($file->getPath()))
 			{
-				if ($file->isImage())
-				{
-					$imageSize = $file->getImageSize();
-				}
-				else
-				{
-					$imageSize = [ 'width' => 0, 'height' => 0 ];
-				}
+				$imageSize = $file->getImageSize();
 
-				$data = array_merge([
+				$input = array_merge([
 					'name'      => $uploadedFile->getClientOriginalName(),
 					'path'      => $file->getPath(),
 					'extension' => $file->getExtension(),
@@ -169,15 +166,12 @@ class MediaRepository implements MediaRepositoryInterface {
 				], array_except($input, 'tags'));
 
 				$media = $this->createModel();
-				$media->fill($data)->save();
-
-				//$media->tag(array_get($input, 'tags', []));
+				$media->fill($input)->save();
 			}
 
-			# maybe move this to the event handler ?!
-			app('platform.media.manager')->handle($uploadedFile, $file, $media);
+			$this->tags->set($media, array_get($input, 'tags', []));
 
-			# $this->fireEvent('platform.media.uploaded', [ $uploadedFile, $file, $media ]);
+			$this->fireEvent('platform.media.uploaded', [ $uploadedFile, $file, $media ]);
 
 			return $this->find($media->id)->toJson();
 		}
@@ -200,30 +194,34 @@ class MediaRepository implements MediaRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function update($id, array $data, $file = null)
+	public function update($id, array $input, $uploadedFile = null)
 	{
-		$tags = array_get($data, 'tags', []);
+		//
+		$media = $this->find($id);
 
-		$model = $this->find($id);
-
-		if ($file instanceof UploadedFile)
+		if ($uploadedFile instanceof UploadedFile)
 		{
-			if ($this->validForUpload($file))
+			if ($this->validForUpload($uploadedFile))
 			{
 				// Delete the old media file
-				$this->filesystem->delete($model->path);
+				$this->filesystem->delete($media->path);
 
-				File::delete(media_cache_path($model->thumbnail));
+				File::delete(media_cache_path($media->thumbnail));
 
-				// Upload the new file
-				$uploaded = $this->filesystem->upload($file);
+				// Sanitize the file name
+				$fileName = $this->sanitizeFileName(
+					array_get($input, 'name', $uploadedFile->getClientOriginalName())
+				);
 
-				$this->fireEvent('platform.media.uploaded', [$model, $uploaded, $file]);
+				// Upload the file
+				$file = $this->filesystem->upload($uploadedFile, $fileName);
+
+				$this->fireEvent('platform.media.uploaded', [ $uploadedFile, $file, $media ]);
 
 				$imageSize = $uploaded->getImageSize();
 
 				// Update the media entry
-				$model->fill([
+				$input = array_merge($input, [
 					'path'      => $uploaded->getPath(),
 					'extension' => $uploaded->getExtension(),
 					'mime'      => $uploaded->getMimetype(),
@@ -239,26 +237,12 @@ class MediaRepository implements MediaRepositoryInterface {
 			}
 		}
 
-		// Get the current media tags
-		$mediaTags = $model->tags->lists('name');
-
-		// Prepare the tags to be added and removed
-		$tagsToAdd = array_diff($tags, $mediaTags);
-		$tagsToDel = array_diff($mediaTags, $tags);
-
-		// Detach the tags
-		if ( ! empty($tagsToDel)) $model->untag($tagsToDel);
-
-		// Attach the tags
-		if ( ! empty($tagsToAdd)) $model->tag($tagsToAdd);
-
-		// Clear the tags cache
-		$this->container['cache']->forget('platform.tags.all');
+		$this->tags->set($media, array_get($input, 'tags', []));
 
 		// Update the media entry
-		$model->fill(array_except($data, 'tags'))->save();
+		$media->fill(array_except($input, 'tags'))->save();
 
-		return $model;
+		return $media;
 	}
 
 	/**

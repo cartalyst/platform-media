@@ -17,17 +17,11 @@
  * @link       http://cartalyst.com
  */
 
-use Illuminate\Support\Str;
 use Cartalyst\Filesystem\File;
 use Platform\Media\Models\Media;
-use Intervention\Image\Facades\Image;
-use Cartalyst\Filesystem\Laravel\Facades\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-
-
 use Illuminate\Events\Dispatcher;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Cartalyst\Support\Handlers\EventHandler as BaseEventHandler;
-
 
 class EventHandler extends BaseEventHandler implements EventHandlerInterface {
 
@@ -42,39 +36,14 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface {
 	/**
 	 * On upload event.
 	 *
-	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $original
+	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $uploadedFile
 	 * @param  \Cartalyst\Filesystem\File  $file
 	 * @param  \Platform\Media\Models\Media  $media
 	 * @return void
 	 */
-	public function uploaded(UploadedFile $original, File $file, Media $media)
+	public function uploaded(UploadedFile $uploadedFile, File $file, Media $media)
 	{
-		//app('platform.media.manager')->handle($original, $file, $media);
-
-		// if ($file->isImage())
-		// {
-		// 	$width = 40;
-		// 	$height = 40;
-
-		// 	$extension = $file->getExtension();
-
-		// 	$imageSize = $file->getImageSize();
-
-		// 	$filename = str_replace(".{$extension}", '', $original->getClientOriginalName());
-
-		// 	$name = Str::slug(implode([$filename, $width, $height ?: $width], ' '));
-
-		// 	$path = "{$media->id}_{$name}.{$extension}";
-
-		// 	$data = Filesystem::read($file->getPath());
-
-		// 	$media_public_path = public_path(media_cache_path($path));
-
-		// 	$img = Image::make($data)->resize($width, $height)->save($media_public_path);
-
-		// 	$media->thumbnail = $path;
-		// 	$media->save();
-		// }
+		app('platform.media.manager')->handleUp($uploadedFile, $file, $media);
 	}
 
 }

@@ -113,7 +113,7 @@ class Manager {
 	 * @param  \Platform\Media\Models\Media  $media
 	 * @return void
 	 */
-	public function handle(UploadedFile $uploadedFile, File $storedFile, Media $media)
+	public function handleUp(UploadedFile $uploadedFile, File $storedFile, Media $media)
 	{
 		// Get the uploaded file mime type
 		$mimeType = $uploadedFile->getMimeType();
@@ -140,7 +140,7 @@ class Manager {
 				$macro->setUploadedFile($uploadedFile);
 
 				// Execute the macro
-				$macro->run();
+				$macro->up();
 			}
 		}
 	}

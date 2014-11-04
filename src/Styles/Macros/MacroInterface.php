@@ -89,6 +89,13 @@ interface MacroInterface {
 	 *
 	 * @return void
 	 */
-	public function run();
+	public function up();
+
+	/**
+	 * Executes the macro.
+	 *
+	 * @return void
+	 */
+	public function down();
 
 }

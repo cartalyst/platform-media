@@ -61,7 +61,7 @@ class ResizeMacro extends AbstractMacro implements MacroInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function run()
+	public function up()
 	{
 		$file = $this->getFile();
 
@@ -92,6 +92,14 @@ class ResizeMacro extends AbstractMacro implements MacroInterface {
 				->resize($width, $height)
 				->save($path);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function down()
+	{
+
 	}
 
 }
