@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use Illuminate\Support\Str;
 use Illuminate\Container\Container;
 
 class ResizeMacro extends AbstractMacro implements MacroInterface {
@@ -66,35 +67,30 @@ class ResizeMacro extends AbstractMacro implements MacroInterface {
 
 		$media = $this->getMedia();
 
-		$uploadedFile = $this->getUploadedFile();
-
 		if ($file->isImage())
 		{
 			// Get the style
 			$width = $this->style->width;
 			$height = $this->style->height;
 
-			// Get the file extension
-			$extension = $file->getExtension();
-
 			// Get the file name without the file extension
-			$filename = str_replace(".{$extension}", '', $uploadedFile->getClientOriginalName());
+			$filename = $this->filesystem->getMetadata($file->getPath())['filename'];
 
-			//
-			$name = \Str::slug(implode([ $filename, $width, $height ?: $width ], ' '));
+			// Prepare the name for the thumbnail path
+			$name = Str::slug(implode([ $filename, $width, $height ?: $width ], ' '));
 
 			// Prepare the thumbnail path
-			$path = str_replace(public_path(), null, "{$this->style->storage_path}/{$media->id}_{$name}.{$extension}");
+			$path = "{$this->style->path}/{$media->id}_{$name}.{$file->getExtension()}";
 
 			// Update the media entry
-			$media->thumbnail = $path;
+			$media->thumbnail = str_replace(public_path(), null, $path);
 			$media->save();
 
 			// Create the thumbnail
 			$this->intervention
 				->make($this->filesystem->read($file->getPath()))
 				->resize($width, $height)
-				->save(public_path($path));
+				->save($path);
 		}
 	}
 

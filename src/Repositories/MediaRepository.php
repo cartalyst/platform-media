@@ -168,7 +168,8 @@ class MediaRepository implements MediaRepositoryInterface {
 					'height'    => $imageSize['height'],
 				], array_except($input, 'tags'));
 
-				$media = $this->create($data);
+				$media = $this->createModel();
+				$media->fill($data)->save();
 
 				//$media->tag(array_get($input, 'tags', []));
 			}
@@ -178,7 +179,7 @@ class MediaRepository implements MediaRepositoryInterface {
 
 			# $this->fireEvent('platform.media.uploaded', [ $uploadedFile, $file, $media ]);
 
-			return $media->toArray();
+			return $this->find($media->id)->toJson();
 		}
 		catch (FileExistsException $e)
 		{
@@ -238,15 +239,24 @@ class MediaRepository implements MediaRepositoryInterface {
 			}
 		}
 
-		$model->fill(array_except($data, 'tags'));
+		// Get the current media tags
+		$mediaTags = $model->tags->lists('name');
 
-		# need to check here what tags should be tagged and
-		# untagged, because we can be removing tags...
-		$model->tag($tags);
+		// Prepare the tags to be added and removed
+		$tagsToAdd = array_diff($tags, $mediaTags);
+		$tagsToDel = array_diff($mediaTags, $tags);
 
-		$model->save();
+		// Detach the tags
+		if ( ! empty($tagsToDel)) $model->untag($tagsToDel);
 
-		\Cache::forget('platform.tags.all'); # need to move this
+		// Attach the tags
+		if ( ! empty($tagsToAdd)) $model->tag($tagsToAdd);
+
+		// Clear the tags cache
+		$this->container['cache']->forget('platform.tags.all');
+
+		// Update the media entry
+		$model->fill(array_except($data, 'tags'))->save();
 
 		return $model;
 	}

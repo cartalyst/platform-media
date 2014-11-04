@@ -22,10 +22,17 @@ use Platform\Media\Styles\Manager;
 
 return [
 
-	# this will be used in conjunction with the Filesystem package
-	#'storage' => null,
-
 	#'default_style' => 'thumbnail',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Styles
+	|--------------------------------------------------------------------------
+	|
+	| Define here the required Style config sets that will
+	| be executed whenever a file gets uploaded.
+	|
+	*/
 
 	'styles' => function(Manager $manager)
 	{
@@ -42,9 +49,18 @@ return [
 			$style->macros = [ 'resize' ];
 
 			// Set the storage path
-			$style->storage_path = 'cache/media';
+			$style->path = public_path('cache/media');
 		});
 	},
+
+	/*
+	|--------------------------------------------------------------------------
+	| Macros
+	|--------------------------------------------------------------------------
+	|
+	| Define here the Macros that can be used with the Style config sets.
+	|
+	*/
 
 	'macros' => function(Manager $manager)
 	{

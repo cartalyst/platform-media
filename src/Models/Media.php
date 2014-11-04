@@ -18,9 +18,10 @@
  */
 
 use Cartalyst\Tags\TaggableTrait;
+use Cartalyst\Tags\TaggableInterface;
 use Illuminate\Database\Eloquent\Model;
 
-class Media extends Model {
+class Media extends Model implements TaggableInterface {
 
 	use TaggableTrait;
 
@@ -33,17 +34,18 @@ class Media extends Model {
 	 * {@inheritDoc}
 	 */
 	protected $fillable = [
+		'mime',
 		'name',
 		'path',
-		'extension',
-		'mime',
-		'is_image',
 		'size',
 		'width',
 		'height',
 		'private',
-		'roles',
+		'is_image',
+		'extension',
 		'thumbnail',
+
+		'roles',
 	];
 
 	/**
