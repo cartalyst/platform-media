@@ -43,7 +43,7 @@
 		"cartalyst/filesystem": "~2.0",
 		"intervention/image": "~2.0",
 		"intervention/imagecache": "~2.0",
-		"platform/admin": "dev-master"
+		"platform/admin": "0.1.*"
 	},
 	"autoload": {
 		"classmap": [
@@ -57,7 +57,7 @@
 	"extra": {
 		"component": "extension",
 		"branch-alias": {
-			"dev-master": "1.0.x-dev"
+			"dev-master": "0.1.x-dev"
 		}
 	},
 	"minimum-stability": "dev"
