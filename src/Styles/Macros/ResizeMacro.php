@@ -18,7 +18,10 @@
  */
 
 use Illuminate\Support\Str;
+use Cartalyst\Filesystem\File;
+use Platform\Media\Models\Media;
 use Illuminate\Container\Container;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ResizeMacro extends AbstractMacro implements MacroInterface {
 
@@ -61,23 +64,17 @@ class ResizeMacro extends AbstractMacro implements MacroInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function up()
+	public function up(Media $media, File $file, UploadedFile $uploadedFile)
 	{
-		$file = $this->getFile();
-
-		$media = $this->getMedia();
-
+		// Check if the file is an image
 		if ($file->isImage())
 		{
-			// Get the style
+			// Get the style width & height
 			$width = $this->style->width;
 			$height = $this->style->height;
 
-			// Get the file name without the file extension
-			$filename = $this->filesystem->getMetadata($file->getPath())['filename'];
-
 			// Prepare the name for the thumbnail path
-			$name = Str::slug(implode([ $filename, $width, $height ?: $width ], ' '));
+			$name = Str::slug(implode([ $file->getFilename(), $width, $height ?: $width ], ' '));
 
 			// Prepare the thumbnail path
 			$path = "{$this->style->path}/{$media->id}_{$name}.{$file->getExtension()}";
@@ -86,20 +83,44 @@ class ResizeMacro extends AbstractMacro implements MacroInterface {
 			$media->thumbnail = str_replace(public_path(), null, $path);
 			$media->save();
 
+			// Create a new media variant
+			// $media->variants()->save(
+			// 	new Variant([
+			// 		'name'   => $name, # probably needs to be a auto generated variant name:
+			// 		'path'   => str_replace(public_path(), null, $path),
+			// 		'width'  => $width,
+			// 		'height' => $height,
+			// 	])
+			// );
+
 			// Create the thumbnail
-			$this->intervention
-				->make($this->filesystem->read($file->getPath()))
-				->resize($width, $height)
-				->save($path);
+			$this->intervention->make($file->getContents())->resize($width, $height)->save($path);
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function down()
+	public function down(Media $media, File $file)
 	{
+		// Get the style width & height
+		$width = $this->style->width;
+		$height = $this->style->height;
 
+		// Prepare the name for the thumbnail path
+		$name = Str::slug(implode([ $file->getFilename(), $width, $height ?: $width ], ' '));
+
+		// Prepare the thumbnail path
+		$path = "{$this->style->path}/{$media->id}_{$name}.{$file->getExtension()}";
+
+		$variant = $media->variants()->wherePath($path)->first();
+
+		if ($variant)
+		{
+			# delete the variant thumbnail
+
+			$variant->delete();
+		}
 	}
 
 }

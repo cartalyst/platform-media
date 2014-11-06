@@ -46,14 +46,6 @@ class MediaController extends AdminController {
 	protected $tags;
 
 	/**
-	 * {@inheritDoc}
-	 */
-	protected $csrfWhitelist = [
-		'executeAction',
-		//'update',
-	];
-
-	/**
 	 * Holds all the mass actions we can execute.
 	 *
 	 * @var array
@@ -93,13 +85,13 @@ class MediaController extends AdminController {
 	public function index()
 	{
 		// Get a list of all the available tags
-		$tags = $this->tags->findAll()->lists('name');
+		$tags = $this->media->getAllTags();
 
 		// Get a list of all the available roles
 		$roles = $this->roles->findAll();
 
 		// Show the page
-		return view('platform/media::index', compact('tags', 'roles'));
+		return view('platform/media::fileapi', compact('tags', 'roles'));
 	}
 
 	/**
@@ -166,7 +158,7 @@ class MediaController extends AdminController {
 		}
 
 		// Get a list of all the available tags
-		$tags = $this->tags->findAll()->lists('name');
+		$tags = $this->media->getAllTags();
 
 		// Get a list of all the available roles
 		$roles = $this->roles->findAll();
@@ -191,12 +183,14 @@ class MediaController extends AdminController {
 			{
 				if (request()->ajax())
 				{
-					return response('success');
+					return response(
+						trans('platform/media::message.success.update')
+					);
 				}
 
-				$message = trans('platform/media::message.success.update');
-
-				return redirect()->toAdmin('media')->withSuccess($message);
+				return redirect()->toAdmin('media')->withSuccess(
+					trans('platform/media::message.success.update')
+				);
 			}
 		}
 
@@ -215,11 +209,11 @@ class MediaController extends AdminController {
 	 */
 	public function executeAction()
 	{
-		$action = input('action');
+		$action = request()->input('action');
 
 		if (in_array($action, $this->actions))
 		{
-			foreach (input('entries', []) as $entry)
+			foreach (request()->input('entries', []) as $entry)
 			{
 				$this->media->{$action}($entry);
 			}

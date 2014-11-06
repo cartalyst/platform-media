@@ -108,12 +108,12 @@ class Manager {
 	/**
 	 *
 	 *
-	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $uploadedFile
-	 * @param  \Cartalyst\Filesystem\File  $storedFile
 	 * @param  \Platform\Media\Models\Media  $media
+	 * @param  \Cartalyst\Filesystem\File  $file
+	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $uploadedFile
 	 * @return void
 	 */
-	public function handleUp(UploadedFile $uploadedFile, File $storedFile, Media $media)
+	public function handleUp(Media $media, File $file, UploadedFile $uploadedFile)
 	{
 		// Get the uploaded file mime type
 		$mimeType = $uploadedFile->getMimeType();
@@ -134,13 +134,39 @@ class Manager {
 				$macro = $this->initializeMacro($macro);
 
 				// Set the requirements on the macro
-				$macro->setMedia($media);
 				$macro->setStyle($style);
-				$macro->setFile($storedFile);
-				$macro->setUploadedFile($uploadedFile);
 
 				// Execute the macro
-				$macro->up();
+				$macro->up($media, $file, $uploadedFile);
+			}
+		}
+	}
+
+	public function handleDown(Media $media, File $file)
+	{
+		// Get the uploaded file mime type
+		$mimeType = $uploadedFile->getMimeType();
+
+		// Loop through all the registered styles
+		foreach ($this->getStyles() as $name => $style)
+		{
+			// Initialize the style
+			call_user_func($style, $style = new Style($name));
+
+			// Check if the uploaded file mime type is valid
+			if ($style->mimes && ! in_array($mimeType, $style->mimes)) continue;
+
+			// Loop through the style macros
+			foreach ($style->macros as $name => $macro)
+			{
+				// Initialize the macro
+				$macro = $this->initializeMacro($macro);
+
+				// Set the requirements on the macro
+				$macro->setStyle($style);
+
+				// Execute the macro
+				$macro->down($media, $file);
 			}
 		}
 	}

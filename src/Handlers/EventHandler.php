@@ -31,19 +31,37 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface {
 	public function subscribe(Dispatcher $dispatcher)
 	{
 		$dispatcher->listen('platform.media.uploaded', __CLASS__.'@uploaded');
+
+		$dispatcher->listen('platform.media.deleted', __CLASS__.'@deleted');
 	}
 
 	/**
 	 * On upload event.
 	 *
-	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $uploadedFile
-	 * @param  \Cartalyst\Filesystem\File  $file
 	 * @param  \Platform\Media\Models\Media  $media
+	 * @param  \Cartalyst\Filesystem\File  $file
+	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $uploadedFile
 	 * @return void
 	 */
-	public function uploaded(UploadedFile $uploadedFile, File $file, Media $media)
+	public function uploaded(Media $media, File $file, UploadedFile $uploadedFile)
 	{
-		app('platform.media.manager')->handleUp($uploadedFile, $file, $media);
+		\Illuminate\Support\Facades\File::delete($media->thumbnail);
+
+		app('platform.media.manager')->handleUp($media, $file, $uploadedFile);
+	}
+
+	/**
+	 * On deleted event.
+	 *
+	 * @param  \Platform\Media\Models\Media  $media
+	 * @param  \Cartalyst\Filesystem\File  $file
+	 * @return void
+	 */
+	public function deleted(Media $media, File $file)
+	{
+		\Illuminate\Support\Facades\File::delete($media->thumbnail);
+
+		app('platform.media.manager')->handleDown($media, $file);
 	}
 
 }

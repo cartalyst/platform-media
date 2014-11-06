@@ -1,18 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+@extends('layouts/default')
 
-	<title>FileAPI :: Demo :: example</title>
+{{ Asset::queue('new.css', 'platform/media::css/new.css') }}
 
-	<meta name="viewport" content="user-scalable=no, width=400, initial-scale=0.8, maximum-scale=0.8" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="yes" />
-	<meta name="format-detection" content="email=no" />
-	<meta name="HandheldFriendly" content="true" />
-
-	<script src="//yandex.st/jquery/1.8.2/jquery.min.js"></script>
+@section('scripts')
+@parent
 
 	<script>
 		// var FileAPI = {
@@ -22,6 +13,32 @@
 	<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.min.js') }}"></script>
 	<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.exif.js') }}"></script>
 	<script src="{{ Asset::getUrl('platform/media::js/MediaManagerNew.js') }}"></script>
+	<script id="b-file-ejs" type="text/ejs">
+		<div id="file-<%=FileAPI.uid(file)%>" class="js-file b-file b-file_<%=file.type.split('/')[0]%>">
+			<div class="js-left b-file__left">
+				<img src="<%=icon[file.type.split('/')[0]]||icon.def%>" width="32" height="32" style="margin: 2px 0 0 3px"/>
+			</div>
+			<div class="b-file__right">
+				<div><input type="text" name="name" value="<%=file.name%>"></div>
+				<div><input type="text" name="tags" value="tag1, tag2, tag3"></div>
+				<div class="js-info b-file__info">size: <%=(file.size/FileAPI.KB).toFixed(2)%> KB</div>
+				<div class="js-progress b-file__bar" style="display: none">
+					<div class="b-progress"><div class="js-bar b-progress__bar"></div></div>
+				</div>
+			</div>
+			<i class="js-abort b-file__abort" title="abort">&times;</i>
+		</div>
+	</script>
+
+	<script type="text/javascript">
+		jQuery(document).ready(function($)
+		{
+			$.mediamanager('#mediaUploader');
+		});
+	</script>
+@stop
+
+@section('content')
 
 	<script>
 		// Simple JavaScript Templating
@@ -61,225 +78,25 @@
 		})();
 	</script>
 
-	<style>
-		body {
-			font-size: 15px;
-			font-family: "Helvetica Neue";
-		}
+	<form enctype="multipart/form-data" method="post" action="{{ url()->toAdmin('media/upload') }}">
+		{{-- CSRF Token --}}
+		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-		.b-button {
-			display: inline-block;
-			*display: inline;
-			*zoom: 1;
-			position: relative;
-			overflow: hidden;
-			cursor: pointer;
-			padding: 4px 15px;
-			vertical-align: middle;
-			border: 1px solid #ccc;
-			border-radius: 3px;
-			background-color: #f5f5f5;
-			background: -moz-linear-gradient(top, #fff 0%, #f5f5f5 49%, #ececec 50%, #eee 100%);
-			background: -webkit-linear-gradient(top, #fff 0%,#f5f5f5 49%,#ececec 50%,#eee 100%);
-			background: -o-linear-gradient(top, #fff 0%,#f5f5f5 49%,#ececec 50%,#eee 100%);
-			background: linear-gradient(to bottom, #fff 0%,#f5f5f5 49%,#ececec 50%,#eee 100%);
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			user-select: none;
-		}
-			.b-button_hover {
-				border-color: #fa0;
-				box-shadow: 0 0 2px #fa0;
-			}
-
-			.b-button__text {
-			}
-
-			.b-button__input {
-				cursor: pointer;
-				opacity: 0;
-				filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-				top: -10px;
-				right: -40px;
-				font-size: 50px;
-				position: absolute;
-			}
-
-
-	#preview {
-		max-width: 600px;
-		box-shadow: 0 1px 3px rgba(0,0,0,.4);
-		border-radius: 3px;
-	}
-		.b-file {
-			height: 80px;
-			padding: 5px;
-			position: relative;
-			overflow: hidden;
-			border-radius: 3px;
-			background-color: #fcfcfc;
-			background: -webkit-linear-gradient(top, #fcfcfc 0%, #f6f6f6 100%);
-			background: -moz-linear-gradient(top, #fcfcfc 0%, #f6f6f6 100%);
-			background: -o-linear-gradient(top, #fcfcfc 0%, #f6f6f6 100%);
-			background: linear-gradient(to bottom, #fcfcfc 0%, #f6f6f6 100%);
-			clear: both;
-		}
-			.b-file__left {
-				float: left;
-				margin: 1px 0 0 2px;
-				line-height: 0;
-			}
-				.b-file__left_border {
-					border: 2px solid #fff;
-					border-radius: 4px;
-				}
-
-			.b-file__right {
-				margin-left: 45px;
-			}
-
-			.b-file__name {
-				color: #36c;
-				cursor: pointer;
-				border-bottom: 1px dotted #36c;
-				text-decoration: none;
-			}
-				.b-file__name:hover {
-					color: #f00;
-					border-bottom-color: #f00;
-				}
-
-			.b-file__info {
-				color: #666;
-				position: absolute;
-				font-size: 12px;
-				margin-top: 3px;
-			}
-
-			.b-file__bar {
-				padding-top: 4px;
-			}
-
-			.b-file__error {
-				color: #c00;
-			}
-			.b-file__done {
-				color: #458383;
-			}
-			.b-file__abort {
-				top: 10px;
-				right: 20px;
-				width: 15px;
-				height: 15px;
-				position: absolute;
-				color: #c00;
-				cursor: pointer;
-				font-size: 20px;
-				display: none;
-			}
-				.b-file_upload .b-file__abort { display: block; }
-
-		.b-progress {
-			width: 200px;
-			height: 10px;
-			border: 2px solid #E2E4E2;
-			border-radius: 10px;
-			box-shadow: inset 0 1px 1px rgba(0,0,0,.2);
-			background-color: #d3d3d3;
-			position: relative;
-		}
-			.b-progress__bar {
-				width: 0;
-				height: 10px;
-				border-radius: 10px;
-				background-color: #2D9DD7;
-				background: -webkit-linear-gradient(top, #2D9DD7 0%, #1C81C7 100%); /* FF3.6+ */
-				background: -moz-linear-gradient(top, #2D9DD7 0%, #1C81C7 100%); /* FF3.6+ */
-				background: linear-gradient(to bottom, #2D9DD7 0%, #1C81C7 100%); /* FF3.6+ */
-				-webkit-transition: width .5s ease-out;
-				-moz-transition: width .5s ease-out;
-				-ms-transition: width .5s ease-out;
-				transition: width .5s ease-out;
-			}
-
-		.b-dropzone,
-		.b-dropzone__bg {
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			z-index: 30000;
-			position: absolute;
-		}
-			.b-dropzone__bg {
-				opacity: .2;
-				background-color: #2D9DD7
-			}
-			.b-dropzone__txt {
-				color: #1C81C7;
-				text-shadow: 0 2px 1px #113C53;
-				font-size: 400%;
-				font-weight: bold;
-				text-align: center;
-				width: 500px;
-				top: 50%;
-				left: 50%;
-				margin: -100px 0 0 -250px;
-				z-index: 30001;
-				position: absolute;
-			}
-	</style>
-
-</head>
-<body>
-
-<form enctype="multipart/form-data" method="post" action="{{ url()->toAdmin('media/upload') }}">
-	{{-- CSRF Token --}}
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-	<input type="file" name="file">
-	<button>Send</button>
-</form>
+		<input type="file" name="file">
+		<button>Send</button>
+	</form>
 
 	<div id="buttons-panel">
 		<div class="b-button js-fileapi-wrapper">
-			<div class="b-button__text">Upload one file</div>
-			<input name="files" class="b-button__input" type="file" />
-		</div>
-
-		<div class="b-button js-fileapi-wrapper">
-			<div class="b-button__text">Multiple</div>
+			<div class="b-button__text">Select file(s)</div>
 			<input name="files" class="b-button__input" type="file" multiple />
+		</div>
+		<div class="b-button js-fileapi-wrapper">
+			<div class="b-button__text"><a href="#" class="test">Send</a></div>
 		</div>
 	</div>
 
-	<div><a href="#" class="test">Send</a></div>
 
 	<div id="preview" style="margin-top: 30px"></div>
 
-	<script id="b-file-ejs" type="text/ejs">
-		<div id="file-<%=FileAPI.uid(file)%>" class="js-file b-file b-file_<%=file.type.split('/')[0]%>">
-			<div class="js-left b-file__left">
-				<img src="<%=icon[file.type.split('/')[0]]||icon.def%>" width="32" height="32" style="margin: 2px 0 0 3px"/>
-			</div>
-			<div class="b-file__right">
-				<div><input type="text" name="name" value="<%=file.name%>"></div>
-				<div><input type="text" name="tags" value="tag1, tag2, tag3"></div>
-				<div class="js-info b-file__info">size: <%=(file.size/FileAPI.KB).toFixed(2)%> KB</div>
-				<div class="js-progress b-file__bar" style="display: none">
-					<div class="b-progress"><div class="js-bar b-progress__bar"></div></div>
-				</div>
-			</div>
-			<i class="js-abort b-file__abort" title="abort">&times;</i>
-		</div>
-	</script>
-
-	<script type="text/javascript">
-		jQuery(function($)
-		{
-			//$.mediamanager('#mediaUploader');
-		});
-	</script>
-
-</body>
-</html>
+@stop

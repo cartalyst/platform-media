@@ -20,13 +20,10 @@
 use Cartalyst\Support\Traits;
 use Illuminate\Container\Container;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
-
 use Cartalyst\Filesystem\Exceptions\FileExistsException;
 use Cartalyst\Filesystem\Exceptions\InvalidFileException;
 use Cartalyst\Filesystem\Exceptions\InvalidMimeTypeException;
 use Cartalyst\Filesystem\Exceptions\MaxFileSizeExceededException;
-use File;
 
 class MediaRepository implements MediaRepositoryInterface {
 
@@ -40,7 +37,7 @@ class MediaRepository implements MediaRepositoryInterface {
 	protected $filesystem;
 
 	/**
-	 * The Eloquent media model
+	 * The Eloquent model name.
 	 *
 	 * @var string
 	 */
@@ -53,6 +50,11 @@ class MediaRepository implements MediaRepositoryInterface {
 	 */
 	protected $error;
 
+	/**
+	 * The Tags repository instance.
+	 *
+	 * @var \Platform\Tags\Repositories\TagsRepositoryInterface
+	 */
 	protected $tags;
 
 	/**
@@ -98,6 +100,14 @@ class MediaRepository implements MediaRepositoryInterface {
 	public function findByPath($path)
 	{
 		return $this->createModel()->where('path', $path)->first();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getAllTags()
+	{
+		return $this->createModel()->entityTags()->lists('name');
 	}
 
 	/**
@@ -150,8 +160,10 @@ class MediaRepository implements MediaRepositoryInterface {
 			// Upload the file
 			$file = $this->filesystem->upload($uploadedFile, $fileName);
 
+			// Check if a media entry already exists for this path
 			if ( ! $media = $this->findByPath($file->getPath()))
 			{
+				// If the file is an image, we get the image size
 				$imageSize = $file->getImageSize();
 
 				$input = array_merge([
@@ -166,12 +178,13 @@ class MediaRepository implements MediaRepositoryInterface {
 				], array_except($input, 'tags'));
 
 				$media = $this->createModel();
-				$media->fill($input)->save();
 			}
 
 			$this->tags->set($media, array_get($input, 'tags', []));
 
-			$this->fireEvent('platform.media.uploaded', [ $uploadedFile, $file, $media ]);
+			$media->fill($input)->save();
+
+			# $this->fireEvent('platform.media.uploaded', [ $uploadedFile, $file, $media ]);
 
 			return $this->find($media->id)->toJson();
 		}
@@ -206,8 +219,6 @@ class MediaRepository implements MediaRepositoryInterface {
 				// Delete the old media file
 				$this->filesystem->delete($media->path);
 
-				File::delete(media_cache_path($media->thumbnail));
-
 				// Sanitize the file name
 				$fileName = $this->sanitizeFileName(
 					array_get($input, 'name', $uploadedFile->getClientOriginalName())
@@ -216,7 +227,7 @@ class MediaRepository implements MediaRepositoryInterface {
 				// Upload the file
 				$file = $this->filesystem->upload($uploadedFile, $fileName);
 
-				$this->fireEvent('platform.media.uploaded', [ $uploadedFile, $file, $media ]);
+				# $this->fireEvent('platform.media.uploaded', [ $uploadedFile, $file, $media ]);
 
 				$imageSize = $uploaded->getImageSize();
 
@@ -250,13 +261,15 @@ class MediaRepository implements MediaRepositoryInterface {
 	 */
 	public function delete($id)
 	{
-		if ($model = $this->find($id))
+		if ($media = $this->find($id))
 		{
-			$this->filesystem->delete($model->path);
+			$this->filesystem->delete($media->path);
 
-			File::delete(media_cache_path($model->thumbnail));
+			$file = ''; # read the file
 
-			$model->delete();
+			$this->fireEvent('platform.media.deleted', [ $media, $file ]);
+
+			$media->delete();
 
 			return true;
 		}
