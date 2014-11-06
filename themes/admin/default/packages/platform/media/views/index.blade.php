@@ -16,114 +16,114 @@
 {{ Asset::queue('dropzone.js', 'platform/media::js/dropzone/dropzone.js') }}
 {{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', ['jquery', 'dropzone']) }}
 {{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
+{{ Asset::queue('new.css', 'platform/media::css/new.css') }}
 
 {{-- Inline scripts --}}
 @section('scripts')
 @parent
-<script>
-	jQuery(document).ready(function($)
-	{
-		var dg = $.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
-			loader: '.loading',
-			scroll: '.data-grid',
-			callback: function()
-			{
-				$('#checkAll').prop('checked', false);
-
-				$('#actions').prop('disabled', true);
-			}
-		});
-
-		$(document).on('click', '#checkAll', function()
+	<script>
+		jQuery(document).ready(function($)
 		{
-			$('input:checkbox').not(this).prop('checked', this.checked);
+			var dg = $.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
+				loader: '.loading',
+				scroll: '.data-grid',
+				callback: function()
+				{
+					$('#checkAll').prop('checked', false);
 
-			var status = $('input[name="entries[]"]:checked').length > 0;
-
-			$('#actions').prop('disabled', ! status);
-		});
-
-		$(document).on('click', 'input[name="entries[]"]', function()
-		{
-			var status = $('input[name="entries[]"]:checked').length > 0;
-
-			$('#actions').prop('disabled', ! status);
-		});
-
-		$(document).on('click', '[data-action]', function(e)
-		{
-			e.preventDefault();
-
-			var action = $(this).data('action');
-
-			var url = '{{ url()->toAdmin('media') }}';
-
-			var entries = $.map($('input[name="entries[]"]:checked'), function(e, i)
-			{
-				return +e.value;
+					$('#actions').prop('disabled', true);
+				}
 			});
 
-			if (action == 'email')
+			$(document).on('click', '#checkAll', function()
 			{
-				window.location = url + '/' + entries.join(',') + '/email';
-			}
-			else
+				$('input:checkbox').not(this).prop('checked', this.checked);
+
+				var status = $('input[name="entries[]"]:checked').length > 0;
+
+				$('#actions').prop('disabled', ! status);
+			});
+
+			$(document).on('click', 'input[name="entries[]"]', function()
 			{
-				$.ajax({
-					type: 'POST',
-					url: url,
-					data: {
-						action : action,
-						entries: entries
-					},
-					success: function(response)
-					{
-						dg.refresh();
-					}
+				var status = $('input[name="entries[]"]:checked').length > 0;
+
+				$('#actions').prop('disabled', ! status);
+			});
+
+			$(document).on('click', '[data-action]', function(e)
+			{
+				e.preventDefault();
+
+				var action = $(this).data('action');
+
+				var url = '{{ url()->toAdmin('media') }}';
+
+				var entries = $.map($('input[name="entries[]"]:checked'), function(e, i)
+				{
+					return +e.value;
 				});
-			}
+
+				if (action == 'email')
+				{
+					window.location = url + '/' + entries.join(',') + '/email';
+				}
+				else
+				{
+					$.ajax({
+						type: 'POST',
+						url: url,
+						data: {
+							action : action,
+							entries: entries
+						},
+						success: function(response)
+						{
+							dg.refresh();
+						}
+					});
+				}
+			});
+
+			$.mediamanager('#mediaUploader', {
+				uploadUrl : '{{ url()->toAdmin('media/upload') }}'
+			});
 		});
 
-		$.mediamanager('#mediaUploader', {
-			updateUrl : '{{ url()->toAdmin('media/:id/edit') }}',
-			deleteUrl : '{{ url()->toAdmin('media/:id/delete') }}',
-			onSuccess : function(response)
-			{
-				dg.refresh();
-			}
-		});
+		function bytesToSize(bytes)
+		{
+			if (bytes === 0) return '0 Bytes';
 
-		$('#tags').selectize({
-			maxItems: 4,
-			create: true
-		});
-	});
+			var k = 1000;
 
-	function bytesToSize(bytes)
-	{
-		if (bytes === 0) return '0 Bytes';
+			var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
-		var k = 1000;
+			var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)), 10);
 
-		var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-
-		var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)), 10);
-
-		return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
-	}
-</script>
+			return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+		}
+	</script>
+	<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.min.js') }}"></script>
+	<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.exif.js') }}"></script>
+	<script src="{{ Asset::getUrl('platform/media::js/MediaManagerNew.js') }}"></script>
+	<script id="b-file-ejs" type="text/ejs">
+		<div id="file-<%=FileAPI.uid(file)%>" class="js-file b-file b-file_<%=file.type.split('/')[0]%>">
+			<div class="js-left b-file__left">
+				<img src="<%=icon[file.type.split('/')[0]]||icon.def%>" width="32" height="32" style="margin: 2px 0 0 3px"/>
+			</div>
+			<div class="b-file__right">
+				<div class="hide"><input type="text" name="name" value="<%=file.name%>"></div>
+				<div class="hide"><input type="text" name="tags" value="tag1, tag2, tag3"></div>
+				<div class="js-info b-file__info">size: <%=(file.size/FileAPI.KB).toFixed(2)%> KB</div>
+				<div class="js-progress b-file__bar" style="display: none">
+					<div class="b-progress"><div class="js-bar b-progress__bar"></div></div>
+				</div>
+			</div>
+			<i class="js-abort b-file__abort" title="abort">&times;</i>
+		</div>
+	</script>
 @stop
 
-{{-- Inline styles --}}
-@section('styles')
-@parent
-<style type="text/css">
-tr { cursor: default; }
-.highlight { background: lightblue; }
-</style>
-@stop
-
-{{-- Page content --}}
 @section('content')
 
 {{-- Page header --}}
@@ -219,30 +219,36 @@ tr { cursor: default; }
 @include('platform/media::grid/filters')
 @include('platform/media::grid/no_results')
 
+
 <div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="mediaModalLabel" aria-hidden="true">
 
 	<div class="modal-dialog">
 
 		<div class="modal-content" style="width: 660px;">
 
-			<div id="dropzone" style="height: 360px;overflow-y:scroll;">
-				<form action="{{ url()->toAdmin('media/upload') }}" class="media-dropzone dz-clickable" id="mediaUploader">
+			<!--<form enctype="multipart/form-data" method="post" action="{{ url()->toAdmin('media/upload') }}">
+				{{-- CSRF Token --}}
+				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-					{{-- CSRF Token --}}
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+				<input type="file" name="file">
+				<button>Send</button>
+			</form>-->
 
-					<select placeholder="{{{ trans('platform/media::form.tags_help') }}}" id="tags" name="tags[]" multiple="multiple" tabindex="-1">
-						@foreach ($tags as $tag)
-						<option value="{{{ $tag }}}">{{{ $tag }}}</option>
-						@endforeach
-					</select>
-
-					<div class="dz-default dz-message"></div>
-
-				</form>
+			<div id="buttons-panel">
+				<div class="b-button js-fileapi-wrapper">
+					<div class="b-button__text">Select file(s)</div>
+					<input name="files" class="b-button__input" type="file" multiple />
+				</div>
+				<div class="b-button js-fileapi-wrapper">
+					<div class="b-button__text"><a href="#" class="test">Send</a></div>
+				</div>
 			</div>
 
-			<div class="modal-footer" style="margin-top: 0;">
+
+			<div id="preview" style="margin-top: 30px"></div>
+
+
+			<div class="hide modal-footer" style="margin-top: 0;">
 
 				<span class="pull-left text-left">
 					<div data-media-total-files></div>
@@ -260,5 +266,47 @@ tr { cursor: default; }
 	</div>
 
 </div>
+
+
+
+
+
+	<script>
+		// Simple JavaScript Templating
+		// John Resig - http://ejohn.org/ - MIT Licensed
+		(function (){
+			var cache = {};
+
+			this.tmpl = function tmpl(str, data){
+				// Figure out if we're getting a template, or if we need to
+				// load the template - and be sure to cache the result.
+				var fn = !/\W/.test(str) ?
+						cache[str] = cache[str] ||
+								tmpl(document.getElementById(str).innerHTML) :
+
+					// Generate a reusable function that will serve as a template
+					// generator (and which will be cached).
+						new Function("obj",
+								"var p=[],print=function(){p.push.apply(p,arguments);};" +
+
+									// Introduce the data as local variables using with(){}
+										"with(obj){p.push('" +
+
+									// Convert the template into pure JavaScript
+										str
+												.replace(/[\r\t\n]/g, " ")
+												.split("<%").join("\t")
+												.replace(/((^|%>)[^\t]*)'/g, "$1\r")
+												.replace(/\t=(.*?)%>/g, "',$1,'")
+												.split("\t").join("');")
+												.split("%>").join("p.push('")
+												.split("\r").join("\\'")
+										+ "');}return p.join('');");
+
+				// Provide some basic currying to the user
+				return data ? fn(data) : fn;
+			};
+		})();
+	</script>
 
 @stop

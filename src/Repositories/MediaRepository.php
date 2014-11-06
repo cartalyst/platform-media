@@ -267,7 +267,7 @@ class MediaRepository implements MediaRepositoryInterface {
 
 			$file = ''; # read the file
 
-			$this->fireEvent('platform.media.deleted', [ $media, $file ]);
+			//$this->fireEvent('platform.media.deleted', [ $media, $file ]);
 
 			$media->delete();
 

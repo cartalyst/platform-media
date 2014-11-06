@@ -120,7 +120,7 @@
 					{
 						file.xhr = FileAPI.upload(
 						{
-							url: '/foo.php',
+							url: self.opt.uploadUrl,
 							files: { file: file },
 							data: { data : FU._getEl(file, ':input').serialize() },
 							upload: function()

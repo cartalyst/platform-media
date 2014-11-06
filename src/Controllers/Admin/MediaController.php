@@ -45,6 +45,10 @@ class MediaController extends AdminController {
 	 */
 	protected $tags;
 
+	protected $csrfWhitelist = [
+		'upload',
+	];
+
 	/**
 	 * Holds all the mass actions we can execute.
 	 *
@@ -91,7 +95,7 @@ class MediaController extends AdminController {
 		$roles = $this->roles->findAll();
 
 		// Show the page
-		return view('platform/media::fileapi', compact('tags', 'roles'));
+		return view('platform/media::index', compact('tags', 'roles'));
 	}
 
 	/**
@@ -132,7 +136,7 @@ class MediaController extends AdminController {
 
 		if ($this->media->validForUpload($file))
 		{
-			if ($media = $this->media->upload($file, input()->get()))
+			if ($media = $this->media->upload($file, request()->input()))
 			{
 				return response($media);
 			}
