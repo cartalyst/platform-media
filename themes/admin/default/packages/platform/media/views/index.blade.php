@@ -7,13 +7,11 @@
 @stop
 
 {{-- Queue assets --}}
-{{ Asset::queue('dropzone.css', 'platform/media::css/dropzone.css') }}
 {{ Asset::queue('selectize', 'selectize/css/selectize.css', 'styles') }}
 
 {{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
 {{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'underscore') }}
 {{ Asset::queue('moment', 'moment/js/moment.js') }}
-{{ Asset::queue('dropzone.js', 'platform/media::js/dropzone/dropzone.js') }}
 {{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', ['jquery', 'dropzone']) }}
 {{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
 {{ Asset::queue('new.css', 'platform/media::css/new.css') }}
@@ -106,13 +104,15 @@
 	<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.min.js') }}"></script>
 	<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.exif.js') }}"></script>
 	<script src="{{ Asset::getUrl('platform/media::js/MediaManagerNew.js') }}"></script>
+
 	<script id="b-file-ejs" type="text/ejs">
-		<div id="file-<%=FileAPI.uid(file)%>" class="js-file b-file b-file_<%=file.type.split('/')[0]%>">
+		<div data-media-file="<%=FileAPI.uid(file)%>" class="js-file b-file b-file_<%=file.type.split('/')[0]%>">
 			<div class="js-left b-file__left">
 				<img src="<%=icon[file.type.split('/')[0]]||icon.def%>" width="32" height="32" style="margin: 2px 0 0 3px"/>
 			</div>
 			<div class="b-file__right">
-				<div class="hide"><input type="text" name="name" value="<%=file.name%>"></div>
+				<div><span data-fileapi="file.remove" data-media-remove="<%=FileAPI.uid(file)%>">Remove</span></div>
+				<div><input type="text" name="name" value="<%=file.name%>"></div>
 				<div class="hide"><input type="text" name="tags" value="tag1, tag2, tag3"></div>
 				<div class="js-info b-file__info">size: <%=(file.size/FileAPI.KB).toFixed(2)%> KB</div>
 				<div class="js-progress b-file__bar" style="display: none">
@@ -234,31 +234,29 @@
 				<button>Send</button>
 			</form>-->
 
-			<div id="buttons-panel">
-				<div class="b-button js-fileapi-wrapper">
-					<div class="b-button__text">Select file(s)</div>
-					<input name="files" class="b-button__input" type="file" multiple />
-				</div>
-				<div class="b-button js-fileapi-wrapper">
-					<div class="b-button__text"><a href="#" class="test">Send</a></div>
-				</div>
-			</div>
-
-
 			<div id="preview" style="margin-top: 30px"></div>
 
 
-			<div class="hide modal-footer" style="margin-top: 0;">
+			<div class="modal-footer" style="margin-top: 0;">
 
 				<span class="pull-left text-left">
 					<div data-media-total-files></div>
 					<div data-media-total-size></div>
 				</span>
 
+
+				<div class="b-button js-fileapi-wrapper">
+					<div class="b-button__text">Select file(s)</div>
+					<input name="files" class="b-button__input" type="file" multiple />
+				</div>
+
+				<button type="button" class="btn btn-success" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
+
+				<!--
 				<button type="button" class="btn btn-success" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
 
 				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
-
+				-->
 			</div>
 
 		</div>

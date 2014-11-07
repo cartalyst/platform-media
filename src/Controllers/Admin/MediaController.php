@@ -45,10 +45,6 @@ class MediaController extends AdminController {
 	 */
 	protected $tags;
 
-	protected $csrfWhitelist = [
-		'upload',
-	];
-
 	/**
 	 * Holds all the mass actions we can execute.
 	 *
