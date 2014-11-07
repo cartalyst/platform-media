@@ -180,7 +180,7 @@ class MediaRepository implements MediaRepositoryInterface {
 				$media = $this->createModel();
 			}
 
-			$this->tags->set($media, array_get($input, 'tags', []));
+			$this->tags->set($media, (array) array_get($input, 'tags', []));
 
 			$media->fill($input)->save();
 

@@ -7,13 +7,14 @@
 	 *
 	 * @var array
 	 */
-	var defaults = {
-
+	var defaults =
+	{
+		onSuccess : function() {},
+		onComplete : function() {},
 		icons: {
 			  def:   '//cdn1.iconfinder.com/data/icons/CrystalClear/32x32/mimetypes/unknown.png'
 			, image: '//cdn1.iconfinder.com/data/icons/humano2/32x32/apps/synfig_icon.png'
 		},
-
 	};
 
 	function MediaManagerNew(manager, options) {
@@ -50,7 +51,7 @@
 			{
 				FileAPI.reset(e.currentTarget);
 
-				var $Queue = $('<div/>').prependTo('#preview');
+				var $Queue = $('<div/>').prependTo('[data-media-queue]');
 
 				FileAPI.each(FileAPI.getFiles(e), function(file)
 				{
@@ -125,6 +126,8 @@
 
 						self._getEl(file, '.js-progress').animate({ opacity: 0 }, 200, function (){ $(this).hide() });
 						self._getEl(file, '.js-info').append(', <b class="b-file__'+state+'">'+(err ? (xhr.statusText || err) : state)+'</b>');
+
+						self.opt.onSuccess();
 					}
 				});
 			}

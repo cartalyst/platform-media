@@ -12,7 +12,7 @@
 {{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
 {{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'underscore') }}
 {{ Asset::queue('moment', 'moment/js/moment.js') }}
-{{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', ['jquery', 'dropzone']) }}
+{{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', ['jquery']) }}
 {{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
 {{ Asset::queue('new.css', 'platform/media::css/new.css') }}
 
@@ -22,6 +22,11 @@
 	<script>
 		jQuery(document).ready(function($)
 		{
+			$('.tags').selectize({
+				maxItems: 4,
+				create: true
+			});
+
 			var dg = $.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
 				loader: '.loading',
 				scroll: '.data-grid',
@@ -84,7 +89,11 @@
 			});
 
 			$.mediamanager('#mediaUploader', {
-				uploadUrl : '{{ url()->toAdmin('media/upload') }}'
+				uploadUrl : '{{ url()->toAdmin('media/upload') }}',
+				onSuccess : function()
+				{
+					dg.refresh();
+				}
 			});
 		});
 
@@ -106,20 +115,21 @@
 	<script src="{{ Asset::getUrl('platform/media::js/MediaManagerNew.js') }}"></script>
 
 	<script id="b-file-ejs" type="text/ejs">
-		<div data-media-file="<%=FileAPI.uid(file)%>" class="js-file b-file b-file_<%=file.type.split('/')[0]%>">
+		<div data-media-file="<%=FileAPI.uid(file)%>" class="b-file b-file_<%=file.type.split('/')[0]%>">
 			<div class="js-left b-file__left">
 				<img src="<%=icon[file.type.split('/')[0]]||icon.def%>" width="32" height="32" style="margin: 2px 0 0 3px"/>
 			</div>
 			<div class="b-file__right">
-				<div><span data-fileapi="file.remove" data-media-remove="<%=FileAPI.uid(file)%>">Remove</span></div>
-				<div><input type="text" name="name" value="<%=file.name%>"></div>
-				<div class="hide"><input type="text" name="tags" value="tag1, tag2, tag3"></div>
+				<div>
+					<input type="text" name="name" value="<%=file.name%>">
+					<input type="text" name="tags" value="">
+				</div>
 				<div class="js-info b-file__info">size: <%=(file.size/FileAPI.KB).toFixed(2)%> KB</div>
 				<div class="js-progress b-file__bar" style="display: none">
 					<div class="b-progress"><div class="js-bar b-progress__bar"></div></div>
 				</div>
 			</div>
-			<i class="js-abort b-file__abort" title="abort">&times;</i>
+			<i data-media-remove="<%=FileAPI.uid(file)%>" class="b-file__abort">&times;</i>
 		</div>
 	</script>
 @stop
@@ -234,7 +244,7 @@
 				<button>Send</button>
 			</form>-->
 
-			<div id="preview" style="margin-top: 30px"></div>
+			<div data-media-queue style="margin-top: 30px"></div>
 
 
 			<div class="modal-footer" style="margin-top: 0;">
@@ -245,18 +255,15 @@
 				</span>
 
 
-				<div class="b-button js-fileapi-wrapper">
+				<div class="b-button">
 					<div class="b-button__text">Select file(s)</div>
 					<input name="files" class="b-button__input" type="file" multiple />
 				</div>
 
 				<button type="button" class="btn btn-success" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
 
-				<!--
-				<button type="button" class="btn btn-success" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
-
 				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
-				-->
+
 			</div>
 
 		</div>
