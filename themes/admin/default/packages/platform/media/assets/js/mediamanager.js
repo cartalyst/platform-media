@@ -7,283 +7,239 @@
 	 *
 	 * @var array
 	 */
-	var defaults = {
-		updateUrl : null,
-		deleteUrl : null,
+	var defaults =
+	{
+		onFileQueued : function() {},
 		onSuccess : function() {},
 		onComplete : function() {},
-		autoProcessQueue : false,
-		addRemoveLinks : true,
-		parallelUploads : 6,
-		dictRemoveFile : 'Cancel',
-		dictCancelUpload : 'Cancel',
-		languages : {
-			file : 'File',
-			files : 'Files',
-			inQueue : '<strong>:amount</strong> :files in the queue'
-		}
+		icons: {
+			  def:   '//cdn1.iconfinder.com/data/icons/CrystalClear/32x32/mimetypes/unknown.png'
+			, image: '//cdn1.iconfinder.com/data/icons/humano2/32x32/apps/synfig_icon.png'
+		},
 	};
 
-	function MediaManager(manager, options) {
-
+	function MediaManager(options)
+	{
 		// Extend the default options with the provided options
 		this.opt = $.extend({}, defaults, options);
 
-		// Create a language dictionary
-		this.langDict = defaults.languages;
+		//
+		this.files = {};
 
-		// Cache the form selector
-		this.$form = manager;
+		//
+		this.totalFiles = 0;
+
+		//
+		this.totalSize = 0;
 
 		// Initialize the Media Manager
 		this.initializer();
-
 	}
 
-	MediaManager.prototype = {
-
+	MediaManager.prototype =
+	{
 		/**
 		 * Initializes the Media Manager.
 		 *
 		 * @return void
 		 */
-		initializer : function() {
-
+		initializer : function()
+		{
 			// Avoid scope issues
 			var self = this;
-
-			// Prepare Dropzone
-			self.dropzone = new Dropzone(self.$form, self.opt);
 
 			// Initialize the event listeners
-			this.events();
-
+			self.events();
 		},
 
-		/**
-		 * Initializes all the event listeners.
-		 *
-		 * @return void
-		 */
-		events : function() {
-
+		events : function()
+		{
 			// Avoid scope issues
 			var self = this;
 
-			var $document = $(document);
+			// Disable the upload button
+			if (self.hasFiles() === false) self.disableUploadButton();
 
-			var totalFiles = 0;
-
-			var totalSize = 0;
-
-			$('[data-media-total-files]').html(self.totalFiles(totalFiles));
-			$('[data-media-total-size]').html(self.dropzone.filesize(totalSize));
-
-			self.dropzone.on('sendingmultiple', function(file, xhr, formData){
-
-				//console.log(file.name);
-				console.log(formData);
-				//formData.closest('[name="name"]').val(file.name);
-
-			});
-
-			self.dropzone.on('addedfile', function(file)
+			// Process the queued files
+			$(document).on('click', '[data-media-upload]', function()
 			{
-				var divs = Array.prototype.slice.call(file.previewElement.childNodes);
+				self.processQueue();
+			});
 
-				divs.forEach(function(item)
+			//
+			$(document).on('change', 'input[type="file"]', function(e)
+			{
+				FileAPI.reset(e.currentTarget);
+
+				FileAPI.each(FileAPI.getFiles(e), function(file)
 				{
-					console.log(item);
+					// add some sort of file validation..
+
+					self.addFile(file);
+
+					self.opt.onFileQueued(file);
 				});
 
-				//console.log(divs);
+				if (self.hasFiles() === true) self.enableUploadButton();
 
-				//console.log(file);
-
-				//file.previewElement.addEventListener("click", function() { self.dropzone.removeFile(file); });
-
-				//var nodeArray = [].slice.call(file.previewElement.childNodes);
-				//console.log(nodeArray);
-
-				//$(file.previewElement).closest('[name="name"]').value(file.name);
-
-				totalFiles += 1;
-
-				totalSize += file.size;
-
-				$('[data-media-total-files]').html(self.totalFiles(totalFiles));
-				$('[data-media-total-size]').html(self.dropzone.filesize(totalSize));
-
+				self.refreshTotals();
 			});
 
-			self.dropzone.on('removedfile', function(file) {
+			//
+			$(document).on('click', '[data-media-remove]', function(e)
+			{
+				self.removeFile(
+					$(this).data('media-remove')
+				);
 
-				totalFiles -= 1;
-
-				totalSize -= file.size;
-
-				$('[data-media-total-files]').html(self.totalFiles(totalFiles));
-				$('[data-media-total-size]').html(self.dropzone.filesize(totalSize));
-
+				self.refreshTotals();
 			});
-
-			self.dropzone.on('success', function(file, response) {
-
-				self.dropzone.removeFile(file);
-
-				self.opt.onSuccess(response);
-
-			});
-
-			self.dropzone.on('complete', function(file, response) {
-
-				self.dropzone.processQueue();
-
-				self.opt.onComplete(response);
-
-			});
-
-			$document.on('click', '[data-media-upload]', function(e) {
-
-				e.preventDefault();
-
-				self.dropzone.processQueue();
-
-			});
-
-			$document.on('click', '.media__actions', function(e) {
-
-				e.stopPropagation();
-
-			});
-
-			$document.on('change', '#private', function() {
-
-				if ($(this).val() == 1)
-				{
-					$('[data-media-roles]').removeClass('hide');
-				}
-				else
-				{
-					$('[data-media-roles]').addClass('hide');
-				}
-
-			});
-
-			$document.on('click', '[data-media]', function() {
-
-				var id = $(this).data('media');
-
-				var media = $('#media_' + id);
-
-				if (media.prop('checked') == false)
-				{
-					media.prop('checked', true);
-					media.parent().addClass('media__select--checked');
-				}
-				else
-				{
-					media.prop('checked', false);
-					media.parent().removeClass('media__select--checked');
-				}
-
-				var totalSelected = $('.media__select input:checked').length;
-
-				$('[data-media-total-selected]').html(totalSelected);
-
-				if (totalSelected > 0 ? false : true)
-				{
-					$('[data-media-sidebar]').addClass('hide');
-				}
-				else
-				{
-					$('[data-media-sidebar]').removeClass('hide');
-				}
-
-			});
-
-			$document.on('click', '[data-media-update-selected]', function(e) {
-
-				e.preventDefault();
-
-				var data = {
-					'private' : $('#private').val(),
-					'roles'  : $('#roles').val()
-				}
-
-				$('input:checkbox[name=media]:checked').each(function()
-				{
-					self.updateMedia($(this).val(), data);
-				});
-
-				$('#private').val(0);
-				$('#roles').val('');
-
-			});
-
-			$document.on('click', '[data-media-delete-selected]', function(e) {
-
-				e.preventDefault();
-
-				$('input:checkbox[name=media]:checked').each(function()
-				{
-					self.deleteMedia($(this).val());
-				});
-
-			});
-
 		},
 
-		updateMedia : function(id, data) {
+		refreshTotals : function()
+		{
+			$('[data-media-total-size]').html(
+				(this.totalSize/FileAPI.KB).toFixed(2)
+			);
 
+			$('[data-media-total-files]').html(this.totalFiles);
+		},
+
+		hasFiles : function()
+		{
+			return ! $.isEmptyObject(this.files);
+		},
+
+		disableUploadButton : function()
+		{
+			$('[data-media-upload]').attr('disabled', true);
+		},
+
+		enableUploadButton : function()
+		{
+			$('[data-media-upload]').attr('disabled', false);
+		},
+
+		addFile : function(file)
+		{
 			// Avoid scope issues
 			var self = this;
 
-			$.ajax({
-				type : 'POST',
-				url : self.opt.updateUrl.replace(':id', id),
-				data : data,
-				success : function()
-				{
-					self.opt.onSuccess();
-				}
-			});
+			self.files[FileAPI.uid(file)] = file;
 
+			var data = {
+				'file' : file,
+				'icon' : self.opt.icons
+			};
+
+			$('[data-media-queue-list]').append(
+				_.template($('[data-media-file-template]').html(), data)
+			);
+
+			if (/^image/.test(file.type))
+			{
+				var imageSize = self._getEl(file, '[data-media-file-image]').data('media-file-image');
+
+				FileAPI.Image(file).preview(imageSize).rotate('auto').get(function(err, img)
+				{
+					if ( ! err )
+					{
+						self._getEl(file, '[data-media-file-image]').addClass('media-file__left_border').html(img);
+					}
+				});
+			}
+
+			self.totalFiles += 1;
+
+			self.totalSize += file.size;
 		},
 
-		deleteMedia : function(id) {
+		removeFile : function(id)
+		{
+			var file = this.files[id];
 
+			this.totalFiles -= 1;
+
+			this.totalSize -= file.size;
+
+			delete this.files[id];
+
+			$('[data-media-file="' + id + '"]').remove();
+		},
+
+		upload : function(fileId, file)
+		{
 			// Avoid scope issues
 			var self = this;
 
-			$.ajax({
-				type : 'POST',
-				url : self.opt.deleteUrl.replace(':id', id),
-				success : function()
+			if (file)
+			{
+				file.xhr = FileAPI.upload(
 				{
-					self.opt.onSuccess();
-				}
-			});
+					url: self.opt.uploadUrl,
+					files: { file : file },
+					data: {
+						name : self._getEl(file, 'input[name="name"]').val(),
+						tags : self._getEl(file, 'input[name="tags"]').val(),
+					},
+					headers: {
+						'X-CSRF-Token' : $('meta[name="csrf-token"]').attr('content')
+					},
+					upload: function()
+					{
+						self._getEl(file, '[data-media-progress]').css({ opacity: 0 }).show().animate({ opacity: 1 }, 100);
+					},
+					progress: function(evt)
+					{
+						self._getEl(file, '[data-media-progress-bar]').css('width', evt.loaded/evt.total * 100 + '%');
+					},
+					complete: function(err, xhr)
+					{
+						var state = err ? 'error' : 'done';
 
+						self._getEl(file, '[data-media-progress]').animate({ opacity: 0 }, 200, function (){ $(this).hide() });
+
+						self._getEl(file, '.js-info').append(', <b class="media-file__'+state+'">'+(err ? (xhr.statusText || err) : state)+'</b>');
+
+						if (state === 'done')
+						{
+							self.opt.onSuccess();
+
+							self.removeFile(fileId);
+
+							if (self.hasFiles() === false) self.disableUploadButton();
+
+							self.refreshTotals();
+						}
+					}
+				});
+			}
 		},
 
-		totalFiles : function(totalFiles) {
-
+		processQueue : function()
+		{
 			// Avoid scope issues
 			var self = this;
 
-			return self.langDict.inQueue
-				.replace(':amount', totalFiles)
-				.replace(':files', (totalFiles == 1 ? self.langDict.file : self.langDict.files));
+			// Loop through all the files on the queue
+			$.each(self.files, function(id, file)
+			{
+				self.upload(id, file);
+			});
+		},
 
-		}
+		_getEl : function(file, sel)
+		{
+			var $el = $('[data-media-file=' + FileAPI.uid(file) + ']');
+
+			return  sel ? $el.find(sel) : $el;
+		},
 
 	}
 
-	$.mediamanager = function(manager, options) {
-
-		return new MediaManager(manager, options);
-
+	$.mediamanager = function(options)
+	{
+		return new MediaManager(options);
 	};
 
 })(jQuery, window, document);

@@ -83,7 +83,7 @@
 				}
 			});
 
-			$.mediamanager('#mediaUploader', {
+			$.mediamanager({
 				uploadUrl : '{{ url()->toAdmin('media/upload') }}',
 				onFileQueued : function(file)
 				{
@@ -114,7 +114,6 @@
 	</script>
 	<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.min.js') }}"></script>
 	<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.exif.js') }}"></script>
-	<script src="{{ Asset::getUrl('platform/media::js/MediaManagerNew.js') }}"></script>
 @stop
 
 @section('content')
@@ -218,44 +217,13 @@
 
 		<div class="modal-content" style="width: 660px;">
 
-			<div data-media-queue-list style="min-height: 400px; max-height: 400px; overflow: auto;">
-
-				<!--
-				@for ($i = 1; $i < 20; $i++)
-				<div data-media-file="<%=FileAPI.uid(file)%>" class="media-file media-file_<%=file.type.split('/')[0]%>">
-
-					<div class="media-file__left">
-						<img src="//cdn1.iconfinder.com/data/icons/humano2/32x32/apps/synfig_icon.png" width="60" height="60" />
-					</div>
-
-					<div class="media-file__right">
-
-						<div>
-							<input type="text" name="name" value="<%=file.name%>">
-							<input type="text" name="tags" value="" class="tags">
-						</div>
-
-						<div class="media-file__info">size: <%=(file.size/FileAPI.KB).toFixed(2)%> KB</div>
-
-						<div data-media-progress style="display: none">
-							<div class="media-progress"><div data-media-progress-bar class="media-progress__bar"></div></div>
-						</div>
-
-					</div>
-
-					<i data-media-remove="<%=FileAPI.uid(file)%>" class="media-file__remove">&times;</i>
-
-				</div>
-				@endfor
-				-->
-
-			</div>
+			<div data-media-queue-list style="min-height: 400px; max-height: 400px; overflow: auto;"></div>
 
 			<div class="modal-footer" style="margin-top: 0;">
 
 				<span class="pull-left text-left">
 					<div><span data-media-total-files>0</span> files in queue</div>
-					<div><span data-media-total-size>0</span> kb</div>
+					<div><span data-media-total-size>0</span> KB</div>
 				</span>
 
 				<div class="media-button">
@@ -285,14 +253,14 @@
 		<div class="media-file__right">
 
 			<div>
-				<input type="text" name="name" value="<%=file.name%>">
+				<input type="text" name="name" value="<%= file.name %>">
 				<input type="text" name="tags" value="" class="tags">
 			</div>
 
 			<div class="media-file__info">size: <%= (file.size/FileAPI.KB).toFixed(2) %> KB</div>
 
-			<div data-media-progress style="display: none">
-				<div class="media-progress"><div data-media-progress-bar class="media-progress__bar"></div></div>
+			<div data-media-progress style="display: none" class="media-progress">
+				<div data-media-progress-bar class="media-progress__bar"></div>
 			</div>
 
 		</div>
