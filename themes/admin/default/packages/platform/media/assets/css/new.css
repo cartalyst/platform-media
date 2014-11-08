@@ -1,4 +1,4 @@
-.b-button {
+.media-button {
 	display: inline-block;
 	*display: inline;
 	*zoom: 1;
@@ -18,15 +18,15 @@
 	-moz-user-select: none;
 	user-select: none;
 }
-	.b-button_hover {
+	.media-button_hover {
 		border-color: #fa0;
 		box-shadow: 0 0 2px #fa0;
 	}
 
-	.b-button__text {
+	.media-button__text {
 	}
 
-	.b-button__input {
+	.media-button__input {
 		cursor: pointer;
 		opacity: 0;
 		filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
@@ -40,9 +40,9 @@
 #preview {
 max-width: 600px;
 box-shadow: 0 1px 3px rgba(0,0,0,.4);
-border-radius: 3px;
 }
-.b-file {
+
+.media-file {
 	height: 80px;
 	padding: 5px;
 	position: relative;
@@ -55,49 +55,45 @@ border-radius: 3px;
 	background: linear-gradient(to bottom, #fcfcfc 0%, #f6f6f6 100%);
 	clear: both;
 }
-	.b-file__left {
+	.media-file__left {
 		float: left;
-		margin: 1px 0 0 2px;
+		margin: 4px 0 0 3px;
 		line-height: 0;
 	}
-		.b-file__left_border {
-			border: 2px solid #fff;
-			border-radius: 4px;
-		}
 
-	.b-file__right {
-		margin-left: 45px;
+	.media-file__right {
+		margin: 10px 0 0 75px;
 	}
 
-	.b-file__name {
+	.media-file__name {
 		color: #36c;
 		cursor: pointer;
 		border-bottom: 1px dotted #36c;
 		text-decoration: none;
 	}
-		.b-file__name:hover {
+		.media-file__name:hover {
 			color: #f00;
 			border-bottom-color: #f00;
 		}
 
-	.b-file__info {
+	.media-file__info {
 		color: #666;
-		position: absolute;
+		__position: absolute;
 		font-size: 12px;
 		margin-top: 3px;
 	}
 
-	.b-file__bar {
+	.media-file__bar {
 		padding-top: 4px;
 	}
 
-	.b-file__error {
+	.media-file__error {
 		color: #c00;
 	}
-	.b-file__done {
+	.media-file__done {
 		color: #458383;
 	}
-	.b-file__abort {
+	.media-file__remove {
 		top: 10px;
 		right: 20px;
 		width: 15px;
@@ -107,9 +103,9 @@ border-radius: 3px;
 		cursor: pointer;
 		font-size: 20px;
 	}
-		.b-file_upload .b-file__abort { display: block; }
+		.media-file_upload .media-file__remove { display: block; }
 
-.b-progress {
+.media-progress {
 	width: 200px;
 	height: 10px;
 	border: 2px solid #E2E4E2;
@@ -118,7 +114,7 @@ border-radius: 3px;
 	background-color: #d3d3d3;
 	position: relative;
 }
-	.b-progress__bar {
+	.media-progress__bar {
 		width: 0;
 		height: 10px;
 		border-radius: 10px;

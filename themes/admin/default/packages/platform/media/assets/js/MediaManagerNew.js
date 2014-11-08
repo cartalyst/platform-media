@@ -9,6 +9,7 @@
 	 */
 	var defaults =
 	{
+		onFileQueued : function() {},
 		onSuccess : function() {},
 		onComplete : function() {},
 		icons: {
@@ -17,85 +18,156 @@
 		},
 	};
 
-	function MediaManagerNew(manager, options) {
-
+	function MediaManagerNew(manager, options)
+	{
 		// Extend the default options with the provided options
 		this.opt = $.extend({}, defaults, options);
 
 		//
 		this.files = {};
 
+		//
+		this.totalFiles = 0;
+
+		//
+		this.totalSize = 0;
+
 		// Initialize the Media Manager
 		this.initializer();
-
 	}
 
-	MediaManagerNew.prototype = {
-
+	MediaManagerNew.prototype =
+	{
 		/**
 		 * Initializes the Media Manager.
 		 *
 		 * @return void
 		 */
-		initializer : function() {
-
+		initializer : function()
+		{
 			// Avoid scope issues
 			var self = this;
 
+			// Initialize the event listeners
+			self.events();
+		},
+
+		events : function()
+		{
+			// Avoid scope issues
+			var self = this;
+
+			// Disable the upload button
+			if (self.hasFiles() === false) self.disableUploadButton();
+
+			// Process the queued files
 			$(document).on('click', '[data-media-upload]', function()
 			{
 				self.processQueue();
 			});
 
+			//
 			$(document).on('change', 'input[type="file"]', function(e)
 			{
 				FileAPI.reset(e.currentTarget);
 
-				var $Queue = $('<div/>').prependTo('[data-media-queue]');
-
 				FileAPI.each(FileAPI.getFiles(e), function(file)
 				{
-					$Queue.append(tmpl($('#b-file-ejs').html(),
-					{
-						file : file,
-						icon : self.opt.icons
-					}));
+					// add some sort of file validation..
 
 					self.addFile(file);
+
+					self.opt.onFileQueued(file);
 				});
+
+				if (self.hasFiles() === true) self.enableUploadButton();
+
+				self.refreshTotals();
 			});
 
+			//
 			$(document).on('click', '[data-media-remove]', function(e)
 			{
-				var id = $(this).data('media-remove');
+				self.removeFile(
+					$(this).data('media-remove')
+				);
 
-				delete self.files.id;
-
-				$('[data-media-file="' + id + '"]').remove();
+				self.refreshTotals();
 			});
+		},
 
+		refreshTotals : function()
+		{
+			$('[data-media-total-size]').html(this.totalSize);
+
+			$('[data-media-total-files]').html(this.totalFiles);
+		},
+
+		hasFiles : function()
+		{
+			return ! $.isEmptyObject(this.files);
+		},
+
+		disableUploadButton : function()
+		{
+			$('[data-media-upload]').attr('disabled', true);
+		},
+
+		enableUploadButton : function()
+		{
+			$('[data-media-upload]').attr('disabled', false);
 		},
 
 		addFile : function(file)
 		{
+			// Avoid scope issues
 			var self = this;
 
 			self.files[FileAPI.uid(file)] = file;
 
+			var data = {
+				'file' : file,
+				'icon' : self.opt.icons
+			};
+
+			$('[data-media-queue-list]').append(
+				_.template($('[data-media-file-template]').html(), data)
+			);
+
 			if (/^image/.test(file.type))
 			{
-				FileAPI.Image(file).preview(35).rotate('auto').get(function(err, img)
+				var imageSize = self._getEl(file, '[data-media-file-image]').data('media-file-image');
+
+				FileAPI.Image(file).preview(imageSize).rotate('auto').get(function(err, img)
 				{
-					if( ! err )
+					if ( ! err )
 					{
-						self._getEl(file, '.js-left').addClass('b-file__left_border').html(img);
+						self._getEl(file, '[data-media-file-image]').addClass('media-file__left_border').html(img);
 					}
 				});
 			}
+
+			self.totalFiles += 1;
+
+			self.totalSize += file.size;
 		},
 
-		upload : function(file)
+		removeFile : function(id)
 		{
+			var file = this.files[id];
+
+			this.totalFiles -= 1;
+
+			this.totalSize -= file.size;
+
+			delete this.files[id];
+
+			$('[data-media-file="' + id + '"]').remove();
+		},
+
+		upload : function(fileId, file)
+		{
+			// Avoid scope issues
 			var self = this;
 
 			if (file)
@@ -113,21 +185,30 @@
 					},
 					upload: function()
 					{
-						self._getEl(file).addClass('b-file_upload');
-						self._getEl(file, '.js-progress').css({ opacity: 0 }).show().animate({ opacity: 1 }, 100);
+						self._getEl(file, '[data-media-progress]').css({ opacity: 0 }).show().animate({ opacity: 1 }, 100);
 					},
 					progress: function(evt)
 					{
-						self._getEl(file, '.js-bar').css('width', evt.loaded/evt.total * 100 + '%');
+						self._getEl(file, '[data-media-progress-bar]').css('width', evt.loaded/evt.total * 100 + '%');
 					},
 					complete: function(err, xhr)
 					{
 						var state = err ? 'error' : 'done';
 
-						self._getEl(file, '.js-progress').animate({ opacity: 0 }, 200, function (){ $(this).hide() });
-						self._getEl(file, '.js-info').append(', <b class="b-file__'+state+'">'+(err ? (xhr.statusText || err) : state)+'</b>');
+						self._getEl(file, '[data-media-progress]').animate({ opacity: 0 }, 200, function (){ $(this).hide() });
 
-						self.opt.onSuccess();
+						self._getEl(file, '.js-info').append(', <b class="media-file__'+state+'">'+(err ? (xhr.statusText || err) : state)+'</b>');
+
+						if (state === 'done')
+						{
+							self.opt.onSuccess();
+
+							self.removeFile(fileId);
+
+							if (self.hasFiles() === false) self.disableUploadButton();
+
+							self.refreshTotals();
+						}
 					}
 				});
 			}
@@ -135,11 +216,13 @@
 
 		processQueue : function()
 		{
+			// Avoid scope issues
 			var self = this;
 
+			// Loop through all the files on the queue
 			$.each(self.files, function(id, file)
 			{
-				self.upload(file);
+				self.upload(id, file);
 			});
 		},
 
@@ -150,35 +233,11 @@
 			return  sel ? $el.find(sel) : $el;
 		},
 
-		getFileById: function(id)
-		{
-			var i = self.files.length;
-
-			while (i--)
-			{
-				if (FileAPI.uid(self.files[i]) == id)
-				{
-					return self.files[i];
-				}
-			}
-		},
-
-		abort: function(id)
-		{
-			var file = this.getFileById(id);
-
-			if (file.xhr)
-			{
-				file.xhr.abort();
-			}
-		}
-
 	}
 
-	$.mediamanager = function(manager, options) {
-
+	$.mediamanager = function(manager, options)
+	{
 		return new MediaManagerNew(manager, options);
-
 	};
 
 })(jQuery, window, document);

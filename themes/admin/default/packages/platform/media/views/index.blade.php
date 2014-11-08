@@ -22,11 +22,6 @@
 	<script>
 		jQuery(document).ready(function($)
 		{
-			$('.tags').selectize({
-				maxItems: 4,
-				create: true
-			});
-
 			var dg = $.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
 				loader: '.loading',
 				scroll: '.data-grid',
@@ -90,6 +85,13 @@
 
 			$.mediamanager('#mediaUploader', {
 				uploadUrl : '{{ url()->toAdmin('media/upload') }}',
+				onFileQueued : function(file)
+				{
+					// $('.tags').selectize({
+					// 	maxItems: 4,
+					// 	create: true
+					// });
+				},
 				onSuccess : function()
 				{
 					dg.refresh();
@@ -113,25 +115,6 @@
 	<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.min.js') }}"></script>
 	<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.exif.js') }}"></script>
 	<script src="{{ Asset::getUrl('platform/media::js/MediaManagerNew.js') }}"></script>
-
-	<script id="b-file-ejs" type="text/ejs">
-		<div data-media-file="<%=FileAPI.uid(file)%>" class="b-file b-file_<%=file.type.split('/')[0]%>">
-			<div class="js-left b-file__left">
-				<img src="<%=icon[file.type.split('/')[0]]||icon.def%>" width="32" height="32" style="margin: 2px 0 0 3px"/>
-			</div>
-			<div class="b-file__right">
-				<div>
-					<input type="text" name="name" value="<%=file.name%>">
-					<input type="text" name="tags" value="">
-				</div>
-				<div class="js-info b-file__info">size: <%=(file.size/FileAPI.KB).toFixed(2)%> KB</div>
-				<div class="js-progress b-file__bar" style="display: none">
-					<div class="b-progress"><div class="js-bar b-progress__bar"></div></div>
-				</div>
-			</div>
-			<i data-media-remove="<%=FileAPI.uid(file)%>" class="b-file__abort">&times;</i>
-		</div>
-	</script>
 @stop
 
 @section('content')
@@ -229,35 +212,55 @@
 @include('platform/media::grid/filters')
 @include('platform/media::grid/no_results')
 
-
 <div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="mediaModalLabel" aria-hidden="true">
 
 	<div class="modal-dialog">
 
 		<div class="modal-content" style="width: 660px;">
 
-			<!--<form enctype="multipart/form-data" method="post" action="{{ url()->toAdmin('media/upload') }}">
-				{{-- CSRF Token --}}
-				<input type="hidden" name="_token" value="{{ csrf_token() }}">
+			<div data-media-queue-list style="min-height: 400px; max-height: 400px; overflow: auto;">
 
-				<input type="file" name="file">
-				<button>Send</button>
-			</form>-->
+				<!--
+				@for ($i = 1; $i < 20; $i++)
+				<div data-media-file="<%=FileAPI.uid(file)%>" class="media-file media-file_<%=file.type.split('/')[0]%>">
 
-			<div data-media-queue style="margin-top: 30px"></div>
+					<div class="media-file__left">
+						<img src="//cdn1.iconfinder.com/data/icons/humano2/32x32/apps/synfig_icon.png" width="60" height="60" />
+					</div>
 
+					<div class="media-file__right">
+
+						<div>
+							<input type="text" name="name" value="<%=file.name%>">
+							<input type="text" name="tags" value="" class="tags">
+						</div>
+
+						<div class="media-file__info">size: <%=(file.size/FileAPI.KB).toFixed(2)%> KB</div>
+
+						<div data-media-progress style="display: none">
+							<div class="media-progress"><div data-media-progress-bar class="media-progress__bar"></div></div>
+						</div>
+
+					</div>
+
+					<i data-media-remove="<%=FileAPI.uid(file)%>" class="media-file__remove">&times;</i>
+
+				</div>
+				@endfor
+				-->
+
+			</div>
 
 			<div class="modal-footer" style="margin-top: 0;">
 
 				<span class="pull-left text-left">
-					<div data-media-total-files></div>
-					<div data-media-total-size></div>
+					<div><span data-media-total-files>0</span> files in queue</div>
+					<div><span data-media-total-size>0</span> kb</div>
 				</span>
 
-
-				<div class="b-button">
-					<div class="b-button__text">Select file(s)</div>
-					<input name="files" class="b-button__input" type="file" multiple />
+				<div class="media-button">
+					<div class="media-button__text">Select file(s)</div>
+					<input name="files" class="media-button__input" type="file" multiple />
 				</div>
 
 				<button type="button" class="btn btn-success" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
@@ -272,46 +275,31 @@
 
 </div>
 
+<script type="text/template" data-media-file-template>
+	<div data-media-file="<%= FileAPI.uid(file) %>" class="media-file media-file_<%= file.type.split('/')[0] %>">
 
+		<div data-media-file-image="60" class="media-file__left">
+			<img src="<%= icon[file.type.split('/')[0]]||icon.def %>" width="60" height="60" />
+		</div>
 
+		<div class="media-file__right">
 
+			<div>
+				<input type="text" name="name" value="<%=file.name%>">
+				<input type="text" name="tags" value="" class="tags">
+			</div>
 
-	<script>
-		// Simple JavaScript Templating
-		// John Resig - http://ejohn.org/ - MIT Licensed
-		(function (){
-			var cache = {};
+			<div class="media-file__info">size: <%= (file.size/FileAPI.KB).toFixed(2) %> KB</div>
 
-			this.tmpl = function tmpl(str, data){
-				// Figure out if we're getting a template, or if we need to
-				// load the template - and be sure to cache the result.
-				var fn = !/\W/.test(str) ?
-						cache[str] = cache[str] ||
-								tmpl(document.getElementById(str).innerHTML) :
+			<div data-media-progress style="display: none">
+				<div class="media-progress"><div data-media-progress-bar class="media-progress__bar"></div></div>
+			</div>
 
-					// Generate a reusable function that will serve as a template
-					// generator (and which will be cached).
-						new Function("obj",
-								"var p=[],print=function(){p.push.apply(p,arguments);};" +
+		</div>
 
-									// Introduce the data as local variables using with(){}
-										"with(obj){p.push('" +
+		<i data-media-remove="<%= FileAPI.uid(file) %>" class="media-file__remove">&times;</i>
 
-									// Convert the template into pure JavaScript
-										str
-												.replace(/[\r\t\n]/g, " ")
-												.split("<%").join("\t")
-												.replace(/((^|%>)[^\t]*)'/g, "$1\r")
-												.replace(/\t=(.*?)%>/g, "',$1,'")
-												.split("\t").join("');")
-												.split("%>").join("p.push('")
-												.split("\r").join("\\'")
-										+ "');}return p.join('');");
-
-				// Provide some basic currying to the user
-				return data ? fn(data) : fn;
-			};
-		})();
-	</script>
+	</div>
+</script>
 
 @stop
