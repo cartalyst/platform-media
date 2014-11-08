@@ -253,8 +253,8 @@
 		<div class="media-file__right">
 
 			<div>
-				<input type="text" name="name" value="<%= file.name %>">
-				<input type="text" name="tags" value="" class="tags">
+				<input type="text" name="<%= FileAPI.uid(file) %>_name" value="<%= file.name %>">
+				<input type="text" name="<%= FileAPI.uid(file) %>_tags" value="" class="tags">
 			</div>
 
 			<div class="media-file__info">size: <%= (file.size/FileAPI.KB).toFixed(2) %> KB</div>
