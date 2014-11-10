@@ -107,7 +107,7 @@ class MediaRepository implements MediaRepositoryInterface {
 	 */
 	public function getAllTags()
 	{
-		return $this->createModel()->entityTags()->lists('name');
+		return $this->createModel()->allTags()->lists('name');
 	}
 
 	/**
