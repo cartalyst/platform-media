@@ -157,6 +157,9 @@ class MediaRepository implements MediaRepositoryInterface {
 				array_get($input, 'name', $uploadedFile->getClientOriginalName())
 			);
 
+			// Get the submitted tags
+			$tags = array_pull($input, 'tags');
+
 			// Upload the file
 			$file = $this->filesystem->upload($uploadedFile, $fileName);
 
@@ -175,16 +178,16 @@ class MediaRepository implements MediaRepositoryInterface {
 					'is_image'  => $file->isImage(),
 					'width'     => $imageSize['width'],
 					'height'    => $imageSize['height'],
-				], array_except($input, 'tags'));
+				], $input);
 
 				$media = $this->createModel();
 			}
 
-			$this->tags->set($media, (array) array_get($input, 'tags', []));
+			$this->tags->set($media, $tags);
 
 			$media->fill($input)->save();
 
-			# $this->fireEvent('platform.media.uploaded', [ $uploadedFile, $file, $media ]);
+			$this->fireEvent('platform.media.uploaded', [ $media, $file, $uploadedFile ]);
 
 			return $this->find($media->id)->toJson();
 		}
@@ -212,6 +215,9 @@ class MediaRepository implements MediaRepositoryInterface {
 		//
 		$media = $this->find($id);
 
+		// Get the submitted tags
+		$tags = array_pull($input, 'tags');
+
 		if ($uploadedFile instanceof UploadedFile)
 		{
 			if ($this->validForUpload($uploadedFile))
@@ -227,12 +233,12 @@ class MediaRepository implements MediaRepositoryInterface {
 				// Upload the file
 				$file = $this->filesystem->upload($uploadedFile, $fileName);
 
-				# $this->fireEvent('platform.media.uploaded', [ $uploadedFile, $file, $media ]);
+				$this->fireEvent('platform.media.uploaded', [ $media, $file, $uploadedFile ]);
 
 				$imageSize = $uploaded->getImageSize();
 
 				// Update the media entry
-				$input = array_merge($input, [
+				$input = array_merge([
 					'path'      => $uploaded->getPath(),
 					'extension' => $uploaded->getExtension(),
 					'mime'      => $uploaded->getMimetype(),
@@ -240,7 +246,7 @@ class MediaRepository implements MediaRepositoryInterface {
 					'is_image'  => $uploaded->isImage(),
 					'width'     => $imageSize['width'],
 					'height'    => $imageSize['height'],
-				]);
+				], $input);
 			}
 			else
 			{
@@ -248,7 +254,7 @@ class MediaRepository implements MediaRepositoryInterface {
 			}
 		}
 
-		$this->tags->set($media, array_get($input, 'tags', []));
+		$this->tags->set($media, $tags);
 
 		// Update the media entry
 		$media->fill(array_except($input, 'tags'))->save();
