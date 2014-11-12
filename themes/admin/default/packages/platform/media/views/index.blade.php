@@ -87,10 +87,10 @@
 				uploadUrl : '{{ url()->toAdmin('media/upload') }}',
 				onFileQueued : function(file)
 				{
-					// $('.tags').selectize({
-					// 	maxItems: 4,
-					// 	create: true
-					// });
+					$('.tags').selectize({
+						maxItems: 4,
+						create: true
+					});
 				},
 				onSuccess : function()
 				{
@@ -246,26 +246,33 @@
 <script type="text/template" data-media-file-template>
 	<div data-media-file="<%= FileAPI.uid(file) %>" class="media-file media-file_<%= file.type.split('/')[0] %>">
 
-		<div data-media-file-image="60" class="media-file__left">
-			<img src="<%= icon[file.type.split('/')[0]]||icon.def %>" width="60" height="60" />
-		</div>
+		<form class="form-inline">
 
-		<div class="media-file__right">
-
-			<div>
-				<input type="text" name="<%= FileAPI.uid(file) %>_name" value="<%= file.name %>">
-				<input type="text" name="<%= FileAPI.uid(file) %>_tags" value="" class="tags">
+			<div data-media-file-image="60" class="media-file__left">
+				<img src="<%= icon[file.type.split('/')[0]]||icon.def %>" width="60" height="60" />
 			</div>
 
-			<div class="media-file__info">size: <%= (file.size/FileAPI.KB).toFixed(2) %> KB</div>
+			<div class="media-file__right">
 
-			<div data-media-progress style="display: none" class="media-progress">
-				<div data-media-progress-bar class="media-progress__bar"></div>
+				<div class="form-group">
+					<input type="text" name="<%= FileAPI.uid(file) %>_name" value="<%= file.name %>" placeholder="File name." class="form-control">
+				</div>
+
+				<div class="form-group">
+					<input type="text" name="<%= FileAPI.uid(file) %>_tags[]" value="" placeholder="File tags." class="form-control tags">
+				</div>
+
+				<div class="media-file__info">size: <%= (file.size/FileAPI.KB).toFixed(2) %> KB</div>
+
+				<div data-media-progress style="display: none" class="media-progress">
+					<div data-media-progress-bar class="media-progress__bar"></div>
+				</div>
+
 			</div>
 
-		</div>
+			<i data-media-remove="<%= FileAPI.uid(file) %>" class="media-file__remove">&times;</i>
 
-		<i data-media-remove="<%= FileAPI.uid(file) %>" class="media-file__remove">&times;</i>
+		</form>
 
 	</div>
 </script>

@@ -182,7 +182,7 @@
 					files: { file : file },
 					data: {
 						name : self._getEl(file, 'input[name="' + fileId + '_name"]').val(),
-						tags : self._getEl(file, 'input[name="' + fileId + '_tags"]').val(),
+						tags : self._getEl(file, 'input[name="' + fileId + '_tags[]"]').val(),
 					},
 					headers: {
 						'X-CSRF-Token' : $('meta[name="csrf-token"]').attr('content')

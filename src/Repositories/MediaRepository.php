@@ -158,7 +158,7 @@ class MediaRepository implements MediaRepositoryInterface {
 			);
 
 			// Get the submitted tags
-			$tags = array_pull($input, 'tags');
+			$tags = array_pull($input, 'tags', []);
 
 			// Upload the file
 			$file = $this->filesystem->upload($uploadedFile, $fileName);
@@ -183,9 +183,10 @@ class MediaRepository implements MediaRepositoryInterface {
 				$media = $this->createModel();
 			}
 
-			$this->tags->set($media, $tags);
-
 			$media->fill($input)->save();
+
+			// Set the tags on the media entry
+			$this->tags->set($media, $tags);
 
 			$this->fireEvent('platform.media.uploaded', [ $media, $file, $uploadedFile ]);
 
@@ -216,7 +217,7 @@ class MediaRepository implements MediaRepositoryInterface {
 		$media = $this->find($id);
 
 		// Get the submitted tags
-		$tags = array_pull($input, 'tags');
+		$tags = array_pull($input, 'tags', []);
 
 		if ($uploadedFile instanceof UploadedFile)
 		{
@@ -254,6 +255,7 @@ class MediaRepository implements MediaRepositoryInterface {
 			}
 		}
 
+		// Set the tags on the media entry
 		$this->tags->set($media, $tags);
 
 		// Update the media entry
