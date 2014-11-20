@@ -283,7 +283,7 @@ return [
 				'name'  => 'Media',
 				'class' => 'fa fa-picture-o',
 				'uri'   => 'media',
-				'regex' => '/admin\/media/i',
+				'regex' => '/:admin\/media/i',
 			],
 
 		],
