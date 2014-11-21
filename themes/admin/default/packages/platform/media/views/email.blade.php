@@ -64,7 +64,7 @@ jQuery(document).ready(function($)
 @stop
 
 {{-- Page content --}}
-@section('content')
+@section('page')
 
 {{-- Media form --}}
 <form id="media-form" action="{{ request()->fullUrl() }}" method="post" accept-char="UTF-8" autocomplete="off" enctype="multipart/form-data">

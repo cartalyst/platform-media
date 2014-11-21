@@ -116,7 +116,7 @@
 	<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.exif.js') }}"></script>
 @stop
 
-@section('content')
+@section('page')
 
 {{-- Page header --}}
 <div class="page-header">
