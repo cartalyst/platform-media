@@ -152,9 +152,9 @@ class MediaController extends AdminController {
 		// Get the media information
 		if ( ! $media = $this->media->find($id))
 		{
-			return redirect()->toAdmin('media')->withErrors(
-				trans('platform/media::message.not_found', compact('id'))
-			);
+			$this->alerts->error(trans('platform/media::message.not_found', compact('id')));
+
+			return redirect()->toAdmin('media');
 		}
 
 		// Get a list of all the available tags
@@ -188,9 +188,9 @@ class MediaController extends AdminController {
 					);
 				}
 
-				return redirect()->toAdmin('media')->withSuccess(
-					trans('platform/media::message.success.update')
-				);
+				$this->alerts->success(trans('platform/media::message.success.update'));
+
+				return redirect()->toAdmin('media');
 			}
 		}
 
@@ -199,7 +199,9 @@ class MediaController extends AdminController {
 			return response($this->media->getError(), 400);
 		}
 
-		return redirect()->back()->withErrors($this->media->getError());
+		$this->alerts->error($this->media->getError());
+
+		return redirect()->back();
 	}
 
 	/**

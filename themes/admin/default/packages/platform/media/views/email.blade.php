@@ -156,23 +156,23 @@ jQuery(document).ready(function($)
 				</div>
 
 			</div>
-				<div class="form-group{{ $errors->first('subject', ' has-error') }}">
+				<div class="form-group{{ Alert::form('subject', ' has-error') }}">
 
 					<label for="value" class="control-label">Subject <i class="fa fa-info-circle" data-toggle="popover" data-content="..."></i></label>
 
 					<input type="text" class="form-control" name="subject" id="subject" value="{{{ Input::old('subject', Config::get('platform/media::email.subject')) }}}">
 
-					<span class="help-block">{{{ $errors->first('value', ':message') }}}</span>
+					<span class="help-block">{{{ Alert::form('value') }}}</span>
 
 				</div>
 
-				<div class="form-group{{ $errors->first('body', ' has-error') }}">
+				<div class="form-group{{ Alert::form('body', ' has-error') }}">
 
 					<label for="body" class="control-label">Body <i class="fa fa-info-circle" data-toggle="popover" data-content="..."></i></label>
 
 					<textarea class="form-control redactor" name="body" id="body">{{{ Input::old('body') }}}</textarea>
 
-					<span class="help-block">{{{ $errors->first('body', ':message') }}}</span>
+					<span class="help-block">{{{ Alert::form('body') }}}</span>
 
 				</div>
 

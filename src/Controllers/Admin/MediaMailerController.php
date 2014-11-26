@@ -183,7 +183,9 @@ class MediaMailerController extends AdminController {
 		{
 			$message = "You haven't selected any recipients.";
 
-			return redirect()->toAdmin("media/{$id}/email")->withErrors($message);
+			$this->alerts->error($message);
+
+			return redirect()->toAdmin("media/{$id}/email");
 		}
 
 		// Prepare the attachments
@@ -214,7 +216,9 @@ class MediaMailerController extends AdminController {
 
 		$mailer->send();
 
-		return redirect()->toAdmin('media')->withSuccess('Email was succesfully sent.');
+		$this->alerts->success('Email was succesfully sent.');
+
+		return redirect()->toAdmin('media');
 	}
 
 	protected function getEmailItems($id)
