@@ -153,7 +153,7 @@
 
 				<ul class="dropdown-menu" role="menu">
 					@foreach ($tags as $tag)
-					<li><a href="#" data-grid="main" data-filter="tags:{{{ $tag }}}">{{{ $tag }}}</a></li>
+					<li><a href="#" data-grid="main" data-filter="tags..name:{{{ $tag }}}" data-label="tags..name::{{{ $tag }}}">{{{ $tag }}}</a></li>
 					@endforeach
 				</ul>
 

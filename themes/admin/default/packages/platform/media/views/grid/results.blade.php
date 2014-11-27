@@ -5,11 +5,11 @@
 		<tr data-id="<%= r.id %>">
 			<td class="_hide"><input type="checkbox" name="entries[]" value="<%= r.id %>"></td>
 			<td>
-				{{--<% if (r.is_image == 1) { %>
-					<img src="{{ URL::to('<%= r.thumbnail %>') }}" />
+				<% if (r.is_image == 1) { %>
+					<img src="{{ URL::to('/') }}<%= r.thumbnail %>" />
 				<% } else{ %>
 					<i class="fa fa-file fa-3x"></i>
-				<% } %>--}}
+				<% } %>
 			</td>
 			<td class="col-md-9">
 
@@ -33,7 +33,7 @@
 
 					<small>
 					<% _.each(r.tags, function(tag) { %>
-						<span class="label label-info"><%= tag %></span>
+						<span class="label label-info"><%= tag.name %></span>
 					<% }); %>
 					</small>
 

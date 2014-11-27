@@ -83,7 +83,8 @@ class MediaRepository implements MediaRepositoryInterface {
 	 */
 	public function grid()
 	{
-		return $this->createModel();
+		return $this->createModel()
+			->with('tags');
 	}
 
 	/**
