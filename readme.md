@@ -1,5 +1,7 @@
 # Platform Media
 
+[![Build Status](http://ci.cartalyst.com/build-status/svg/44)](http://ci.cartalyst.com/build-status/view/44)
+
 Media management for Platform.
 
 Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well, rock on.
