@@ -260,7 +260,7 @@ class MediaRepository implements MediaRepositoryInterface {
 		$this->tags->set($media, $tags);
 
 		// Update the media entry
-		$media->fill(array_except($input, 'tags'))->save();
+		$media->fill($input)->save();
 
 		return $media;
 	}
