@@ -18,12 +18,6 @@
 <script>
 jQuery(document).ready(function($)
 {
-	// Instantiate the editor
-	$('.redactor').redactor({
-		toolbarFixed: true,
-		minHeight: 200,
-	});
-
 	$('#users').selectize({
 		persist: false,
 		maxItems: null,
@@ -87,9 +81,11 @@ jQuery(document).ready(function($)
 						@foreach ($items as $item)
 						<div class="media">
 
+							@if ($item->thumbnail)
 							<span class="pull-left">
-								<img src="{{ URL::to(media_cache_path($item->thumbnail)) }}">
+								<img src="{{ URL::to($item->thumbnail) }}">
 							</span>
+							@endif
 
 							<div class="media-body" syle="padding-left: 10px;">
 

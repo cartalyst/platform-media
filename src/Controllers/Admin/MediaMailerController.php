@@ -18,14 +18,14 @@
  */
 
 use Config;
-use Illuminate\Database\Eloquent\Collection;
-use Filesystem;
-use Platform\Access\Controllers\AdminController;
-use Platform\Foundation\Mailer;
-use Platform\Media\Repositories\MediaRepositoryInterface;
-use Platform\Users\Repositories\RoleRepositoryInterface;
-use Platform\Users\Repositories\UserRepositoryInterface;
 use Sentinel;
+use Filesystem;
+use Cartalyst\Support\Mailer;
+use Illuminate\Database\Eloquent\Collection;
+use Platform\Access\Controllers\AdminController;
+use Platform\Roles\Repositories\RoleRepositoryInterface;
+use Platform\Users\Repositories\UserRepositoryInterface;
+use Platform\Media\Repositories\MediaRepositoryInterface;
 
 class MediaMailerController extends AdminController {
 
@@ -46,7 +46,7 @@ class MediaMailerController extends AdminController {
 	/**
 	 * The Users Roles repository.
 	 *
-	 * @var \Platform\Users\Repositories\RoleRepositoryInterface
+	 * @var \Platform\Roles\Repositories\RoleRepositoryInterface
 	 */
 	protected $roles;
 
@@ -58,17 +58,26 @@ class MediaMailerController extends AdminController {
 	protected $config;
 
 	/**
+	 * The mailer instance.
+	 *
+	 * @var \Cartalyst\Support\Mailer
+	 */
+	protected $mailer;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
 	 * @param  \Platform\Users\Repositories\UserRepositoryInterface  $users
-	 * @param  \Platform\Users\Repositories\RoleRepositoryInterface  $roles
+	 * @param  \Platform\Roles\Repositories\RoleRepositoryInterface  $roles
+	 * @param  \Cartalyst\Support\Mailer  $mailer
 	 * @return void
 	 */
 	public function __construct(
 		MediaRepositoryInterface $media,
 		UserRepositoryInterface $users,
-		RoleRepositoryInterface $roles
+		RoleRepositoryInterface $roles,
+		Mailer $mailer
 	)
 	{
 		parent::__construct();
@@ -80,6 +89,8 @@ class MediaMailerController extends AdminController {
 		$this->roles = $roles;
 
 		$this->config = Config::get('platform/media::config');
+
+		$this->mailer = $mailer;
 	}
 
 	/**
@@ -202,19 +213,18 @@ class MediaMailerController extends AdminController {
 		// set input var, will make accessible to the view
 		$input = input()->except(['_token', 'users']);
 
-		$mailer = new Mailer;
-		$mailer->setView($view, compact('body'));
-		$mailer->setSubject($subject);
-		$mailer->setAttachments($attachments);
+		$this->mailer->setView($view, compact('body'));
+		$this->mailer->setSubject($subject);
+		$this->mailer->setAttachments($attachments);
 
-		$mailer->addTo(Sentinel::getUser()->email, Sentinel::getUser()->name);
+		$this->mailer->addTo(Sentinel::getUser()->email, Sentinel::getUser()->name);
 
 		foreach ($recipients as $recipient)
 		{
-			$mailer->addBcc($recipient->email, "{$recipient->first_name} {$recipient->last_name}");
+			$this->mailer->addBcc($recipient->email, "{$recipient->first_name} {$recipient->last_name}");
 		}
 
-		$mailer->send();
+		$this->mailer->send();
 
 		$this->alerts->success('Email was succesfully sent.');
 

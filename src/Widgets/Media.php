@@ -48,7 +48,7 @@ class Media {
 			{
 				case 'thumbnail':
 
-					$url = media_cache_path($media->thumbnail);
+					$url = URL::to($media->thumbnail);
 
 					break;
 

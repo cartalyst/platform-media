@@ -34,7 +34,7 @@ class MediaController extends AdminController {
 	/**
 	 * The Users Roles repository.
 	 *
-	 * @var \Platform\Users\Repositories\RoleRepositoryInterface
+	 * @var \Platform\Roles\Repositories\RoleRepositoryInterface
 	 */
 	protected $roles;
 
@@ -58,7 +58,7 @@ class MediaController extends AdminController {
 	 * Constructor.
 	 *
 	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
-	 * @param  \Platform\Users\Repositories\RoleRepositoryInterface  $roles
+	 * @param  \Platform\Roles\Repositories\RoleRepositoryInterface  $roles
 	 * @param  \Platform\Tags\Repositories\TagsRepositoryInterface  $tags
 	 * @return void
 	 */
