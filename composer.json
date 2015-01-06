@@ -51,6 +51,10 @@
 		"platform/access": "~1.0",
 		"platform/tags": "~1.0"
 	},
+	"require-dev": {
+		"cartalyst/testing": "~0.1",
+		"patchwork/utf8": "~1.1"
+	},
 	"autoload": {
 		"classmap": [
 			"database/migrations",
