@@ -38,9 +38,6 @@ return [
 	{
 		$manager->setStyle('thumbnail', function(Style $style)
 		{
-			// Setting the style mime types
-			$style->mimes = 'image/gif, image/jpeg, image/png';
-
 			// Set the style image width & height
 			$style->width = 40;
 			$style->height = 40;

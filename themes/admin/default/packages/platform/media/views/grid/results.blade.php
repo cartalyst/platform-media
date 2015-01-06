@@ -39,7 +39,7 @@
 
 				</span>
 
-				<label class="label label-info"><%= r.id %></label> <a href="{{ URL::toAdmin('media/<%= r.id %>/edit') }}"><%= r.name %></a>
+				<label class="label label-info"><%= r.id %></label> <a href="{{ URL::toAdmin('media/<%= r.id %>') }}"><%= r.name %></a>
 
 				<br />
 

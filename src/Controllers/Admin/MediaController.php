@@ -154,7 +154,7 @@ class MediaController extends AdminController {
 		{
 			$this->alerts->error(trans('platform/media::message.not_found', compact('id')));
 
-			return redirect()->toAdmin('media');
+			return redirect()->route('admin.media.all');
 		}
 
 		// Get a list of all the available tags
@@ -190,7 +190,7 @@ class MediaController extends AdminController {
 
 				$this->alerts->success(trans('platform/media::message.success.update'));
 
-				return redirect()->toAdmin('media');
+				return redirect()->route('admin.media.all');
 			}
 		}
 
@@ -202,6 +202,26 @@ class MediaController extends AdminController {
 		$this->alerts->error($this->media->getError());
 
 		return redirect()->back();
+	}
+
+	/**
+	 * Removes the specified media.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function delete($id)
+	{
+		if ($this->media->delete($id))
+		{
+			$this->alerts->success(trans('platform/media::message.success.delete'));
+
+			return redirect()->route('admin.media.all');
+		}
+
+		$this->alerts->error(trans('platform/media::message.error.delete'));
+
+		return redirect()->route('admin.media.all');
 	}
 
 	/**

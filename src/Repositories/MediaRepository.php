@@ -100,7 +100,7 @@ class MediaRepository implements MediaRepositoryInterface {
 	 */
 	public function findByPath($path)
 	{
-		return $this->createModel()->where('path', $path)->first();
+		return $this->createModel()->wherePath($path)->rememberForever('platform.media.path.'.$path)->first();
 	}
 
 	/**
@@ -116,7 +116,7 @@ class MediaRepository implements MediaRepositoryInterface {
 	 */
 	public function validForUpdate($id, array $data)
 	{
-		return $this->validator->validate($data);
+		return $this->validator->on('update')->validate($data);
 	}
 
 	/**
@@ -191,7 +191,7 @@ class MediaRepository implements MediaRepositoryInterface {
 
 			$this->fireEvent('platform.media.uploaded', [ $media, $file, $uploadedFile ]);
 
-			return $this->find($media->id)->toJson();
+			return $media;
 		}
 		catch (FileExistsException $e)
 		{
@@ -214,8 +214,9 @@ class MediaRepository implements MediaRepositoryInterface {
 	 */
 	public function update($id, array $input, $uploadedFile = null)
 	{
-		//
 		$media = $this->find($id);
+
+		$this->fireEvent('platform.media.updating', [ $media ]);
 
 		// Get the submitted tags
 		$tags = array_pull($input, 'tags', []);
@@ -237,15 +238,15 @@ class MediaRepository implements MediaRepositoryInterface {
 
 				$this->fireEvent('platform.media.uploaded', [ $media, $file, $uploadedFile ]);
 
-				$imageSize = $uploaded->getImageSize();
+				$imageSize = $file->getImageSize();
 
 				// Update the media entry
 				$input = array_merge([
-					'path'      => $uploaded->getPath(),
-					'extension' => $uploaded->getExtension(),
-					'mime'      => $uploaded->getMimetype(),
-					'size'      => $uploaded->getSize(),
-					'is_image'  => $uploaded->isImage(),
+					'path'      => $file->getPath(),
+					'extension' => $file->getExtension(),
+					'mime'      => $file->getMimetype(),
+					'size'      => $file->getSize(),
+					'is_image'  => $file->isImage(),
 					'width'     => $imageSize['width'],
 					'height'    => $imageSize['height'],
 				], $input);
@@ -262,6 +263,8 @@ class MediaRepository implements MediaRepositoryInterface {
 		// Update the media entry
 		$media->fill($input)->save();
 
+		$this->fireEvent('platform.media.updated', [ $media ]);
+
 		return $media;
 	}
 
@@ -272,11 +275,13 @@ class MediaRepository implements MediaRepositoryInterface {
 	{
 		if ($media = $this->find($id))
 		{
+			$file = $this->filesystem->get($media->path);
+
+			$this->fireEvent('platform.media.deleting', [ $media, $file ]);
+
 			$this->filesystem->delete($media->path);
 
-			$file = ''; # read the file
-
-			//$this->fireEvent('platform.media.deleted', [ $media, $file ]);
+			$this->fireEvent('platform.media.deleted', [ $media ]);
 
 			$media->delete();
 
@@ -304,6 +309,12 @@ class MediaRepository implements MediaRepositoryInterface {
 		$this->error = $error;
 	}
 
+	/**
+	 * Sanitizes the file name.
+	 *
+	 * @param  string  $fileName
+	 * @return string
+	 */
 	protected function sanitizeFileName($fileName)
 	{
 		$regex = [ '#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#', '#[ ]#', '![_]+!u' ];

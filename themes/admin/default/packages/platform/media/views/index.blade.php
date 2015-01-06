@@ -87,7 +87,7 @@
 				uploadUrl : '{{ url()->toAdmin('media/upload') }}',
 				onFileQueued : function(file)
 				{
-					$('.tags').selectize({
+					$('input.tags').not('.selectize-control').selectize({
 						maxItems: 4,
 						create: true
 					});

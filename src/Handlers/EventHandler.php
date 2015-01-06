@@ -32,6 +32,10 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface {
 	{
 		$dispatcher->listen('platform.media.uploaded', __CLASS__.'@uploaded');
 
+		$dispatcher->listen('platform.media.updating', __CLASS__.'@updating');
+		$dispatcher->listen('platform.media.updated', __CLASS__.'@updated');
+
+		$dispatcher->listen('platform.media.deleting', __CLASS__.'@deleting');
 		$dispatcher->listen('platform.media.deleted', __CLASS__.'@deleted');
 	}
 
@@ -47,21 +51,66 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface {
 	{
 		\Illuminate\Support\Facades\File::delete($media->thumbnail);
 
-		app('platform.media.manager')->handleUp($media, $file, $uploadedFile);
+		$this->app['platform.media.manager']->handleUp($media, $file, $uploadedFile);
+
+		$this->flushCache($media);
+	}
+
+	/**
+	 * On updating event.
+	 *
+	 * @param  \Platform\Media\Models\Media  $media
+	 * @return void
+	 */
+	public function updating(Media $media)
+	{
+
+	}
+
+	/**
+	 * On updated event.
+	 *
+	 * @param  \Platform\Media\Models\Media  $media
+	 * @return void
+	 */
+	public function updated(Media $media)
+	{
+		$this->flushCache($media);
+	}
+
+	/**
+	 * On deleting event.
+	 *
+	 * @param  \Platform\Media\Models\Media  $media
+	 * @param  \Cartalyst\Filesystem\File  $file
+	 * @return void
+	 */
+	public function deleting(Media $media, File $file)
+	{
+		$this->app['platform.media.manager']->handleDown($media, $file);
 	}
 
 	/**
 	 * On deleted event.
 	 *
 	 * @param  \Platform\Media\Models\Media  $media
-	 * @param  \Cartalyst\Filesystem\File  $file
 	 * @return void
 	 */
-	public function deleted(Media $media, File $file)
+	public function deleted(Media $media)
 	{
-		\Illuminate\Support\Facades\File::delete($media->thumbnail);
+		$this->flushCache($media);
+	}
 
-		app('platform.media.manager')->handleDown($media, $file);
+	/**
+	 * Flush the cache.
+	 *
+	 * @param  \Platform\Media\Models\Media  $media
+	 * @return void
+	 */
+	protected function flushCache(Media $media)
+	{
+		$this->app['cache']->forget('platform.media.'.$media->id);
+		$this->app['cache']->forget('platform.media.path.'.$media->path);
 	}
 
 }

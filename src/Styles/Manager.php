@@ -106,7 +106,7 @@ class Manager {
 	}
 
 	/**
-	 *
+	 * Handles the macros on upload.
 	 *
 	 * @param  \Platform\Media\Models\Media  $media
 	 * @param  \Cartalyst\Filesystem\File  $file
@@ -142,10 +142,17 @@ class Manager {
 		}
 	}
 
+	/**
+	 * Handles the macros on delete.
+	 *
+	 * @param  \Platform\Media\Models\Media  $media
+	 * @param  \Cartalyst\Filesystem\File  $file
+	 * @return void
+	 */
 	public function handleDown(Media $media, File $file)
 	{
 		// Get the uploaded file mime type
-		$mimeType = $uploadedFile->getMimeType();
+		$mimeType = $file->getMimeType();
 
 		// Loop through all the registered styles
 		foreach ($this->getStyles() as $name => $style)

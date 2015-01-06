@@ -45,7 +45,7 @@ class Style {
 	}
 
 	/**
-	 * Get mutator for the "macros" attribute.
+	 * Accessor for the "macros" attribute.
 	 *
 	 * @param  array  $macros
 	 * @return array
@@ -56,7 +56,7 @@ class Style {
 	}
 
 	/**
-	 * Set mutator for the "macros" attribute.
+	 * Mutator for the "macros" attribute.
 	 *
 	 * @param  array  $macros
 	 * @return void
@@ -67,22 +67,6 @@ class Style {
 		{
 			$this->attributes['macros'][] = $macro;
 		}
-	}
-
-	/**
-	 * Set mutator for the "mimes" attribute.
-	 *
-	 * @param  mixed  $mimes
-	 * @return void
-	 */
-	public function setMimesAttribute($mimes)
-	{
-		if (is_string($mimes))
-		{
-			$mimes = array_map('trim', explode(',', $mimes));
-		}
-
-		$this->attributes['mimes'] = $mimes;
 	}
 
 	/**

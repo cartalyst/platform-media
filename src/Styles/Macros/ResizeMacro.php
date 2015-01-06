@@ -69,32 +69,16 @@ class ResizeMacro extends AbstractMacro implements MacroInterface {
 		// Check if the file is an image
 		if ($file->isImage())
 		{
-			// Get the style width & height
-			$width = $this->style->width;
-			$height = $this->style->height;
-
-			// Prepare the name for the thumbnail path
-			$name = Str::slug(implode([ $file->getFilename(), $width, $height ?: $width ], ' '));
-
-			// Prepare the thumbnail path
-			$path = "{$this->style->path}/{$media->id}_{$name}.{$file->getExtension()}";
+			$path = $this->getPath($file, $media);
 
 			// Update the media entry
 			$media->thumbnail = str_replace(public_path(), null, $path);
 			$media->save();
 
-			// Create a new media variant
-			// $media->variants()->save(
-			// 	new Variant([
-			// 		'name'   => $name, # probably needs to be a auto generated variant name:
-			// 		'path'   => str_replace(public_path(), null, $path),
-			// 		'width'  => $width,
-			// 		'height' => $height,
-			// 	])
-			// );
-
 			// Create the thumbnail
-			$this->intervention->make($file->getContents())->resize($width, $height)->save($path);
+			$this->intervention->make($file->getContents())
+				->resize($this->style->width, $this->style->height)
+				->save($path);
 		}
 	}
 
@@ -103,24 +87,26 @@ class ResizeMacro extends AbstractMacro implements MacroInterface {
 	 */
 	public function down(Media $media, File $file)
 	{
-		// Get the style width & height
+		$path = $this->getPath($file, $media);
+
+		\Illuminate\Support\Facades\File::delete($path);
+	}
+
+	/**
+	 * Returns the prepared file path.
+	 *
+	 * @param  \Cartalyst\Filesystem\File  $file
+	 * @param  \Platform\Media\Models\Media  $media
+	 * @return string
+	 */
+	protected function getPath(File $file, Media $media)
+	{
 		$width = $this->style->width;
 		$height = $this->style->height;
 
-		// Prepare the name for the thumbnail path
 		$name = Str::slug(implode([ $file->getFilename(), $width, $height ?: $width ], ' '));
 
-		// Prepare the thumbnail path
-		$path = "{$this->style->path}/{$media->id}_{$name}.{$file->getExtension()}";
-
-		$variant = $media->variants()->wherePath($path)->first();
-
-		if ($variant)
-		{
-			# delete the variant thumbnail
-
-			$variant->delete();
-		}
+		return "{$this->style->path}/{$media->id}_{$name}.{$file->getExtension()}";
 	}
 
 }

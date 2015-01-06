@@ -48,7 +48,7 @@ class Media {
 			{
 				case 'thumbnail':
 
-					$url = URL::to($media->thumbnail);
+					$url = $media->thumbnail;
 
 					break;
 
@@ -65,7 +65,7 @@ class Media {
 					break;
 			}
 
-			return URL::to($url);
+			return url($url);
 		}
 	}
 

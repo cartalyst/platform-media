@@ -47,7 +47,7 @@ interface MacroInterface {
 	public function up(Media $media, File $file, UploadedFile $uploadedFile);
 
 	/**
-	 * Executes the macro.
+	 * Reverts the executed macro.
 	 *
 	 * @return void
 	 */

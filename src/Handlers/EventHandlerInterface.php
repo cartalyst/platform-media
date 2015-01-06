@@ -17,48 +17,38 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Filesystem\File;
 use Platform\Media\Models\Media;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Cartalyst\Support\Handlers\EventHandlerInterface as BaseEventHandlerInterface;
 
 interface EventHandlerInterface extends BaseEventHandlerInterface {
 
 	/**
-	 * When a media is being created.
-	 *
-	 * @return mixed
-	 */
-	#public function creating();
-
-	/**
-	 * When a media is created.
+	 * On upload event.
 	 *
 	 * @param  \Platform\Media\Models\Media  $media
-	 * @return mixed
+	 * @param  \Cartalyst\Filesystem\File  $file
+	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $uploadedFile
+	 * @return void
 	 */
-	#public function created(Media $media);
+	public function uploaded(Media $media, File $file, UploadedFile $uploadedFile);
 
 	/**
-	 * When a media is being updated.
+	 * On deleting event.
 	 *
 	 * @param  \Platform\Media\Models\Media  $media
-	 * @return mixed
+	 * @param  \Cartalyst\Filesystem\File  $file
+	 * @return void
 	 */
-	#public function updating(Media $media);
+	public function deleting(Media $media, File $file);
 
 	/**
-	 * When a media is updated.
+	 * On deleted event.
 	 *
 	 * @param  \Platform\Media\Models\Media  $media
-	 * @return mixed
+	 * @return void
 	 */
-	#public function updated(Media $media);
-
-	/**
-	 * When a media is deleted.
-	 *
-	 * @param  \Platform\Media\Models\Media  $media
-	 * @return mixed
-	 */
-	#public function deleted(Media $media);
+	public function deleted(Media $media);
 
 }

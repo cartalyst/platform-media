@@ -17,10 +17,9 @@
  * @link       http://cartalyst.com
  */
 
-use Filesystem;
 use Response;
 use Sentinel;
-#
+use Filesystem;
 use Platform\Foundation\Controllers\Controller;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Platform\Media\Repositories\MediaRepositoryInterface;

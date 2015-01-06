@@ -164,26 +164,34 @@ return [
 
 	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
-		Route::group(['namespace' => 'Platform\Media\Controllers'], function()
+		Route::group([
+			'prefix'    => admin_uri().'/media',
+			'namespace' => 'Platform\Media\Controllers\Admin',
+		], function()
 		{
-			Route::group(['prefix' => admin_uri().'/media', 'namespace' => 'Admin'], function()
-			{
-				Route::get('/', 'MediaController@index');
-				Route::post('/', 'MediaController@executeAction');
-				Route::get('grid', 'MediaController@grid');
-				Route::post('upload', 'MediaController@upload');
-				Route::get('{id}/edit', 'MediaController@edit');
-				Route::post('{id}/edit', 'MediaController@update');
-				Route::get('{id}/email', 'MediaMailerController@index');
-				Route::post('{id}/email', 'MediaMailerController@process');
-				Route::post('{id}/delete', 'MediaController@delete');
-			});
+			Route::get('/' , ['as' => 'admin.media.all', 'uses' => 'MediaController@index']);
+			Route::post('/', ['as' => 'admin.media.all', 'uses' => 'MediaController@executeAction']);
 
-			Route::group(['prefix' => 'media', 'namespace' => 'Frontend'], function()
-			{
-				Route::get('download/{id}', 'MediaController@download')->where('id', '.*?');
-				Route::get('view/{id}', 'MediaController@view')->where('id', '.*?');
-			});
+			Route::get('grid', ['as' => 'admin.media.grid', 'uses' => 'MediaController@grid']);
+
+			Route::post('upload', ['as' => 'admin.media.upload', 'uses' => 'MediaController@upload']);
+
+			Route::get('{id}' , ['as' => 'admin.media.edit', 'uses' => 'MediaController@edit']);
+			Route::post('{id}', ['as' => 'admin.media.edit', 'uses' => 'MediaController@update']);
+
+			Route::get('{id}/email', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@index']);
+			Route::post('{id}/email', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@process']);
+
+			Route::delete('{id}', ['as' => 'admin.media.delete', 'uses' => 'MediaController@delete']);
+		});
+
+		Route::group([
+			'prefix'    => 'media',
+			'namespace' => 'Platform\Media\Controllers\Frontend',
+		], function()
+		{
+			Route::get('download/{id}', 'MediaController@download')->where('id', '.*?');
+			Route::get('view/{id}', 'MediaController@view')->where('id', '.*?');
 		});
 	},
 

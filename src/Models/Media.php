@@ -17,6 +17,7 @@
  * @link       http://cartalyst.com
  */
 
+use InvalidArgumentException;
 use Cartalyst\Tags\TaggableTrait;
 use Cartalyst\Tags\TaggableInterface;
 use Illuminate\Database\Eloquent\Model;
@@ -44,7 +45,6 @@ class Media extends Model implements TaggableInterface {
 		'is_image',
 		'extension',
 		'thumbnail',
-
 		'roles',
 	];
 
