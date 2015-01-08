@@ -50,7 +50,7 @@
 
 				&nbsp;
 
-				<small><%= bytesToSize(r.size) %></small>
+				<small><%= (r.size/FileAPI.KB).toFixed(2) %> KB</small>
 			</td>
 			<td class="hidden-xs"><%= moment(r.created_at).format('MMM DD, YYYY') %></td>
 		</tr>

@@ -295,11 +295,15 @@ var Extension;
 				Extension.Index.Grid.refresh();
 			}
 		});
+
+		return this;
 	};
 
 	Extension.Index.setEmailRoute = function(url)
 	{
 		Extension.Config.emailRoute = url;
+
+		return this;
 	};
 
 	// Job done, lets run.

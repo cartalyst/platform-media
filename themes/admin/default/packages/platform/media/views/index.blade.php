@@ -32,22 +32,10 @@
 	<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.exif.js') }}"></script>
 
 	<script type="text/javascript">
-		Extension.Index.setEmailRoute('{{ route('admin.media.email', 'rows-ids') }}');
-
-		Extension.Index.MediaManager.setUploadUrl('{{ url()->toAdmin('media/upload') }}');
-
-		function bytesToSize(bytes)
-		{
-			if (bytes === 0) return '0 Bytes';
-
-			var k = 1000;
-
-			var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-
-			var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)), 10);
-
-			return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
-		}
+		Extension.Index
+			.setEmailRoute('{{ route('admin.media.email', 'rows-ids') }}')
+			.MediaManager.setUploadUrl('{{ route('admin.media.upload') }}')
+		;
 	</script>
 @stop
 
