@@ -176,12 +176,12 @@ return [
 
 			Route::post('upload', ['as' => 'admin.media.upload', 'uses' => 'MediaController@upload']);
 
+			Route::get('email/{id}' , ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@index']);
+			Route::post('email/{id}', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@process']);
+
 			Route::get('{id}'   , ['as' => 'admin.media.edit'  , 'uses' => 'MediaController@edit']);
 			Route::post('{id}'  , ['as' => 'admin.media.edit'  , 'uses' => 'MediaController@update']);
 			Route::delete('{id}', ['as' => 'admin.media.delete', 'uses' => 'MediaController@delete']);
-
-			Route::get('{id}/email', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@index']);
-			Route::post('{id}/email', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@process']);
 		});
 
 		Route::group([

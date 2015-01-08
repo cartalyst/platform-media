@@ -103,14 +103,14 @@ class MediaMailerController extends AdminController {
 	{
 		if ( ! $items = $this->getEmailItems($id))
 		{
-			return redirect()->toAdmin('media');
+			return redirect()->route('admin.media.all');
 		}
 
 		if ($remove = input('remove'))
 		{
 			$items = implode(',', array_diff(explode(',', $id), [$remove])) ?: 0;
 
-			return redirect()->toAdmin("media/{$items}/email");
+			return redirect()->route('admin.media.email', $id);
 		}
 
 		$total = array_sum(array_map(function($item)
@@ -135,7 +135,7 @@ class MediaMailerController extends AdminController {
 	{
 		if ( ! $items = $this->getEmailItems($id))
 		{
-			return redirect()->toAdmin('media');
+			return redirect()->route('admin.media.all');
 		}
 
 		$maxAttachments = array_get($this->config, 'email.max_attachments');
@@ -196,7 +196,7 @@ class MediaMailerController extends AdminController {
 
 			$this->alerts->error($message);
 
-			return redirect()->toAdmin("media/{$id}/email");
+			return redirect()->route('admin.media.email', $id);
 		}
 
 		// Prepare the attachments
@@ -228,7 +228,7 @@ class MediaMailerController extends AdminController {
 
 		$this->alerts->success('Email was succesfully sent.');
 
-		return redirect()->toAdmin('media');
+		return redirect()->route('admin.media.all');
 	}
 
 	protected function getEmailItems($id)

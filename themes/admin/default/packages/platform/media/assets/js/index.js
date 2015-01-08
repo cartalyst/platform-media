@@ -25,6 +25,7 @@ var Extension;
 
 	Extension = Extension || {
 		Index: {},
+		Config: {},
 	};
 
 	// Initialize functions
@@ -121,7 +122,7 @@ var Extension;
 		{
 			if (action == 'email')
 			{
-				window.location = url + '/' + entries.join(',') + '/email';
+				window.location = Extension.Config.emailRoute.replace('rows-ids', rows.join(','));
 			}
 			else
 			{
@@ -294,6 +295,11 @@ var Extension;
 				Extension.Index.Grid.refresh();
 			}
 		});
+	};
+
+	Extension.Index.setEmailRoute = function(url)
+	{
+		Extension.Config.emailRoute = url;
 	};
 
 	// Job done, lets run.

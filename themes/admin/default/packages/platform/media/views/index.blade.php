@@ -32,6 +32,8 @@
 	<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.exif.js') }}"></script>
 
 	<script type="text/javascript">
+		Extension.Index.setEmailRoute('{{ route('admin.media.email', 'rows-ids') }}');
+
 		Extension.Index.MediaManager.setUploadUrl('{{ url()->toAdmin('media/upload') }}');
 
 		function bytesToSize(bytes)
@@ -80,20 +82,20 @@
 					<ul class="nav navbar-nav navbar-left">
 
 						<li class="disabled">
-							<a class="disabled" data-grid-bulk-action="email" data-toggle="tooltip" data-original-title="{{{ trans('action.bulk.disable') }}}">
+							<a data-grid-bulk-action="email" data-toggle="tooltip" data-original-title="* Email Selected">
 								<i class="fa fa-mail-forward"></i> <span class="visible-xs-inline">* Email Selected</span>
 							</a>
 						</li>
 
 						<li class="disabled">
-							<a class="disabled" data-grid-bulk-action="private" data-toggle="tooltip" data-original-title="{{{ trans('action.bulk.disable') }}}">
+							<a data-grid-bulk-action="private" data-toggle="tooltip" data-original-title="* Make Private">
 								<i class="fa fa-eye-slash"></i> <span class="visible-xs-inline">* Make Private</span>
 							</a>
 						</li>
 
 						<li class="disabled">
-							<a data-grid-bulk-action="enable" data-toggle="tooltip" data-original-title="{{{ trans('action.bulk.enable') }}}">
-								<i class="fa fa-eye"></i> <span class="visible-xs-inline">{{{ trans('action.bulk.enable') }}}</span>
+							<a data-grid-bulk-action="public" data-toggle="tooltip" data-original-title="* Make Public">
+								<i class="fa fa-eye"></i> <span class="visible-xs-inline">* Make Public</span>
 							</a>
 						</li>
 
