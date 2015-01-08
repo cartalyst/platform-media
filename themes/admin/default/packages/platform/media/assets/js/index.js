@@ -119,18 +119,25 @@ var Extension;
 
 		if (rows.length > 0)
 		{
-			$.ajax({
-				type: 'POST',
-				url: url,
-				data: {
-					action : action,
-					rows   : rows
-				},
-				success: function(response)
-				{
-					Extension.Index.Grid.refresh();
-				}
-			});
+			if (action == 'email')
+			{
+				window.location = url + '/' + entries.join(',') + '/email';
+			}
+			else
+			{
+				$.ajax({
+					type: 'POST',
+					url: url,
+					data: {
+						action : action,
+						rows   : rows
+					},
+					success: function(response)
+					{
+						Extension.Index.Grid.refresh();
+					}
+				});
+			}
 		}
 	};
 

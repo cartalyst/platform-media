@@ -2,8 +2,8 @@
 
 {{-- Page title --}}
 @section('title')
-	@parent
-	: {{{ trans('platform/media::general.update') }}}
+@parent
+: {{{ trans('action.update') }}}
 @stop
 
 {{-- Queue assets --}}
@@ -42,13 +42,13 @@
 @parent
 @stop
 
-{{-- Page content --}}
-@section('content')
+{{-- Page --}}
+@section('page')
 
 {{-- Page header --}}
 <div class="page-header">
 
-	<h1>{{{ trans('platform/media::general.update') }}}</h1>
+	<h1>{{{ trans('action.update') }}}</h1>
 
 </div>
 
@@ -65,7 +65,7 @@
 
 			<div class="form-group">
 
-				<label class="control-label" for="name">{{{ trans('platform/media::form.name') }}}</label>
+				<label class="control-label" for="name">{{{ trans('platform/media::model.name') }}}</label>
 
 				<div class="controls">
 					<input type="text" name="name" id="name" class="form-control" value="{{ $media->name }}">
@@ -80,7 +80,7 @@
 
 			<div class="form-group">
 
-				<label class="control-label" for="tags">{{{ trans('platform/media::form.tags') }}}</label>
+				<label class="control-label" for="tags">{{{ trans('platform/media::model.tags') }}}</label>
 
 				<div class="controls">
 					<select id="tags" name="tags[]" multiple="multiple" tabindex="-1">
@@ -102,9 +102,9 @@
 
 			<div class="form-group">
 
-				<label class="control-label" for="private">{{{ trans('platform/media::form.private') }}}</label>
+				<label class="control-label" for="private">{{{ trans('platform/media::model.private') }}}</label>
 
-				<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::form.private_help') }}}"></i>
+				<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.private_help') }}}"></i>
 
 				<div class="controls">
 					<select name="private" id="private" class="form-control">
@@ -121,7 +121,7 @@
 
 			<div class="form-group">
 
-				<label class="control-label" for="name">{{{ trans('platform/media::form.file') }}}</label>
+				<label class="control-label" for="name">{{{ trans('platform/media::model.file') }}}</label>
 
 				<div class="controls">
 
@@ -143,9 +143,9 @@
 		<div class="col-lg-4">
 
 			<div class="form-group{{ Input::old('private', $media->private) == 0 ? ' hide' : null }}" data-roles>
-				<label class="control-label" for="roles">{{{ trans('platform/media::form.roles') }}}</label>
+				<label class="control-label" for="roles">{{{ trans('platform/media::model.roles') }}}</label>
 
-				<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::form.roles_help') }}}"></i>
+				<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.roles_help') }}}"></i>
 
 				<div class="controls">
 					<select name="roles[]" id="roles" class="form-control" multiple="true">
@@ -168,9 +168,9 @@
 			{{-- Form actions --}}
 			<div class="form-group">
 
-				<button class="btn btn-success" type="submit">{{{ trans('button.save') }}}</button>
+				<button class="btn btn-success" type="submit">{{{ trans('action.save') }}}</button>
 
-				<a class="btn btn-default" href="{{{ URL::toAdmin('media') }}}">{{{ trans('button.cancel') }}}</a>
+				<a class="btn btn-default" href="{{{ route('admin.media.all') }}}">{{{ trans('action.cancel') }}}</a>
 
 			</div>
 
