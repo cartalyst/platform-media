@@ -96,6 +96,16 @@
 			});
 		},
 
+		getUploadUrl : function()
+		{
+			return this.opt.uploadUrl;
+		},
+
+		setUploadUrl : function(url)
+		{
+			this.opt.uploadUrl = url;
+		},
+
 		refreshTotals : function()
 		{
 			$('[data-media-total-size]').html(

@@ -13,7 +13,7 @@
  * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -118,7 +118,17 @@ class MediaController extends AdminController {
 			'direction' => 'desc',
 		];
 
-		return datagrid($this->media->grid(), $columns, $settings);
+		$transformer = function($element)
+		{
+			$element->view_uri = route('media.view', $element->path);
+			$element->edit_uri = route('admin.media.edit', $element->id);
+			$element->email_uri = route('admin.media.email', $element->id);
+			$element->download_uri = route('media.download', $element->path);
+
+			return $element;
+		};
+
+		return datagrid($this->media->grid(), $columns, $settings, $transformer);
 	}
 
 	/**
@@ -212,14 +222,11 @@ class MediaController extends AdminController {
 	 */
 	public function delete($id)
 	{
-		if ($this->media->delete($id))
-		{
-			$this->alerts->success(trans('platform/media::message.success.delete'));
+		$type = $this->media->delete($id) ? 'success' : 'error';
 
-			return redirect()->route('admin.media.all');
-		}
-
-		$this->alerts->error(trans('platform/media::message.error.delete'));
+		$this->alerts->{$type}(
+			trans("platform/media::message.{$type}.delete")
+		);
 
 		return redirect()->route('admin.media.all');
 	}
@@ -235,7 +242,7 @@ class MediaController extends AdminController {
 
 		if (in_array($action, $this->actions))
 		{
-			foreach (request()->input('entries', []) as $entry)
+			foreach (request()->input('rows', []) as $entry)
 			{
 				$this->media->{$action}($entry);
 			}

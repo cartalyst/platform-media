@@ -2,7 +2,9 @@
 
 	<% _.each(filters, function(f) { %>
 
-		<button class="btn btn-default">
+		<button class="btn btn-default btn-sm">
+
+			<span><i class="fa fa-trash-o"></i></span>
 
 			<% if (f.from !== undefined && f.to !== undefined) { %>
 
@@ -33,8 +35,6 @@
 				<% } %>
 
 			<% } %>
-
-			<span><i class="fa fa-times-circle"></i></span>
 
 		</button>
 

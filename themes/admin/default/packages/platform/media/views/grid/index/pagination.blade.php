@@ -4,23 +4,9 @@
 
 		<div class="pull-left">
 
-			<div class="btn-group dropup">
-
-				<button id="actions" type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" disabled>
-					{{{ trans('general.bulk_actions') }}} <span class="caret"></span>
-				</button>
-
-				<ul class="dropdown-menu" role="menu">
-					<li><a href="#" data-action="delete">{{{ trans('button.bulk.delete') }}}</a></li>
-					<li class="divider"></li>
-					<li><a href="#" data-action="email">Email selected</a></li>
-				</ul>
-
+			<div class="pages">
+				{{{ trans('common.showing') }}} <%= p.page_start %> {{{ trans('common.to') }}} <%= p.page_limit %> {{{ trans('common.of') }}} <span class="total"><%= p.filtered %></span>
 			</div>
-
-			&nbsp;&nbsp;
-
-			{{{ trans('general.showing') }}} <%= p.page_start %> {{{ trans('general.to') }}} <%= p.page_limit %> {{{ trans('general.of') }}} <span class="total"><%= p.filtered %></span>
 
 		</div>
 

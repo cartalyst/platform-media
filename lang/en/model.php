@@ -13,11 +13,27 @@
  * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
 return [
+
+	'name'         => 'Name',
+	'name_help'    => 'Type a descriptive name for your media.',
+
+	'file'         => 'File',
+
+	'tags'         => 'Tags',
+	'tags_help'    => 'Choose your media tags.',
+
+	'private'      => 'Private',
+	'private_help' => 'What is this media status?',
+
+	'roles'        => 'Roles',
+	'roles_help'   => 'Select the roles to assign to this media file.',
+
+
 
 	'id'             => 'Id',
 	'file_name'      => 'File Name',

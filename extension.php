@@ -13,7 +13,7 @@
  * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -176,13 +176,12 @@ return [
 
 			Route::post('upload', ['as' => 'admin.media.upload', 'uses' => 'MediaController@upload']);
 
-			Route::get('{id}' , ['as' => 'admin.media.edit', 'uses' => 'MediaController@edit']);
-			Route::post('{id}', ['as' => 'admin.media.edit', 'uses' => 'MediaController@update']);
+			Route::get('{id}'   , ['as' => 'admin.media.edit'  , 'uses' => 'MediaController@edit']);
+			Route::post('{id}'  , ['as' => 'admin.media.edit'  , 'uses' => 'MediaController@update']);
+			Route::delete('{id}', ['as' => 'admin.media.delete', 'uses' => 'MediaController@delete']);
 
 			Route::get('{id}/email', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@index']);
 			Route::post('{id}/email', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@process']);
-
-			Route::delete('{id}', ['as' => 'admin.media.delete', 'uses' => 'MediaController@delete']);
 		});
 
 		Route::group([
@@ -190,8 +189,8 @@ return [
 			'namespace' => 'Platform\Media\Controllers\Frontend',
 		], function()
 		{
-			Route::get('download/{id}', 'MediaController@download')->where('id', '.*?');
-			Route::get('view/{id}', 'MediaController@view')->where('id', '.*?');
+			Route::get('view/{id}', ['as' => 'media.view', 'uses' => 'MediaController@view'])->where('id', '.*?');
+			Route::get('download/{id}', ['as' => 'media.download', 'uses' => 'MediaController@download'])->where('id', '.*?');
 		});
 	},
 
