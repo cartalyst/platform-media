@@ -14,19 +14,11 @@
 			<td>
 				<span class="pull-right text-right">
 
-					<div class="btn-group dropup text-left">
+					<a href="<%= r.view_uri %>" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::modal.share') }}}"><i class="fa fa-share-alt"></i></a>
 
-						<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-							{{{ trans('action.actions') }}} <span class="caret"></span>
-						</button>
+					<a href="<%= r.download_uri %>" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::modal.download') }}}"><i class="fa fa-download"></i></a>
 
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="<%= r.view_uri %>" target="_blank">Share</a></li>
-							<li><a href="<%= r.download_uri %>">Download</a></li>
-							<li><a href="<%= r.email_uri %>">Email</a></li>
-						</ul>
-
-					</div>
+					<a href="<%= r.email_uri %>" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::modal.email') }}}"><i class="fa fa-envelope"></i></a>
 
 					<br />
 

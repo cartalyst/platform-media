@@ -19,5 +19,12 @@
 
 return [
 
-	'send_email' => 'Send Email'
+	'send_email' => 'Send Email',
+
+	'bulk' => [
+		'email'   => 'Email Selected',
+		'private' => 'Make Private',
+		'public'  => 'Make Public',
+	],
+
 ];

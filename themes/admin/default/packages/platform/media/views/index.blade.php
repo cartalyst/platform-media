@@ -70,20 +70,20 @@
 					<ul class="nav navbar-nav navbar-left">
 
 						<li class="disabled">
-							<a data-grid-bulk-action="email" data-toggle="tooltip" data-original-title="* Email Selected">
-								<i class="fa fa-mail-forward"></i> <span class="visible-xs-inline">* Email Selected</span>
+							<a data-grid-bulk-action="email" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.bulk.email') }}}">
+								<i class="fa fa-envelope"></i> <span class="visible-xs-inline">{{{ trans('platform/media::action.bulk.email') }}}</span>
 							</a>
 						</li>
 
 						<li class="disabled">
-							<a data-grid-bulk-action="private" data-toggle="tooltip" data-original-title="* Make Private">
-								<i class="fa fa-eye-slash"></i> <span class="visible-xs-inline">* Make Private</span>
+							<a data-grid-bulk-action="private" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.bulk.private') }}}">
+								<i class="fa fa-eye-slash"></i> <span class="visible-xs-inline">{{{ trans('platform/media::action.bulk.private') }}}</span>
 							</a>
 						</li>
 
 						<li class="disabled">
-							<a data-grid-bulk-action="public" data-toggle="tooltip" data-original-title="* Make Public">
-								<i class="fa fa-eye"></i> <span class="visible-xs-inline">* Make Public</span>
+							<a data-grid-bulk-action="public" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.bulk.public') }}}">
+								<i class="fa fa-eye"></i> <span class="visible-xs-inline">{{{ trans('platform/media::action.bulk.public') }}}</span>
 							</a>
 						</li>
 
@@ -106,7 +106,7 @@
 
 						<li class="primary">
 							<a href="#" data-toggle="modal" data-target="#mediaModal">
-								<i class="fa fa-plus"></i>  <span class="visible-xs-inline">{{{ trans('action.upload') }}}</span>
+								<i class="fa fa-plus"></i> <span class="visible-xs-inline">{{{ trans('action.upload') }}}</span>
 							</a>
 						</li>
 
@@ -114,6 +114,31 @@
 
 					{{-- Grid: Filters --}}
 					<form class="navbar-form navbar-right" method="post" accept-charset="utf-8" data-search data-grid="main" role="form">
+
+						@if ( ! empty($tags))
+						<div class="input-group">
+
+							<span class="input-group-btn">
+
+								<button class="btn btn-default" type="button" disabled>
+									{{{ trans('platform/media::model.tags') }}}
+								</button>
+
+								<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+									<span class="caret"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+
+								<ul class="dropdown-menu" role="tags">
+									@foreach ($tags as $tag)
+									<li><a href="#" data-grid="main" data-filter="tags..name:{{{ $tag }}}" data-label="tags..name::{{{ $tag }}}">{{{ $tag }}}</a></li>
+									@endforeach
+								</ul>
+
+							</span>
+
+						</div>
+						@endif
 
 						<div class="input-group">
 
@@ -131,14 +156,14 @@
 								<ul class="dropdown-menu" role="menu">
 
 									<li>
-										<a data-grid="main" data-filter="enabled:1" data-label="enabled::{{{ trans('common.all_enabled') }}}" data-reset>
-											<i class="fa fa-eye"></i> {{{ trans('common.show_enabled') }}}
+										<a data-grid="main" data-filter="private:0" data-label="private::{{{ trans('common.all_disabled') }}}" data-reset>
+											<i class="fa fa-eye-slash"></i> * Show Public
 										</a>
 									</li>
 
 									<li>
-										<a data-toggle="tooltip" data-placement="top" data-original-title="" data-grid="main" data-filter="enabled:0" data-label="enabled::{{{ trans('common.all_disabled') }}}" data-reset>
-											<i class="fa fa-eye-slash"></i> {{{ trans('common.show_disabled') }}}
+										<a data-grid="main" data-filter="private:1" data-label="private::{{{ trans('common.all_enabled') }}}" data-reset>
+											<i class="fa fa-eye"></i> * Show Private
 										</a>
 									</li>
 

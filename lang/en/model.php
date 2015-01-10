@@ -27,22 +27,13 @@ return [
 	'tags'         => 'Tags',
 	'tags_help'    => 'Choose your media tags.',
 
-	'private'      => 'Private',
-	'private_help' => 'What is this media status?',
-
 	'roles'        => 'Roles',
 	'roles_help'   => 'Select the roles to assign to this media file.',
 
-
-
-	'id'             => 'Id',
-	'file_name'      => 'File Name',
-	'file_path'      => 'File Path',
-	'file_extension' => 'File Extension',
-	'mime'           => 'MIME Type',
-	'size'           => 'Size',
-	'width'          => 'Width',
-	'height'         => 'Height',
-	'created_at'     => 'Uploaded at'
+	'share'        => 'Share',
+	'download'     => 'Download',
+	'email'        => 'Email',
+	'public'       => 'Public',
+	'private'      => 'Private',
 
 ];
