@@ -189,7 +189,7 @@ return [
 			'namespace' => 'Platform\Media\Controllers\Frontend',
 		], function()
 		{
-			Route::get('view/{id}', ['as' => 'media.view', 'uses' => 'MediaController@view'])->where('id', '.*?');
+			Route::get('view/{id}'    , ['as' => 'media.view'    , 'uses' => 'MediaController@view'])->where('id', '.*?');
 			Route::get('download/{id}', ['as' => 'media.download', 'uses' => 'MediaController@download'])->where('id', '.*?');
 		});
 	},

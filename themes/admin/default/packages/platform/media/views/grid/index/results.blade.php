@@ -6,7 +6,7 @@
 			<td><input data-grid-checkbox type="checkbox" name="row[]" value="<%= r.id %>"></td>
 			<td>
 				<% if (r.is_image == 1) { %>
-					<img src="{{ URL::to('/') }}<%= r.thumbnail %>" />
+					<%= _.thumbnail(r.thumbnail_uri) %>
 				<% } else{ %>
 					<i class="fa fa-file fa-3x"></i>
 				<% } %>

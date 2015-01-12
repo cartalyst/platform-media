@@ -18,7 +18,6 @@
  */
 
 use Platform\Media\Repositories\MediaRepositoryInterface;
-use URL;
 
 class Media {
 
@@ -34,7 +33,7 @@ class Media {
 	}
 
 	/**
-	 * Returns the given media path.
+	 * Returns the given media path or the HTML <img> tag.
 	 *
 	 * @param  int  $id
 	 * @param  string  $type
@@ -48,24 +47,36 @@ class Media {
 			{
 				case 'thumbnail':
 
-					$url = $media->thumbnail;
-
-					break;
+					return url($media->thumbnail);
 
 				case 'download':
 
-					$url = "media/download/{$media->path}";
-
-					break;
+					return route('media.download', $media->path);
 
 				default:
 
-					$url = "media/view/{$media->path}";
-
-					break;
+					return route('media.view', $media->path);
 			}
+		}
+	}
 
-			return url($url);
+	/**
+	 * Returns the given media thumbnail in a <img> tag.
+	 *
+	 * @param  int  $id
+	 * @param  array  $options
+	 * @param  string  $default
+	 * @return string
+	 */
+	public function thumbnail($id, array $options = [], $default = null)
+	{
+		if ($media = $this->media->find($id))
+		{
+			$options = implode(' ', $options);
+
+			$path = $media->is_image ? url($media->thumbnail) : $default;
+
+			return '<img src="'.$path.'"'.$options.'>';
 		}
 	}
 

@@ -35,6 +35,7 @@ var Extension;
 		Extension.Index.dataGrid();
 		Extension.Index.listeners();
 		Extension.Index.mediaManager();
+		Extension.Index.thumbnailMixin();
 	};
 
 	// Add Listeners
@@ -297,6 +298,24 @@ var Extension;
 		});
 
 		return this;
+	};
+
+	// Registers an Underscore.js mixin to generate thumbnails in a <img> tag
+	Extension.Index.thumbnailMixin = function()
+	{
+		_.mixin({
+			thumbnail: function(url, options)
+			{
+				var _options = [];
+
+				_.each(options, function(value, key)
+				{
+					_options.push(key + '="' + value + '"');
+				});
+
+				return '<img src="' + url + '"' + _options.join(' ') + '>';
+			}
+		});
 	};
 
 	Extension.Index.setEmailRoute = function(url)

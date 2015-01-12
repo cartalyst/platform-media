@@ -104,11 +104,20 @@ class MediaServiceProvider extends ServiceProvider {
 	 */
 	protected function registerBladeMediaWidget()
 	{
-		$this->app['blade.compiler']->extend(function($value)
+		$compiler = $this->app['blade.compiler'];
+
+		$compiler->extend(function($value)
 		{
 			$matcher = '/(\s*)@media(\(.*?\)\s*)/';
 
 			return preg_replace($matcher, '<?php echo Widget::make("platform/media::media.show", array$2); ?>', $value);
+		});
+
+		$compiler->extend(function($value)
+		{
+			$matcher = '/(\s*)@thumbnail(\(.*?\)\s*)/';
+
+			return preg_replace($matcher, '<?php echo Widget::make("platform/media::media.thumbnail", array$2); ?>', $value);
 		});
 	}
 

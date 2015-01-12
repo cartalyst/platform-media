@@ -120,6 +120,7 @@ class MediaController extends AdminController {
 
 		$transformer = function($element)
 		{
+			$element->thumbnail_uri = url($element->thumbnail);
 			$element->view_uri = route('media.view', $element->path);
 			$element->edit_uri = route('admin.media.edit', $element->id);
 			$element->email_uri = route('admin.media.email', $element->id);
