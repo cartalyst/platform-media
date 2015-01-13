@@ -49,13 +49,9 @@
 							<span class="icon-bar"></span>
 						</button>
 
-						<ul class="nav navbar-nav navbar-cancel">
-							<li>
-								<a class="tip" href="{{ route('admin.media.all') }}" data-toggle="tooltip" data-original-title="{{{ trans('action.cancel') }}}">
-									<i class="fa fa-reply"></i>  <span class="visible-xs-inline">{{{ trans('action.cancel') }}}</span>
-								</a>
-							</li>
-						</ul>
+						<a class="btn btn-navbar-cancel navbar-btn pull-left tip" href="{{ route('admin.media.all') }}" data-toggle="tooltip" data-original-title="{{{ trans('action.cancel') }}}">
+							<i class="fa fa-reply"></i>  <span class="visible-xs-inline">{{{ trans('action.cancel') }}}</span>
+						</a>
 
 						<span class="navbar-brand">{{{ trans('action.update') }}} <small>{{{ $media->name }}}</small></span>
 					</div>
@@ -121,9 +117,9 @@
 
 								<div class="controls">
 									<select id="tags" name="tags[]" multiple="multiple" tabindex="-1">
-									@foreach ($tags as $tag)
+										@foreach ($tags as $tag)
 										<option value="{{{ $tag }}}"{{ in_array($tag, $media->tags->lists('name')) ? ' selected="selected"' : null }}>{{{ $tag }}}</option>
-									@endforeach
+										@endforeach
 									</select>
 								</div>
 
@@ -151,9 +147,9 @@
 
 								<div class="controls">
 									<select name="roles[]" id="roles" class="form-control" multiple="true">
-									@foreach ($roles as $role)
+										@foreach ($roles as $role)
 										<option value="{{{ $role->id }}}"{{ in_array($role->id, $media->roles) ? ' selected="selected"' : null }}>{{{ $role->name }}}</option>
-									@endforeach
+										@endforeach
 									</select>
 								</div>
 							</div>
