@@ -93,14 +93,14 @@
 							</a>
 						</li>
 
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle tip" data-toggle="dropdown" role="button" aria-expanded="false" data-original-title="{{{ trans('action.export') }}}">
+						<li class="dropdown disabled">
+							<a href="#" data-grid-exporter class="dropdown-toggle tip" data-toggle="dropdown" role="button" aria-expanded="false" data-original-title="{{{ trans('action.export') }}}">
 								<i class="fa fa-download"></i> <span class="visible-xs-inline">{{{ trans('action.export') }}}</span>
 							</a>
 							<ul class="dropdown-menu" role="menu">
-								<li><a data-download="json"><i class="fa fa-file-code-o"></i> JSON</a></li>
-								<li><a data-download="csv"><i class="fa fa-file-excel-o"></i> CSV</a></li>
 								<li><a data-download="pdf"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+								<li><a data-download="csv"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+								<li><a data-download="json"><i class="fa fa-file-code-o"></i> JSON</a></li>
 							</ul>
 						</li>
 

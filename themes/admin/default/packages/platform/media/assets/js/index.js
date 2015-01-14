@@ -31,11 +31,13 @@ var Extension;
 	// Initialize functions
 	Extension.Index.init = function()
 	{
-		Extension.Index.datePicker();
-		Extension.Index.dataGrid();
-		Extension.Index.listeners();
-		Extension.Index.mediaManager();
-		Extension.Index.thumbnailMixin();
+		Extension.Index
+			.listeners()
+			.datePicker()
+			.dataGrid()
+			.mediaManager()
+			.thumbnailMixin()
+		;
 	};
 
 	// Add Listeners
@@ -49,6 +51,114 @@ var Extension;
 			.on('click', '[data-grid-calendar-preset]', Extension.Index.calendarPresets)
 			.on('click', '[data-grid-bulk-action]:not([data-grid-bulk-action="delete"])', Extension.Index.bulkActions)
 		;
+
+		return this;
+	};
+
+	// Date range picker initialization
+	Extension.Index.datePicker = function()
+	{
+		var startDate, endDate, config, filter;
+
+		var filters = _.compact(
+			String(window.location.hash.slice(3)).split('/').splice(2)
+		);
+
+		config = {
+			opens: 'left'
+		};
+
+		_.each(filters, function(route)
+		{
+			filter = route.split(':');
+
+			if (filter[0] === 'created_at' && filter[1] !== undefined && filter[2] !== undefined)
+			{
+				startDate = moment(filter[1]);
+
+				endDate = moment(filter[2]);
+			}
+		});
+
+		if (startDate && endDate)
+		{
+			$('[data-grid-calendar]').val(
+				startDate.format('MM/DD/YYYY') + ' - ' + endDate.format('MM/DD/YYYY')
+			);
+
+			config = {
+				startDate: startDate,
+				endDate: endDate,
+				opens: 'left',
+			};
+		}
+
+		Platform.Cache.$body.on('click', '.range_inputs .applyBtn', function()
+		{
+			$('input[name="daterangepicker_start"]').trigger('change');
+
+			$('[data-grid-calendar]').val(
+				moment($('input[name="daterangepicker_start"]').val()).format('MM/DD/YYYY') + ' - ' + moment($('input[name="daterangepicker_end"]').val()).format('MM/DD/YYYY')
+			);
+		});
+
+		Extension.Index.datePicker = $('[data-grid-calendar]').daterangepicker(config, function(start, end, label)
+		{
+			$('input[name="daterangepicker_start"]').trigger('change');
+		});
+
+		$('.daterangepicker_start_input').attr('data-grid', 'main');
+
+		$('.daterangepicker_end_input').attr('data-grid', 'main');
+
+		$('input[name="daterangepicker_start"]')
+			.attr('data-format', 'MM/DD/YYYY')
+			.attr('data-range-start', '')
+			.attr('data-range-filter', 'created_at')
+		;
+
+		$('input[name="daterangepicker_end"]')
+			.attr('data-format', 'MM/DD/YYYY')
+			.attr('data-range-end', '')
+			.attr('data-range-filter', 'created_at')
+		;
+
+		return this;
+	};
+
+	// Data Grid initialization
+	Extension.Index.dataGrid = function()
+	{
+		var config = {
+			scroll: '#data-grid',
+			events: {
+				removing: function(dg)
+				{
+					_.each(dg.applied_filters, function(filter)
+					{
+						if (filter.column === 'created_at' && filter.from !== undefined && filter.to !== undefined)
+						{
+							$('[data-grid-calendar]').val('');
+						}
+					});
+				}
+			},
+			callback: function(data)
+			{
+				$('[data-grid-checkbox-all]').prop('checked', false);
+
+				$('[data-action]').prop('disabled', true);
+
+				Extension.Index
+					.bulkStatus()
+					.exporterStatus(data)
+				;
+			}
+		};
+
+		Extension.Index.Grid = $.datagrid('main', '#data-grid', '#data-grid_pagination', '#data-grid_applied', config);
+
+		return this;
 	};
 
 	// Handle Data Grid checkboxes
@@ -60,12 +170,12 @@ var Extension;
 
 		if (type === 'all')
 		{
-			$('[data-grid-checkbox]').not(this).prop('checked', this.checked);
+			$('[data-grid-checkbox]').not(this).not('[data-grid-checkbox][disabled]').prop('checked', this.checked);
 
-			$('[data-grid-row]').not(this).toggleClass('active', this.checked);
+			$('[data-grid-row]').not('[data-grid-row][disabled]').not(this).toggleClass('active', this.checked);
 		}
 
-		$(this).parents('[data-grid-row]').toggleClass('active');
+		$(this).parents('[data-grid-row]').not('[data-grid-row][disabled]').toggleClass('active');
 
 		Extension.Index.bulkStatus();
 	};
@@ -73,6 +183,8 @@ var Extension;
 	// Handle Data Grid row checking
 	Extension.Index.checkRow = function()
 	{
+		if ($(this).find('[data-grid-checkbox]').prop('disabled')) return false;
+
 		$(this).toggleClass('active');
 
 		var checkbox = $(this).find('[data-grid-checkbox]');
@@ -84,9 +196,9 @@ var Extension;
 
 	Extension.Index.bulkStatus = function()
 	{
-		var rows = $('[data-grid-checkbox]').not('[data-grid-checkbox="all"]').length;
+		var rows = $('[data-grid-checkbox]').not('[data-grid-checkbox="all"]').not('[data-grid-checkbox][disabled]').length;
 
-		var checked = $('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]').length;
+		var checked = $('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]').not('[data-grid-checkbox][disabled]').length;
 
 		$('[data-grid-bulk-action]').closest('li').toggleClass('disabled', ! checked);
 
@@ -103,6 +215,15 @@ var Extension;
 			.prop('disabled', rows < 1)
 			.prop('checked', rows < 1 ? false : rows === checked)
 		;
+
+		return this;
+	};
+
+	Extension.Index.exporterStatus = function(grid)
+	{
+		$('[data-grid-exporter]').closest('li').toggleClass('disabled', grid.pagination.filtered == 0);
+
+		return this;
 	};
 
 	// Handle Data Grid bulk actions
@@ -121,25 +242,18 @@ var Extension;
 
 		if (rows.length > 0)
 		{
-			if (action == 'email')
-			{
-				window.location = Extension.Config.emailRoute.replace('rows-ids', rows.join(','));
-			}
-			else
-			{
-				$.ajax({
-					type: 'POST',
-					url: url,
-					data: {
-						action : action,
-						rows   : rows
-					},
-					success: function(response)
-					{
-						Extension.Index.Grid.refresh();
-					}
-				});
-			}
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: {
+					action : action,
+					rows   : rows
+				},
+				success: function(response)
+				{
+					Extension.Index.Grid.refresh();
+				}
+			});
 		}
 	};
 
@@ -181,106 +295,6 @@ var Extension;
 	{
 		event.stopPropagation();
 	};
-
-	// Date range picker initialization
-	Extension.Index.datePicker = function()
-	{
-		var startDate, endDate, config, filter;
-
-		var filters = _.compact(
-			String(window.location.hash.slice(3)).split('/').splice(2)
-		);
-
-		config = {
-			opens: 'left'
-		};
-
-		_.each(filters, function(route)
-		{
-			filter = route.split(':');
-
-			if (filter[0] === 'created_at' && filter[1] !== undefined && filter[2] !== undefined)
-			{
-				startDate = moment(filter[1]);
-
-				endDate = moment(filter[2]);
-			}
-		});
-
-		if (startDate && endDate)
-		{
-			$('[data-grid-calendar]').val(
-				startDate.format('MM/DD/YYYY') + ' - ' + endDate.format('MM/DD/YYYY')
-				);
-
-			config = {
-				startDate: startDate,
-				endDate: endDate,
-				opens: 'left'
-			};
-		}
-
-		Platform.Cache.$body.on('click', '.range_inputs .applyBtn', function()
-		{
-			$('input[name="daterangepicker_start"]').trigger('change');
-
-			$('[data-grid-calendar]').val(
-				moment($('input[name="daterangepicker_start"]').val()).format('MM/DD/YYYY') + ' - ' + moment($('input[name="daterangepicker_end"]').val()).format('MM/DD/YYYY')
-			);
-		});
-
-		Extension.Index.datePicker = $('[data-grid-calendar]').daterangepicker(config, function(start, end, label)
-		{
-			$('input[name="daterangepicker_start"]').trigger('change');
-		});
-
-		$('.daterangepicker_start_input').attr('data-grid', 'main');
-
-		$('.daterangepicker_end_input').attr('data-grid', 'main');
-
-		$('input[name="daterangepicker_start"]')
-			.attr('data-format', 'MM/DD/YYYY')
-			.attr('data-range-start', '')
-			.attr('data-range-filter', 'created_at')
-		;
-
-		$('input[name="daterangepicker_end"]')
-			.attr('data-format', 'MM/DD/YYYY')
-			.attr('data-range-end', '')
-			.attr('data-range-filter', 'created_at')
-		;
-	};
-
-	// Data Grid initialization
-	Extension.Index.dataGrid = function()
-	{
-		var config = {
-			scroll: '#data-grid',
-			events: {
-				removing: function(dg)
-				{
-					_.each(dg.applied_filters, function(filter)
-					{
-						if (filter.column === 'created_at' && filter.from !== undefined && filter.to !== undefined)
-						{
-							$('[data-grid-calendar]').val('');
-						}
-					});
-				}
-			},
-			callback: function()
-			{
-				$('[data-grid-checkbox-all]').prop('checked', false);
-
-				$('[data-action]').prop('disabled', true);
-
-				Extension.Index.bulkStatus();
-			}
-		};
-
-		Extension.Index.Grid = $.datagrid('main', '#data-grid', '#data-grid_pagination', '#data-grid_applied', config);
-	};
-
 	Extension.Index.mediaManager = function()
 	{
 		Extension.Index.MediaManager = $.mediamanager({
@@ -316,6 +330,8 @@ var Extension;
 				return '<img src="' + url + '"' + _options.join(' ') + '>';
 			}
 		});
+
+		return this;
 	};
 
 	Extension.Index.setEmailRoute = function(url)
