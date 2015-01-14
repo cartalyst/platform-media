@@ -30,7 +30,7 @@
 
 				<% } else { %>
 
-					<%= f.value %> in <em><%= f.column %></em>
+					<%= f.value %> {{{ trans('common.in') }}} <em><%= f.column %></em>
 
 				<% } %>
 
