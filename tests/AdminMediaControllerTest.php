@@ -253,7 +253,7 @@ class AdminMediaControllerTest extends IlluminateTestCase {
 			->andReturn('delete');
 
 		$this->app['request']->shouldReceive('input')
-			->with('entries', [])
+			->with('rows', [])
 			->once()
 			->andReturn([1]);
 

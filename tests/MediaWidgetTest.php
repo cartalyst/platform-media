@@ -72,8 +72,8 @@ class MediaWidgetTest extends IlluminateTestCase {
 			->once()
 			->andReturn('foo');
 
-		$this->app['url']->shouldReceive('to')
-			->with('media/download/foo', [], '')
+		$this->app['url']->shouldReceive('route')
+			->with('media.download', 'foo', true, '')
 			->once();
 
 		$this->widget->show(1, 'download');
@@ -94,8 +94,8 @@ class MediaWidgetTest extends IlluminateTestCase {
 			->once()
 			->andReturn('foo');
 
-		$this->app['url']->shouldReceive('to')
-			->with('media/view/foo', [], '')
+		$this->app['url']->shouldReceive('route')
+			->with('media.view', 'foo', true, '')
 			->once();
 
 		$this->widget->show(1);
