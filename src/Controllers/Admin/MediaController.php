@@ -116,6 +116,7 @@ class MediaController extends AdminController {
 		$settings = [
 			'sort'      => 'created_at',
 			'direction' => 'desc',
+			'pdf_view'  => 'pdf',
 		];
 
 		$transformer = function($element)
