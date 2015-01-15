@@ -50,11 +50,10 @@
 			<td class="hidden-xs"><%= moment(r.created_at).format('MMM DD, YYYY') %></td>
 
 			<td class="text-center">
-				<% if (r.mime != 'application/zip') { %>
-					<a class="btn btn-default btn-sm" href="<%= r.view_uri %>" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::modal.share') }}}">
-						<i class="fa fa-eye"></i>
-					</a>
-				<% } %>
+
+				<a class="btn btn-default btn-sm" href="<%= r.view_uri %>" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::modal.share') }}}">
+					<i class="fa fa-share-alt"></i>
+				</a>
 
 				<a class="btn btn-default btn-sm" href="<%= r.download_uri %>" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::modal.download') }}}">
 					<i class="fa fa-download"></i>
