@@ -9,6 +9,7 @@
 	 */
 	var defaults =
 	{
+		onFail : function() {},
 		onFileQueued : function() {},
 		onSuccess : function() {},
 		onComplete : function() {},
@@ -222,6 +223,10 @@
 							if (self.hasFiles() === false) self.disableUploadButton();
 
 							self.refreshTotals();
+						}
+						else if (state === 'error')
+						{
+							self.opt.onFail(xhr);
 						}
 					}
 				});
