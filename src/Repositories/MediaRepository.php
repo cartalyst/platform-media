@@ -83,8 +83,7 @@ class MediaRepository implements MediaRepositoryInterface {
 	 */
 	public function grid()
 	{
-		return $this->createModel()
-			->with('tags');
+		return $this->createModel()->with('tags');
 	}
 
 	/**
@@ -109,6 +108,14 @@ class MediaRepository implements MediaRepositoryInterface {
 	public function getAllTags()
 	{
 		return $this->createModel()->allTags()->lists('name');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getAllowedMimes()
+	{
+		return $this->filesystem->getAllowedMimes();
 	}
 
 	/**
