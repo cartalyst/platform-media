@@ -105,7 +105,7 @@
 						</li>
 
 						<li class="primary">
-							<a href="#" data-toggle="modal" data-target="#mediaModal">
+							<a class="tip" href="#" data-toggle="modal" data-target="#mediaModal" data-original-title="{{{ trans('action.create') }}}">
 								<i class="fa fa-plus"></i> <span class="visible-xs-inline">{{{ trans('action.upload') }}}</span>
 							</a>
 						</li>
