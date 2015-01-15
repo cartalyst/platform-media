@@ -242,18 +242,25 @@ var Extension;
 
 		if (rows.length > 0)
 		{
-			$.ajax({
-				type: 'POST',
-				url: url,
-				data: {
-					action : action,
-					rows   : rows
-				},
-				success: function(response)
-				{
-					Extension.Index.Grid.refresh();
-				}
-			});
+			if (action == 'email')
+			{
+				window.location = Extension.Config.emailRoute.replace('rows-ids', rows.join(','));
+			}
+			else
+			{
+				$.ajax({
+					type: 'POST',
+					url: url,
+					data: {
+						action : action,
+						rows   : rows
+					},
+					success: function(response)
+					{
+						Extension.Index.Grid.refresh();
+					}
+				});
+			}
 		}
 	};
 
@@ -295,6 +302,7 @@ var Extension;
 	{
 		event.stopPropagation();
 	};
+
 	Extension.Index.mediaManager = function()
 	{
 		Extension.Index.MediaManager = $.mediamanager({
