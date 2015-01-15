@@ -28,15 +28,15 @@
 @section('scripts')
 @parent
 
-	<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.min.js') }}"></script>
-	<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.exif.js') }}"></script>
+<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.min.js') }}"></script>
+<script src="{{ Asset::getUrl('platform/media::js/FileAPI/FileAPI.exif.js') }}"></script>
 
-	<script type="text/javascript">
-		Extension.Index
-			.setEmailRoute('{{ route('admin.media.email', 'rows-ids') }}')
-			.MediaManager.setUploadUrl('{{ route('admin.media.upload') }}')
-		;
-	</script>
+<script type="text/javascript">
+	Extension.Index
+	.setEmailRoute('{{ route('admin.media.email', 'rows-ids') }}')
+	.MediaManager.setUploadUrl('{{ route('admin.media.upload') }}')
+	;
+</script>
 @stop
 
 {{-- Page --}}
@@ -77,13 +77,13 @@
 
 						<li class="disabled">
 							<a data-grid-bulk-action="private" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.bulk.private') }}}">
-								<i class="fa fa-eye-slash"></i> <span class="visible-xs-inline">{{{ trans('platform/media::action.bulk.private') }}}</span>
+								<i class="fa fa-lock"></i> <span class="visible-xs-inline">{{{ trans('platform/media::action.bulk.private') }}}</span>
 							</a>
 						</li>
 
 						<li class="disabled">
 							<a data-grid-bulk-action="public" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.bulk.public') }}}">
-								<i class="fa fa-eye"></i> <span class="visible-xs-inline">{{{ trans('platform/media::action.bulk.public') }}}</span>
+								<i class="fa fa-unlock"></i> <span class="visible-xs-inline">{{{ trans('platform/media::action.bulk.public') }}}</span>
 							</a>
 						</li>
 
@@ -116,26 +116,17 @@
 					<form class="navbar-form navbar-right" method="post" accept-charset="utf-8" data-search data-grid="main" role="form">
 
 						@if ( ! empty($tags))
-						<div class="input-group">
+						<div class="btn-group">
 
-							<span class="input-group-btn">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								<i class="fa fa-tags"></i> <span class="caret"></span>
+							</button>
 
-								<button class="btn btn-default" type="button" disabled>
-									{{{ trans('platform/media::model.tags') }}}
-								</button>
-
-								<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-									<span class="caret"></span>
-									<span class="sr-only">Toggle Dropdown</span>
-								</button>
-
-								<ul class="dropdown-menu" role="tags">
-									@foreach ($tags as $tag)
-									<li><a href="#" data-grid="main" data-filter="tags..name:{{{ $tag }}}" data-label="tags..name::{{{ $tag }}}">{{{ $tag }}}</a></li>
-									@endforeach
-								</ul>
-
-							</span>
+							<ul class="dropdown-menu" role="tags">
+								@foreach ($tags as $tag)
+								<li><a href="#" data-grid="main" data-filter="tags..name:{{{ $tag }}}" data-label="tags..name::{{{ $tag }}}">{{{ $tag }}}</a></li>
+								@endforeach
+							</ul>
 
 						</div>
 						@endif
@@ -239,8 +230,13 @@
 			<thead>
 				<tr>
 					<th><input data-grid-checkbox="all" type="checkbox"></th>
-					<th class="sortable" data-sort="name" colspan="2">{{{ trans('model.name') }}}</th>
+					<th class="sortable" data-sort="mime"><i class="fa fa-file-o"></i></th>
+					<th class="sortable" data-sort="mime"><i class="fa fa-shield"></i></th>
+					<th class="sortable" data-sort="name">{{{ trans('model.name') }}}</th>
+					<th>{{{ trans('platform/media::model.tags') }}}</th>
+					<th class="sortable" data-sort="size">{{{ trans('platform/media::model.size') }}}</th>
 					<th class="sortable hidden-xs" data-sort="created_at">{{{ trans('model.created_at') }}}</th>
+					<th class="text-center">{{{ trans('common.actions') }}}</th>
 				</tr>
 			</thead>
 			<tbody></tbody>
@@ -330,7 +326,7 @@
 </script>
 
 @if (config('platform.app.help'))
-	@include('platform/media::help')
+@include('platform/media::help')
 @endif
 
 @stop
