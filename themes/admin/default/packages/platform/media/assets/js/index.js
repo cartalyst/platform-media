@@ -316,6 +316,12 @@ var Extension;
 			onSuccess : function()
 			{
 				Extension.Index.Grid.refresh();
+			},
+			onFail : function(e)
+			{
+				alert('Oh noes :c');
+
+				alert(e.responseText);
 			}
 		});
 
