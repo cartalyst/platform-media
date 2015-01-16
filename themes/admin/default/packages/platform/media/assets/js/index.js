@@ -342,20 +342,19 @@
 
 	Extension.Index.thumbnailPreview =function()
 	{
-
 		//var $preview = $("#preview");
 
-		$('[data-grid-row] .fa-file-image-o').hover(function ()
+		Platform.Cache.$body.on('mouseover', '[data-grid-row] .fa-file-image-o', function()
 		{
 			$(this).closest('.thumbnail-preview').show();
 			console.log('in');
+		});
 
-		}, function ()
+		Platform.Cache.$body.on('mouseout', '[data-grid-row] .fa-file-image-o', function()
 		{
 			$(this).closest('.thumbnail-preview').hide();
 			console.log('out');
 		});
-
 	};
 
 	// Registers an Underscore.js mixin to generate thumbnails in a <img> tag
