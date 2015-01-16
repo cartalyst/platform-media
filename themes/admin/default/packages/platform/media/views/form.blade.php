@@ -7,7 +7,9 @@
 @stop
 
 {{-- Queue assets --}}
-{{ Asset::queue('selectize', 'selectize/css/selectize.css', 'styles') }}
+
+{{ Asset::queue('selectize', 'selectize/css/selectize.css', 'style') }}
+{{ Asset::queue('media', 'platform/media::css/media.scss', 'style') }}
 
 {{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
 {{ Asset::queue('validate', 'platform/js/validate.js', 'jquery') }}
@@ -62,6 +64,18 @@
 						<ul class="nav navbar-nav navbar-right">
 
 							<li>
+								<a href="{{ route('media.view', $media->path) }}" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::modal.share') }}}">
+									<i class="fa fa-share-alt"></i> <span class="visible-xs-inline">{{{ trans('platform/media::modal.share') }}}</span>
+								</a>
+							</li>
+
+							<li>
+								<a href="{{ route('media.download', $media->path) }}" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::modal.download') }}}">
+									<i class="fa fa-download"></i> <span class="visible-xs-inline">{{{ trans('platform/media::modal.download') }}}</span>
+								</a>
+							</li>
+
+							<li>
 								<a href="{{ route('admin.media.delete', $media->id) }}" class="tip" data-action-delete data-toggle="tooltip" data-original-title="{{{ trans('action.delete') }}}" type="delete">
 									<i class="fa fa-trash-o"></i> <span class="visible-xs-inline">{{{ trans('action.delete') }}}</span>
 								</a>
@@ -97,79 +111,140 @@
 					{{-- Form: General --}}
 					<div role="tabpanel" class="tab-pane fade in active" id="general">
 
-						<fieldset>
+						<div class="row">
 
-							{{-- Name --}}
-							<div class="form-group">
+							<div class="col-md-6">
 
-								<label class="control-label" for="name">{{{ trans('platform/media::model.name') }}}</label>
+								<fieldset>
 
-								<div class="controls">
-									<input type="text" name="name" id="name" class="form-control" value="{{ $media->name }}">
+									<legend>File Details</legend>
+
+									{{-- Name --}}
+									<div class="form-group">
+
+										<label class="control-label" for="name">{{{ trans('platform/media::model.name') }}}</label>
+
+										<div class="controls">
+											<input type="text" name="name" id="name" class="form-control" value="{{ $media->name }}">
+										</div>
+
+									</div>
+
+									{{-- Tags --}}
+									<div class="form-group">
+
+										<label class="control-label" for="tags">{{{ trans('platform/media::model.tags') }}}</label>
+
+										<div class="controls">
+											<select id="tags" name="tags[]" multiple="multiple" tabindex="-1">
+												@foreach ($tags as $tag)
+												<option value="{{{ $tag }}}"{{ in_array($tag, $media->tags->lists('name')) ? ' selected="selected"' : null }}>{{{ $tag }}}</option>
+												@endforeach
+											</select>
+										</div>
+
+									</div>
+
+									{{-- Private --}}
+									<div class="form-group{{ Alert::form('private', ' has-error') }}">
+
+										<label class="control-label" for="private">{{{ trans('model.status') }}}</label>
+
+										<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.private_help') }}}"></i>
+
+										<select class="form-control" name="private" id="private" required data-parsley-trigger="change">
+											<option value="0"{{ request()->old('private', $media->private) == 0 ? ' selected="selected"' : null }}>{{{ trans('platform/media::model.public') }}}</option>
+											<option value="1"{{ request()->old('private', $media->private) == 1 ? ' selected="selected"' : null }}>{{{ trans('platform/media::model.private') }}}</option>
+										</select>
+
+									</div>
+
+									{{-- Roles --}}
+									<div class="form-group{{ request()->old('private', $media->private) == 0 ? ' hide' : null }}" data-roles>
+										<label class="control-label" for="roles">{{{ trans('platform/media::model.roles') }}}</label>
+
+										<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.roles_help') }}}"></i>
+
+										<div class="controls">
+											<select name="roles[]" id="roles" class="form-control" multiple="true">
+												@foreach ($roles as $role)
+												<option value="{{{ $role->id }}}"{{ in_array($role->id, $media->roles) ? ' selected="selected"' : null }}>{{{ $role->name }}}</option>
+												@endforeach
+											</select>
+										</div>
+									</div>
+
+								</fieldset>
+
+							</div>
+
+							<div class="col-md-6">
+
+								<div class="panel panel-default panel-file-details">
+
+									<div class="panel-body">
+
+										@if ( ($media->mime == 'audio/ogg') || ($media->mime == 'video/mp4') || ($media->mime == 'video/ogg') )
+
+										<i class="fa fa-file-movie-o fa-5x"></i>
+
+										@elseif ( $media->is_image == 1)
+
+										@thumbnail($media->id)
+
+										@elseif ( $media->mime == 'application/zip')
+
+										<i class="fa fa-file-zip-o fa-5x"></i>
+
+										@elseif ( $media->mime == 'application/pdf')
+
+										<i class="fa fa-file-pdf-o fa-5x"></i>
+
+										@else
+
+										<i class="fa fa-file-o fa-5x"></i>
+
+										@endif
+
+										<h3>{{ $media->mime }}</h3>
+
+									</div>
+
+									<!-- List group -->
+									<ul class="list-group">
+
+										<li class="list-group-item">{{ $media->path }}</li>
+
+										<li class="list-group-item">{{ formatBytes($media->size) }}</li>
+
+										<li class="list-group-item">
+											@if ($media->private == 1)
+											<i class="fa fa-lock"></i> Private
+											@else
+											<i class="fa fa-unlock"></i> Public
+											@endif
+										</li>
+
+										<li class="list-group-item">{{ $media->path }}</li>
+
+										@if ($media->is_image == 1)
+										<li class="list-group-item">{{ $media->width }}x{{ $media->height }}</li>
+										@endif
+
+									</ul>
+
+									<div class="panel-footer">
+										{{-- File --}}
+										<div class="btn btn-warning btn-block upload__select">
+											<div class="upload__select-text">Update File</div>
+											<input name="files" class="upload__select-input" type="file" name="file" id="file" />
+										</div>
+									</div>
 								</div>
 
 							</div>
 
-							{{-- Tags --}}
-							<div class="form-group">
-
-								<label class="control-label" for="tags">{{{ trans('platform/media::model.tags') }}}</label>
-
-								<div class="controls">
-									<select id="tags" name="tags[]" multiple="multiple" tabindex="-1">
-										@foreach ($tags as $tag)
-										<option value="{{{ $tag }}}"{{ in_array($tag, $media->tags->lists('name')) ? ' selected="selected"' : null }}>{{{ $tag }}}</option>
-										@endforeach
-									</select>
-								</div>
-
-							</div>
-
-							{{-- Private --}}
-							<div class="form-group{{ Alert::form('private', ' has-error') }}">
-
-								<label class="control-label" for="private">{{{ trans('model.status') }}}</label>
-
-								<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.private_help') }}}"></i>
-
-								<select class="form-control" name="private" id="private" required data-parsley-trigger="change">
-									<option value="0"{{ request()->old('private', $media->private) == 0 ? ' selected="selected"' : null }}>{{{ trans('platform/media::model.public') }}}</option>
-									<option value="1"{{ request()->old('private', $media->private) == 1 ? ' selected="selected"' : null }}>{{{ trans('platform/media::model.private') }}}</option>
-								</select>
-
-							</div>
-
-							{{-- Roles --}}
-							<div class="form-group{{ request()->old('private', $media->private) == 0 ? ' hide' : null }}" data-roles>
-								<label class="control-label" for="roles">{{{ trans('platform/media::model.roles') }}}</label>
-
-								<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.roles_help') }}}"></i>
-
-								<div class="controls">
-									<select name="roles[]" id="roles" class="form-control" multiple="true">
-										@foreach ($roles as $role)
-										<option value="{{{ $role->id }}}"{{ in_array($role->id, $media->roles) ? ' selected="selected"' : null }}>{{{ $role->name }}}</option>
-										@endforeach
-									</select>
-								</div>
-							</div>
-
-							{{-- File --}}
-							<div class="form-group">
-
-								<label class="control-label" for="name">{{{ trans('platform/media::model.file') }}}</label>
-
-								<div class="controls">
-
-									<span class="btn btn-warning btn-file">
-										Browse <input type="file" name="file" id="file">
-									</span>
-
-								</div>
-
-							</div>
-
-						</fieldset>
+						</div>
 
 					</div>
 
@@ -179,7 +254,9 @@
 
 		</div>
 
-	</form>
+	</div>
+
+</form>
 
 </section>
 @stop

@@ -36,8 +36,6 @@
 		.datePicker()
 		.dataGrid()
 		.mediaManager()
-		.thumbnailMixin()
-		.thumbnailPreview()
 		;
 	};
 
@@ -334,43 +332,6 @@
 				// alert('Oh noes :c');
 
 				// alert(e.responseText);
-			}
-		});
-
-		return this;
-	};
-
-	Extension.Index.thumbnailPreview =function()
-	{
-		//var $preview = $("#preview");
-
-		Platform.Cache.$body.on('mouseover', '[data-grid-row] .fa-file-image-o', function()
-		{
-			$(this).closest('.thumbnail-preview').show();
-			console.log('in');
-		});
-
-		Platform.Cache.$body.on('mouseout', '[data-grid-row] .fa-file-image-o', function()
-		{
-			$(this).closest('.thumbnail-preview').hide();
-			console.log('out');
-		});
-	};
-
-	// Registers an Underscore.js mixin to generate thumbnails in a <img> tag
-	Extension.Index.thumbnailMixin = function()
-	{
-		_.mixin({
-			thumbnail: function(url, options)
-			{
-				var _options = [];
-
-				_.each(options, function(value, key)
-				{
-					_options.push(key + '="' + value + '"');
-				});
-
-				return '<img src="' + url + '"' + _options.join(' ') + '>';
 			}
 		});
 

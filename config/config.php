@@ -38,9 +38,8 @@ return [
 	{
 		$manager->setStyle('thumbnail', function(Style $style)
 		{
-			// Set the style image width & height
-			$style->width = 40;
-			$style->height = 40;
+			// Set the style image width.
+			$style->width = 300;
 
 			// Set the style macros
 			$style->macros = [ 'resize' ];
