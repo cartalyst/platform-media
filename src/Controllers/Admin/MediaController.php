@@ -90,8 +90,11 @@ class MediaController extends AdminController {
 		// Get a list of all the available roles
 		$roles = $this->roles->findAll();
 
+		// Get a list of all the allowed mime types
+		$allowedMimes = $this->media->getAllowedMimes();
+
 		// Show the page
-		return view('platform/media::index', compact('tags', 'roles'));
+		return view('platform/media::index', compact('tags', 'roles', 'allowedMimes'));
 	}
 
 	/**
