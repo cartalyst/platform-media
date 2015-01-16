@@ -19,6 +19,15 @@
 					<i class="fa fa-file-o"></i>
 				<% } %>
 
+				<% if (r.is_image == 1) { %>
+
+					<figure class="thumbnail-preview">
+						<%= _.thumbnail(r.thumbnail_uri) %>
+						<figcaption><%= r.width %>x<%= r.height %></figcaption>
+					</figure>
+
+				<% } %>
+
 			</td>
 
 			<td>

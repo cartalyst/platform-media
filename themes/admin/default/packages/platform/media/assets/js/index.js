@@ -37,6 +37,7 @@
 		.dataGrid()
 		.mediaManager()
 		.thumbnailMixin()
+		.thumbnailPreview()
 		;
 	};
 
@@ -309,7 +310,7 @@
 			onFileQueued : function(file)
 			{
 
-				$('input.upload__file-tags').not('.selectize-control').selectize({
+				$('input.file-tags').not('.selectize-control').selectize({
 					delimiter: ',',
 					persist: false,
 					maxItems: 3,
@@ -321,7 +322,7 @@
 					}
 				});
 
-				$('.upload_instructions').hide();
+				$('.upload__instructions').hide();
 
 			},
 			onSuccess : function()
@@ -337,6 +338,24 @@
 		});
 
 		return this;
+	};
+
+	Extension.Index.thumbnailPreview =function()
+	{
+
+		//var $preview = $("#preview");
+
+		$('[data-grid-row] .file-type .fa').hover(function ()
+		{
+			$(this).closest('.thumbnail-preview').show();
+			console.log('in');
+
+		}, function ()
+		{
+			$(this).closest('.thumbnail-preview').hide();
+			console.log('out');
+		});
+
 	};
 
 	// Registers an Underscore.js mixin to generate thumbnails in a <img> tag

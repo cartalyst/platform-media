@@ -93,8 +93,14 @@ class MediaController extends AdminController {
 		// Get a list of all the allowed mime types
 		$allowedMimes = $this->media->getAllowedMimes();
 
+		foreach ($allowedMimes as $key=>$value) {
+			$mimes[$key] = trim(substr($value, strrpos($value, '/') + 1));;
+		}
+
+		$mimes = array_unique($mimes);
+
 		// Show the page
-		return view('platform/media::index', compact('tags', 'roles', 'allowedMimes'));
+		return view('platform/media::index', compact('tags', 'roles', 'mimes'));
 	}
 
 	/**
@@ -113,6 +119,8 @@ class MediaController extends AdminController {
 			'private',
 			'is_image',
 			'thumbnail',
+			'width',
+			'height',
 			'created_at',
 		];
 

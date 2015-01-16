@@ -204,26 +204,23 @@
 					},
 					upload: function()
 					{
-
-						self._getEl(file, '[data-media-progress]').animate({ opacity: 0 }, 200, function (){ $(this).hide() });
-
+						self._getEl(file, '.file-ready').hide();
 					},
 					progress: function(evt)
 					{
-						self._getEl(file, '[data-media-progress-upload]').text(evt.loaded/evt.total * 100 + '%');
+						self._getEl(file, '.file-progress').show();
 					},
 					complete: function(err, xhr)
 					{
 						var state = err ? 'error' : 'done';
 
-						self._getEl(file, '[data-media-progress-upload]').animate({ opacity: 0 }, 200, function (){ $(this).hide() });
-						self._getEl(file, '[data-media-progress-sucess]').css({ opacity: 0 }).show().animate({ opacity: 1 }, 100);
-
-						//self._getEl(file, '.js-info').append(', <b class="media-file__'+state+'">'+(err ? (xhr.statusText || err) : state)+'</b>');
-						//self._getEl(file, '[data-media-progress]').css({ opacity: 0 }).show().animate({ opacity: 1 }, 100);
-
 						if (state === 'done')
 						{
+
+							self._getEl(file, '.file-progress').hide();
+
+							self._getEl(file, '.file-success').show().delay( 300 );
+
 							self.opt.onSuccess();
 
 							self.removeFile(fileId);
@@ -234,15 +231,23 @@
 						}
 						else if (state === 'error')
 						{
+
+							self._getEl(file, '.file-progress').hide();
+
+							self._getEl(file, '.file-error').show();
+
+							self._getEl(file, '.file-error-help').text(state + ': '+ (err ? (xhr.statusText || err) : state));
+
 							self.opt.onFail(xhr);
+
 						}
 					}
 				});
-}
-},
+			}
+		},
 
-processQueue : function()
-{
+		processQueue : function()
+		{
 			// Avoid scope issues
 			var self = this;
 

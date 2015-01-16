@@ -105,7 +105,7 @@
 						</li>
 
 						<li class="primary">
-							<a class="tip" href="#" data-toggle="modal" data-target="#mediaModal" data-original-title="{{{ trans('action.create') }}}">
+							<a class="tip" href="#" data-toggle="modal" data-target="#media-modal" data-original-title="{{{ trans('action.create') }}}">
 								<i class="fa fa-plus"></i> <span class="visible-xs-inline">{{{ trans('action.upload') }}}</span>
 							</a>
 						</li>
@@ -259,34 +259,38 @@
 
 </section>
 
-<div class="modal modal-media fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="mediaModalLabel" aria-hidden="true">
+<div class="modal modal-media fade" id="media-modal" tabindex="-1" role="dialog" aria-labelledby="media-modal" aria-hidden="true">
 
 	<div class="modal-dialog">
 
 		<div class="modal-content">
 
-			<div class="modal-body text-center">
+			<div class="modal-body upload">
 
+				<div class="upload__instructions">
 
-				<div class="upload">
-
-					<div class="upload_instructions">
-						<i class="fa fa-upload fa-5x"></i>
-						<h4>Drag &amp; Drop</h4>
-						<p class="lead">Acceptable Mime Types.</p>
-						<p class="small">(<i>audio/ogg, video/mp4, video/ogg, application/zip, application/pdf, image/gif, image/jpeg, image/png, text/plain</i>)</p>
-					</div>
-
-					<div data-media-queue-list class="upload__files"></div>
+					<i class="fa fa-upload fa-5x"></i>
+					<h4>Select Files</h4>
+					<p class="lead">Acceptable File Types.</p>
+					<p class="small">
+						<i>
+							@foreach ($mimes as $mime)
+							{{ $mime }},
+							@endforeach
+						</i>
+					</p>
 
 				</div>
 
-				<div class="btn btn-default btn-block media-button">
-					<div class="media-button__text">Select</div>
-					<input name="files" class="media-button__input" type="file" multiple />
+				<div class="upload__files" data-media-queue-list ></div>
+
+				<div class="btn btn-default btn-block upload__select">
+					<div>Select</div>
+					<input name="files" class="upload__select-input" type="file" multiple />
 				</div>
 
 			</div>
+
 
 			<div class="modal-footer">
 
@@ -296,9 +300,9 @@
 				</span>
 
 				<span class="pull-right text-right">
-				<button type="button" class="btn btn-default" data-dismiss="modal">{{{ trans('action.cancel') }}}</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">{{{ trans('action.cancel') }}}</button>
 
-				<button type="button" class="btn btn-primary" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
+					<button type="button" class="btn btn-primary" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
 				</span>
 			</div>
 
@@ -309,46 +313,48 @@
 </div>
 
 <script type="text/template" data-media-file-template>
-	<div data-media-file="<%= FileAPI.uid(file) %>" class="upload__file upload__file_<%= file.type.split('/')[0] %>">
+	<div data-media-file="<%= FileAPI.uid(file) %>" class="file file_<%= file.type.split('/')[0] %>">
 
 		<form class="form-inline">
 
 			<div class="form-group">
 
 				<div class="btn-group">
-					<button class="btn  btn-default upload__file-type" disabled><i class="fa <%= icon[file.type.split('/')[0]]||icon.def %>"></i></button>
-					<button class="btn  btn-default upload__file-size" disabled><small><%= (file.size/FileAPI.KB).toFixed(2) %> kb</small></button>
+					<button class="btn btn-default file-type" disabled><i class="fa <%= icon[file.type.split('/')[0]]||icon.def %>"></i></button>
+					<button class="btn btn-default file-size" disabled><small><%= (file.size/FileAPI.KB).toFixed(2) %> kb</small></button>
 				</div>
 
 			</div>
 
 			<div class="form-group">
 				<label class="sr-only" for="label">Filename</label>
-				<input type="text" class="form-control upload__file-name" name="<%= FileAPI.uid(file) %>_name" value="<%= file.name %>" placeholder="Filename" >
+				<input type="text" class="form-control file-name" name="<%= FileAPI.uid(file) %>_name" value="<%= file.name %>" placeholder="Filename" >
 			</div>
 
 			<div class="form-group">
 				<label class="sr-only" for="tags">Tags</label>
-				<input type="text" class="form-control upload__file-tags" name="<%= FileAPI.uid(file) %>_tags[]" value="" placeholder="Tags">
+				<input type="text" class="form-control file-tags" name="<%= FileAPI.uid(file) %>_tags[]" value="" placeholder="Tags">
 			</div>
 
 			<div class="form-group">
 
-				<button class="btn btn-default upload__file-remove" data-media-remove="<%= FileAPI.uid(file) %>"><i class="fa fa-trash-o"></i></button>
+				<button class="btn btn-default file-remove" data-media-remove="<%= FileAPI.uid(file) %>"><i class="fa fa-trash-o"></i></button>
 
-				<button class="btn btn-default upload__file-progress" disabled>
+				<button class="btn btn-default file-status" disabled>
 
-					<span data-media-progress>
+					<span class="file-ready">
 						<i class="fa fa-clock-o"></i>
 					</span>
 
-					<span class="upload__file-progress-upload" data-media-progress-upload></span>
+					<span class="file-progress">
+						<i class="fa fa-refresh fa-spin"></i>
+					</span>
 
-					<span data-media-progress-success style="display:none">
+					<span class="file-success">
 						<i class="fa fa-thumbs-o-up text-success"></i>
 					</span>
 
-					<span data-media-progress-error style="display:none">
+					<span class="file-error" data-toggle="tooltip" data-title>
 						<i class="fa fa-exclamation text-danger"></i>
 					</span>
 
@@ -357,6 +363,8 @@
 			</div>
 
 		</form>
+
+		<div class="file-error-help text-danger"></div>
 
 	</div>
 </script>

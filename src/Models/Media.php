@@ -39,12 +39,12 @@ class Media extends Model implements TaggableInterface {
 		'name',
 		'path',
 		'size',
-		'width',
-		'height',
 		'private',
 		'is_image',
 		'extension',
 		'thumbnail',
+		'width',
+		'height',
 		'roles',
 	];
 
