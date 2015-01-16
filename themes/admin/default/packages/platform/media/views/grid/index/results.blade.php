@@ -7,6 +7,15 @@
 
 			<td>
 
+				<% if (r.is_image == 1) { %>
+
+					<figure class="thumbnail-preview">
+						<%= _.thumbnail(r.thumbnail_uri) %>
+						<figcaption><%= r.width %>x<%= r.height %></figcaption>
+					</figure>
+
+				<% } %>
+
 				<% if ( (r.mime == 'audio/ogg') || (r.mime == 'video/mp4') || (r.mime == 'video/ogg') ) { %>
 					<i class="fa fa-file-movie-o"></i>
 				<% } else if ( r.is_image == 1) { %>
@@ -17,15 +26,6 @@
 					<i class="fa fa-file-pdf-o"></i>
 				<% } else { %>
 					<i class="fa fa-file-o"></i>
-				<% } %>
-
-				<% if (r.is_image == 1) { %>
-
-					<figure class="thumbnail-preview">
-						<%= _.thumbnail(r.thumbnail_uri) %>
-						<figcaption><%= r.width %>x<%= r.height %></figcaption>
-					</figure>
-
 				<% } %>
 
 			</td>

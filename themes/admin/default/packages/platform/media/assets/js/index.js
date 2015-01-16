@@ -345,7 +345,7 @@
 
 		//var $preview = $("#preview");
 
-		$('[data-grid-row] .file-type .fa').hover(function ()
+		$('[data-grid-row] .fa-file-image-o').hover(function ()
 		{
 			$(this).closest('.thumbnail-preview').show();
 			console.log('in');
