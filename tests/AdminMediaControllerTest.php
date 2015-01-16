@@ -48,6 +48,9 @@ class AdminMediaControllerTest extends IlluminateTestCase {
 	/** @test */
 	public function index_route()
 	{
+		$this->media->shouldReceive('getAllowedMimes')
+			->once();
+
 		$this->media->shouldReceive('getAllTags')
 			->once();
 

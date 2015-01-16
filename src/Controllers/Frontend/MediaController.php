@@ -17,10 +17,10 @@
  * @link       http://cartalyst.com
  */
 
-use Response;
-use Sentinel;
-use Filesystem;
+use Illuminate\Support\Facades\Response;
 use Platform\Foundation\Controllers\Controller;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Cartalyst\Filesystem\Laravel\Facades\Filesystem;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 
