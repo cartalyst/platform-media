@@ -208,7 +208,7 @@ return [
 	|
 	*/
 
-	'permissions' => function(Permissions $permissions)
+	'permissions' => function(Permissions $permissions, Application $app)
 	{
 		$permissions->group('media', function($g)
 		{
@@ -256,7 +256,7 @@ return [
 	|
 	*/
 
-	'settings' => function()
+	'settings' => function(Settings $settings, Application $app)
 	{
 
 	},
@@ -309,9 +309,6 @@ return [
 	|
 	*/
 
-	'widgets' => function()
-	{
-
-	},
+	'widgets' => null,
 
 ];
