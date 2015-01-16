@@ -16,27 +16,27 @@
  * @link       http://cartalyst.com
  */
 
-var Extension;
+ var Extension;
 
-;(function(window, document, $, undefined)
-{
+ ;(function(window, document, $, undefined)
+ {
 
-	'use strict';
+ 	'use strict';
 
-	Extension = Extension || {
-		Index: {},
-		Config: {},
-	};
+ 	Extension = Extension || {
+ 		Index: {},
+ 		Config: {},
+ 	};
 
 	// Initialize functions
 	Extension.Index.init = function()
 	{
 		Extension.Index
-			.listeners()
-			.datePicker()
-			.dataGrid()
-			.mediaManager()
-			.thumbnailMixin()
+		.listeners()
+		.datePicker()
+		.dataGrid()
+		.mediaManager()
+		.thumbnailMixin()
 		;
 	};
 
@@ -44,12 +44,12 @@ var Extension;
 	Extension.Index.listeners = function()
 	{
 		Platform.Cache.$body
-			.on('click', '[data-grid-row]', Extension.Index.checkRow)
-			.on('click', '[data-grid-row] a', Extension.Index.titleClick)
-			.on('click', '[data-grid-checkbox]', Extension.Index.checkboxes)
-			.on('click', '#modal-confirm a.confirm', Extension.Index.bulkActions)
-			.on('click', '[data-grid-calendar-preset]', Extension.Index.calendarPresets)
-			.on('click', '[data-grid-bulk-action]:not([data-grid-bulk-action="delete"])', Extension.Index.bulkActions)
+		.on('click', '[data-grid-row]', Extension.Index.checkRow)
+		.on('click', '[data-grid-row] a', Extension.Index.titleClick)
+		.on('click', '[data-grid-checkbox]', Extension.Index.checkboxes)
+		.on('click', '#modal-confirm a.confirm', Extension.Index.bulkActions)
+		.on('click', '[data-grid-calendar-preset]', Extension.Index.calendarPresets)
+		.on('click', '[data-grid-bulk-action]:not([data-grid-bulk-action="delete"])', Extension.Index.bulkActions)
 		;
 
 		return this;
@@ -62,7 +62,7 @@ var Extension;
 
 		var filters = _.compact(
 			String(window.location.hash.slice(3)).split('/').splice(2)
-		);
+			);
 
 		config = {
 			opens: 'left'
@@ -84,7 +84,7 @@ var Extension;
 		{
 			$('[data-grid-calendar]').val(
 				startDate.format('MM/DD/YYYY') + ' - ' + endDate.format('MM/DD/YYYY')
-			);
+				);
 
 			config = {
 				startDate: startDate,
@@ -99,7 +99,7 @@ var Extension;
 
 			$('[data-grid-calendar]').val(
 				moment($('input[name="daterangepicker_start"]').val()).format('MM/DD/YYYY') + ' - ' + moment($('input[name="daterangepicker_end"]').val()).format('MM/DD/YYYY')
-			);
+				);
 		});
 
 		Extension.Index.datePicker = $('[data-grid-calendar]').daterangepicker(config, function(start, end, label)
@@ -112,15 +112,15 @@ var Extension;
 		$('.daterangepicker_end_input').attr('data-grid', 'main');
 
 		$('input[name="daterangepicker_start"]')
-			.attr('data-format', 'MM/DD/YYYY')
-			.attr('data-range-start', '')
-			.attr('data-range-filter', 'created_at')
+		.attr('data-format', 'MM/DD/YYYY')
+		.attr('data-range-start', '')
+		.attr('data-range-filter', 'created_at')
 		;
 
 		$('input[name="daterangepicker_end"]')
-			.attr('data-format', 'MM/DD/YYYY')
-			.attr('data-range-end', '')
-			.attr('data-range-filter', 'created_at')
+		.attr('data-format', 'MM/DD/YYYY')
+		.attr('data-range-end', '')
+		.attr('data-range-filter', 'created_at')
 		;
 
 		return this;
@@ -150,8 +150,8 @@ var Extension;
 				$('[data-action]').prop('disabled', true);
 
 				Extension.Index
-					.bulkStatus()
-					.exporterStatus(data)
+				.bulkStatus()
+				.exporterStatus(data)
 				;
 			}
 		};
@@ -212,8 +212,8 @@ var Extension;
 		}
 
 		$('[data-grid-checkbox="all"]')
-			.prop('disabled', rows < 1)
-			.prop('checked', rows < 1 ? false : rows === checked)
+		.prop('disabled', rows < 1)
+		.prop('checked', rows < 1 ? false : rows === checked)
 		;
 
 		return this;
@@ -274,17 +274,17 @@ var Extension;
 		switch ($(this).data('grid-calendar-preset'))
 		{
 			case 'day':
-				start = end = moment().subtract(1, 'day').startOf('day').format('MM/DD/YYYY');
+			start = end = moment().subtract(1, 'day').startOf('day').format('MM/DD/YYYY');
 			break;
 
 			case 'week':
-				start = moment().startOf('week').format('MM/DD/YYYY');
-				end   = moment().endOf('week').format('MM/DD/YYYY');
+			start = moment().startOf('week').format('MM/DD/YYYY');
+			end   = moment().endOf('week').format('MM/DD/YYYY');
 			break;
 
 			case 'month':
-				start = moment().startOf('month').format('MM/DD/YYYY');
-				end   = moment().endOf('month').format('MM/DD/YYYY');
+			start = moment().startOf('month').format('MM/DD/YYYY');
+			end   = moment().endOf('month').format('MM/DD/YYYY');
 			break;
 
 			default:
@@ -308,10 +308,21 @@ var Extension;
 		Extension.Index.MediaManager = $.mediamanager({
 			onFileQueued : function(file)
 			{
-				$('input.tags').not('.selectize-control').selectize({
-					maxItems: 4,
-					create: true
+
+				$('input.upload__file-tags').not('.selectize-control').selectize({
+					delimiter: ',',
+					persist: false,
+					maxItems: 3,
+					create: function(input) {
+						return {
+							value: input,
+							text: input
+						}
+					}
 				});
+
+				$('.upload_instructions').hide();
+
 			},
 			onSuccess : function()
 			{
@@ -319,9 +330,9 @@ var Extension;
 			},
 			onFail : function(e)
 			{
-				alert('Oh noes :c');
+				// alert('Oh noes :c');
 
-				alert(e.responseText);
+				// alert(e.responseText);
 			}
 		});
 

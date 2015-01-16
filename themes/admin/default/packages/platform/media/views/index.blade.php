@@ -8,8 +8,8 @@
 
 {{-- Queue assets --}}
 {{ Asset::queue('bootstrap-daterange', 'bootstrap/css/daterangepicker-bs3.css', 'style') }}
-{{ Asset::queue('new.css', 'platform/media::css/new.css') }}
-{{ Asset::queue('selectize', 'selectize/css/selectize.bootstrap3.css', 'styles') }}
+{{ Asset::queue('selectize', 'selectize/css/selectize.bootstrap3.css', 'style') }}
+{{ Asset::queue('media', 'platform/media::css/media.scss', 'style') }}
 
 {{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
 {{ Asset::queue('moment', 'moment/js/moment.js', 'jquery') }}
@@ -33,8 +33,8 @@
 
 <script type="text/javascript">
 	Extension.Index
-		.setEmailRoute('{{ route('admin.media.email', 'rows-ids') }}')
-		.MediaManager.setUploadUrl('{{ route('admin.media.upload') }}')
+	.setEmailRoute('{{ route('admin.media.email', 'rows-ids') }}')
+	.MediaManager.setUploadUrl('{{ route('admin.media.upload') }}')
 	;
 </script>
 @stop
@@ -259,30 +259,47 @@
 
 </section>
 
-<div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="mediaModalLabel" aria-hidden="true">
+<div class="modal modal-media fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="mediaModalLabel" aria-hidden="true">
 
 	<div class="modal-dialog">
 
-		<div class="modal-content" style="width: 660px;">
+		<div class="modal-content">
 
-			<div data-media-queue-list style="min-height: 400px; max-height: 400px; overflow: auto;"></div>
+			<div class="modal-body text-center">
 
-			<div class="modal-footer" style="margin-top: 0;">
+
+				<div class="upload">
+
+					<div class="upload_instructions">
+						<i class="fa fa-upload fa-5x"></i>
+						<h4>Drag &amp; Drop</h4>
+						<p class="lead">Acceptable Mime Types.</p>
+						<p class="small">(<i>audio/ogg, video/mp4, video/ogg, application/zip, application/pdf, image/gif, image/jpeg, image/png, text/plain</i>)</p>
+					</div>
+
+					<div data-media-queue-list class="upload__files"></div>
+
+				</div>
+
+				<div class="btn btn-default btn-block media-button">
+					<div class="media-button__text">Select</div>
+					<input name="files" class="media-button__input" type="file" multiple />
+				</div>
+
+			</div>
+
+			<div class="modal-footer">
 
 				<span class="pull-left text-left">
 					<div><span data-media-total-files>0</span> files in queue</div>
 					<div><span data-media-total-size>0</span> KB</div>
 				</span>
 
-				<div class="media-button">
-					<div class="media-button__text">Select file(s)</div>
-					<input name="files" class="media-button__input" type="file" multiple />
-				</div>
+				<span class="pull-right text-right">
+				<button type="button" class="btn btn-default" data-dismiss="modal">{{{ trans('action.cancel') }}}</button>
 
-				<button type="button" class="btn btn-success" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
-
-				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
-
+				<button type="button" class="btn btn-primary" data-media-upload><i class="fa fa-upload"></i> Start Upload</button>
+				</span>
 			</div>
 
 		</div>
@@ -292,33 +309,52 @@
 </div>
 
 <script type="text/template" data-media-file-template>
-	<div data-media-file="<%= FileAPI.uid(file) %>" class="media-file media-file_<%= file.type.split('/')[0] %>">
+	<div data-media-file="<%= FileAPI.uid(file) %>" class="upload__file upload__file_<%= file.type.split('/')[0] %>">
 
 		<form class="form-inline">
 
-			<div data-media-file-image="60" class="media-file__left">
-				<img src="<%= icon[file.type.split('/')[0]]||icon.def %>" width="60" height="60" />
-			</div>
+			<div class="form-group">
 
-			<div class="media-file__right">
-
-				<div class="form-group">
-					<input type="text" name="<%= FileAPI.uid(file) %>_name" value="<%= file.name %>" placeholder="File name." class="form-control">
-				</div>
-
-				<div class="form-group">
-					<input type="text" name="<%= FileAPI.uid(file) %>_tags[]" value="" placeholder="File tags." class="form-control tags">
-				</div>
-
-				<div class="media-file__info">size: <%= (file.size/FileAPI.KB).toFixed(2) %> KB</div>
-
-				<div data-media-progress style="display: none" class="media-progress">
-					<div data-media-progress-bar class="media-progress__bar"></div>
+				<div class="btn-group">
+					<button class="btn  btn-default upload__file-type" disabled><i class="fa <%= icon[file.type.split('/')[0]]||icon.def %>"></i></button>
+					<button class="btn  btn-default upload__file-size" disabled><small><%= (file.size/FileAPI.KB).toFixed(2) %> kb</small></button>
 				</div>
 
 			</div>
 
-			<i data-media-remove="<%= FileAPI.uid(file) %>" class="media-file__remove">&times;</i>
+			<div class="form-group">
+				<label class="sr-only" for="label">Filename</label>
+				<input type="text" class="form-control upload__file-name" name="<%= FileAPI.uid(file) %>_name" value="<%= file.name %>" placeholder="Filename" >
+			</div>
+
+			<div class="form-group">
+				<label class="sr-only" for="tags">Tags</label>
+				<input type="text" class="form-control upload__file-tags" name="<%= FileAPI.uid(file) %>_tags[]" value="" placeholder="Tags">
+			</div>
+
+			<div class="form-group">
+
+				<button class="btn btn-default upload__file-remove" data-media-remove="<%= FileAPI.uid(file) %>"><i class="fa fa-trash-o"></i></button>
+
+				<button class="btn btn-default upload__file-progress" disabled>
+
+					<span data-media-progress>
+						<i class="fa fa-clock-o"></i>
+					</span>
+
+					<span class="upload__file-progress-upload" data-media-progress-upload></span>
+
+					<span data-media-progress-success style="display:none">
+						<i class="fa fa-thumbs-o-up text-success"></i>
+					</span>
+
+					<span data-media-progress-error style="display:none">
+						<i class="fa fa-exclamation text-danger"></i>
+					</span>
+
+				</button>
+
+			</div>
 
 		</form>
 

@@ -7,20 +7,24 @@
 	 *
 	 * @var array
 	 */
-	var defaults =
-	{
-		onFail : function() {},
-		onFileQueued : function() {},
-		onSuccess : function() {},
-		onComplete : function() {},
-		icons: {
-			  def:   '//cdn1.iconfinder.com/data/icons/CrystalClear/32x32/mimetypes/unknown.png'
-			, image: '//cdn1.iconfinder.com/data/icons/humano2/32x32/apps/synfig_icon.png'
-		},
-	};
+	 var defaults =
+	 {
+	 	onFail : function() {},
+	 	onFileQueued : function() {},
+	 	onSuccess : function() {},
+	 	onComplete : function() {},
+	 	icons: {
+	 		def:   'fa-file-o',
+	 		image: 'fa-file-image-o',
+	 		audio: 'fa-file-audio-o',
+	 		video: 'fa-file-video-o',
+	 		pdf:   'fa-file-pdf-o',
+	 		zip:   'fa-file-zip-o',
+	 	},
+	 };
 
-	function MediaManager(options)
-	{
+	 function MediaManager(options)
+	 {
 		// Extend the default options with the provided options
 		this.opt = $.extend({}, defaults, options);
 
@@ -44,8 +48,8 @@
 		 *
 		 * @return void
 		 */
-		initializer : function()
-		{
+		 initializer : function()
+		 {
 			// Avoid scope issues
 			var self = this;
 
@@ -91,7 +95,7 @@
 			{
 				self.removeFile(
 					$(this).data('media-remove')
-				);
+					);
 
 				self.refreshTotals();
 			});
@@ -111,7 +115,7 @@
 		{
 			$('[data-media-total-size]').html(
 				(this.totalSize/FileAPI.KB).toFixed(2)
-			);
+				);
 
 			$('[data-media-total-files]').html(this.totalFiles);
 		},
@@ -145,7 +149,7 @@
 
 			$('[data-media-queue-list]').append(
 				_.template($('[data-media-file-template]').html(), data)
-			);
+				);
 
 			if (/^image/.test(file.type))
 			{
@@ -200,19 +204,23 @@
 					},
 					upload: function()
 					{
-						self._getEl(file, '[data-media-progress]').css({ opacity: 0 }).show().animate({ opacity: 1 }, 100);
+
+						self._getEl(file, '[data-media-progress]').animate({ opacity: 0 }, 200, function (){ $(this).hide() });
+
 					},
 					progress: function(evt)
 					{
-						self._getEl(file, '[data-media-progress-bar]').css('width', evt.loaded/evt.total * 100 + '%');
+						self._getEl(file, '[data-media-progress-upload]').text(evt.loaded/evt.total * 100 + '%');
 					},
 					complete: function(err, xhr)
 					{
 						var state = err ? 'error' : 'done';
 
-						self._getEl(file, '[data-media-progress]').animate({ opacity: 0 }, 200, function (){ $(this).hide() });
+						self._getEl(file, '[data-media-progress-upload]').animate({ opacity: 0 }, 200, function (){ $(this).hide() });
+						self._getEl(file, '[data-media-progress-sucess]').css({ opacity: 0 }).show().animate({ opacity: 1 }, 100);
 
-						self._getEl(file, '.js-info').append(', <b class="media-file__'+state+'">'+(err ? (xhr.statusText || err) : state)+'</b>');
+						//self._getEl(file, '.js-info').append(', <b class="media-file__'+state+'">'+(err ? (xhr.statusText || err) : state)+'</b>');
+						//self._getEl(file, '[data-media-progress]').css({ opacity: 0 }).show().animate({ opacity: 1 }, 100);
 
 						if (state === 'done')
 						{
@@ -230,11 +238,11 @@
 						}
 					}
 				});
-			}
-		},
+}
+},
 
-		processQueue : function()
-		{
+processQueue : function()
+{
 			// Avoid scope issues
 			var self = this;
 
