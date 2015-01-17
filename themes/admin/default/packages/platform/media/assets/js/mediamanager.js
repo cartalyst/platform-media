@@ -13,6 +13,7 @@
 	 	onFileQueued : function() {},
 	 	onSuccess : function() {},
 	 	onComplete : function() {},
+	 	onRemove : function() {},
 	 	icons: {
 	 		def:   'fa-file-o',
 	 		image: 'fa-file-image-o',
@@ -93,9 +94,13 @@
 			//
 			$(document).on('click', '[data-media-remove]', function(e)
 			{
+				e.preventDefault();
+
 				self.removeFile(
 					$(this).data('media-remove')
-					);
+				);
+
+				self.opt.onRemove(self, $(this));
 
 				self.refreshTotals();
 			});
@@ -216,18 +221,24 @@
 
 						if (state === 'done')
 						{
-
 							self._getEl(file, '.file-progress').hide();
 
-							self._getEl(file, '.file-success').show().delay( 300 );
+							self._getEl(file, '.file-success').show();
 
-							self.opt.onSuccess();
+							// Timeout to show the success button for 200ms
+							setTimeout(function()
+							{
+								self.opt.onSuccess();
 
-							self.removeFile(fileId);
+								self.removeFile(fileId);
 
-							if (self.hasFiles() === false) self.disableUploadButton();
+								if (self.hasFiles() === false) {
+									self.disableUploadButton();
+									self.opt.onComplete();
+								}
 
-							self.refreshTotals();
+								self.refreshTotals();
+							}, 200);
 						}
 						else if (state === 'error')
 						{

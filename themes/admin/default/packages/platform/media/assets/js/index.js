@@ -323,8 +323,10 @@
 				$('.upload__instructions').hide();
 
 			},
-			onSuccess : function()
+			onComplete : function()
 			{
+				$('#media-modal').modal('hide');
+
 				Extension.Index.Grid.refresh();
 			},
 			onFail : function(e)
@@ -332,6 +334,13 @@
 				// alert('Oh noes :c');
 
 				// alert(e.responseText);
+			},
+			onRemove : function(manager, file)
+			{
+				if (manager.totalFiles == 0)
+				{
+					$('.upload__instructions').show();
+				}
 			}
 		});
 
