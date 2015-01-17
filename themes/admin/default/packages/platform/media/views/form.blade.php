@@ -64,20 +64,8 @@
 						<ul class="nav navbar-nav navbar-right">
 
 							<li>
-								<a href="{{ route('media.download', $media->path) }}" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.bulk.email') }}}">
+								<a href="{{ route('admin.media.email', $media->id) }}" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.bulk.email') }}}">
 									<i class="fa fa-envelope"></i> <span class="visible-xs-inline">{{{ trans('platform/media::action.bulk.email') }}}</span>
-								</a>
-							</li>
-
-							<li>
-								<a href="{{ route('media.download', $media->path) }}" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.bulk.private') }}}">
-									<i class="fa fa-lock"></i> <span class="visible-xs-inline">{{{ trans('platform/media::action.bulk.private') }}}</span>
-								</a>
-							</li>
-
-							<li>
-								<a href="{{ route('media.download', $media->path) }}" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.bulk.public') }}}">
-									<i class="fa fa-unlock"></i> <span class="visible-xs-inline">{{{ trans('platform/media::action.bulk.public') }}}</span>
 								</a>
 							</li>
 
