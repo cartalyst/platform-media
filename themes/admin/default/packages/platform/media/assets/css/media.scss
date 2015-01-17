@@ -13,8 +13,6 @@
 	border:2px dashed #ddd;
 	padding:8px;
 	margin-bottom:8px;
-	max-height: 280px;
-	overflow-y:auto;
 	text-align: center;
 
 	.fa-upload {
@@ -26,6 +24,8 @@
 .upload__files {
 	text-align: left;
 	margin-bottom:8px;
+	max-height: 280px;
+	overflow-y:auto;
 
 	.form-group {
 		border-bottom: none;
@@ -34,7 +34,7 @@
 
 	.selectize-control {
 		padding-top:5px;
-		width:167px;
+		width:147px;
 
 		input { font-size:11px;}
 	}
