@@ -274,9 +274,7 @@
 					<p class="lead">Acceptable File Types.</p>
 					<p class="small">
 						<i>
-							@foreach ($mimes as $mime)
-							{{ $mime }},
-							@endforeach
+							{{ $mimes }}
 						</i>
 					</p>
 
