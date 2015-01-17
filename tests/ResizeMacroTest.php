@@ -90,7 +90,7 @@ class ResizeMacroTest extends IlluminateTestCase {
 			->andReturn($image);
 
 		$image->shouldReceive('resize')
-			->with(200, 200)
+			->with('', 200, m::any())
 			->once()
 			->andReturn($image);
 
