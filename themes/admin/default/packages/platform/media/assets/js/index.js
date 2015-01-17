@@ -327,6 +327,8 @@
 			{
 				$('#media-modal').modal('hide');
 
+				$('.upload__instructions').show();
+
 				Extension.Index.Grid.refresh();
 			},
 			onFail : function(e)
