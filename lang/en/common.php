@@ -21,6 +21,9 @@ return [
 
 	'title'  => 'Media Management',
 
-	'email_media' => 'Email Media',
+	'tabs' => [
+		'general' => 'Media',
+		'email'   => 'Email Media',
+	],
 
 ];

@@ -52,7 +52,7 @@
 						</button>
 
 						<a class="btn btn-navbar-cancel navbar-btn pull-left tip" href="{{ route('admin.media.all') }}" data-toggle="tooltip" data-original-title="{{{ trans('action.cancel') }}}">
-							<i class="fa fa-reply"></i>  <span class="visible-xs-inline">{{{ trans('action.cancel') }}}</span>
+							<i class="fa fa-reply"></i> <span class="visible-xs-inline">{{{ trans('action.cancel') }}}</span>
 						</a>
 
 						<span class="navbar-brand">{{{ trans('action.update') }}} <small>{{{ $media->name }}}</small></span>
@@ -70,14 +70,14 @@
 							</li>
 
 							<li>
-								<a href="{{ route('media.view', $media->path) }}" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::modal.share') }}}">
-									<i class="fa fa-share-alt"></i> <span class="visible-xs-inline">{{{ trans('platform/media::modal.share') }}}</span>
+								<a href="{{ route('media.view', $media->path) }}" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::model.general.share') }}}">
+									<i class="fa fa-share-alt"></i> <span class="visible-xs-inline">{{{ trans('platform/media::model.general.share') }}}</span>
 								</a>
 							</li>
 
 							<li>
-								<a href="{{ route('media.download', $media->path) }}" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::modal.download') }}}">
-									<i class="fa fa-download"></i> <span class="visible-xs-inline">{{{ trans('platform/media::modal.download') }}}</span>
+								<a href="{{ route('media.download', $media->path) }}" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::model.general.download') }}}">
+									<i class="fa fa-download"></i> <span class="visible-xs-inline">{{{ trans('platform/media::model.general.download') }}}</span>
 								</a>
 							</li>
 
@@ -107,15 +107,15 @@
 
 			<div role="tabpanel">
 
-				{{-- Form: Tabs --}}
+				{{-- Tabs --}}
 				<ul class="nav nav-tabs" role="tablist">
-					<li class="active" role="presentation"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">{{{ trans('common.tabs.general') }}}</a></li>
+					<li class="active" role="presentation"><a href="#general-tab" aria-controls="general-tab" role="tab" data-toggle="tab">{{{ trans('platform/media::common.tabs.general') }}}</a></li>
 				</ul>
 
 				<div class="tab-content">
 
-					{{-- Form: General --}}
-					<div role="tabpanel" class="tab-pane fade in active" id="general">
+					{{-- Tab: General --}}
+					<div role="tabpanel" class="tab-pane fade in active" id="general-tab">
 
 						<div class="row">
 
@@ -123,12 +123,15 @@
 
 								<fieldset>
 
-									<legend>File Details</legend>
+									<legend>{{{ trans('platform/media::model.general.legend') }}}</legend>
 
 									{{-- Name --}}
 									<div class="form-group">
 
-										<label class="control-label" for="name">{{{ trans('platform/media::model.name') }}}</label>
+										<label class="control-label" for="name">
+											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.general.name_help') }}}"></i>
+											{{{ trans('platform/media::model.general.name') }}}
+										</label>
 
 										<div class="controls">
 											<input type="text" name="name" id="name" class="form-control" value="{{ $media->name }}">
@@ -139,7 +142,10 @@
 									{{-- Tags --}}
 									<div class="form-group">
 
-										<label class="control-label" for="tags">{{{ trans('platform/media::model.tags') }}}</label>
+										<label class="control-label" for="tags">
+											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.general.tags_help') }}}"></i>
+											{{{ trans('platform/media::model.general.tags') }}}
+										</label>
 
 										<div class="controls">
 											<select id="tags" name="tags[]" multiple="multiple" tabindex="-1">
@@ -151,25 +157,26 @@
 
 									</div>
 
-									{{-- Private --}}
+									{{-- Status --}}
 									<div class="form-group{{ Alert::form('private', ' has-error') }}">
 
-										<label class="control-label" for="private">{{{ trans('model.status') }}}</label>
-
-										<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.private_help') }}}"></i>
+										<label class="control-label" for="status">
+											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.general.status_help') }}}"></i>
+											{{{ trans('platform/media::model.general.status') }}}
+										</label>
 
 										<select class="form-control" name="private" id="private" required data-parsley-trigger="change">
-											<option value="0"{{ request()->old('private', $media->private) == 0 ? ' selected="selected"' : null }}>{{{ trans('platform/media::model.public') }}}</option>
-											<option value="1"{{ request()->old('private', $media->private) == 1 ? ' selected="selected"' : null }}>{{{ trans('platform/media::model.private') }}}</option>
+											<option value="0"{{ request()->old('private', $media->private) == 0 ? ' selected="selected"' : null }}>{{{ trans('platform/media::model.general.public') }}}</option>
+											<option value="1"{{ request()->old('private', $media->private) == 1 ? ' selected="selected"' : null }}>{{{ trans('platform/media::model.general.private') }}}</option>
 										</select>
 
 									</div>
 
 									{{-- Roles --}}
 									<div class="form-group{{ request()->old('private', $media->private) == 0 ? ' hide' : null }}" data-roles>
-										<label class="control-label" for="roles">{{{ trans('platform/media::model.roles') }}}</label>
+										<label class="control-label" for="roles">{{{ trans('platform/media::model.general.roles') }}}</label>
 
-										<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.roles_help') }}}"></i>
+										<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.general.roles_help') }}}"></i>
 
 										<div class="controls">
 											<select name="roles[]" id="roles" class="form-control" multiple="true">
@@ -224,14 +231,10 @@
 										<li class="list-group-item">{{ formatBytes($media->size) }}</li>
 
 										<li class="list-group-item">
-											@if ($media->private == 1)
-											<i class="fa fa-lock"></i> Private
-											@else
-											<i class="fa fa-unlock"></i> Public
-											@endif
-										</li>
 
-										<li class="list-group-item">{{ $media->path }}</li>
+											<i class="fa fa-{{ $media->private === true ? 'lock' : 'unlock' }}"></i> {{{ trans('platform/media::model.general.'.($media->private === 1 ? 'private' : 'public')) }}}
+
+										</li>
 
 										@if ($media->is_image == 1)
 										<li class="list-group-item">{{ $media->width }}x{{ $media->height }}</li>
@@ -260,9 +263,7 @@
 
 		</div>
 
-	</div>
-
-</form>
+	</form>
 
 </section>
 @stop

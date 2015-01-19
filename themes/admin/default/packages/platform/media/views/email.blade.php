@@ -3,7 +3,7 @@
 {{-- Page title --}}
 @section('title')
 @parent
-: {{{ trans('platform/media::common.email_media') }}}
+: {{{ trans('platform/media::common.tabs.email') }}}
 @stop
 
 {{-- Queue assets --}}
@@ -85,12 +85,12 @@ jQuery(document).ready(function($)
 						<ul class="nav navbar-nav navbar-cancel">
 							<li>
 								<a class="tip" href="{{ route('admin.media.all') }}" data-toggle="tooltip" data-original-title="{{{ trans('action.cancel') }}}">
-									<i class="fa fa-reply"></i>  <span class="visible-xs-inline">{{{ trans('action.cancel') }}}</span>
+									<i class="fa fa-reply"></i> <span class="visible-xs-inline">{{{ trans('action.cancel') }}}</span>
 								</a>
 							</li>
 						</ul>
 
-						<span class="navbar-brand">{{{ trans('platform/media::common.email_media') }}}</span>
+						<span class="navbar-brand">{{{ trans('platform/media::common.tabs.email') }}}</span>
 					</div>
 
 					{{-- Form: Actions --}}
@@ -120,13 +120,13 @@ jQuery(document).ready(function($)
 
 				{{-- Form: Tabs --}}
 				<ul class="nav nav-tabs" role="tablist">
-					<li class="active" role="presentation"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">{{{ trans('common.tabs.general') }}}</a></li>
+					<li class="active" role="presentation"><a href="#general-tab" aria-controls="general-tab" role="tab" data-toggle="tab">{{{ trans('platform/media::common.tabs.email') }}}</a></li>
 				</ul>
 
 				<div class="tab-content">
 
 					{{-- Form: General --}}
-					<div role="tabpanel" class="tab-pane fade in active" id="general">
+					<div role="tabpanel" class="tab-pane fade in active" id="general-tab">
 
 						<fieldset>
 

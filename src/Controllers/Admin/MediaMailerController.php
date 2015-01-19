@@ -110,7 +110,7 @@ class MediaMailerController extends AdminController {
 		{
 			$items = implode(',', array_diff(explode(',', $id), [$remove])) ?: 0;
 
-			return redirect()->route('admin.media.email', $id);
+			return redirect()->route('admin.media.email', $items);
 		}
 
 		$total = array_sum(array_map(function($item)

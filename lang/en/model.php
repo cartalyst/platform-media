@@ -19,22 +19,31 @@
 
 return [
 
-	'name'         => 'Name',
-	'name_help'    => 'Type a descriptive name for your media.',
+	'general' => [
 
-	'file'         => 'File',
-	'size'         => 'Size',
+		'legend'       => 'Details',
 
-	'tags'         => 'Tags',
-	'tags_help'    => 'Choose your media tags.',
+		'name'         => 'Name',
+		'name_help'    => 'Type a descriptive name for your media.',
 
-	'roles'        => 'Roles',
-	'roles_help'   => 'Select the roles to assign to this media file.',
+		'file'         => 'File',
+		'size'         => 'Size',
 
-	'share'        => 'Share',
-	'download'     => 'Download',
-	'email'        => 'Email',
-	'public'       => 'Public',
-	'private'      => 'Private',
+		'tags'         => 'Tags',
+		'tags_help'    => 'Choose your media tags.',
+
+		'roles'        => 'Roles',
+		'roles_help'   => 'Select the roles to assign to this media file.',
+
+		'status'       => 'Status',
+		'status_help ' => '..',
+
+		'share'        => 'Share',
+		'download'     => 'Download',
+		'email'        => 'Email',
+		'public'       => 'Public',
+		'private'      => 'Private',
+
+	],
 
 ];
