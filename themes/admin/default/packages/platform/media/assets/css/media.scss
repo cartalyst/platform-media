@@ -1,3 +1,21 @@
+/**
+ * Part of the Platform Media extension.
+ *
+ * NOTICE OF LICENSE
+ *
+ * Licensed under the Cartalyst PSL License.
+ *
+ * This source file is subject to the Cartalyst PSL License that is
+ * bundled with this package in the LICENSE file.
+ *
+ * @package    Platform Media extension
+ * @version    1.0.0
+ * @author     Cartalyst LLC
+ * @license    Cartalyst PSL
+ * @copyright  (c) 2011-2015, Cartalyst LLC
+ * @link       http://cartalyst.com
+ */
+
 .modal-media {
 	width: 800px;
 	margin-left:auto;
@@ -87,7 +105,6 @@
 		font-size:10px;
 		padding:4px 0;
 	}
-
 }
 
 .panel-file-details {
@@ -95,8 +112,23 @@
 	text-align: center;
 
 	.panel-body {
-		img, .fa {
+
+		.fa {
 			margin:32px auto 16px auto;
+		}
+
+		.image {
+			margin:12px 8px;
+			padding:4px;
+			border:1px solid #ddd;
+			img {
+				max-width: 100%;
+				width: auto   9;
+				height: auto;
+				vertical-align: middle;
+				border: 0;
+				-ms-interpolation-mode: bicubic;
+			}
 		}
 	}
 
@@ -104,5 +136,4 @@
 		margin:0;
 		padding-bottom:16px;
 	}
-
 }

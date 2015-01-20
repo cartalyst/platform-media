@@ -203,7 +203,7 @@
 
 										@elseif ( $media->is_image == 1)
 
-										@thumbnail($media->id)
+										<div class="image">@thumbnail($media->id)</div>
 
 										@elseif ( $media->mime == 'application/zip')
 
