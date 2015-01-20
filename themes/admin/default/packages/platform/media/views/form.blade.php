@@ -8,7 +8,7 @@
 
 {{-- Queue assets --}}
 
-{{ Asset::queue('selectize', 'selectize/css/selectize.css', 'style') }}
+{{ Asset::queue('selectize', 'selectize/css/selectize.bootstrap3.css', 'styles') }}
 {{ Asset::queue('media', 'platform/media::css/media.scss', 'style') }}
 
 {{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
