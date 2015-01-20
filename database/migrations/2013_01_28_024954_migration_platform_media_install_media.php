@@ -7,13 +7,13 @@
  * Licensed under the Cartalyst PSL License.
  *
  * This source file is subject to the Cartalyst PSL License that is
- * bundled with this package in the license.txt file.
+ * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.0
+ * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -41,8 +41,7 @@ class MigrationPlatformMediaInstallMedia extends Migration {
 			$table->integer('width')->nullable();
 			$table->integer('height')->nullable();
 			$table->boolean('private')->default(0);
-			$table->text('groups')->nullable();
-			$table->text('tags')->nullable();
+			$table->text('roles')->nullable();
 			$table->timestamps();
 
 			// We'll need to ensure that MySQL uses the InnoDB engine to

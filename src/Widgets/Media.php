@@ -7,18 +7,17 @@
  * Licensed under the Cartalyst PSL License.
  *
  * This source file is subject to the Cartalyst PSL License that is
- * bundled with this package in the license.txt file.
+ * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.0
+ * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
 use Platform\Media\Repositories\MediaRepositoryInterface;
-use URL;
 
 class Media {
 
@@ -34,7 +33,7 @@ class Media {
 	}
 
 	/**
-	 * Returns the given media path.
+	 * Returns the given media path or the HTML <img> tag.
 	 *
 	 * @param  int  $id
 	 * @param  string  $type
@@ -48,24 +47,36 @@ class Media {
 			{
 				case 'thumbnail':
 
-					$url = media_cache_path($media->thumbnail);
-
-					break;
+					return url($media->thumbnail);
 
 				case 'download':
 
-					$url = "media/download/{$media->path}";
-
-					break;
+					return route('media.download', $media->path);
 
 				default:
 
-					$url = "media/view/{$media->path}";
-
-					break;
+					return route('media.view', $media->path);
 			}
+		}
+	}
 
-			return URL::to($url);
+	/**
+	 * Returns the given media thumbnail in a <img> tag.
+	 *
+	 * @param  int  $id
+	 * @param  array  $options
+	 * @param  string  $default
+	 * @return string
+	 */
+	public function thumbnail($id, array $options = [], $default = null)
+	{
+		if ($media = $this->media->find($id))
+		{
+			$options = implode(' ', $options);
+
+			$path = $media->is_image ? url($media->thumbnail) : $default;
+
+			return '<img src="'.$path.'"'.$options.'>';
 		}
 	}
 

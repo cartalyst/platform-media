@@ -7,29 +7,25 @@
  * Licensed under the Cartalyst PSL License.
  *
  * This source file is subject to the Cartalyst PSL License that is
- * bundled with this package in the license.txt file.
+ * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.0
+ * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
 use Config;
-use Illuminate\Database\Eloquent\Collection;
-use Input;
-use Lang;
-use Filesystem;
-use Platform\Admin\Controllers\Admin\AdminController;
-use Platform\Foundation\Mailer;
-use Platform\Media\Repositories\MediaRepositoryInterface;
-use Platform\Users\Repositories\GroupRepositoryInterface;
-use Platform\Users\Repositories\UserRepositoryInterface;
-use Redirect;
 use Sentinel;
-use View;
+use Filesystem;
+use Cartalyst\Support\Mailer;
+use Illuminate\Database\Eloquent\Collection;
+use Platform\Access\Controllers\AdminController;
+use Platform\Roles\Repositories\RoleRepositoryInterface;
+use Platform\Users\Repositories\UserRepositoryInterface;
+use Platform\Media\Repositories\MediaRepositoryInterface;
 
 class MediaMailerController extends AdminController {
 
@@ -48,26 +44,40 @@ class MediaMailerController extends AdminController {
 	protected $users;
 
 	/**
-	 * The Users Groups repository.
+	 * The Users Roles repository.
 	 *
-	 * @var \Platform\Users\Repositories\GroupRepositoryInterface
+	 * @var \Platform\Roles\Repositories\RoleRepositoryInterface
 	 */
-	protected $groups;
+	protected $roles;
 
+	/**
+	 * The media configuration.
+	 *
+	 * @var array
+	 */
 	protected $config;
+
+	/**
+	 * The mailer instance.
+	 *
+	 * @var \Cartalyst\Support\Mailer
+	 */
+	protected $mailer;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
 	 * @param  \Platform\Users\Repositories\UserRepositoryInterface  $users
-	 * @param  \Platform\Users\Repositories\GroupRepositoryInterface  $groups
+	 * @param  \Platform\Roles\Repositories\RoleRepositoryInterface  $roles
+	 * @param  \Cartalyst\Support\Mailer  $mailer
 	 * @return void
 	 */
 	public function __construct(
 		MediaRepositoryInterface $media,
 		UserRepositoryInterface $users,
-		GroupRepositoryInterface $groups
+		RoleRepositoryInterface $roles,
+		Mailer $mailer
 	)
 	{
 		parent::__construct();
@@ -76,9 +86,11 @@ class MediaMailerController extends AdminController {
 
 		$this->users = $users;
 
-		$this->groups = $groups;
+		$this->roles = $roles;
 
 		$this->config = Config::get('platform/media::config');
+
+		$this->mailer = $mailer;
 	}
 
 	/**
@@ -91,14 +103,14 @@ class MediaMailerController extends AdminController {
 	{
 		if ( ! $items = $this->getEmailItems($id))
 		{
-			return Redirect::toAdmin('media');
+			return redirect()->route('admin.media.all');
 		}
 
-		if ($remove = Input::get('remove'))
+		if ($remove = input('remove'))
 		{
 			$items = implode(',', array_diff(explode(',', $id), [$remove])) ?: 0;
 
-			return Redirect::toAdmin("media/{$items}/email");
+			return redirect()->route('admin.media.email', $items);
 		}
 
 		$total = array_sum(array_map(function($item)
@@ -108,9 +120,9 @@ class MediaMailerController extends AdminController {
 
 		$users = $this->users->findAll();
 
-		$groups = $this->groups->findAll();
+		$roles = $this->roles->findAll();
 
-		return View::make('platform/media::email', compact('items', 'total', 'users', 'groups'));
+		return view('platform/media::email', compact('items', 'total', 'users', 'roles'));
 	}
 
 	/**
@@ -123,7 +135,7 @@ class MediaMailerController extends AdminController {
 	{
 		if ( ! $items = $this->getEmailItems($id))
 		{
-			return Redirect::toAdmin('media');
+			return redirect()->route('admin.media.all');
 		}
 
 		$maxAttachments = array_get($this->config, 'email.max_attachments');
@@ -151,15 +163,15 @@ class MediaMailerController extends AdminController {
 		$view = 'platform/media::emails/email';
 
 		// Prepare the email subject
-		$subject = Input::get('subject', array_get($this->config, 'email.subject'));
+		$subject = input('subject', array_get($this->config, 'email.subject'));
 
 		// Get the email body
-		$body = Input::get('body');
+		$body = input('body');
 
 		// Prepare the recipients
 		$recipients = new Collection;
 
-		foreach (Input::get('users', []) as $email)
+		foreach (input('users', []) as $email)
 		{
 			if ($user = $this->users->findByEmail($email))
 			{
@@ -167,11 +179,11 @@ class MediaMailerController extends AdminController {
 			}
 		}
 
-		foreach (Input::get('groups', []) as $groupId)
+		foreach (input('roles', []) as $roleId)
 		{
-			if ($group = $this->groups->find($groupId))
+			if ($role = $this->roles->find($roleId))
 			{
-				foreach ($group->users as $user)
+				foreach ($role->users as $user)
 				{
 					$recipients->add($user);
 				}
@@ -182,7 +194,9 @@ class MediaMailerController extends AdminController {
 		{
 			$message = "You haven't selected any recipients.";
 
-			return Redirect::toAdmin("media/{$id}/email")->withErrors($message);
+			$this->alerts->error($message);
+
+			return redirect()->route('admin.media.email', $id);
 		}
 
 		// Prepare the attachments
@@ -197,23 +211,24 @@ class MediaMailerController extends AdminController {
 		}, $items));
 
 		// set input var, will make accessible to the view
-		$input = Input::except(['_token', 'users']);
+		$input = input()->except(['_token', 'users']);
 
-		$mailer = new Mailer;
-		$mailer->setView($view, compact('body'));
-		$mailer->setSubject($subject);
-		$mailer->setAttachments($attachments);
+		$this->mailer->setView($view, compact('body'));
+		$this->mailer->setSubject($subject);
+		$this->mailer->setAttachments($attachments);
 
-		$mailer->addTo(Sentinel::getUser()->email, Sentinel::getUser()->name);
+		$this->mailer->addTo(Sentinel::getUser()->email, Sentinel::getUser()->name);
 
 		foreach ($recipients as $recipient)
 		{
-			$mailer->addBcc($recipient->email, "{$recipient->first_name} {$recipient->last_name}");
+			$this->mailer->addBcc($recipient->email, "{$recipient->first_name} {$recipient->last_name}");
 		}
 
-		$mailer->send();
+		$this->mailer->send();
 
-		return Redirect::toAdmin('media')->withSuccess('Email was succesfully sent.');
+		$this->alerts->success('Email was succesfully sent.');
+
+		return redirect()->route('admin.media.all');
 	}
 
 	protected function getEmailItems($id)

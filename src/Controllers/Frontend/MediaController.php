@@ -7,27 +7,27 @@
  * Licensed under the Cartalyst PSL License.
  *
  * This source file is subject to the Cartalyst PSL License that is
- * bundled with this package in the license.txt file.
+ * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.0
+ * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
-use Filesystem;
-use Platform\Foundation\Controllers\BaseController;
-use Platform\Media\Repositories\MediaRepositoryInterface;
-use Response;
-use Sentinel;
+use Illuminate\Support\Facades\Response;
+use Platform\Foundation\Controllers\Controller;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Cartalyst\Filesystem\Laravel\Facades\Filesystem;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Platform\Media\Repositories\MediaRepositoryInterface;
 
-class MediaController extends BaseController {
+class MediaController extends Controller {
 
 	/**
-	 * Media repository.
+	 * The Media repository.
 	 *
 	 * @var \Platform\Media\Repositories\MediaRepositoryInterface
 	 */
@@ -59,7 +59,7 @@ class MediaController extends BaseController {
 		$file = Filesystem::read($media->path);
 
 		$headers = [
-			'Content-Type' => $media->mime,
+			'Content-Type'   => $media->mime,
 			'Content-Length' => strlen($file),
 		];
 
@@ -80,9 +80,9 @@ class MediaController extends BaseController {
 
 		$headers = [
 			'Connection'          => 'close',
-			'Content-Disposition' => 'attachment; filename="'.$media->name.'"',
-			'Content-Length'      => strlen($file),
 			'Content-Type'        => $media->mime,
+			'Content-Length'      => strlen($file),
+			'Content-Disposition' => 'attachment; filename="'.$media->name.'"',
 		];
 
 		return $this->respond($file, $headers);
@@ -110,11 +110,11 @@ class MediaController extends BaseController {
 			{
 				$pass = true;
 
-				$mediaGroups = $media->groups;
+				$mediaRoles = $media->roles;
 
-				$userGroups = $user->groups->lists('id');
+				$userRoles = $user->roles->lists('id');
 
-				if ( ! empty($mediaGroups) and ! array_intersect($mediaGroups, $userGroups))
+				if ( ! empty($mediaRoles) and ! array_intersect($mediaRoles, $userRoles))
 				{
 					$pass = false;
 				}
