@@ -12,13 +12,13 @@ Reader-friendly Documentation can be found here. [Media Manual](https://cartalys
 
 Raw files can be found via this projects docs/version branch.
 
-- [v1.0](https://github.com/cartalyst/platform-media/tree/docs/1.0)
+- [1.0](https://github.com/cartalyst/platform-media/tree/docs/1.0)
 
 ## Changelog
 
 Important versions listed below. Refer to the [Changelog](CHANGELOG.md) for a full history of the project.
 
-- [1.0](CHANGELOG.md) - TBA
+- [1.0](CHANGELOG.md) - 2015-01-20
 
 ## Support
 
@@ -27,11 +27,13 @@ The following support channels can be used for contact.
 - [Twitter](https://cartalyst.com/@twitter)
 - [Email](mailto:help@cartalyst.com)
 
-Bug reports, proposals, and pull requests can be submitted by following our [Contribution Guide](CONTRIBUTING.md)
+Bug reports, feature requests, and pull requests can be submitted by following our [Contribution Guide](CONTRIBUTING.md).
 
-## Contribution & Protocols
+## Contributing & Protocols
 
-- [Contribution Guide](CONTRIBUTING.md)
+- [Versioning](CONTRIBUTING.md#versioning)
+- [Coding Standards](CONTRIBUTING.md#coding-standards)
+- [Pull Requests](CONTRIBUTING.md#pull-requests)
 
 ## License
 
