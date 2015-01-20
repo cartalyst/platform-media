@@ -51,11 +51,11 @@
 
 			<td class="text-center">
 
-				<a class="btn btn-default btn-sm" href="<%= r.view_uri %>" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::modal.share') }}}">
+				<a class="btn btn-default btn-sm" href="<%= r.view_uri %>" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.share') }}}">
 					<i class="fa fa-share-alt"></i>
 				</a>
 
-				<a class="btn btn-default btn-sm" href="<%= r.download_uri %>" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::modal.download') }}}">
+				<a class="btn btn-default btn-sm" href="<%= r.download_uri %>" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.download') }}}">
 					<i class="fa fa-download"></i>
 				</a>
 

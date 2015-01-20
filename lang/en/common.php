@@ -19,10 +19,11 @@
 
 return [
 
-	'title'  => 'Media Management',
+	'title'  => 'Media',
 
 	'tabs' => [
 		'general' => 'Media',
+		'tags'    => 'Tags',
 		'email'   => 'Email Media',
 	],
 

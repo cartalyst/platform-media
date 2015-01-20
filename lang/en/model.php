@@ -29,9 +29,6 @@ return [
 		'file'         => 'File',
 		'size'         => 'Size',
 
-		'tags'         => 'Tags',
-		'tags_help'    => 'Choose your media tags.',
-
 		'roles'        => 'Roles',
 		'roles_help'   => 'Select the roles to assign to this media file.',
 
@@ -43,6 +40,15 @@ return [
 		'email'        => 'Email',
 		'public'       => 'Public',
 		'private'      => 'Private',
+
+	],
+
+	'tag' => [
+
+		'legend'    => 'Tags',
+
+		'tags'      => 'Tags',
+		'tags_help' => 'Select or create tags.',
 
 	],
 

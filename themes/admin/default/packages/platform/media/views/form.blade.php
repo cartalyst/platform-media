@@ -110,6 +110,7 @@
 				{{-- Tabs --}}
 				<ul class="nav nav-tabs" role="tablist">
 					<li class="active" role="presentation"><a href="#general-tab" aria-controls="general-tab" role="tab" data-toggle="tab">{{{ trans('platform/media::common.tabs.general') }}}</a></li>
+					<li role="presentation"><a href="#tags-tab" aria-controls="tags" role="tabs-tab" data-toggle="tab">{{{ trans('platform/media::common.tabs.tags') }}}</a></li>
 				</ul>
 
 				<div class="tab-content">
@@ -135,24 +136,6 @@
 
 										<div class="controls">
 											<input type="text" name="name" id="name" class="form-control" value="{{ $media->name }}">
-										</div>
-
-									</div>
-
-									{{-- Tags --}}
-									<div class="form-group">
-
-										<label class="control-label" for="tags">
-											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.general.tags_help') }}}"></i>
-											{{{ trans('platform/media::model.general.tags') }}}
-										</label>
-
-										<div class="controls">
-											<select id="tags" name="tags[]" multiple="multiple" tabindex="-1">
-												@foreach ($tags as $tag)
-												<option value="{{{ $tag }}}"{{ in_array($tag, $media->tags->lists('name')) ? ' selected="selected"' : null }}>{{{ $tag }}}</option>
-												@endforeach
-											</select>
 										</div>
 
 									</div>
@@ -254,6 +237,25 @@
 							</div>
 
 						</div>
+
+					</div>
+
+					{{-- Tab: Tags --}}
+					<div role="tabpanel" class="tab-pane fade" id="tags-tab">
+
+						<fieldset>
+
+							<legend>{{{ trans('platform/media::model.tag.legend') }}}</legend>
+
+							<div class="row">
+
+								<div class="col-md-12">
+									@tags($media, 'tags', 'platform/media::partials/tags-input')
+								</div>
+
+							</div>
+
+						</fieldset>
 
 					</div>
 

@@ -233,8 +233,8 @@
 					<th class="sortable" data-sort="mime"><i class="fa fa-file-o"></i></th>
 					<th class="sortable" data-sort="mime"><i class="fa fa-shield"></i></th>
 					<th class="sortable" data-sort="name">{{{ trans('model.name') }}}</th>
-					<th>{{{ trans('platform/media::model.tags') }}}</th>
-					<th class="sortable" data-sort="size">{{{ trans('platform/media::model.size') }}}</th>
+					<th>{{{ trans('platform/media::model.tag.legend') }}}</th>
+					<th class="sortable" data-sort="size">{{{ trans('platform/media::model.general.size') }}}</th>
 					<th class="sortable hidden-xs" data-sort="created_at">{{{ trans('model.created_at') }}}</th>
 					<th class="text-center">{{{ trans('common.actions') }}}</th>
 				</tr>
