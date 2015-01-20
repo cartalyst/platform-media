@@ -33,8 +33,8 @@
 
 <script type="text/javascript">
 	Extension.Index
-	.setEmailRoute('{{ route('admin.media.email', 'rows-ids') }}')
-	.MediaManager.setUploadUrl('{{ route('admin.media.upload') }}')
+		.setEmailRoute('{{ route('admin.media.email', 'rows-ids') }}')
+		.MediaManager.setUploadUrl('{{ route('admin.media.upload') }}')
 	;
 </script>
 @stop
