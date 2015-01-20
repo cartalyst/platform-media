@@ -3,7 +3,7 @@
 {{-- Page title --}}
 @section('title')
 @parent
-: {{{ trans('platform/media::common.tabs.email') }}}
+ {{{ trans('platform/media::common.tabs.email') }}} {{{ trans('platform/media::common.title') }}}
 @stop
 
 {{-- Queue assets --}}
