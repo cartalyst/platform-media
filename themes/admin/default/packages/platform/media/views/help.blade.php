@@ -20,7 +20,7 @@
 
 				<h2>{{{ trans('platform/media::common.title') }}}
 					<small>
-						<a class="manual" href="{{URL::to('https://cartalyst.com/manual/platform-media')}}" target="_blank">
+						<a class="manual" href="{{ url('https://cartalyst.com/manual/platform-media') }}" target="_blank">
 						<i class="fa fa-file-text-o fa-sm"></i>
 						{{{ trans('common.help.documentation') }}}
 						</a>
