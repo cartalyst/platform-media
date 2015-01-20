@@ -20,8 +20,6 @@
 return [
 
 	'send_email' => 'Send Email',
-	'share'      => 'Share',
-	'download'   => 'Download',
 
 	'bulk' => [
 		'email'   => 'Email Selected',

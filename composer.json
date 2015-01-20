@@ -28,27 +28,40 @@
 		{
 			"name": "Dan Syme",
 			"email": "dan.syme@cartalyst.com",
-			"role": "Creator & Designer"
+			"role": "Project Lead"
+		},
+		{
+			"name": "Suhayb Wardany",
+			"email": "su.wardany@cartalyst.com",
+			"role": "Developer"
 		}
 	],
 	"repositories": [
 		{
 			"type": "composer",
-			"url": "http://packages.cartalyst.com"
+			"url": "https://packages.cartalyst.com"
 		}
 	],
 	"require": {
 		"php": ">=5.4.0",
-		"cartalyst/composer-installers": "1.1.*",
-		"cartalyst/filesystem": "~2.0",
-		"intervention/image": "~2.0",
-		"intervention/imagecache": "~2.0",
-		"platform/admin": "0.1.*"
+		"cartalyst/composer-installers": "1.2.*",
+		"cartalyst/filesystem": "2.0.*",
+		"intervention/image": "2.0.*",
+		"intervention/imagecache": "2.0.*",
+		"platform/access": "1.0.*",
+		"platform/tags": "1.0.*"
+	},
+	"require-dev": {
+		"cartalyst/testing": "~1.0",
+		"patchwork/utf8": "~1.1"
 	},
 	"autoload": {
 		"classmap": [
 			"database/migrations",
 			"database/seeds"
+		],
+		"files": [
+			"src/helpers.php"
 		],
 		"psr-4": {
 			"Platform\\Media\\" : "src/"
@@ -57,7 +70,7 @@
 	"extra": {
 		"component": "extension",
 		"branch-alias": {
-			"dev-master": "0.1.x-dev"
+			"dev-master": "1.0.x-dev"
 		}
 	},
 	"minimum-stability": "dev"

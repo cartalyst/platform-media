@@ -7,13 +7,13 @@
  * Licensed under the Cartalyst PSL License.
  *
  * This source file is subject to the Cartalyst PSL License that is
- * bundled with this package in the license.txt file.
+ * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.0
+ * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -45,29 +45,6 @@ interface MediaRepositoryInterface {
 	public function findByPath($path);
 
 	/**
-	 * Returns all the media files by the given tags.
-	 *
-	 * @param  mixed  $tags
-	 * @return \Platform\Media\Models\Media
-	 */
-	public function findAllByTags($tags);
-
-	/**
-	 * Returns a media by the given tags
-	 *
-	 * @param  mixed  $tags
-	 * @return \Platform\Media\Models\Media
-	 */
-	public function findByTags($tags);
-
-	/**
-	 * Returns a list of the available tags.
-	 *
-	 * @return array
-	 */
-	public function getTags();
-
-	/**
 	 * Determine if the given file is valid for upload.
 	 *
 	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $file
@@ -81,7 +58,6 @@ interface MediaRepositoryInterface {
 	/**
 	 * Determine if the given media is valid for updating.
 	 *
-	 * @param  int    $id
 	 * @param  array  $data
 	 * @return \Illuminate\Support\MessageBag
 	 */
@@ -91,9 +67,10 @@ interface MediaRepositoryInterface {
 	 * Upload the given file.
 	 *
 	 * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $file
+	 * @param  array  $input
 	 * @return bool
 	 */
-	public function upload(UploadedFile $file);
+	public function upload(UploadedFile $file, array $input);
 
 	/**
 	 * Creates a media with the given data.

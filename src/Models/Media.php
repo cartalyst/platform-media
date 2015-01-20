@@ -7,19 +7,24 @@
  * Licensed under the Cartalyst PSL License.
  *
  * This source file is subject to the Cartalyst PSL License that is
- * bundled with this package in the license.txt file.
+ * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.0
+ * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
+use InvalidArgumentException;
+use Cartalyst\Tags\TaggableTrait;
+use Cartalyst\Tags\TaggableInterface;
 use Illuminate\Database\Eloquent\Model;
 
-class Media extends Model {
+class Media extends Model implements TaggableInterface {
+
+	use TaggableTrait;
 
 	/**
 	 * {@inheritDoc}
@@ -30,120 +35,68 @@ class Media extends Model {
 	 * {@inheritDoc}
 	 */
 	protected $fillable = [
+		'mime',
 		'name',
 		'path',
-		'extension',
-		'mime',
-		'is_image',
 		'size',
+		'private',
+		'is_image',
+		'extension',
+		'thumbnail',
 		'width',
 		'height',
-		'private',
-		'groups',
-		'tags',
-		'thumbnail',
+		'roles',
 	];
 
 	/**
-	 * Get mutator for the "groups" attribute.
+	 * Get mutator for the "roles" attribute.
 	 *
-	 * @param  mixed  $groups
+	 * @param  mixed  $roles
 	 * @return array
 	 * @throws \InvalidArgumentException
 	 */
-	public function getGroupsAttribute($groups)
+	public function getRolesAttribute($roles)
 	{
-		if ( ! $groups)
+		if ( ! $roles)
 		{
 			return [];
 		}
 
-		if (is_array($groups))
+		if (is_array($roles))
 		{
-			return $groups;
+			return $roles;
 		}
 
-		if ( ! $_groups = json_decode($groups, true))
+		if ( ! $_roles = json_decode($roles, true))
 		{
-			throw new InvalidArgumentException("Cannot JSON decode groups [{$groups}].");
+			throw new InvalidArgumentException("Cannot JSON decode roles [{$roles}].");
 		}
 
-		return $_groups;
+		return $_roles;
 	}
 
 	/**
-	 * Set mutator for the "groups" attribute.
+	 * Set mutator for the "roles" attribute.
 	 *
-	 * @param  array  $groups
+	 * @param  array  $roles
 	 * @return void
 	 */
-	public function setGroupsAttribute($groups)
+	public function setRolesAttribute($roles)
 	{
 		// If we get a string, let's just ensure it's a proper JSON string
-		if ( ! is_array($groups))
+		if ( ! is_array($roles))
 		{
-			$groups = $this->getGroupsAttribute($groups);
+			$roles = $this->getRolesAttribute($roles);
 		}
 
-		if ( ! empty($groups))
+		if ( ! empty($roles))
 		{
-			$groups = array_values(array_map('intval', $groups));
-			$this->attributes['groups'] = json_encode($groups);
+			$roles = array_values(array_map('intval', $roles));
+			$this->attributes['roles'] = json_encode($roles);
 		}
 		else
 		{
-			$this->attributes['groups'] = '';
-		}
-	}
-
-	/**
-	 * Get mutator for the "tags" attribute.
-	 *
-	 * @param  mixed  $tags
-	 * @return array
-	 * @throws \InvalidArgumentException
-	 */
-	public function getTagsAttribute($tags)
-	{
-		if ( ! $tags)
-		{
-			return [];
-		}
-
-		if (is_array($tags))
-		{
-			return $tags;
-		}
-
-		if ( ! $_tags = json_decode($tags, true))
-		{
-			throw new InvalidArgumentException("Cannot JSON decode tags [{$tags}].");
-		}
-
-		return $_tags;
-	}
-
-	/**
-	 * Set mutator for the "tags" attribute.
-	 *
-	 * @param  array  $tags
-	 * @return void
-	 */
-	public function setTagsAttribute($tags)
-	{
-		// If we get a string, let's just ensure it's a proper JSON string
-		if ( ! is_array($tags))
-		{
-			$tags = $this->getTagsAttribute($tags);
-		}
-
-		if ( ! empty($tags))
-		{
-			$this->attributes['tags'] = json_encode($tags);
-		}
-		else
-		{
-			$this->attributes['tags'] = '';
+			$this->attributes['roles'] = '';
 		}
 	}
 

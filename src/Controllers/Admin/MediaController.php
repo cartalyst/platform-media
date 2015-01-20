@@ -7,59 +7,43 @@
  * Licensed under the Cartalyst PSL License.
  *
  * This source file is subject to the Cartalyst PSL License that is
- * bundled with this package in the license.txt file.
+ * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.0
+ * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
-use DataGrid;
-use Input;
-use Lang;
-use Filesystem;
-use Platform\Admin\Controllers\Admin\AdminController;
+use Platform\Access\Controllers\AdminController;
+use Platform\Tags\Repositories\TagsRepositoryInterface;
+use Platform\Roles\Repositories\RoleRepositoryInterface;
 use Platform\Media\Repositories\MediaRepositoryInterface;
-use Platform\Users\Repositories\GroupRepositoryInterface;
-use Platform\Users\Repositories\UserRepositoryInterface;
-use Redirect;
-use Response;
-use Request;
-use View;
 
 class MediaController extends AdminController {
 
 	/**
-	 * {@inheritDoc}
-	 */
-	protected $csrfWhitelist = [
-		'executeAction',
-		//'update',
-	];
-
-	/**
-	 * Media repository.
+	 * The Media repository.
 	 *
 	 * @var \Platform\Media\Repositories\MediaRepositoryInterface
 	 */
 	protected $media;
 
 	/**
-	 * The Users repository.
+	 * The Users Roles repository.
 	 *
-	 * @var \Platform\Users\Repositories\UserRepositoryInterface
+	 * @var \Platform\Roles\Repositories\RoleRepositoryInterface
 	 */
-	protected $users;
+	protected $roles;
 
 	/**
-	 * The Users Groups repository.
+	 * The Tags repository.
 	 *
-	 * @var \Platform\Users\Repositories\GroupRepositoryInterface
+	 * @var \Platform\Tags\Repositories\TagsRepositoryInterface
 	 */
-	protected $groups;
+	protected $tags;
 
 	/**
 	 * Holds all the mass actions we can execute.
@@ -74,23 +58,23 @@ class MediaController extends AdminController {
 	 * Constructor.
 	 *
 	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
-	 * @param  \Platform\Users\Repositories\UserRepositoryInterface  $users
-	 * @param  \Platform\Users\Repositories\GroupRepositoryInterface  $groups
+	 * @param  \Platform\Roles\Repositories\RoleRepositoryInterface  $roles
+	 * @param  \Platform\Tags\Repositories\TagsRepositoryInterface  $tags
 	 * @return void
 	 */
 	public function __construct(
 		MediaRepositoryInterface $media,
-		UserRepositoryInterface $users,
-		GroupRepositoryInterface $groups
+		RoleRepositoryInterface $roles,
+		TagsRepositoryInterface $tags
 	)
 	{
 		parent::__construct();
 
 		$this->media = $media;
 
-		$this->users = $users;
+		$this->roles = $roles;
 
-		$this->groups = $groups;
+		$this->tags = $tags;
 	}
 
 	/**
@@ -101,13 +85,19 @@ class MediaController extends AdminController {
 	public function index()
 	{
 		// Get a list of all the available tags
-		$tags = $this->media->getTags();
+		$tags = $this->media->getAllTags();
 
-		// Get a list of all the available groups
-		$groups = $this->groups->findAll();
+		// Get a list of all the available roles
+		$roles = $this->roles->findAll();
+
+		// Get a list of all the allowed mime types
+		$allowedMimes = $this->media->getAllowedMimes();
+
+		// Prepare mimes
+		$mimes = $this->prepareMimes($allowedMimes);
 
 		// Show the page
-		return View::make('platform/media::index', compact('tags', 'groups'));
+		return view('platform/media::index', compact('tags', 'roles', 'mimes'));
 	}
 
 	/**
@@ -117,29 +107,38 @@ class MediaController extends AdminController {
 	 */
 	public function grid()
 	{
-		$data = $this->media->grid();
-
 		$columns = [
 			'id',
-			'tags',
 			'name',
 			'mime',
 			'path',
 			'size',
 			'private',
-			//'groups',
 			'is_image',
-			//'extension',
 			'thumbnail',
+			'width',
+			'height',
 			'created_at',
 		];
 
 		$settings = [
 			'sort'      => 'created_at',
 			'direction' => 'desc',
+			'pdf_view'  => 'pdf',
 		];
 
-		return DataGrid::make($data, $columns, $settings);
+		$transformer = function($element)
+		{
+			$element->thumbnail_uri = url($element->thumbnail);
+			$element->view_uri = route('media.view', $element->path);
+			$element->edit_uri = route('admin.media.edit', $element->id);
+			$element->email_uri = route('admin.media.email', $element->id);
+			$element->download_uri = route('media.download', $element->path);
+
+			return $element;
+		};
+
+		return datagrid($this->media->grid(), $columns, $settings, $transformer);
 	}
 
 	/**
@@ -149,19 +148,17 @@ class MediaController extends AdminController {
 	 */
 	public function upload()
 	{
-		$file = Input::file('file');
-
-		$tags = Input::get('tags', []);
+		$file = request()->file('file');
 
 		if ($this->media->validForUpload($file))
 		{
-			if ($media = $this->media->upload($file, $tags))
+			if ($media = $this->media->upload($file, request()->input()))
 			{
-				return Response::json($media);
+				return response($media);
 			}
 		}
 
-		return Response::json($this->media->getError(), 400);
+		return response($this->media->getError(), 400);
 	}
 
 	/**
@@ -175,19 +172,19 @@ class MediaController extends AdminController {
 		// Get the media information
 		if ( ! $media = $this->media->find($id))
 		{
-			$message = Lang::get('platform/media::message.not_found', compact('id'));
+			$this->alerts->error(trans('platform/media::message.not_found', compact('id')));
 
-			return Redirect::toAdmin('media')->withErrors($message);
+			return redirect()->route('admin.media.all');
 		}
 
 		// Get a list of all the available tags
-		$tags = $this->media->getTags();
+		$tags = $this->media->getAllTags();
 
-		// Get a list of all the available groups
-		$groups = $this->groups->findAll();
+		// Get a list of all the available roles
+		$roles = $this->roles->findAll();
 
 		// Show the page
-		return View::make('platform/media::form', compact('media', 'tags', 'groups'));
+		return view('platform/media::form', compact('media', 'tags', 'roles'));
 	}
 
 	/**
@@ -198,33 +195,50 @@ class MediaController extends AdminController {
 	 */
 	public function update($id)
 	{
-		Input::merge(['groups' => Input::get('groups', [])]);
-
-		Input::merge(['tags' => Input::get('tags', [])]);
-
-		$input = Input::except('file');
+		$input = request()->except('file');
 
 		if ($this->media->validForUpdate($id, $input))
 		{
-			if ($this->media->update($id, $input, Input::file('file')))
+			if ($this->media->update($id, $input, request()->file('file')))
 			{
-				if (Request::ajax())
+				if (request()->ajax())
 				{
-					return Response::json('success');
+					return response(
+						trans('platform/media::message.success.update')
+					);
 				}
 
-				$message = Lang::get('platform/media::message.success.update');
+				$this->alerts->success(trans('platform/media::message.success.update'));
 
-				return Redirect::toAdmin('media')->withSuccess($message);
+				return redirect()->route('admin.media.all');
 			}
 		}
 
-		if (Request::ajax())
+		if (request()->ajax())
 		{
-			return Response::json($this->media->getError(), 400);
+			return response($this->media->getError(), 400);
 		}
 
-		return Redirect::back()->withErrors($this->media->getError());
+		$this->alerts->error($this->media->getError());
+
+		return redirect()->back();
+	}
+
+	/**
+	 * Removes the specified media.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function delete($id)
+	{
+		$type = $this->media->delete($id) ? 'success' : 'error';
+
+		$this->alerts->{$type}(
+			trans("platform/media::message.{$type}.delete")
+		);
+
+		return redirect()->route('admin.media.all');
 	}
 
 	/**
@@ -234,19 +248,35 @@ class MediaController extends AdminController {
 	 */
 	public function executeAction()
 	{
-		$action = Input::get('action');
+		$action = request()->input('action');
 
 		if (in_array($action, $this->actions))
 		{
-			foreach (Input::get('entries', []) as $entry)
+			foreach (request()->input('rows', []) as $entry)
 			{
 				$this->media->{$action}($entry);
 			}
 
-			return Response::json('Success');
+			return response('Success');
 		}
 
-		return Response::json('Failed', 500);
+		return response('Failed', 500);
+	}
+
+	/**
+	 * Prepares mime types for output.
+	 *
+	 * @param  array  $mimes
+	 * @return string
+	 */
+	protected function prepareMimes($mimes)
+	{
+		$mimes = array_map(function($el)
+		{
+			return last(explode('/', $el));
+		}, $mimes);
+
+		return implode(', ', $mimes);
 	}
 
 }

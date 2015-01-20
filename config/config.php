@@ -7,29 +7,60 @@
  * Licensed under the Cartalyst PSL License.
  *
  * This source file is subject to the Cartalyst PSL License that is
- * bundled with this package in the license.txt file.
+ * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.0
+ * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
+use Platform\Media\Styles\Style;
+use Platform\Media\Styles\Manager;
+
 return [
 
-	'email' => [
+	#'default_style' => 'thumbnail',
 
-		// Total of allowed attachments per email
-		'max_attachments' => 10,
+	/*
+	|--------------------------------------------------------------------------
+	| Styles
+	|--------------------------------------------------------------------------
+	|
+	| Define here the required Style config sets that will
+	| be executed whenever a file gets uploaded.
+	|
+	*/
 
-		// Limit of the attachments that we'll be sending on the email
-		'attachments_max_size' => 10485760, // 10 mb
+	'styles' => function(Manager $manager)
+	{
+		$manager->setStyle('thumbnail', function(Style $style)
+		{
+			// Set the style image width.
+			$style->width = 300;
 
-		// Default email subject
-		'subject' => "You've Got Media!",
+			// Set the style macros
+			$style->macros = [ 'resize' ];
 
-	],
+			// Set the storage path
+			$style->path = public_path('cache/media');
+		});
+	},
+
+	/*
+	|--------------------------------------------------------------------------
+	| Macros
+	|--------------------------------------------------------------------------
+	|
+	| Define here the Macros that can be used with the Style config sets.
+	|
+	*/
+
+	'macros' => function(Manager $manager)
+	{
+		$manager->setMacro('resize', 'Platform\Media\Styles\Macros\ResizeMacro');
+	}
 
 ];
