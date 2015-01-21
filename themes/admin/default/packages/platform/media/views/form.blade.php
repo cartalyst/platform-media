@@ -7,7 +7,6 @@
 @stop
 
 {{-- Queue assets --}}
-
 {{ Asset::queue('selectize', 'selectize/css/selectize.bootstrap3.css', 'styles') }}
 {{ Asset::queue('media', 'platform/media::css/media.scss', 'style') }}
 
@@ -15,13 +14,13 @@
 {{ Asset::queue('validate', 'platform/js/validate.js', 'jquery') }}
 {{ Asset::queue('form', 'platform/media::js/form.js', 'platform') }}
 
-{{-- Inline scripts --}}
-@section('scripts')
+{{-- Inline styles --}}
+@section('styles')
 @parent
 @stop
 
-{{-- Inline styles --}}
-@section('styles')
+{{-- Inline scripts --}}
+@section('scripts')
 @parent
 @stop
 
