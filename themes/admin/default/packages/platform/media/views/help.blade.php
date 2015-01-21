@@ -6,7 +6,7 @@
 
 			<i class="fa fa-life-ring" data-toggle="popover" data-content="{{{ trans('common.help.setting') }}}"></i> {{{ trans('common.help.title') }}}
 
-			<span class="panel-close small pull-right" data-toggle="tip" data-original-title="{{{ trans('action.collapse') }}}"></a>
+			<span class="panel-close small pull-right" data-toggle="tip" data-original-title="{{{ trans('action.collapse') }}}"></span>
 
 		</h4>
 
@@ -21,8 +21,8 @@
 				<h2>{{{ trans('platform/media::common.title') }}}
 					<small>
 						<a class="manual" href="{{ url('https://cartalyst.com/manual/platform-media') }}" target="_blank">
-						<i class="fa fa-file-text-o fa-sm"></i>
-						{{{ trans('common.help.documentation') }}}
+							<i class="fa fa-file-text-o fa-sm"></i>
+							{{{ trans('common.help.documentation') }}}
 						</a>
 					</small>
 				</h2>
@@ -36,6 +36,3 @@
 	</div>
 
 </section>
-
-
-
