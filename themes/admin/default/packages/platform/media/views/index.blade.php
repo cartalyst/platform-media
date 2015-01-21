@@ -147,14 +147,14 @@
 								<ul class="dropdown-menu" role="menu">
 
 									<li>
-										<a data-grid="main" data-filter="private:0" data-label="private::{{{ trans('common.all_disabled') }}}" data-reset>
-											<i class="fa fa-eye-slash"></i> * Show Public
+										<a data-grid="main" data-filter="private:0" data-label="private::{{{ trans('platform/media::action.filter.public') }}}" data-reset>
+											<i class="fa fa-unlock"></i> {{{ trans('platform/media::action.filter.public') }}}
 										</a>
 									</li>
 
 									<li>
-										<a data-grid="main" data-filter="private:1" data-label="private::{{{ trans('common.all_enabled') }}}" data-reset>
-											<i class="fa fa-eye"></i> * Show Private
+										<a data-grid="main" data-filter="private:1" data-label="private::{{{ trans('platform/media::action.filter.private') }}}" data-reset>
+											<i class="fa fa-lock"></i> {{{ trans('platform/media::action.filter.private') }}}
 										</a>
 									</li>
 

@@ -29,4 +29,9 @@ return [
 		'public'  => 'Make Public',
 	],
 
+	'filter' => [
+		'private' => 'All Private',
+		'public'  => 'All Public',
+	]
+
 ];
