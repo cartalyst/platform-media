@@ -1,4 +1,4 @@
-<div class="form-group{{ Alert::form('tags', ' has-error') }}">
+<div class="form-group{{ Alert::onForm('tags', ' has-error') }}">
 
 	<label for="menu" class="control-label">
 		<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.tag.tags_help') }}}"></i>
@@ -11,6 +11,6 @@
 		@endforeach
 	</select>
 
-	<span class="help-block">{{{ Alert::form('tags') }}}</span>
+	<span class="help-block">{{{ Alert::onForm('tags') }}}</span>
 
 </div>

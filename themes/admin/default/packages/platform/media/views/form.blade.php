@@ -140,7 +140,7 @@
 									</div>
 
 									{{-- Status --}}
-									<div class="form-group{{ Alert::form('private', ' has-error') }}">
+									<div class="form-group{{ Alert::onForm('private', ' has-error') }}">
 
 										<label class="control-label" for="status">
 											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.general.status_help') }}}"></i>
