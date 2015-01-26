@@ -24,6 +24,13 @@ use Platform\Media\Validator\MediaValidator;
 class MediaValidatorTest extends PHPUnit_Framework_TestCase {
 
 	/**
+	 * Validator instance.
+	 *
+	 * @var \Platform\Media\Validator\MediaValidator
+	 */
+	protected $validator;
+
+	/**
 	 * Close mockery.
 	 *
 	 * @return void
@@ -46,11 +53,13 @@ class MediaValidatorTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function it_can_validate()
 	{
-		$rules = $rules = [
+		$rules = [
 			'name' => 'required',
 		];
 
 		$this->assertEquals($rules, $this->validator->getRules());
+
+		$this->validator->onUpdate();
 	}
 
 }
