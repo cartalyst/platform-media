@@ -244,7 +244,7 @@
 
 						<fieldset>
 
-							<legend>{{{ trans('platform/media::model.tag.legend') }}}</legend>
+							<legend>{{{ trans('platform/tags::model.tag.legend') }}}</legend>
 
 							<div class="row">
 
