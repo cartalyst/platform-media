@@ -228,7 +228,7 @@
 										{{-- File --}}
 										<div class="btn btn-warning btn-block upload__select">
 											<div class="upload__select-text">Update File</div>
-											<input name="files" class="upload__select-input" type="file" name="file" id="file" />
+											<input class="upload__select-input" type="file" name="file" id="file" />
 										</div>
 									</div>
 								</div>
