@@ -249,7 +249,7 @@
 							<div class="row">
 
 								<div class="col-md-12">
-									@tags($media, 'tags', 'platform/media::partials/tags-input')
+									@tags($media, 'tags')
 								</div>
 
 							</div>
