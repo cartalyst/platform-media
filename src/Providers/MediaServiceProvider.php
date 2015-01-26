@@ -30,6 +30,11 @@ class MediaServiceProvider extends ServiceProvider {
 		// Register the extension component namespaces
 		$this->package('platform/media', 'platform/media'. __DIR__.'/../..');
 
+		// Register the tags namespace
+		$this->app['platform.tags.manager']->registerNamespace(
+			$this->app['Platform\Media\Models\Media']
+		);
+
 		// Register the event handler
 		$this->app['events']->subscribe('platform.media.handler.event');
 

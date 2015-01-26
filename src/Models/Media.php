@@ -21,10 +21,11 @@ use InvalidArgumentException;
 use Cartalyst\Tags\TaggableTrait;
 use Cartalyst\Tags\TaggableInterface;
 use Illuminate\Database\Eloquent\Model;
+use Cartalyst\Support\Traits\NamespacedEntityTrait;
 
 class Media extends Model implements TaggableInterface {
 
-	use TaggableTrait;
+	use NamespacedEntityTrait, TaggableTrait;
 
 	/**
 	 * {@inheritDoc}
@@ -47,6 +48,11 @@ class Media extends Model implements TaggableInterface {
 		'height',
 		'roles',
 	];
+
+	/**
+	 * {@inheritDoc}
+	 */
+	protected static $entityNamespace = 'platform/media';
 
 	/**
 	 * Get mutator for the "roles" attribute.
