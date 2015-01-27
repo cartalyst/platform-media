@@ -152,9 +152,10 @@
 				'icon' : self.opt.icons
 			};
 
-			$('[data-media-queue-list]').append(
-				_.template($('[data-media-file-template]').html(), data)
-				);
+			var template = _.template($('[data-media-file-template]').html());
+				template = template(data);
+
+			$('[data-media-queue-list]').append(template);
 
 			if (/^image/.test(file.type))
 			{
