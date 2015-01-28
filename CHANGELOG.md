@@ -11,6 +11,16 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.1 - 2015-01-28
+
+`FIXED`
+
+- Fixes for latest Underscore version.
+
+`UPDATED`
+
+- Updated javascript files for consistency.
+
 ### v1.0.0 - 2015-01-26
 
 - Can create, update, delete files.
