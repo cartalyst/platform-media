@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.2 - 2015-01-28
+
+`FIXED`
+
+- Mass private/public actions.
+
 ### v1.0.1 - 2015-01-28
 
 `FIXED`
