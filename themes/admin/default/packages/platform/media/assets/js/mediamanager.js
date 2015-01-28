@@ -7,25 +7,25 @@
 	 *
 	 * @var array
 	 */
-	 var defaults =
-	 {
-	 	onFail : function() {},
-	 	onFileQueued : function() {},
-	 	onSuccess : function() {},
-	 	onComplete : function() {},
-	 	onRemove : function() {},
-	 	icons: {
-	 		def:   'fa-file-o',
-	 		image: 'fa-file-image-o',
-	 		audio: 'fa-file-audio-o',
-	 		video: 'fa-file-video-o',
-	 		pdf:   'fa-file-pdf-o',
-	 		zip:   'fa-file-zip-o',
-	 	},
-	 };
+	var defaults =
+	{
+		onFail : function() {},
+		onFileQueued : function() {},
+		onSuccess : function() {},
+		onComplete : function() {},
+		onRemove : function() {},
+		icons: {
+			def:   'fa-file-o',
+			image: 'fa-file-image-o',
+			audio: 'fa-file-audio-o',
+			video: 'fa-file-video-o',
+			pdf:   'fa-file-pdf-o',
+			zip:   'fa-file-zip-o',
+		},
+	};
 
-	 function MediaManager(options)
-	 {
+	function MediaManager(options)
+	{
 		// Extend the default options with the provided options
 		this.opt = $.extend({}, defaults, options);
 
@@ -49,8 +49,8 @@
 		 *
 		 * @return void
 		 */
-		 initializer : function()
-		 {
+		initializer : function()
+		{
 			// Avoid scope issues
 			var self = this;
 
@@ -153,9 +153,10 @@
 			};
 
 			var template = _.template($('[data-media-file-template]').html());
-				template = template(data);
 
-			$('[data-media-queue-list]').append(template);
+			$('[data-media-queue-list]').append(
+				template(data)
+			);
 
 			if (/^image/.test(file.type))
 			{
