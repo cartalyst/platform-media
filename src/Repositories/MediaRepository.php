@@ -301,6 +301,36 @@ class MediaRepository implements MediaRepositoryInterface {
 	}
 
 	/**
+	 * Sets the media private.
+	 *
+	 * @param  int  $id
+	 * @return void
+	 */
+	public function makePrivate($id)
+	{
+		if ($media = $this->find($id))
+		{
+			$media->private = true;
+			$media->save();
+		}
+	}
+
+	/**
+	 * Sets the media public.
+	 *
+	 * @param  int  $id
+	 * @return void
+	 */
+	public function makePublic($id)
+	{
+		if ($media = $this->find($id))
+		{
+			$media->private = false;
+			$media->save();
+		}
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public function getError()

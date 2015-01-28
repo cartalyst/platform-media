@@ -76,13 +76,13 @@
 						</li>
 
 						<li class="disabled">
-							<a data-grid-bulk-action="private" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.bulk.private') }}}">
+							<a data-grid-bulk-action="makePrivate" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.bulk.private') }}}">
 								<i class="fa fa-lock"></i> <span class="visible-xs-inline">{{{ trans('platform/media::action.bulk.private') }}}</span>
 							</a>
 						</li>
 
 						<li class="disabled">
-							<a data-grid-bulk-action="public" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.bulk.public') }}}">
+							<a data-grid-bulk-action="makePublic" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.bulk.public') }}}">
 								<i class="fa fa-unlock"></i> <span class="visible-xs-inline">{{{ trans('platform/media::action.bulk.public') }}}</span>
 							</a>
 						</li>

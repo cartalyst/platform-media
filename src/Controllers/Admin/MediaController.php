@@ -52,6 +52,8 @@ class MediaController extends AdminController {
 	 */
 	protected $actions = [
 		'delete',
+		'makePrivate',
+		'makePublic',
 	];
 
 	/**
