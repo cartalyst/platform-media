@@ -77,7 +77,7 @@ class ResizeMacro extends AbstractMacro implements MacroInterface {
 
 			// Create the thumbnail
 			$this->intervention->make($file->getContents())
-			->resize(null, $this->style->width, function ($constraint) {
+			->resize($this->style->width, null, function ($constraint) {
 				$constraint->aspectRatio();
 				$constraint->upsize();
 			})
