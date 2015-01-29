@@ -27,6 +27,7 @@
 
 .upload__instructions {
 
+	position: relative;
 	border:2px dashed #ddd;
 	padding:8px;
 	margin-bottom:8px;
@@ -81,6 +82,16 @@
 	right: -40px;
 	font-size: 50px;
 	position: absolute;
+}
+
+.dnd {
+	display: none;
+	position: absolute;
+	background: rgba(0,0,0,0.1);
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
 }
 
 .file {

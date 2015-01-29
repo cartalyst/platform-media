@@ -268,6 +268,7 @@
 			<div class="modal-body upload">
 
 				<div class="upload__instructions">
+					<div class="dnd"></div>
 
 					<i class="fa fa-upload fa-5x"></i>
 					<h4>Select Files</h4>

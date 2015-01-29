@@ -90,15 +90,12 @@
 				self.processQueue();
 			});
 
-			//
 			$(document).on('change', 'input[type="file"]', function(e)
 			{
 				FileAPI.reset(e.currentTarget);
 
 				FileAPI.each(FileAPI.getFiles(e), function(file)
 				{
-					// add some sort of file validation..
-
 					self.addFile(file);
 
 					self.opt.onFileQueued(file);
@@ -109,7 +106,6 @@
 				self.refreshTotals();
 			});
 
-			//
 			$(document).on('click', '[data-media-remove]', function(e)
 			{
 				e.preventDefault();
@@ -121,6 +117,22 @@
 				self.opt.onRemove(self, $(this));
 
 				self.refreshTotals();
+			});
+
+			jQuery(function($){
+				if(FileAPI.support.dnd) {
+					$('.upload__instructions').dnd(function(over) {
+						$('.dnd').toggle(over);
+					}, function (files) {
+						FileAPI.each(files, function(file) {
+							self.addFile(file);
+
+							self.opt.onFileQueued(file);
+						});
+
+						if (self.hasFiles() === true) self.enableUploadButton();
+					});
+				}
 			});
 		},
 
@@ -156,6 +168,11 @@
 		enableUploadButton : function()
 		{
 			$('[data-media-upload]').attr('disabled', false);
+		},
+
+		hideDnd : function()
+		{
+			$('.dnd').hide();
 		},
 
 		addFile : function(file)
@@ -205,6 +222,11 @@
 			delete this.files[id];
 
 			$('[data-media-file="' + id + '"]').remove();
+
+			if ( ! this.hasFiles()) {
+				this.disableUploadButton();
+				this.hideDnd();
+			}
 		},
 
 		upload : function(fileId, file)
