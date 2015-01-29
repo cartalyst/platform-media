@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.3 - 2015-01-28
+
+`FIXED`
+
+- Upload modal background glitch.
+
 ### v1.0.2 - 2015-01-28
 
 `FIXED`
