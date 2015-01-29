@@ -160,9 +160,14 @@ class MediaRepository implements MediaRepositoryInterface {
 	{
 		try
 		{
+			$media = $this->createModel();
+
+			$media->save();
+
 			// Sanitize the file name
-			$fileName = $this->sanitizeFileName(
-				array_get($input, 'name', $uploadedFile->getClientOriginalName())
+			$fileName = $this->prepareFileName(
+				array_get($input, 'name', $uploadedFile->getClientOriginalName()),
+				$media->id
 			);
 
 			// Get the submitted tags
@@ -171,25 +176,19 @@ class MediaRepository implements MediaRepositoryInterface {
 			// Upload the file
 			$file = $this->filesystem->upload($uploadedFile, $fileName);
 
-			// Check if a media entry already exists for this path
-			if ( ! $media = $this->findByPath($file->getPath()))
-			{
-				// If the file is an image, we get the image size
-				$imageSize = $file->getImageSize();
+			// If the file is an image, we get the image size
+			$imageSize = $file->getImageSize();
 
-				$input = array_merge([
-					'name'      => $uploadedFile->getClientOriginalName(),
-					'path'      => $file->getPath(),
-					'extension' => $file->getExtension(),
-					'mime'      => $file->getMimetype(),
-					'size'      => $file->getSize(),
-					'is_image'  => $file->isImage(),
-					'width'     => $imageSize['width'],
-					'height'    => $imageSize['height'],
-				], $input);
-
-				$media = $this->createModel();
-			}
+			$input = array_merge([
+				'name'      => $uploadedFile->getClientOriginalName(),
+				'path'      => $file->getPath(),
+				'extension' => $file->getExtension(),
+				'mime'      => $file->getMimetype(),
+				'size'      => $file->getSize(),
+				'is_image'  => $file->isImage(),
+				'width'     => $imageSize['width'],
+				'height'    => $imageSize['height'],
+			], $input);
 
 			$media->fill($input)->save();
 
@@ -357,6 +356,21 @@ class MediaRepository implements MediaRepositoryInterface {
 		$regex = [ '#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#', '#[ ]#', '![_]+!u' ];
 
 		return preg_replace($regex, '_', strtolower($fileName));
+	}
+
+	/**
+	 * Prepares the filename by sanitizing it and
+	 * appending the media id to the end.
+	 *
+	 * @param  string  $fileName
+	 * @param  string  $id
+	 * @return string
+	 */
+	protected function prepareFileName($fileName, $id)
+	{
+		$fileName = $this->sanitizeFileName($fileName);
+
+		return pathinfo($fileName, PATHINFO_FILENAME)."_{$id}.".pathinfo($fileName, PATHINFO_EXTENSION);
 	}
 
 }
