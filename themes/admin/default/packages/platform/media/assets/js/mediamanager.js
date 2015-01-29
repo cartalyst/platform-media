@@ -284,15 +284,13 @@
 						}
 						else if (state === 'error')
 						{
-
 							self._getEl(file, '.file-progress').hide();
 
 							self._getEl(file, '.file-error').show();
 
-							self._getEl(file, '.file-error-help').text(state + ': '+ (err ? (xhr.statusText || err) : state));
+							self._getEl(file, '.file-error-help').text((err ? (xhr.responseText || err) : state));
 
 							self.opt.onFail(xhr);
-
 						}
 					}
 				});
