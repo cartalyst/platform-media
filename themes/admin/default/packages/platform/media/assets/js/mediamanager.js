@@ -302,6 +302,8 @@
 			// Avoid scope issues
 			var self = this;
 
+			self.disableUploadButton();
+
 			// Loop through all the files on the queue
 			$.each(self.files, function(id, file)
 			{
