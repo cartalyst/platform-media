@@ -11,6 +11,17 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.4 - 2015-01-31
+
+`ADDED`
+
+- Drag and drop support.
+
+`FIXED`
+
+- Prevent file duplicates by appending the media id to the filename.
+- Disable the Start Upload button after clicking it.
+
 ### v1.0.3 - 2015-01-28
 
 `FIXED`
