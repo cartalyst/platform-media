@@ -244,7 +244,7 @@ class MediaRepositoryTest extends IlluminateTestCase {
 		$preparedData = [
 			'name'      => 'Foo',
 			'path'      => 'foo_path',
-			'extension' => null,
+			'extension' => 'png',
 			'mime'      => null,
 			'size'      => null,
 			'is_image'  => true,
@@ -253,12 +253,12 @@ class MediaRepositoryTest extends IlluminateTestCase {
 		];
 
 		$this->app['filesystem']->shouldReceive('upload')
-			->with($uploaded, 'foo')
+			->with($uploaded, 'foo_1.')
 			->once()
 			->andReturn($file);
 
 		$file->shouldReceive('getPath')
-			->twice()
+			->once()
 			->andReturn('foo_path');
 
 		$file->shouldReceive('getImageSize')
@@ -266,7 +266,8 @@ class MediaRepositoryTest extends IlluminateTestCase {
 			->andReturn(['width' => 1, 'height' => 1]);
 
 		$file->shouldReceive('getExtension')
-			->once();
+			->once()
+			->andReturn('png');
 
 		$file->shouldReceive('getMimetype')
 			->once();
@@ -281,20 +282,8 @@ class MediaRepositoryTest extends IlluminateTestCase {
 		$model = m::mock('Platform\Media\Models\Media');
 
 		$this->repository->shouldReceive('createModel')
-			->twice()
-			->andReturn($model);
-
-		$model->shouldReceive('rememberForever')
-			->once()
-			->with('platform.media.path.foo_path')
-			->andReturn($model);
-
-		$model->shouldReceive('wherePath')
 			->once()
 			->andReturn($model);
-
-		$model->shouldReceive('first')
-			->once();
 
 		$model->shouldReceive('fill')
 			->with($preparedData)
@@ -302,7 +291,12 @@ class MediaRepositoryTest extends IlluminateTestCase {
 			->andReturn($model);
 
 		$model->shouldReceive('save')
-			->once();
+			->twice();
+
+		$model->shouldReceive('getAttribute')
+			->with('id')
+			->once()
+			->andReturn(1);
 
 		$this->app['platform.tags']->shouldReceive('set')
 			->with($model, null)
@@ -528,28 +522,6 @@ class MediaRepositoryTest extends IlluminateTestCase {
 			->once();
 
 		$this->repository->delete(1);
-
-		$this->assertEquals($error, $this->repository->getError());
-	}
-
-	/** @test */
-	public function it_sets_an_error_if_file_exists_is_thrown_on_upload()
-	{
-		$uploaded = m::mock('Symfony\Component\HttpFoundation\File\UploadedFile');
-		$uploaded->shouldReceive('getClientOriginalName')
-			->once();
-
-		$error = 'error message';
-
-		$this->app['filesystem']->shouldReceive('upload')
-			->once()
-			->andThrow(new \Cartalyst\Filesystem\Exceptions\FileExistsException);
-
-		$this->app['translator']->shouldReceive('trans')
-			->once()
-			->andReturn($error);
-
-		$this->repository->upload($uploaded, []);
 
 		$this->assertEquals($error, $this->repository->getError());
 	}
