@@ -27,9 +27,6 @@ class MediaServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		// Register the extension component namespaces
-		$this->package('platform/media', 'platform/media'. __DIR__.'/../..');
-
 		// Register the tags namespace
 		$this->app['platform.tags.manager']->registerNamespace(
 			$this->app['Platform\Media\Models\Media']
@@ -75,7 +72,7 @@ class MediaServiceProvider extends ServiceProvider {
 	{
 		$serviceProvider = 'Cartalyst\Filesystem\Laravel\FilesystemServiceProvider';
 
-		if ( ! $this->app->getRegistered($serviceProvider))
+		if ( ! $this->app->getProvider($serviceProvider))
 		{
 			// Register the Filesystem Service provider and class alias
 			$this->app->register($serviceProvider);
@@ -93,7 +90,7 @@ class MediaServiceProvider extends ServiceProvider {
 	{
 		$serviceProvider = 'Intervention\Image\ImageServiceProvider';
 
-		if ( ! $this->app->getRegistered($serviceProvider))
+		if ( ! $this->app->getProvider($serviceProvider))
 		{
 			// Register the Intervention Image service provider and class alias
 			$this->app->register($serviceProvider);
