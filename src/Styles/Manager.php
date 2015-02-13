@@ -48,7 +48,7 @@ class Manager {
 	public function __construct(Container $app)
 	{
 		// Get the config
-		$config = $app['config']->get('platform/media::config');
+		$config = $app['config']->get('platform-media');
 
 		// Register the styles from the config
 		call_user_func(array_get($config, 'styles'), $this);

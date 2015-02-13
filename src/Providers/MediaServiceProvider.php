@@ -44,6 +44,8 @@ class MediaServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
+		$this->prepareResources();
+
 		// Register the Cartalyst Filesystem Service Provider and Facade alias.
 		$this->registerFilesystemPackage();
 
@@ -61,6 +63,22 @@ class MediaServiceProvider extends ServiceProvider {
 
 		// Register the event handler
 		$this->bindIf('platform.media.handler.event', 'Platform\Media\Handlers\EventHandler');
+	}
+
+	/**
+	 * Prepare the package resources.
+	 *
+	 * @return void
+	 */
+	protected function prepareResources()
+	{
+		$config = realpath(__DIR__.'/../../config/config.php');
+
+		$this->mergeConfigFrom($config, 'platform-media');
+
+		$this->publishes([
+			$config => config_path('platform-media.php'),
+		], 'config');
 	}
 
 	/**

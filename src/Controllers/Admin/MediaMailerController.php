@@ -88,7 +88,7 @@ class MediaMailerController extends AdminController {
 
 		$this->roles = $roles;
 
-		$this->config = Config::get('platform/media::config');
+		$this->config = Config::get('platform-media');
 
 		$this->mailer = $mailer;
 	}
