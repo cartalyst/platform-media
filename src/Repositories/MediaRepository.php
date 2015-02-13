@@ -91,7 +91,10 @@ class MediaRepository implements MediaRepositoryInterface {
 	 */
 	public function find($id)
 	{
-		return $this->createModel()->rememberForever('platform.media.'.$id)->find($id);
+		return $this->container['cache']->rememberForever('platform.media.'.$id, function() use ($id)
+		{
+			return $this->createModel()->find($id);
+		});
 	}
 
 	/**
@@ -99,7 +102,10 @@ class MediaRepository implements MediaRepositoryInterface {
 	 */
 	public function findByPath($path)
 	{
-		return $this->createModel()->wherePath($path)->rememberForever('platform.media.path.'.$path)->first();
+		return $this->container['cache']->rememberForever('platform.media.path.'.$path, function() use ($path)
+		{
+			return $this->createModel()->wherePath($path)->first();
+		});
 	}
 
 	/**
