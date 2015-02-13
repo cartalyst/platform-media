@@ -65,10 +65,13 @@ class MediaRepositoryTest extends IlluminateTestCase {
 			->once()
 			->andReturn($model);
 
-		$model->shouldReceive('rememberForever')
+		$this->app['cache']->shouldReceive('rememberForever')
 			->once()
-			->with('platform.media.1')
-			->andReturn($model);
+			->with('platform.media.1', m::on(function($callback)
+			{
+				$callback();
+				return true;
+			}))->andReturn($model);
 
 		$model->shouldReceive('find')
 			->once();
@@ -85,10 +88,13 @@ class MediaRepositoryTest extends IlluminateTestCase {
 			->once()
 			->andReturn($model);
 
-		$model->shouldReceive('rememberForever')
+		$this->app['cache']->shouldReceive('rememberForever')
 			->once()
-			->with('platform.media.path.foo')
-			->andReturn($model);
+			->with('platform.media.path.foo', m::on(function($callback)
+			{
+				$callback();
+				return true;
+			}))->andReturn($model);
 
 		$model->shouldReceive('wherePath')
 			->once()
@@ -377,10 +383,13 @@ class MediaRepositoryTest extends IlluminateTestCase {
 			->once()
 			->andReturn($model);
 
-		$model->shouldReceive('rememberForever')
+		$this->app['cache']->shouldReceive('rememberForever')
 			->once()
-			->with('platform.media.1')
-			->andReturn($model);
+			->with('platform.media.1', m::on(function($callback)
+			{
+				$callback();
+				return true;
+			}))->andReturn($model);
 
 		$model->shouldReceive('find')
 			->once()
@@ -436,10 +445,13 @@ class MediaRepositoryTest extends IlluminateTestCase {
 			->once()
 			->andReturn($model);
 
-		$model->shouldReceive('rememberForever')
+		$this->app['cache']->shouldReceive('rememberForever')
 			->once()
-			->with('platform.media.1')
-			->andReturn($model);
+			->with('platform.media.1', m::on(function($callback)
+			{
+				$callback();
+				return true;
+			}))->andReturn($model);
 
 		$model->shouldReceive('find')
 			->once()
@@ -475,10 +487,13 @@ class MediaRepositoryTest extends IlluminateTestCase {
 			->once()
 			->andReturn($model);
 
-		$model->shouldReceive('rememberForever')
+		$this->app['cache']->shouldReceive('rememberForever')
 			->once()
-			->with('platform.media.1')
-			->andReturn($model);
+			->with('platform.media.1', m::on(function($callback)
+			{
+				$callback();
+				return true;
+			}))->andReturn($model);
 
 		$model->shouldReceive('find')
 			->once()
@@ -513,10 +528,13 @@ class MediaRepositoryTest extends IlluminateTestCase {
 			->once()
 			->andReturn($model);
 
-		$model->shouldReceive('rememberForever')
+		$this->app['cache']->shouldReceive('rememberForever')
 			->once()
-			->with('platform.media.1')
-			->andReturn($model);
+			->with('platform.media.1', m::on(function($callback)
+			{
+				$callback();
+				return true;
+			}));
 
 		$model->shouldReceive('find')
 			->once();

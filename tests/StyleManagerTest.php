@@ -44,7 +44,7 @@ class StyleManagerTest extends IlluminateTestCase {
 
 		$this->app['config'] = m::mock('Illuminate\Config\Repository');
 		$this->app['config']->shouldReceive('get')
-			->with('platform/media::config')
+			->with('platform-media')
 			->once()
 			->andReturn($config);
 
