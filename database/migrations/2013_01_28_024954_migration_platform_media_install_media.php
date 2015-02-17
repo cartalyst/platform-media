@@ -31,10 +31,10 @@ class MigrationPlatformMediaInstallMedia extends Migration {
 		Schema::create('media', function($table)
 		{
 			$table->increments('id');
-			$table->string('name');
-			$table->string('path');
-			$table->string('extension');
-			$table->string('mime');
+			$table->string('name')->nullable();
+			$table->string('path')->nullable();
+			$table->string('extension')->nullable();
+			$table->string('mime')->nullable();
 			$table->integer('size')->nullable();
 			$table->boolean('is_image')->default(0);
 			$table->text('thumbnail')->nullable();
