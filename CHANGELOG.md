@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.5 - 2015-02-17
+
+`FIXED`
+
+- Make database fields nullable on the migration to allow creating empty records.
+
 ### v1.0.4 - 2015-01-31
 
 `ADDED`
