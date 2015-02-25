@@ -48,9 +48,9 @@
 		"cartalyst/filesystem": "3.0.*",
 		"intervention/image": "2.1.*",
 		"intervention/imagecache": "2.1.*",
-		"platform/access": "1.0.*",
-		"platform/foundation": "1.0.*",
-		"platform/tags": "1.0.*"
+		"platform/access": "2.0.*",
+		"platform/foundation": "2.0.*",
+		"platform/tags": "2.0.*"
 	},
 	"require-dev": {
 		"cartalyst/testing": "~1.0",
