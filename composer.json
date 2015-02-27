@@ -53,7 +53,7 @@
 		"platform/tags": "2.0.*"
 	},
 	"require-dev": {
-		"cartalyst/testing": "~1.0",
+		"cartalyst/testing": "~1.1",
 		"patchwork/utf8": "~1.1"
 	},
 	"autoload": {
