@@ -134,7 +134,8 @@ class AdminMediaControllerTest extends IlluminateTestCase {
 			->once()
 			->andReturn($media = m::mock('Platform\Media\Models\Media'));
 
-		$media->shouldReceive('toJson')
+		$this->app['response']->shouldReceive('make')
+			->with($media, 200, [])
 			->once();
 
 		$this->controller->upload();
@@ -152,6 +153,10 @@ class AdminMediaControllerTest extends IlluminateTestCase {
 			->andReturn(false);
 
 		$this->media->shouldReceive('getError')
+			->once();
+
+		$this->app['response']->shouldReceive('make')
+			->with(null, 400, [])
 			->once();
 
 		$this->controller->upload();
@@ -183,6 +188,10 @@ class AdminMediaControllerTest extends IlluminateTestCase {
 		$this->media->shouldReceive('update')
 			->once()
 			->andReturn($media = m::mock('Platform\Media\Models\Media'));
+
+		$this->app['response']->shouldReceive('make')
+			->with(null, 200, [])
+			->once();
 
 		$this->controller->update(1);
 	}
@@ -265,7 +274,11 @@ class AdminMediaControllerTest extends IlluminateTestCase {
 			->with(1)
 			->once();
 
-		$this->assertContains('Success', (string) $this->controller->executeAction());
+		$this->app['response']->shouldReceive('make')
+			->with('Success', 200, [])
+			->once();
+
+		$this->controller->executeAction();
 	}
 
 	/** @test */
@@ -276,7 +289,11 @@ class AdminMediaControllerTest extends IlluminateTestCase {
 			->once()
 			->andReturn('foobar');
 
-		$this->assertContains('Failed', (string) $this->controller->executeAction());
+		$this->app['response']->shouldReceive('make')
+			->with('Failed', 500, [])
+			->once();
+
+		$this->controller->executeAction();
 	}
 
 }
