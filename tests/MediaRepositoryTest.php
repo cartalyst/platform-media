@@ -30,7 +30,7 @@ class MediaRepositoryTest extends IlluminateTestCase {
 		parent::setUp();
 
 		// Additional Bindings
-		$this->app['filesystem']                  = m::mock('Cartalyst\Filesystem\Filesystem');
+		$this->app['cartalyst.filesystem']                  = m::mock('Cartalyst\Filesystem\Filesystem');
 		$this->app['platform.content']            = m::mock('Platform\Content\Repositories\ContentRepositoryInterface');
 		$this->app['platform.media.handler.data'] = m::mock('Platform\Media\Handlers\DataHandlerInterface');
 		$this->app['platform.media.manager']      = m::mock('Platform\Media\Repositories\ManagerRepository');
@@ -131,7 +131,7 @@ class MediaRepositoryTest extends IlluminateTestCase {
 	{
 		$file = m::mock('Symfony\Component\HttpFoundation\File\UploadedFile');
 
-		$this->app['filesystem']->shouldIgnoreMissing();
+		$this->app['cartalyst.filesystem']->shouldIgnoreMissing();
 
 		$this->assertTrue($this->repository->validForUpload($file));
 	}
@@ -148,7 +148,7 @@ class MediaRepositoryTest extends IlluminateTestCase {
 			->once()
 			->andReturn($error);
 
-		$this->app['filesystem']->shouldReceive('validateFile')
+		$this->app['cartalyst.filesystem']->shouldReceive('validateFile')
 			->once()
 			->andThrow(new \Cartalyst\Filesystem\Exceptions\InvalidFileException);
 
@@ -169,7 +169,7 @@ class MediaRepositoryTest extends IlluminateTestCase {
 			->once()
 			->andReturn($error);
 
-		$this->app['filesystem']->shouldReceive('validateFile')
+		$this->app['cartalyst.filesystem']->shouldReceive('validateFile')
 			->once()
 			->andThrow(new \Cartalyst\Filesystem\Exceptions\MaxFileSizeExceededException);
 
@@ -190,7 +190,7 @@ class MediaRepositoryTest extends IlluminateTestCase {
 			->once()
 			->andReturn($error);
 
-		$this->app['filesystem']->shouldReceive('validateFile')
+		$this->app['cartalyst.filesystem']->shouldReceive('validateFile')
 			->once()
 			->andThrow(new \Cartalyst\Filesystem\Exceptions\InvalidMimeTypeException);
 
@@ -258,7 +258,7 @@ class MediaRepositoryTest extends IlluminateTestCase {
 			'height'    => 1,
 		];
 
-		$this->app['filesystem']->shouldReceive('upload')
+		$this->app['cartalyst.filesystem']->shouldReceive('upload')
 			->with($uploaded, 'foo_1.')
 			->once()
 			->andReturn($file);
@@ -339,14 +339,14 @@ class MediaRepositoryTest extends IlluminateTestCase {
 			'height'    => 1,
 		];
 
-		$this->app['filesystem']->shouldReceive('validateFile')
+		$this->app['cartalyst.filesystem']->shouldReceive('validateFile')
 			->once()
 			->andReturn(true);
 
-		$this->app['filesystem']->shouldReceive('delete')
+		$this->app['cartalyst.filesystem']->shouldReceive('delete')
 			->once();
 
-		$this->app['filesystem']->shouldReceive('upload')
+		$this->app['cartalyst.filesystem']->shouldReceive('upload')
 			->with($uploaded, 'foo')
 			->once()
 			->andReturn($file);
@@ -431,7 +431,7 @@ class MediaRepositoryTest extends IlluminateTestCase {
 
 		$error = 'error message';
 
-		$this->app['filesystem']->shouldReceive('validateFile')
+		$this->app['cartalyst.filesystem']->shouldReceive('validateFile')
 			->once()
 			->andThrow(new \Cartalyst\Filesystem\Exceptions\InvalidFileException);
 
@@ -469,11 +469,11 @@ class MediaRepositoryTest extends IlluminateTestCase {
 	{
 		$file = m::mock('Cartalyst\Filesystem\File');
 
-		$this->app['filesystem']->shouldReceive('get')
+		$this->app['cartalyst.filesystem']->shouldReceive('get')
 			->once()
 			->andReturn($file);
 
-		$this->app['filesystem']->shouldReceive('delete')
+		$this->app['cartalyst.filesystem']->shouldReceive('delete')
 			->once();
 
 		$model = m::mock('Platform\Media\Models\Media');

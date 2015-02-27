@@ -71,7 +71,7 @@ class MediaRepository implements MediaRepositoryInterface {
 
 		$this->setDispatcher($app['events']);
 
-		$this->filesystem = $app['filesystem'];
+		$this->filesystem = $app['cartalyst.filesystem'];
 
 		$this->setValidator($app['platform.media.validator']);
 

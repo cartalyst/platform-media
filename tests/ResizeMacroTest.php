@@ -33,7 +33,7 @@ class ResizeMacroTest extends IlluminateTestCase {
 	{
 		parent::setUp();
 
-		$this->app['filesystem']  = m::mock('Illuminate\Filesystem\Filesystem');
+		$this->app['cartalyst.filesystem']  = m::mock('Illuminate\Filesystem\Filesystem');
 		$this->app['image']       = m::mock('Intervention\Image\ImageManager');
 		$this->app['path.public'] = '/';
 

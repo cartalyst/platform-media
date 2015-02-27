@@ -58,7 +58,7 @@ class ResizeMacro extends AbstractMacro implements MacroInterface {
 
 		$this->intervention = $app['image'];
 
-		$this->filesystem = $app['filesystem'];
+		$this->filesystem = $app['cartalyst.filesystem'];
 	}
 
 	/**
