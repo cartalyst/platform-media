@@ -27,11 +27,11 @@
 	 */
 	var defaults =
 	{
-		onFail : function() {},
-		onFileQueued : function() {},
-		onSuccess : function() {},
+		onFail : function(xhr) {},
+		onFileQueued : function(file) {},
+		onSuccess : function(xhr) {},
 		onComplete : function() {},
-		onRemove : function() {},
+		onRemove : function(self, elem) {},
 		icons: {
 			def:   'fa-file-o',
 			image: 'fa-file-image-o',
@@ -270,7 +270,7 @@
 							// Timeout to show the success button for 200ms
 							setTimeout(function()
 							{
-								self.opt.onSuccess();
+								self.opt.onSuccess(xhr);
 
 								self.removeFile(fileId);
 
