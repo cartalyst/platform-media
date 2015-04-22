@@ -156,7 +156,7 @@ jQuery(document).ready(function($)
 														<a href="{{{ URL::current() }}}?remove={{ $item->id }}">&times;</a>
 													</span>
 
-													<h5 class="media-heading">{{{ Str::limit($item->name, 15) }}}</h5>
+													<h5 class="media-heading">{{{ Illuminate\Support\Str::limit::limit($item->name, 15) }}}</h5>
 
 													{{{ formatBytes($item->size) }}}
 
