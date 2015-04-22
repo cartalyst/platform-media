@@ -12,7 +12,7 @@
                     <table border="0" cellpadding="20" cellspacing="0" width="600" id="emailContainer">
                         <tr>
                             <td align="center" valign="top">
-                                {{ $body }}
+                                {!! $body !!}
                             </td>
                         </tr>
                     </table>
