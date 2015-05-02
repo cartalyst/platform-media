@@ -59,8 +59,11 @@ class MediaController extends Controller {
 		$file = Filesystem::read($media->path);
 
 		$headers = [
+			'Pragma'         => 'public',
 			'Content-Type'   => $media->mime,
 			'Content-Length' => strlen($file),
+			'Cache-Control'  => 'max-age=2592000, public',
+			'Expires'        => gmdate('D, d M Y H:i:s \G\M\T', time() + 86400)
 		];
 
 		return $this->respond($file, $headers);
