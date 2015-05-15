@@ -24,6 +24,9 @@ return [
 
 	#'default_style' => 'thumbnail',
 
+	//Time to live before browser will resend a request
+	'ttl' => 2592000,
+
 	/*
 	|--------------------------------------------------------------------------
 	| Styles
