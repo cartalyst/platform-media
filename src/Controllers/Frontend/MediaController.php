@@ -58,10 +58,21 @@ class MediaController extends Controller {
 
 		$file = Filesystem::read($media->path);
 
+		$etag = md5($file);
+
+		$ttl = (int) config('platform-media.ttl');
+
 		$headers = [
+			'ETag'           => $etag,
 			'Content-Type'   => $media->mime,
 			'Content-Length' => strlen($file),
+			'Cache-Control'  => "max-age={$ttl}, public",
 		];
+
+		if (request()->server('HTTP_IF_NONE_MATCH') === $etag)
+		{
+			return response(null, 304, $headers);
+		}
 
 		return $this->respond($file, $headers);
 	}
