@@ -49,6 +49,9 @@ return [
 		});
 	},
 
+	//Time to live before browser will resend a request
+	'ttl' => 2592000,
+
 	/*
 	|--------------------------------------------------------------------------
 	| Macros
