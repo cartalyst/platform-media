@@ -22,9 +22,16 @@ use Platform\Media\Styles\Manager;
 
 return [
 
-	#'default_style' => 'thumbnail',
+	/*
+	|--------------------------------------------------------------------------
+	| Time to live
+	|--------------------------------------------------------------------------
+	|
+	| Define here the time to live, in seconds, before the browser
+	| sends another request to re-cache the media.
+	|
+	*/
 
-	//Time to live before browser will resend a request
 	'ttl' => 2592000,
 
 	/*
