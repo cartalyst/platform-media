@@ -58,7 +58,7 @@ class MediaController extends Controller {
 
 		$file = Filesystem::read($media->path);
 
-		$ttl = (int) config('platform/media::headers.ttl');
+		$ttl = (int) config('platform/media::ttl');
 		$etag = md5($file);
 
 		$headers = [
