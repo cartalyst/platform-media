@@ -58,30 +58,30 @@ class MediaController extends Controller {
 
 		$file = Filesystem::read($media->path);
 
-        $ttl = (int) config('platform/media::headers.ttl');
-        $etag = md5($file);
+		$ttl = (int) config('platform/media::headers.ttl');
+		$etag = md5($file);
 
-        if ($etag === request()->server('HTTP_IF_NONE_MATCH'))
-        {
-            return response(null, 304);
-        }
-        else
-        {
-            $headers = [
-                'Cache-Control'  => "max-age=$ttl, public",
-                'Content-Type'   => $media->mime,
-                'Content-Length' => strlen($file),
-                'ETag'           => $etag,
-            ];
+		$headers = [
+			'Cache-Control' => "max-age=$ttl, public",
+			'Content-Type' => $media->mime,
+			'Content-Length' => strlen($file),
+			'ETag' => $etag,
+		];
 
-            return $this->respond($file, $headers);
-        }
+		if ($etag === request()->server('HTTP_IF_NONE_MATCH'))
+		{
+			return response(null, 304, $headers);
+		}
+		else
+		{
+			return $this->respond($file, $headers);
+		}
 	}
 
 	/**
 	 * Downloads the given media file.
 	 *
-	 * @param  string  $path
+	 * @param  string $path
 	 * @return \Illuminate\Http\Response
 	 */
 	public function download($path)
