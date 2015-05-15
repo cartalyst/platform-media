@@ -81,7 +81,7 @@ class MediaController extends Controller {
 	/**
 	 * Downloads the given media file.
 	 *
-	 * @param  string $path
+	 * @param  string  $path
 	 * @return \Illuminate\Http\Response
 	 */
 	public function download($path)
