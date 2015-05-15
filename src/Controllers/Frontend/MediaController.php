@@ -58,7 +58,7 @@ class MediaController extends Controller {
 
 		$file = Filesystem::read($media->path);
 
-        $ttl = config('platform/media::headers.max-age');
+        $ttl = (int) config('platform/media::headers.ttl');
         $etag = md5($file);
 
         if ($etag === request()->server('HTTP_IF_NONE_MATCH'))
