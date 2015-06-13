@@ -15,6 +15,16 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 - Updated for Platform 3.
 
+### v1.0.6 - 2015-06-13
+
+`ADDED`
+
+- Media download cache.
+
+`FIXED`
+
+- Bulk delete selector listener.
+
 ### v1.0.5 - 2015-02-17
 
 `FIXED`
