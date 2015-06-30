@@ -58,14 +58,14 @@ jQuery(document).ready(function($)
 </script>
 @stop
 
-{{-- Page --}}
+{{-- Page content --}}
 @section('page')
 <section class="panel panel-default panel-tabs">
 
-	{{-- Media form --}}
+	{{-- Form --}}
 	<form id="media-form" action="{{ request()->fullUrl() }}" method="post" accept-char="UTF-8" autocomplete="off" enctype="multipart/form-data">
 
-		{{-- CSRF Token --}}
+		{{-- Form: CSRF Token --}}
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 		<header class="panel-heading">
@@ -125,7 +125,7 @@ jQuery(document).ready(function($)
 
 				<div class="tab-content">
 
-					{{-- Form: General --}}
+					{{-- Tab: General --}}
 					<div role="tabpanel" class="tab-pane fade in active" id="general-tab">
 
 						<fieldset>
