@@ -24,16 +24,16 @@
 @parent
 @stop
 
-{{-- Page --}}
+{{-- Page content --}}
 @section('page')
 
 {{-- Page header --}}
 <section class="panel panel-default panel-tabs">
 
-	{{-- Media form --}}
+	{{-- Form --}}
 	<form id="media-form" action="{{ request()->fullUrl() }}" role="form" method="post" accept-char="UTF-8" autocomplete="off" enctype="multipart/form-data" data-parsley-validate>
 
-		{{-- CSRF Token --}}
+		{{-- Form: CSRF Token --}}
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 		<header class="panel-heading">

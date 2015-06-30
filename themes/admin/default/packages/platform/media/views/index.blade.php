@@ -39,7 +39,7 @@
 </script>
 @stop
 
-{{-- Page --}}
+{{-- Page content --}}
 @section('page')
 
 {{-- Grid --}}
