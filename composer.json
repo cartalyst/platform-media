@@ -43,7 +43,7 @@
 		}
 	],
 	"require": {
-		"php": ">=5.4.0",
+		"php": ">=5.5.9",
 		"cartalyst/composer-installers": "1.2.*",
 		"cartalyst/filesystem": "3.0.*",
 		"intervention/image": "2.1.*",
