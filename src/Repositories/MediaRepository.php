@@ -192,7 +192,7 @@ class MediaRepository implements MediaRepositoryInterface
             $media->fill($input)->save();
 
             // Set the tags on the media entry
-            // $this->tags->set($media, $tags);
+            $this->tags->set($media, $tags);
 
             $this->fireEvent('platform.media.uploaded', [ $media, $file, $uploadedFile ]);
 
