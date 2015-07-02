@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Part of the Platform Media extension.
  *
@@ -10,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
@@ -19,28 +20,28 @@
 
 return [
 
-	'general' => [
+    'general' => [
 
-		'legend'       => 'Details',
+        'legend'       => 'Details',
 
-		'name'         => 'Name',
-		'name_help'    => 'Type a descriptive name for your media.',
+        'name'         => 'Name',
+        'name_help'    => 'Type a descriptive name for your media.',
 
-		'file'         => 'File',
-		'size'         => 'Size',
+        'file'         => 'File',
+        'size'         => 'Size',
 
-		'roles'        => 'Roles',
-		'roles_help'   => 'Select the roles to assign to this media file.',
+        'roles'        => 'Roles',
+        'roles_help'   => 'Select the roles to assign to this media file.',
 
-		'status'       => 'Status',
-		'status_help ' => '..',
+        'status'       => 'Status',
+        'status_help ' => '..',
 
-		'share'        => 'Share',
-		'download'     => 'Download',
-		'email'        => 'Email',
-		'public'       => 'Public',
-		'private'      => 'Private',
+        'share'        => 'Share',
+        'download'     => 'Download',
+        'email'        => 'Email',
+        'public'       => 'Public',
+        'private'      => 'Private',
 
-	],
+    ],
 
 ];

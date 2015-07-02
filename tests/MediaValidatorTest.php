@@ -1,4 +1,5 @@
-<?php namespace Platform\Media\Tests;
+<?php
+
 /**
  * Part of the Platform Media extension.
  *
@@ -10,56 +11,57 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
+namespace Platform\Media\Tests;
+
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
 use Platform\Media\Validator\MediaValidator;
 
-class MediaValidatorTest extends PHPUnit_Framework_TestCase {
+class MediaValidatorTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * Validator instance.
+     *
+     * @var \Platform\Media\Validator\MediaValidator
+     */
+    protected $validator;
 
-	/**
-	 * Validator instance.
-	 *
-	 * @var \Platform\Media\Validator\MediaValidator
-	 */
-	protected $validator;
+    /**
+     * Close mockery.
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        m::close();
+    }
 
-	/**
-	 * Close mockery.
-	 *
-	 * @return void
-	 */
-	public function tearDown()
-	{
-		m::close();
-	}
+    /**
+     * Setup.
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        $this->validator = new MediaValidator(m::mock('Illuminate\Validation\Factory'));
+    }
 
-	/**
-	 * Setup.
-	 *
-	 * @return void
-	 */
-	public function setUp()
-	{
-		$this->validator = new MediaValidator(m::mock('Illuminate\Validation\Factory'));
-	}
+    /** @test */
+    public function it_can_validate()
+    {
+        $rules = [
+            'name' => 'required',
+        ];
 
-	/** @test */
-	public function it_can_validate()
-	{
-		$rules = [
-			'name' => 'required',
-		];
+        $this->assertEquals($rules, $this->validator->getRules());
 
-		$this->assertEquals($rules, $this->validator->getRules());
-
-		$this->validator->onUpdate();
-	}
-
+        $this->validator->onUpdate();
+    }
 }

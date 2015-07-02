@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Part of the Platform Media extension.
  *
@@ -10,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
@@ -22,55 +23,52 @@ use Platform\Media\Styles\Manager;
 
 return [
 
-	/*
-	|--------------------------------------------------------------------------
-	| Time to live
-	|--------------------------------------------------------------------------
-	|
-	| Define here the time to live, in seconds, before the browser
-	| sends another request to re-cache the media.
-	|
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Time to live
+    |--------------------------------------------------------------------------
+    |
+    | Define here the time to live, in seconds, before the browser
+    | sends another request to re-cache the media.
+    |
+    */
 
-	'ttl' => 2592000,
+    'ttl' => 2592000,
 
-	/*
-	|--------------------------------------------------------------------------
-	| Styles
-	|--------------------------------------------------------------------------
-	|
-	| Define here the required Style config sets that will
-	| be executed whenever a file gets uploaded.
-	|
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Styles
+    |--------------------------------------------------------------------------
+    |
+    | Define here the required Style config sets that will
+    | be executed whenever a file gets uploaded.
+    |
+    */
 
-	'styles' => function(Manager $manager)
-	{
-		$manager->setStyle('thumbnail', function(Style $style)
-		{
-			// Set the style image width.
-			$style->width = 300;
+    'styles' => function (Manager $manager) {
+        $manager->setStyle('thumbnail', function (Style $style) {
+            // Set the style image width.
+            $style->width = 300;
 
-			// Set the style macros
-			$style->macros = [ 'resize' ];
+            // Set the style macros
+            $style->macros = [ 'resize' ];
 
-			// Set the storage path
-			$style->path = public_path('cache/media');
-		});
-	},
+            // Set the storage path
+            $style->path = public_path('cache/media');
+        });
+    },
 
-	/*
-	|--------------------------------------------------------------------------
-	| Macros
-	|--------------------------------------------------------------------------
-	|
-	| Define here the Macros that can be used with the Style config sets.
-	|
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Macros
+    |--------------------------------------------------------------------------
+    |
+    | Define here the Macros that can be used with the Style config sets.
+    |
+    */
 
-	'macros' => function(Manager $manager)
-	{
-		$manager->setMacro('resize', 'Platform\Media\Styles\Macros\ResizeMacro');
-	}
+    'macros' => function (Manager $manager) {
+        $manager->setMacro('resize', 'Platform\Media\Styles\Macros\ResizeMacro');
+    }
 
 ];

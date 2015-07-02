@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Part of the Platform Media extension.
  *
@@ -10,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
@@ -19,13 +20,13 @@
 
 return [
 
-	'attachments' => 'Attachments',
-	'total_bytes' => 'Total',
+    'attachments' => 'Attachments',
+    'total_bytes' => 'Total',
 
-	'users'       => 'Users',
-	'users_help'  => 'Select users to add as recipients.',
+    'users'       => 'Users',
+    'users_help'  => 'Select users to add as recipients.',
 
-	'roles'       => 'Roles',
-	'roles_help'  => 'Select roles to add as recipients',
+    'roles'       => 'Roles',
+    'roles_help'  => 'Select roles to add as recipients',
 
 ];

@@ -1,4 +1,5 @@
-<?php namespace Platform\Media\Styles;
+<?php
+
 /**
  * Part of the Platform Media extension.
  *
@@ -10,104 +11,100 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
-class Style {
+namespace Platform\Media\Styles;
 
-	/**
-	 * The Style name.
-	 *
-	 * @var string
-	 */
-	public $name;
+class Style
+{
+    /**
+     * The Style name.
+     *
+     * @var string
+     */
+    public $name;
 
-	/**
-	 * The Style attributes.
-	 *
-	 * @var array
-	 */
-	protected $attributes = [];
+    /**
+     * The Style attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [];
 
-	/**
-	 * Constructor.
-	 *
-	 * @param  string  $name
-	 * @return void
-	 */
-	public function __construct($name)
-	{
-		$this->name = $name;
-	}
+    /**
+     * Constructor.
+     *
+     * @param  string  $name
+     * @return void
+     */
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
 
-	/**
-	 * Accessor for the "macros" attribute.
-	 *
-	 * @param  array  $macros
-	 * @return array
-	 */
-	public function getMacrosAttribute($macros)
-	{
-		return $macros ?: [];
-	}
+    /**
+     * Accessor for the "macros" attribute.
+     *
+     * @param  array  $macros
+     * @return array
+     */
+    public function getMacrosAttribute($macros)
+    {
+        return $macros ?: [];
+    }
 
-	/**
-	 * Mutator for the "macros" attribute.
-	 *
-	 * @param  array  $macros
-	 * @return void
-	 */
-	public function setMacrosAttribute(array $macros)
-	{
-		foreach (array_unique($macros) as $macro)
-		{
-			$this->attributes['macros'][] = $macro;
-		}
-	}
+    /**
+     * Mutator for the "macros" attribute.
+     *
+     * @param  array  $macros
+     * @return void
+     */
+    public function setMacrosAttribute(array $macros)
+    {
+        foreach (array_unique($macros) as $macro) {
+            $this->attributes['macros'][] = $macro;
+        }
+    }
 
-	/**
-	 * Dynamically retrieve attributes from the object.
-	 *
-	 * @param  string  $key
-	 * @return mixed
-	 */
-	public function __get($key)
-	{
-		$method = 'get'.ucfirst($key).'Attribute';
+    /**
+     * Dynamically retrieve attributes from the object.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        $method = 'get'.ucfirst($key).'Attribute';
 
-		$value = array_get($this->attributes, $key, null);
+        $value = array_get($this->attributes, $key, null);
 
-		if (method_exists($this, $method))
-		{
-			return $this->{$method}($value);
-		}
+        if (method_exists($this, $method)) {
+            return $this->{$method}($value);
+        }
 
-		return $value;
-	}
+        return $value;
+    }
 
-	/**
-	 * Dynamically set attributes on the object.
-	 *
-	 * @param  string  $key
-	 * @param  mixed  $value
-	 * @return void
-	 */
-	public function __set($key, $value)
-	{
-		$method = 'set'.ucfirst($key).'Attribute';
+    /**
+     * Dynamically set attributes on the object.
+     *
+     * @param  string  $key
+     * @param  mixed  $value
+     * @return void
+     */
+    public function __set($key, $value)
+    {
+        $method = 'set'.ucfirst($key).'Attribute';
 
-		if (method_exists($this, $method))
-		{
-			$this->{$method}($value);
-		}
-		else
-		{
-			$this->attributes[$key] = $value;
-		}
-	}
-
+        if (method_exists($this, $method)) {
+            $this->{$method}($value);
+        } else {
+            $this->attributes[$key] = $value;
+        }
+    }
 }

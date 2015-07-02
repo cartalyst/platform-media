@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Part of the Platform Media extension.
  *
@@ -10,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
@@ -19,27 +20,27 @@
 
 return [
 
-	'file_exists' => 'File already exists.',
+    'file_exists' => 'File already exists.',
 
-	'file_size_exceeded' => 'File size exceeded',
+    'file_size_exceeded' => 'File size exceeded',
 
-	'invalid_file' => 'Invalid uploaded file.',
+    'invalid_file' => 'Invalid uploaded file.',
 
-	'invalid_mime' => 'Invalid Mime Type.',
+    'invalid_mime' => 'Invalid Mime Type.',
 
-	'not_found' => 'Media [:id] does not exist.',
+    'not_found' => 'Media [:id] does not exist.',
 
-	// Success messages
-	'success' => [
-		'update' => 'Media was successfully updated.',
-		'delete' => 'Media was successfully deleted.',
-	],
+    // Success messages
+    'success' => [
+        'update' => 'Media was successfully updated.',
+        'delete' => 'Media was successfully deleted.',
+    ],
 
-	// Error messages
-	'error' => [
-		'update'   => 'There was an issue updating the media. Please try again.',
-		'delete'   => 'There was an issue deleting the media. Please try again.',
-		'multiple' => '{1} 1 item was successfully removed.|[2,Inf] :items items were successfully removed.',
-	],
+    // Error messages
+    'error' => [
+        'update'   => 'There was an issue updating the media. Please try again.',
+        'delete'   => 'There was an issue deleting the media. Please try again.',
+        'multiple' => '{1} 1 item was successfully removed.|[2,Inf] :items items were successfully removed.',
+    ],
 
 ];

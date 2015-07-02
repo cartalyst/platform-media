@@ -1,4 +1,5 @@
-<?php namespace Platform\Media\Validator;
+<?php
+
 /**
  * Part of the Platform Media extension.
  *
@@ -10,30 +11,30 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
+namespace Platform\Media\Validator;
+
 use Cartalyst\Support\Validator;
 
-class MediaValidator extends Validator implements MediaValidatorInterface {
+class MediaValidator extends Validator implements MediaValidatorInterface
+{
+    /**
+     * {@inheritDoc}
+     */
+    protected $rules = [
+        'name' => 'required',
+    ];
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected $rules = [
-		'name' => 'required',
-	];
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function onUpdate()
-	{
-
-	}
-
+    /**
+     * {@inheritDoc}
+     */
+    public function onUpdate()
+    {
+    }
 }

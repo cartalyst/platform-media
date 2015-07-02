@@ -1,4 +1,5 @@
-<?php namespace Platform\Media\Widgets;
+<?php
+
 /**
  * Part of the Platform Media extension.
  *
@@ -10,74 +11,72 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    2.0.2
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
+namespace Platform\Media\Widgets;
+
 use Platform\Media\Repositories\MediaRepositoryInterface;
 
-class Media {
+class Media
+{
+    /**
+     * Constructor.
+     *
+     * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
+     * @return void
+     */
+    public function __construct(MediaRepositoryInterface $media)
+    {
+        $this->media = $media;
+    }
 
-	/**
-	 * Constructor.
-	 *
-	 * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
-	 * @return void
-	 */
-	public function __construct(MediaRepositoryInterface $media)
-	{
-		$this->media = $media;
-	}
+    /**
+     * Returns the given media path or the HTML <img> tag.
+     *
+     * @param  int  $id
+     * @param  string  $type
+     * @return string
+     */
+    public function show($id, $type = null)
+    {
+        if ($media = $this->media->find((int) $id)) {
+            switch ($type) {
+                case 'thumbnail':
 
-	/**
-	 * Returns the given media path or the HTML <img> tag.
-	 *
-	 * @param  int  $id
-	 * @param  string  $type
-	 * @return string
-	 */
-	public function show($id, $type = null)
-	{
-		if ($media = $this->media->find((int) $id))
-		{
-			switch ($type)
-			{
-				case 'thumbnail':
+                    return url($media->thumbnail);
 
-					return url($media->thumbnail);
+                case 'download':
 
-				case 'download':
+                    return route('media.download', $media->path);
 
-					return route('media.download', $media->path);
+                default:
 
-				default:
+                    return route('media.view', $media->path);
+            }
+        }
+    }
 
-					return route('media.view', $media->path);
-			}
-		}
-	}
+    /**
+     * Returns the given media thumbnail in a <img> tag.
+     *
+     * @param  int  $id
+     * @param  array  $options
+     * @param  string  $default
+     * @return string
+     */
+    public function thumbnail($id, array $options = [], $default = null)
+    {
+        if ($media = $this->media->find($id)) {
+            $options = implode(' ', $options);
 
-	/**
-	 * Returns the given media thumbnail in a <img> tag.
-	 *
-	 * @param  int  $id
-	 * @param  array  $options
-	 * @param  string  $default
-	 * @return string
-	 */
-	public function thumbnail($id, array $options = [], $default = null)
-	{
-		if ($media = $this->media->find($id))
-		{
-			$options = implode(' ', $options);
+            $path = $media->is_image ? url($media->thumbnail) : $default;
 
-			$path = $media->is_image ? url($media->thumbnail) : $default;
-
-			return '<img src="'.$path.'"'.$options.'>';
-		}
-	}
-
+            return '<img src="'.$path.'"'.$options.'>';
+        }
+    }
 }
