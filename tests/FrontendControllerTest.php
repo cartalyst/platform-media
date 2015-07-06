@@ -68,6 +68,11 @@ class FrontendMediaControllerTest extends IlluminateTestCase {
 			->with('mime')
 			->once();
 
+		$this->app['request']->shouldReceive('server')
+		    ->with('HTTP_IF_NONE_MATCH')
+		    ->once()
+		    ->andReturn(false);
+
 		$this->app['filesystem']->shouldReceive('read')
 			->once();
 
