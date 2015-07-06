@@ -49,9 +49,9 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface {
 	 */
 	public function uploaded(Media $media, File $file, UploadedFile $uploadedFile)
 	{
-		if ($media->thumbnail)
+		if ($thumbnail = $media->thumbnail)
 		{
-			\Illuminate\Support\Facades\File::delete($media->thumbnail);
+			\Illuminate\Support\Facades\File::delete($thumbnail);
 		}
 
 		$this->app['platform.media.manager']->handleUp($media, $file, $uploadedFile);
