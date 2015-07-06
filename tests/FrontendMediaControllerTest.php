@@ -90,6 +90,19 @@ class FrontendMediaControllerTest extends IlluminateTestCase
             ->with('Content-Length', null)
             ->once();
 
+        $response->shouldReceive('header')
+            ->with('Cache-Control', m::any())
+            ->once();
+
+        $response->shouldReceive('header')
+            ->with('ETag', m::any())
+            ->once();
+
+        $this->app['request']->shouldReceive('server')
+            ->with('HTTP_IF_NONE_MATCH')
+            ->once()
+            ->andReturn(false);
+
         $this->controller->view('foo');
     }
 
