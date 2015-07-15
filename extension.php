@@ -174,6 +174,7 @@ return [
             Route::get('grid', ['as' => 'admin.media.grid', 'uses' => 'MediaController@grid']);
 
             Route::post('upload', ['as' => 'admin.media.upload', 'uses' => 'MediaController@upload']);
+            Route::post('upload_json', ['as' => 'admin.media.upload_json', 'uses' => 'MediaController@uploadJson']);
 
             Route::get('email/{id}', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@index']);
             Route::post('email/{id}', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@process']);
@@ -219,7 +220,7 @@ return [
             $g->permission('media.upload', function ($p) {
                 $p->label = trans('platform/media::permissions.upload');
 
-                $p->controller('Platform\Media\Controllers\Admin\MediaController', 'upload');
+                $p->controller('Platform\Media\Controllers\Admin\MediaController', 'upload, uploadJson');
             });
 
             $g->permission('media.edit', function ($p) {

@@ -163,6 +163,28 @@ class MediaController extends AdminController
     }
 
     /**
+     * Media widget upload form processing.
+     *
+     * @return string
+     */
+    public function uploadJson()
+    {
+        $file = request()->file('file');
+
+        if ($this->media->validForUpload($file)) {
+            if ($media = $this->media->upload($file, request()->input())) {
+                return response()->json([
+                    'filelink' => route('media.view', $media->path),
+                ]);
+            }
+        }
+
+        return response()->json([
+            'error' => $this->media->getError(),
+        ]);
+    }
+
+    /**
      * Shows the form for updating a media.
      *
      * @param  int  $id
