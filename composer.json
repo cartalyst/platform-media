@@ -50,7 +50,7 @@
 		"intervention/imagecache": "2.1.*",
 		"platform/access": "2.1.*",
 		"platform/foundation": "2.0.*",
-		"platform/tags": "2.0.*"
+		"platform/tags": "2.1.*"
 	},
 	"require-dev": {
 		"cartalyst/testing": "~2.0@dev",
