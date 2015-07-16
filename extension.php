@@ -173,6 +173,9 @@ return [
 
             Route::get('grid', ['as' => 'admin.media.grid', 'uses' => 'MediaController@grid']);
 
+            Route::get('files_list', ['as' => 'admin.media.files_list', 'uses' => 'MediaController@filesList']);
+            Route::get('images_list', ['as' => 'admin.media.images_list', 'uses' => 'MediaController@imagesList']);
+
             Route::post('upload', ['as' => 'admin.media.upload', 'uses' => 'MediaController@upload']);
             Route::post('upload_json', ['as' => 'admin.media.upload_json', 'uses' => 'MediaController@uploadJson']);
 
@@ -214,7 +217,7 @@ return [
             $g->permission('media.index', function ($p) {
                 $p->label = trans('platform/media::permissions.index');
 
-                $p->controller('Platform\Media\Controllers\Admin\MediaController', 'index, grid');
+                $p->controller('Platform\Media\Controllers\Admin\MediaController', 'index, grid, filesList, imagesList');
             });
 
             $g->permission('media.upload', function ($p) {

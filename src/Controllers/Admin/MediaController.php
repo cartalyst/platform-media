@@ -145,6 +145,67 @@ class MediaController extends AdminController
     }
 
     /**
+     * Media files list.
+     *
+     * @return string
+     */
+    public function filesList()
+    {
+        $columns = [
+            'name',
+            'path' => 'link',
+            'size',
+        ];
+
+        $settings = [
+            'sort'      => 'created_at',
+            'direction' => 'desc',
+        ];
+
+        $transformer = function ($media) {
+            return [
+                'title' => $media->name,
+                'name' => $media->name,
+                'link' => route('media.download', $media->link),
+                'size' => formatBytes($media->size),
+            ];
+        };
+
+        return datagrid($this->media->grid(), $columns, $settings, $transformer)->getDataHandler()->getResults();
+    }
+
+    /**
+     * Media images list.
+     *
+     * @return string
+     */
+    public function imagesList()
+    {
+        $columns = [
+            'name' => 'title',
+            'path' => 'image',
+            'thumbnail' => 'thumb',
+        ];
+
+        $settings = [
+            'sort'      => 'created_at',
+            'direction' => 'desc',
+        ];
+
+        $transformer = function ($media) {
+            return [
+                'thumb' => url($media->thumb),
+                'image' => route('media.view', $media->image),
+                'title' => $media->name,
+            ];
+        };
+
+        $data = $this->media->grid()->where('is_image', true);
+
+        return datagrid($data, $columns, $settings, $transformer)->getDataHandler()->getResults();
+    }
+
+    /**
      * Media upload form processing.
      *
      * @return \Illuminate\Http\Response
@@ -175,6 +236,7 @@ class MediaController extends AdminController
             if ($media = $this->media->upload($file, request()->input())) {
                 return response()->json([
                     'filelink' => route('media.view', $media->path),
+                    'filename' => $media->name,
                 ]);
             }
         }
