@@ -11,6 +11,16 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.1.0 - 2015-07-16
+
+`REVISED`
+
+- Use `fillable` instead of `guarded` on the model.
+
+`UPDATED`
+
+- Bumped `access`, `tags` extensions' version.
+
 ### v1.0.7 - 2015-06-30
 
 `UPDATES`
