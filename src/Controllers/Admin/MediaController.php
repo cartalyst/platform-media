@@ -237,6 +237,7 @@ class MediaController extends AdminController
                 return response()->json([
                     'filelink' => route('media.view', $media->path),
                     'filename' => $media->name,
+                    'media' => $media->toArray(),
                 ]);
             }
         }

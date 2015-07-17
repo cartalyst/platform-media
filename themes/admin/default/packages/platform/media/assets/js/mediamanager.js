@@ -88,11 +88,14 @@
 			$(document).on('click', '[data-media-upload]', function()
 			{
 				self.processQueue();
-			});
+                self.enableUpload();
+            });
 
 			$(document).on('change', 'input[type="file"]', function(e)
 			{
-				FileAPI.reset(e.currentTarget);
+                var input = e.currentTarget;
+
+				FileAPI.reset(input);
 
 				FileAPI.each(FileAPI.getFiles(e), function(file)
 				{
@@ -101,7 +104,14 @@
 					self.opt.onFileQueued(file);
 				});
 
-				if (self.hasFiles() === true) self.enableUploadButton();
+				if (self.hasFiles() === true) {
+
+                    if ($('.upload__select-input').attr('multiple') === undefined) {
+                        self.disableUpload();
+                    }
+
+                    self.enableUploadButton();
+                }
 
 				self.refreshTotals();
 			});
@@ -115,6 +125,10 @@
 				);
 
 				self.opt.onRemove(self, $(this));
+
+                if ($('.upload__select-input').attr('multiple') === undefined) {
+                    self.enableUpload();
+                }
 
 				self.refreshTotals();
 			});
@@ -168,6 +182,16 @@
 		enableUploadButton : function()
 		{
 			$('[data-media-upload]').attr('disabled', false);
+		},
+
+		disableUpload : function()
+		{
+            $('.upload__select').attr('disabled', true);
+		},
+
+		enableUpload : function()
+		{
+            $('.upload__select').attr('disabled', false);
 		},
 
 		hideDnd : function()

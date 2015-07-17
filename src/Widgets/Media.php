@@ -62,6 +62,27 @@ class Media
     }
 
     /**
+     * Returns the media upload widget.
+     *
+     * @param  string  $field
+     * @param  bool  $multiple
+     * @param  string $view
+     * @return string
+     */
+    public function upload($field = 'media_id', $multiple = false, $view = '')
+    {
+        $options = [
+            'mimes'         => $this->prepareMimes(),
+            'field'         => $field,
+            'multiupload'   => $multiple,
+        ];
+
+        $view = $view ?: 'platform/media::widgets.upload';
+
+        return view($view, $options);
+    }
+
+    /**
      * Returns the given media thumbnail in a <img> tag.
      *
      * @param  int  $id
@@ -78,5 +99,14 @@ class Media
 
             return '<img src="'.$path.'"'.$options.'>';
         }
+    }
+
+    protected function prepareMimes()
+    {
+        $mimes = array_map(function ($el) {
+            return last(explode('/', $el));
+        }, $this->media->getAllowedMimes());
+
+        return implode(', ', $mimes);
     }
 }
