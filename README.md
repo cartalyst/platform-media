@@ -1,6 +1,5 @@
 # Media
 
-<<<<<<< HEAD
 [![Build Status](https://magnum.travis-ci.com/cartalyst/platform-media.svg?token=98Zt8zYdwyheTKqziswS&branch=master)](https://magnum.travis-ci.com/cartalyst/platform-media)
 
 Media management for Platform.
