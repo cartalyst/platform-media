@@ -64,7 +64,7 @@
                 $('.upload__attachments')[action](
                     Extension.Upload.template({
                         field: field,
-                        media: response.media
+                        media: response
                     })
                 );
 

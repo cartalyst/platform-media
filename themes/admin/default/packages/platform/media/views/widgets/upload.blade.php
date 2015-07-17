@@ -16,7 +16,7 @@
     @parent
 
     <script type="text/javascript">
-        Extension.Upload.MediaManager.setUploadUrl('{{ route('admin.media.upload_json') }}');
+        Extension.Upload.MediaManager.setUploadUrl('{{ route('admin.media.upload') }}');
         Extension.Upload.field = '{{ $field }}';
         Extension.Upload.multiple = '{{ $multiupload }}';
     </script>

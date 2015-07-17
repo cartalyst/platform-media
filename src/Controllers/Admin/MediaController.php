@@ -234,15 +234,14 @@ class MediaController extends AdminController
 
         if ($this->media->validForUpload($file)) {
             if ($media = $this->media->upload($file, request()->input())) {
-                return response()->json([
+                return response([
                     'filelink' => route('media.view', $media->path),
                     'filename' => $media->name,
-                    'media' => $media->toArray(),
                 ]);
             }
         }
 
-        return response()->json([
+        return response([
             'error' => $this->media->getError(),
         ]);
     }
