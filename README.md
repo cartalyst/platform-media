@@ -1,6 +1,6 @@
 # Media
 
-[![Build Status](http://ci.cartalyst.com/build-status/svg/44)](http://ci.cartalyst.com/build-status/view/44)
+[![Build Status](https://magnum.travis-ci.com/cartalyst/platform-media.svg?token=98Zt8zYdwyheTKqziswS&branch=2.0)](https://magnum.travis-ci.com/cartalyst/platform-media)
 
 Media management for Platform.
 
