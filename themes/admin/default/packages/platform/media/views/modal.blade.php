@@ -70,6 +70,7 @@
             <div class="form-group">
                 <label class="sr-only" for="label">Filename</label>
                 <input type="text" class="form-control file-name" name="<%= FileAPI.uid(file) %>_name" value="<%= file.name %>" placeholder="Filename" >
+                <input type="hidden" name="<%= FileAPI.uid(file) %>_namespace" value="<%= namespace %>" >
             </div>
 
             <div class="form-group">

@@ -20,6 +20,7 @@
 
 namespace Platform\Media\Widgets;
 
+use Cartalyst\Support\Traits\NamespacedEntityTrait;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 
 class Media
@@ -64,17 +65,19 @@ class Media
     /**
      * Returns the media upload widget.
      *
+     * @param  mixed  $namespace
      * @param  string  $field
      * @param  bool  $multiple
      * @param  string $view
      * @return string
      */
-    public function upload($field = 'media_id', $multiple = false, $view = '')
+    public function upload($namespace = null, $field = 'media_id', $multiple = false, $view = '')
     {
         $options = [
-            'mimes'         => $this->prepareMimes(),
+            'namespace'     => $namespace,
             'field'         => $field,
             'multiupload'   => $multiple,
+            'mimes'         => $this->prepareMimes(),
         ];
 
         $view = $view ?: 'platform/media::widgets.upload';

@@ -160,6 +160,16 @@
             this.opt.uploadUrl = url;
         },
 
+        getNamespace : function()
+        {
+            return this.opt.namespace;
+        },
+
+        setNamespace : function(namespace)
+        {
+            this.opt.namespace = namespace;
+        },
+
         refreshTotals : function()
         {
             $('[data-media-total-size]').html(
@@ -208,6 +218,7 @@
 
             var data = {
                 'file' : file,
+                'namespace' : self.opt.namespace,
                 'icon' : self.opt.icons
             };
 
@@ -268,6 +279,7 @@
                     files: { file : file },
                     data: {
                         name : self._getEl(file, 'input[name="' + fileId + '_name"]').val(),
+                        namespace : self._getEl(file, 'input[name="' + fileId + '_namespace"]').val(),
                         tags : self._getEl(file, 'input[name="' + fileId + '_tags[]"]').val(),
                     },
                     headers: {

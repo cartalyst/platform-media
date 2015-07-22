@@ -17,6 +17,7 @@
 
     <script type="text/javascript">
         Extension.Upload.MediaManager.setUploadUrl('{{ route('admin.media.upload') }}');
+        Extension.Upload.MediaManager.setNamespace('{{ $namespace }}');
         Extension.Upload.field = '{{ $field }}';
         Extension.Upload.multiple = '{{ $multiupload }}';
     </script>
@@ -25,8 +26,8 @@
 <div class="clearfix">
     <ul class="upload__attachments list-group">
     </ul>
-    <a class="tip btn btn-primary btn-md" href="#" data-toggle="modal" data-target="#media-modal" data-original-title="{{{ trans('action.upload') }}}">
-        <i class="fa fa-upload"></i> {{{ trans('action.upload') }}}
+    <a class="tip btn btn-primary btn-md" href="#" data-toggle="modal" data-target="#media-modal" data-original-title="{{ trans('action.upload') }}">
+        <i class="fa fa-upload"></i> {{ trans('action.upload') }}
     </a>
 </div>
 
