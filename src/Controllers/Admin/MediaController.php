@@ -21,6 +21,7 @@
 namespace Platform\Media\Controllers\Admin;
 
 use Platform\Access\Controllers\AdminController;
+use Platform\Attributes\Repositories\ManagerRepositoryInterface;
 use Platform\Tags\Repositories\TagsRepositoryInterface;
 use Platform\Roles\Repositories\RoleRepositoryInterface;
 use Platform\Media\Repositories\MediaRepositoryInterface;
@@ -49,6 +50,13 @@ class MediaController extends AdminController
     protected $tags;
 
     /**
+     * The Namespaces repository.
+     *
+     * @var \Platform\Attributes\Repositories\ManagerRepositoryInterface
+     */
+    protected $namespaces;
+
+    /**
      * Holds all the mass actions we can execute.
      *
      * @var array
@@ -65,12 +73,14 @@ class MediaController extends AdminController
      * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
      * @param  \Platform\Roles\Repositories\RoleRepositoryInterface  $roles
      * @param  \Platform\Tags\Repositories\TagsRepositoryInterface  $tags
+     * @param  \Platform\Attributes\Repositories\ManagerRepositoryInterface  $namespaces
      * @return void
      */
     public function __construct(
         MediaRepositoryInterface $media,
         RoleRepositoryInterface $roles,
-        TagsRepositoryInterface $tags
+        TagsRepositoryInterface $tags,
+        ManagerRepositoryInterface $namespaces
     ) {
         parent::__construct();
 
@@ -79,6 +89,8 @@ class MediaController extends AdminController
         $this->roles = $roles;
 
         $this->tags = $tags;
+
+        $this->namespaces = $namespaces;
     }
 
     /**
@@ -261,6 +273,9 @@ class MediaController extends AdminController
             return redirect()->route('admin.media.all');
         }
 
+        // Get a list of all the available namespaces
+        $namespaces = $this->namespaces->getNamespaces();
+
         // Get a list of all the available tags
         $tags = $this->media->getAllTags();
 
@@ -268,7 +283,7 @@ class MediaController extends AdminController
         $roles = $this->roles->findAll();
 
         // Show the page
-        return view('platform/media::form', compact('media', 'tags', 'roles'));
+        return view('platform/media::form', compact('media', 'namespaces', 'tags', 'roles'));
     }
 
     /**

@@ -102,4 +102,17 @@ class Media extends Model implements TaggableInterface
             $this->attributes['roles'] = '';
         }
     }
+
+    /**
+     * Set mutator for the "namespace" attribute.
+     *
+     * @param  string  $namespace
+     * @return void
+     */
+    public function setNamespaceAttribute($namespace)
+    {
+        if (! empty($namespace)) {
+            $this->attributes['namespace'] = $namespace;
+        }
+    }
 }

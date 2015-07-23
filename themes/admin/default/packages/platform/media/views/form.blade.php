@@ -144,6 +144,25 @@ $('input#file').change(function () {
 
 									</div>
 
+									{{-- Namespace --}}
+									<div class="form-group{{ Alert::onForm('namespace', ' has-error') }}">
+
+										<label for="namespace" class="control-label">
+											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.general.namespace_help') }}}"></i>
+											{{{ trans('platform/media::model.general.namespace') }}}
+										</label>
+
+										<select class="form-control" name="namespace" id="namespace">
+											<option value="">Select a namespace...</option>
+											@foreach ($namespaces as $namespace)
+												<option {{ request()->old('namespace', request()->get('namespace', $media->namespace)) === $namespace ? ' selected="selected"' : null}} value="{{{ $namespace }}}">{{{ $namespace }}}</option>
+											@endforeach
+										</select>
+
+										<span class="help-block">{{{ Alert::onForm('namespace') }}}</span>
+
+									</div>
+
 									{{-- Status --}}
 									<div class="form-group{{ Alert::onForm('private', ' has-error') }}">
 

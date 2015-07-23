@@ -27,6 +27,9 @@ return [
         'name'         => 'Name',
         'name_help'    => 'Type a descriptive name for your media.',
 
+        'namespace'      => 'Namespace',
+        'namespace_help' => "Select the media's namespace.",
+
         'file'         => 'File',
         'size'         => 'Size',
 
@@ -34,7 +37,7 @@ return [
         'roles_help'   => 'Select the roles to assign to this media file.',
 
         'status'       => 'Status',
-        'status_help ' => '..',
+        'status_help'  => '..',
 
         'share'        => 'Share',
         'download'     => 'Download',

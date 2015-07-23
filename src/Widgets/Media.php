@@ -20,6 +20,7 @@
 
 namespace Platform\Media\Widgets;
 
+use Cartalyst\Support\Contracts\NamespacedEntityInterface;
 use Cartalyst\Support\Traits\NamespacedEntityTrait;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 
@@ -65,14 +66,17 @@ class Media
     /**
      * Returns the media upload widget.
      *
-     * @param  mixed  $namespace
+     * @param  NamespacedEntityInterface|string  $namespace
      * @param  string  $field
      * @param  bool  $multiple
      * @param  string $view
      * @return string
      */
-    public function upload($namespace = null, $field = 'media_id', $multiple = false, $view = '')
+    public function upload($namespace, $field = 'media_id', $multiple = false, $view = '')
     {
+        $namespace = $namespace instanceof NamespacedEntityInterface ?
+            $namespace->getEntityNamespace() : (string)$namespace;
+
         $options = [
             'namespace'     => $namespace,
             'field'         => $field,
