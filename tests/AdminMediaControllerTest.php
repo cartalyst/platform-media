@@ -79,6 +79,9 @@ class AdminMediaControllerTest extends IlluminateTestCase
         $this->roles->shouldReceive('findAll')
             ->once();
 
+        $this->namespaces->shouldReceive('getNamespaces')
+            ->once();
+
         $this->media->shouldReceive('find')
             ->once()
             ->andReturn($model);
