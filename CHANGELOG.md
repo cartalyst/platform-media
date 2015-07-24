@@ -11,9 +11,21 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v3.1.0 - 2015-07-24
+
+`UPDATED`
+
+- Bumped `access`, `tags` extensions' version.
+
 ### v3.0.0 - 2015-06-07
 
 - Updated for Platform 4.
+
+### v2.1.0 - 2015-07-20
+
+`UPDATED`
+
+- Bumped `access`, `tags` extensions' version.
 
 ### v2.0.2 - 2015-06-30
 
@@ -35,6 +47,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 ### v2.0.0 - 2015-03-05
 
 - Updated for Platform 3.
+
+### v1.1.0 - 2015-07-16
+
+`UPDATED`
+
+- Bumped `access`, `tags` extensions' version.
 
 ### v1.0.7 - 2015-06-30
 
