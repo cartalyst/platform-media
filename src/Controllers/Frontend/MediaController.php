@@ -117,7 +117,7 @@ class MediaController extends Controller
         if ($media->private) {
             $pass = false;
 
-            if ($user = Sentinel::check()) {
+            if ($user = Sentinel::getUser()) {
                 $pass = true;
 
                 $mediaRoles = $media->roles;
