@@ -31,9 +31,9 @@
 		"cartalyst/support": "~1.2",
 		"intervention/image": "~2.3",
 		"intervention/imagecache": "~2.3",
-		"platform/access": "3.2.*",
-		"platform/foundation": "3.0.*",
-		"platform/tags": "3.2.*"
+		"platform/access": "dev-feature/sentinel-3",
+		"platform/foundation": "dev-feature/sentinel-3",
+		"platform/tags": "dev-feature/sentinel-3"
 	},
 	"require-dev": {
 		"cartalyst/testing": "~2.0@dev",
