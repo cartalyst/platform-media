@@ -164,32 +164,34 @@ return [
     */
 
     'routes' => function (ExtensionInterface $extension, Application $app) {
-        Route::group([
-            'prefix'    => admin_uri().'/media',
-            'namespace' => 'Platform\Media\Controllers\Admin',
-        ], function () {
-            Route::get('/', ['as' => 'admin.media.all', 'uses' => 'MediaController@index']);
-            Route::post('/', ['as' => 'admin.media.all', 'uses' => 'MediaController@executeAction']);
+        if (! $app->routesAreCached()) {
+            Route::group([
+                'prefix'    => admin_uri().'/media',
+                'namespace' => 'Platform\Media\Controllers\Admin',
+            ], function () {
+                Route::get('/', ['as' => 'admin.media.all', 'uses' => 'MediaController@index']);
+                Route::post('/', ['as' => 'admin.media.all', 'uses' => 'MediaController@executeAction']);
 
-            Route::get('grid', ['as' => 'admin.media.grid', 'uses' => 'MediaController@grid']);
+                Route::get('grid', ['as' => 'admin.media.grid', 'uses' => 'MediaController@grid']);
 
-            Route::post('upload', ['as' => 'admin.media.upload', 'uses' => 'MediaController@upload']);
+                Route::post('upload', ['as' => 'admin.media.upload', 'uses' => 'MediaController@upload']);
 
-            Route::get('email/{id}', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@index']);
-            Route::post('email/{id}', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@process']);
+                Route::get('email/{id}', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@index']);
+                Route::post('email/{id}', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@process']);
 
-            Route::get('{id}', ['as' => 'admin.media.edit', 'uses' => 'MediaController@edit']);
-            Route::post('{id}', ['as' => 'admin.media.edit', 'uses' => 'MediaController@update']);
-            Route::delete('{id}', ['as' => 'admin.media.delete', 'uses' => 'MediaController@delete']);
-        });
+                Route::get('{id}', ['as' => 'admin.media.edit', 'uses' => 'MediaController@edit']);
+                Route::post('{id}', ['as' => 'admin.media.edit', 'uses' => 'MediaController@update']);
+                Route::delete('{id}', ['as' => 'admin.media.delete', 'uses' => 'MediaController@delete']);
+            });
 
-        Route::group([
-            'prefix'    => 'media',
-            'namespace' => 'Platform\Media\Controllers\Frontend',
-        ], function () {
-            Route::get('view/{id}', ['as' => 'media.view', 'uses' => 'MediaController@view'])->where('id', '.*?');
-            Route::get('download/{id}', ['as' => 'media.download', 'uses' => 'MediaController@download'])->where('id', '.*?');
-        });
+            Route::group([
+                'prefix'    => 'media',
+                'namespace' => 'Platform\Media\Controllers\Frontend',
+            ], function () {
+                Route::get('view/{id}', ['as' => 'media.view', 'uses' => 'MediaController@view'])->where('id', '.*?');
+                Route::get('download/{id}', ['as' => 'media.download', 'uses' => 'MediaController@download'])->where('id', '.*?');
+            });
+        }
     },
 
     /*
