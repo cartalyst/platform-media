@@ -48,9 +48,9 @@
 		"cartalyst/filesystem": "3.0.*",
 		"intervention/image": "2.1.*",
 		"intervention/imagecache": "2.1.*",
-		"platform/access": "3.1.*",
+		"platform/access": "3.2.*",
 		"platform/foundation": "3.0.*",
-		"platform/tags": "3.1.*"
+		"platform/tags": "3.2.*"
 	},
 	"require-dev": {
 		"cartalyst/testing": "~2.0@dev",
@@ -71,7 +71,7 @@
 	"extra": {
 		"component": "extension",
 		"branch-alias": {
-			"dev-master": "3.0.x-dev"
+			"dev-master": "3.2.x-dev"
 		}
 	},
 	"minimum-stability": "stable"
