@@ -13,6 +13,10 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ### v3.2.0 - 2016-01-20
 
+`REVISED`
+
+- Only register routes if not cached by the app.
+
 `UPDATED`
 
 - Bumped `access`, `tags` extensions' version.
