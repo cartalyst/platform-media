@@ -66,22 +66,33 @@ class Media
     /**
      * Returns the media upload widget.
      *
-     * @param  NamespacedEntityInterface|string  $namespace
-     * @param  string  $field
-     * @param  bool  $multiple
+     * @param  \Cartalyst\Support\Contracts\NamespacedEntityInterface|string  $namespace
+     * @param  bool  $multiUpload
      * @param  string $view
      * @return string
      */
-    public function upload($namespace, $field = 'media_id', $multiple = false, $view = '')
+    public function upload($namespace, $multiUpload = true, $view = '')
     {
+        $currentUploads = [];
+
+        $model = $namespace instanceof NamespacedEntityInterface ? $namespace : null;
+
+        if ($namespace instanceof NamespacedEntityInterface) {
+            $currentUploads = $model->media;
+            $namespace = $namespace->getEntityNamespace();
+        } else {
+            $namespace = (string) $namespace;
+        }
+
         $namespace = $namespace instanceof NamespacedEntityInterface ?
-            $namespace->getEntityNamespace() : (string)$namespace;
+            $namespace->getEntityNamespace() : (string) $namespace;
 
         $options = [
-            'namespace'     => $namespace,
-            'field'         => $field,
-            'multiupload'   => $multiple,
-            'mimes'         => $this->prepareMimes(),
+            'model'          => $model,
+            'namespace'      => $namespace,
+            'multiUpload'    => $multiUpload,
+            'mimes'          => $this->prepareMimes(),
+            'currentUploads' => $currentUploads,
         ];
 
         $view = $view ?: 'platform/media::widgets.upload';
@@ -108,6 +119,11 @@ class Media
         }
     }
 
+    /**
+     * Prepares a mime types list.
+     *
+     * @return string
+     */
     protected function prepareMimes()
     {
         $mimes = array_map(function ($el) {

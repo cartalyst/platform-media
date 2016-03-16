@@ -20,7 +20,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class MigrationPlatformMediaAddNamespace extends Migration
+class MigrationPlatformMediaAddNamespaceAndRelations extends Migration
 {
     /**
      * Run the migrations.
@@ -29,8 +29,19 @@ class MigrationPlatformMediaAddNamespace extends Migration
      */
     public function up()
     {
-        Schema::table('media', function ($table) {
-            $table->string('namespace')->nullable();
+        Schema::table('media', function($table) {
+            $table->string('namespace')->before('created_at')->nullable();
+        });
+
+        Schema::create('media_relations', function($table) {
+            $table->increments('id');
+            $table->string('object_type');
+            $table->integer('object_id')->unsigned();
+            $table->integer('media_id')->unsigned();
+
+            $table->engine = 'InnoDB';
+
+            $table->index([ 'object_type', 'object_id' ]);
         });
     }
 
@@ -41,6 +52,8 @@ class MigrationPlatformMediaAddNamespace extends Migration
      */
     public function down()
     {
+        Schema::drop('media_relations');
+
         Schema::table('media', function ($table) {
             $table->dropColumn('namespace');
         });

@@ -24,7 +24,7 @@
 
                 <div class="btn btn-default btn-block upload__select">
                     <div>Select</div>
-                    <input name="files" class="upload__select-input" type="file"
+                    <input class="upload__select-input" type="file"
                        @if (! isset($multiUpload) || $multiUpload)
                        multiple
                        @endif

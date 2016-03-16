@@ -16,31 +16,96 @@
  * @link       http://cartalyst.com
  */
 
+var Extension;
+
 ;(function(window, document, $, undefined) {
+    'use strict';
 
-	'use strict';
+    Extension = Extension || {
+        Uploader: {},
+    };
 
-    Extension.Upload = {};
+    Extension.Uploader = {};
 
-	// Initialize functions
-    Extension.Upload.init = function()
-	{
-        Extension.Upload.field = 'media_id';
-        Extension.Upload.multiple = false;
-        Extension.Upload.template = _.template($('[data-media-attachment-template]').html());
-        Extension.Upload.listeners();
-	};
+    // Initialize functions
+    Extension.Uploader.init = function() {
+        Extension.Uploader.template = _.template($('[data-media-attachment-template]').html());
+        Extension.Uploader
+            .listeners()
+            .dataGrid()
+            .initMediaManager()
+        ;
+    };
 
-	// Add Listeners
-    Extension.Upload.listeners = function()
-	{
+    // Add Listeners
+    Extension.Uploader.listeners = function() {
+        Platform.Cache.$body
+            .on('click', '[data-grid-checkbox]', Extension.Uploader.checkboxes)
+            .on('click', '[data-media-add]', Extension.Uploader.addMedia);
+
         $('.upload__attachments').on('click', '.media-delete', function(e) {
-            $(this).closest('li').remove();
+            var url = $('[data-upload-post-url]').data('upload-post-url');
+            var _this = this;
+
+            if (! url) {
+                url = window.location.origin + window.location.pathname
+            }
+
+            $(this).parent().parent().find('.overlay').show();
+            $(this).parent().parent().find('input[name="media_ids[]"]').remove();
+
+            var modelId;
+
+            if (modelId = $('[data-model-id]').data('model-id')) {
+                var mediaIds = $('input[name="media_ids[]"]').map(function() {
+                    return $(this).val();
+                }).get();
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: {
+                        media_ids: JSON.stringify(mediaIds)
+                    },
+                    success: function(response) {
+                        $(_this).closest('li').fadeOut(300, function() {
+                            $(this).remove();
+                        });
+                    }
+                });
+            } else {
+                $(_this).closest('li').fadeOut(300, function() {
+                    $(this).remove();
+                });
+            }
         });
 
-        Extension.Upload.MediaManager = $.mediamanager({
-            onFileQueued : function(file)
-            {
+        return this;
+    };
+
+    // Data Grid initialization
+    Extension.Uploader.dataGrid = function() {
+        var config = {
+            throttle: 5,
+            threshold: 5,
+            hash: false,
+            callback: function(data) {
+                if (! Extension.Uploader.multiUpload) {
+                    $('[data-grid-checkbox="all"]').prop('disabled', true);
+                }
+
+                $('[data-grid-checkbox-all]').prop('checked', false);
+            }
+        };
+
+        Extension.Uploader.Grid = $.datagrid('main', '#data-grid', '#data-grid_pagination', '#data-grid_applied', config);
+
+        return this;
+    };
+
+    Extension.Uploader.initMediaManager = function() {
+        Extension.Uploader.MediaManager = $.mediamanager({
+            onFileQueued : function(file) {
                 $('input.file-tags').not('.selectize-control').selectize({
                     delimiter: ',',
                     persist: false,
@@ -56,42 +121,148 @@
                 $('.upload__instructions').hide();
             },
             onSuccess: function(xhr) {
+                var response = $.parseJSON(xhr.response);
 
-                var response = $.parseJSON(xhr.response),
-                    field = Extension.Upload.field + (Extension.Upload.multiple ? '[]' : ''),
-                    action = Extension.Upload.multiple ? 'append' : 'html';
-
-                $('.upload__attachments')[action](
-                    Extension.Upload.template({
-                        field: field,
+                $('.upload__attachments')[Extension.Uploader.action](
+                    Extension.Uploader.template({
                         media: response
                     })
                 );
 
                 $('#media-modal').modal('hide');
             },
-            onComplete: function()
-            {
+            onComplete: function() {
+                var url = $('[data-upload-post-url]').data('upload-post-url');
 
+                if (! url) {
+                    url = window.location.origin + window.location.pathname
+                }
+
+                var modelId;
+
+                if (modelId = $('[data-model-id]').data('model-id')) {
+                    var mediaIds = $('input[name="media_ids[]"]').map(function() {
+                        return $(this).val();
+                    }).get();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: {
+                            media_ids: JSON.stringify(mediaIds)
+                        }
+                    });
+                }
             },
-            onFail : function(e)
-            {
-                // alert(e.responseText);
-            },
-            onRemove : function(manager, file)
-            {
-                if (manager.totalFiles == 0)
-                {
+            onRemove : function(manager, file) {
+                if (manager.totalFiles == 0) {
                     $('.upload__instructions').show();
                 }
             }
         });
-
-
-
     };
 
-	// Job done, lets run.
-    Extension.Upload.init();
+    // Handle Data Grid checkboxes
+    Extension.Uploader.checkboxes = function(event) {
+        event.stopPropagation();
+
+        if (! Extension.Uploader.multiUpload) {
+            $('[data-grid-checkbox="all"]').prop('disabled', true);
+            $('[data-grid-checkbox]').not(this).not('[data-grid-checkbox][disabled]').prop('checked', false);
+        }
+
+        var type = $(this).attr('data-grid-checkbox');
+
+        if (type === 'all') {
+            $('[data-grid-checkbox]').not(this).not('[data-grid-checkbox][disabled]').prop('checked', this.checked);
+
+            $('[data-grid-row]').not('[data-grid-row][disabled]').not(this).toggleClass('active', this.checked);
+        }
+
+        $(this).parents('[data-grid-row]').not('[data-grid-row][disabled]').toggleClass('active');
+    };
+
+    // Handle Data Grid add media
+    Extension.Uploader.addMedia = function(event) {
+        event.preventDefault();
+
+        var _this = this;
+        var originalText = $(this).html();
+
+        $(this).prop('disabled', true).html(originalText + ' <i class="fa fa-spinner fa-spin"></i>');
+
+        var url = window.location.origin + window.location.pathname;
+
+        var mediaIds = $('input[name="media_ids[]"]').map(function() {
+            return $(this).val();
+        }).get();
+
+        if (! Extension.Uploader.multiUpload) {
+            mediaIds = [];
+        }
+
+        var newMediaIds = $.map($('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]'), function(event) {
+            return +event.value;
+        });
+
+        var newMediaIdObjects = $.map($('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]'), function(event) {
+            return {
+                id: +event.value,
+                name: $(event).data('name'),
+                thumbnail: $(event).data('thumbnail')
+            };
+        });
+
+        mediaIds = mediaIds.concat(newMediaIds);
+
+        var modelId = $('[data-model-id]').data('model-id');
+
+        if (mediaIds.length > 0 && modelId) {
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    media_ids: JSON.stringify(mediaIds)
+                },
+                success: function(response) {
+                    $(_this).html(originalText).prop('disabled', false);
+                    $('[data-grid-checkbox]').prop('checked', false);
+
+                    _.each(newMediaIdObjects, function(media) {
+                        $('.upload__attachments')[Extension.Uploader.action](
+                            Extension.Uploader.template({
+                                media: media
+                            })
+                        );
+                    });
+
+                    $('#media-selection-modal').modal('hide');
+                }
+            });
+        } else {
+            $(_this).html(originalText).prop('disabled', false);
+            $('[data-grid-checkbox]').prop('checked', false);
+
+            _.each(newMediaIdObjects, function(media) {
+                $('.upload__attachments')[Extension.Uploader.action](
+                    Extension.Uploader.template({
+                        media: media
+                    })
+                );
+            });
+
+            $('#media-selection-modal').modal('hide');
+        }
+    };
+
+    // Multi upload setter
+    Extension.Uploader.setMultiUpload = function(multiUpload) {
+        Extension.Uploader.multiUpload = multiUpload;
+
+        Extension.Uploader.action = multiUpload ? 'append' : 'html';
+    };
+
+    // Job done, lets run.
+    Extension.Uploader.init();
 
 })(window, document, jQuery);

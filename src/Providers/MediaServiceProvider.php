@@ -134,5 +134,9 @@ class MediaServiceProvider extends ServiceProvider
         $compiler->directive('thumbnail', function ($value) {
             return "<?php echo Widget::make('platform/media::media.thumbnail', array$value); ?>";
         });
+
+        $compiler->directive('mediaUploader', function ($value) {
+            return "<?php echo Widget::make('platform/media::media.upload', array$value); ?>";
+        });
     }
 }
