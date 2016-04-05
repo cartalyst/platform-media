@@ -44,36 +44,18 @@ var Extension;
             .on('click', '[data-media-add]', Extension.Uploader.addMedia);
 
         $('.upload__attachments').on('click', '.media-delete', function(e) {
-            var url = $('[data-upload-post-url]').data('upload-post-url');
             var _this = this;
-
-            if (! url) {
-                url = window.location.origin + window.location.pathname
-            }
 
             $(this).parent().parent().find('.overlay').show();
             $(this).parent().parent().find('input[name="media_ids[]"]').remove();
 
-            var modelId;
-
-            if (modelId = $('[data-model-id]').data('model-id')) {
-                var mediaIds = $('input[name="media_ids[]"]').map(function() {
-                    return $(this).val();
-                }).get();
-
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    data: {
-                        media_ids: JSON.stringify(mediaIds)
-                    },
-                    success: function(response) {
-                        $(_this).closest('li').fadeOut(300, function() {
-                            $(this).remove();
-                        });
-                    }
+            var success = function() {
+                $(_this).closest('li').fadeOut(300, function() {
+                    $(this).remove();
                 });
-            } else {
+            };
+
+            if (! Extension.Uploader.linkMediaRecords(success)) {
                 $(_this).closest('li').fadeOut(300, function() {
                     $(this).remove();
                 });
@@ -132,27 +114,7 @@ var Extension;
                 $('#media-modal').modal('hide');
             },
             onComplete: function() {
-                var url = $('[data-upload-post-url]').data('upload-post-url');
-
-                if (! url) {
-                    url = window.location.origin + window.location.pathname
-                }
-
-                var modelId;
-
-                if (modelId = $('[data-model-id]').data('model-id')) {
-                    var mediaIds = $('input[name="media_ids[]"]').map(function() {
-                        return $(this).val();
-                    }).get();
-
-                    $.ajax({
-                        type: 'POST',
-                        url: url,
-                        data: {
-                            media_ids: JSON.stringify(mediaIds)
-                        }
-                    });
-                }
+                Extension.Uploader.linkMediaRecords();
             },
             onRemove : function(manager, file) {
                 if (manager.totalFiles == 0) {
@@ -160,6 +122,40 @@ var Extension;
                 }
             }
         });
+    };
+
+    Extension.Uploader.linkMediaRecords = function(success) {
+        var url = $('[data-upload-post-url]').data('upload-post-url');
+
+        if (! url) {
+            url = window.location.origin + window.location.pathname
+        }
+
+        var modelId;
+        var objectClass = $('[data-object-class]').data('object-class');
+
+        if (modelId = $('[data-model-id]').data('model-id')) {
+            var mediaIds = $('input[name="media_ids[]"]').map(function() {
+                return $(this).val();
+            }).get();
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    model_id: modelId,
+                    object_class: objectClass,
+                    new_media_ids: JSON.stringify(mediaIds)
+                },
+                success: function(response) {
+                    success();
+                }
+            });
+
+            return true;
+        }
+
+        return false;
     };
 
     // Handle Data Grid checkboxes
@@ -191,7 +187,11 @@ var Extension;
 
         $(this).prop('disabled', true).html(originalText + ' <i class="fa fa-spinner fa-spin"></i>');
 
-        var url = window.location.origin + window.location.pathname;
+        var url = $('[data-upload-post-url]').data('upload-post-url');
+
+        if (! url) {
+            url = window.location.origin + window.location.pathname
+        }
 
         var mediaIds = $('input[name="media_ids[]"]').map(function() {
             return $(this).val();
@@ -202,27 +202,37 @@ var Extension;
         }
 
         var newMediaIds = $.map($('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]'), function(event) {
-            return +event.value;
+            return event.value;
         });
 
         var newMediaIdObjects = $.map($('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]'), function(event) {
-            return {
-                id: +event.value,
-                name: $(event).data('name'),
-                thumbnail: $(event).data('thumbnail')
-            };
+            var id = event.value;
+
+            // Skip existing media items
+            if (_.indexOf(mediaIds, id) === -1) {
+                return {
+                    id: id,
+                    name: $(event).data('name'),
+                    thumbnail: $(event).data('thumbnail')
+                };
+            }
         });
 
         mediaIds = mediaIds.concat(newMediaIds);
 
         var modelId = $('[data-model-id]').data('model-id');
+        var objectClass = $('[data-object-class]').data('object-class');
 
-        if (mediaIds.length > 0 && modelId) {
+        // Only fire a request if we are editing a model and have
+        // newly added media objects.
+        if (mediaIds.length > 0 && newMediaIdObjects.length > 0 && modelId) {
             $.ajax({
                 type: 'POST',
                 url: url,
                 data: {
-                    media_ids: JSON.stringify(mediaIds)
+                    model_id: modelId,
+                    object_class: objectClass,
+                    new_media_ids: JSON.stringify(mediaIds)
                 },
                 success: function(response) {
                     $(_this).html(originalText).prop('disabled', false);

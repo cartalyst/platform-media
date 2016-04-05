@@ -29,6 +29,11 @@ trait MediaTrait
      */
     protected static $mediaModel = 'Platform\Media\Models\Media';
 
+    /**
+     * Related media ids.
+     *
+     * @var array
+     */
     protected static $mediaIds;
 
     /**
@@ -38,36 +43,21 @@ trait MediaTrait
      */
     public static function bootMediaTrait()
     {
-        static::saving(function($model) {
-            if ($model->media_ids) {
-                $mediaIds = is_array($model->media_ids) ? $model->media_ids : json_decode($model->media_ids);
+        static::creating(function($model) {
+            if ($mediaIds = request()->input('media_ids')) {
+                request()->replace(request()->except('media_ids'));
 
-                static::setMediaIds($mediaIds);
+                $preparedMediaIds = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
 
-                unset($model->media_ids);
-
-                if ($model->exists) {
-                    $model->media()->sync($mediaIds);
-                }
+                static::setMediaIds($preparedMediaIds);
             }
         });
 
-        static::saved(function($model) {
+        static::created(function($model) {
             if ($mediaIds = static::getMediaIds()) {
                 $model->media()->sync($mediaIds);
             }
         });
-    }
-
-    public static function setMediaIds($ids)
-    {
-        static::$mediaIds = $ids;
-    }
-
-
-    public static function getMediaIds()
-    {
-        return static::$mediaIds;
     }
 
     /**
@@ -94,5 +84,26 @@ trait MediaTrait
     public static function setMediaModel($model)
     {
         static::$mediaModel = $model;
+    }
+
+    /**
+     * Sets related media ids.
+     *
+     * @param  array  $ids
+     * @return void
+     */
+    public static function setMediaIds(array $ids)
+    {
+        static::$mediaIds = $ids;
+    }
+
+    /**
+     * Returns related media ids.
+     *
+     * @return array
+     */
+    public static function getMediaIds()
+    {
+        return static::$mediaIds;
     }
 }

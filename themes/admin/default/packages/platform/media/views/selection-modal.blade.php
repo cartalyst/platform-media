@@ -69,7 +69,7 @@
                 {{-- Grid: Table --}}
                 <div class="table-responsive">
 
-                    <table id="data-grid" class="table table-hover" data-source="{{ route('admin.media.grid') }}" data-grid="main">
+                    <table id="data-grid" class="table table-hover" data-source="{{ route('admin.media.images.grid') }}" data-grid="main">
                         <thead>
                             <tr>
                                 <th><input data-grid-checkbox="all" type="checkbox"></th>

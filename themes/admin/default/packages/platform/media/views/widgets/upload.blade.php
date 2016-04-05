@@ -24,6 +24,7 @@
 
 @if ($model)
 <input type="hidden" data-model-id="{{ $model->id }}">
+<input type="hidden" data-object-class="{{ get_class($model) }}">
 @endif
 
 <style>
@@ -45,6 +46,8 @@
         margin-top: -7px;
     }
 </style>
+
+<input type="hidden" data-upload-post-url="{{ route('admin.media.link_media') }}">
 
 <div class="clearfix">
     <ul class="upload__attachments list-group">
@@ -78,7 +81,7 @@
     </a>
 </div>
 
-@include('platform/media::model-modal')
+@include('platform/media::modal')
 @include('platform/media::selection-modal')
 
 <script type="text/template" data-media-attachment-template>

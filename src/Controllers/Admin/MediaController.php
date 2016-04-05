@@ -157,6 +157,46 @@ class MediaController extends AdminController
     }
 
     /**
+     * Datasource for the media images Data Grid.
+     *
+     * @return \Cartalyst\DataGrid\DataGrid
+     */
+    public function imagesGrid()
+    {
+        $columns = [
+            'id',
+            'name',
+            'mime',
+            'path',
+            'size',
+            'private',
+            'is_image',
+            'thumbnail',
+            'width',
+            'height',
+            'created_at',
+        ];
+
+        $settings = [
+            'sort'      => 'created_at',
+            'direction' => 'desc',
+            'pdf_view'  => 'pdf',
+        ];
+
+        $transformer = function ($element) {
+            $element->thumbnail_uri = url($element->thumbnail);
+            $element->view_uri = route('media.view', $element->path);
+            $element->edit_uri = route('admin.media.edit', $element->id);
+            $element->email_uri = route('admin.media.email', $element->id);
+            $element->download_uri = route('media.download', $element->path);
+
+            return $element;
+        };
+
+        return datagrid($this->media->grid()->whereIsImage(true), $columns, $settings, $transformer);
+    }
+
+    /**
      * Media files list.
      *
      * @return string
@@ -236,21 +276,23 @@ class MediaController extends AdminController
     }
 
     /**
-     * Media widget upload form processing.
+     * Associates media records to objects.
      *
      * @return string
      */
-    public function uploadJson()
+    public function linkMedia()
     {
-        $file = request()->file('file');
+        $class = request()->input('object_class');
+        $model = (new $class)->find(request()->input('model_id'));
 
-        if ($this->media->validForUpload($file)) {
-            if ($media = $this->media->upload($file, request()->input())) {
-                return response([
-                    'filelink' => route('media.view', $media->path),
-                    'filename' => $media->name,
-                ]);
-            }
+        if ($mediaIds = request()->input('new_media_ids')) {
+            $preparedMediaIds = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
+
+            $model->media()->sync($preparedMediaIds);
+
+            return response([
+                'success' => true,
+            ]);
         }
 
         return response([
