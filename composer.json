@@ -46,8 +46,8 @@
 		"php": ">=5.5.9",
 		"cartalyst/composer-installers": "1.2.*",
 		"cartalyst/filesystem": "3.0.*",
-		"intervention/image": "2.1.*",
-		"intervention/imagecache": "2.1.*",
+		"intervention/image": "~2.3",
+		"intervention/imagecache": "~2.3",
 		"platform/access": "3.0.*",
 		"platform/foundation": "3.0.*",
 		"platform/tags": "3.0.*"
