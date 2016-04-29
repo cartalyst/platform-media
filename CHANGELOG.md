@@ -21,11 +21,32 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 - Bumped `access`, `tags` extensions' version.
 
+### v3.1.1 - 2016-04-29
+
+`FIXED`
+
+- Issue when viewing private media files.
+
+`UPDATED`
+
+- Only register routes if the routes are not cached.
+- Bumped Intervention Image version to `~2.3`.
+
 ### v3.1.0 - 2015-07-24
 
 `UPDATED`
 
 - Bumped `access`, `tags` extensions' version.
+
+### v3.0.1 - 2016-04-29
+
+`FIXED`
+
+- Issue when viewing private media files.
+
+`UPDATED`
+
+- Bumped Intervention Image version to `~2.3`.
 
 ### v3.0.0 - 2015-07-06
 
