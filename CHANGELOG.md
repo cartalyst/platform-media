@@ -11,6 +11,16 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v3.2.1 - 2016-04-29
+
+`FIXED`
+
+- Issue when viewing private media files.
+
+`UPDATED`
+
+- Bumped Intervention Image version to `~2.3`.
+
 ### v3.2.0 - 2016-01-20
 
 `REVISED`
