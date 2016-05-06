@@ -8,7 +8,7 @@ The best and easiest way to install the Media extension is with [Composer](http:
 
 Open your `composer.json` file and add the following to the `require` array:
 
-	"platform/media": "1.0.*"
+	"platform/media": "2.0.*"
 
 Add the following lines after the `require` array on your `composer.json` file:
 
