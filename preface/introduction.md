@@ -2,6 +2,6 @@
 
 ### Introduction
 
-A Platform 2 extension to manage media.
+A Platform 4 extension to manage media.
 
 Have a [read through the Installation Guide](#installation).
