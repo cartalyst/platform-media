@@ -53,7 +53,39 @@ trait MediaTrait
             }
         });
 
-        static::created(function($model) {
+        static::updating(function($model) {
+            if ($mediaIds = request()->input('media_ids')) {
+                request()->replace(request()->except('media_ids'));
+
+                $preparedMediaIds = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
+
+                static::setMediaIds($preparedMediaIds);
+            }
+        });
+
+        static::saving(function($model) {
+            if ($mediaIds = request()->input('media_ids')) {
+                request()->replace(request()->except('media_ids'));
+
+                $preparedMediaIds = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
+
+                static::setMediaIds($preparedMediaIds);
+            }
+        });
+
+        static::updated(function($model) {
+            if ($mediaIds = static::getMediaIds()) {
+                $model->media()->sync($mediaIds);
+            }
+        });
+
+        static::saved(function($model) {
+            if ($mediaIds = static::getMediaIds()) {
+                $model->media()->sync($mediaIds);
+            }
+        });
+
+        static::updated(function($model) {
             if ($mediaIds = static::getMediaIds()) {
                 $model->media()->sync($mediaIds);
             }
