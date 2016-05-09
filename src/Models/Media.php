@@ -59,6 +59,34 @@ class Media extends Model implements TaggableInterface
     protected static $entityNamespace = 'platform/media';
 
     /**
+     * The Eloquent media relation model name.
+     *
+     * @var string
+     */
+    protected static $mediaRelationModel = 'Platform\Media\Models\MediaRelation';
+
+    /**
+     * Returns the media relation model.
+     *
+     * @return string
+     */
+    public static function getMediaRelationModel()
+    {
+        return static::$mediaRelationModel;
+    }
+
+    /**
+     * Sets the media relation model.
+     *
+     * @param  string  $model
+     * @return void
+     */
+    public static function setMediaRelationModel($model)
+    {
+        static::$mediaRelationModel = $model;
+    }
+
+    /**
      * Get mutator for the "roles" attribute.
      *
      * @param  mixed  $roles
@@ -114,5 +142,15 @@ class Media extends Model implements TaggableInterface
         if (! empty($namespace)) {
             $this->attributes['namespace'] = $namespace;
         }
+    }
+
+    /**
+     * Retrieve all associated media records.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function relations()
+    {
+        return $this->hasMany(static::$mediaRelationModel);
     }
 }

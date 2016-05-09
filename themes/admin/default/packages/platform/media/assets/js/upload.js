@@ -9,7 +9,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.0.0
+ * @version    3.2.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
@@ -41,26 +41,8 @@ var Extension;
     Extension.Uploader.listeners = function() {
         Platform.Cache.$body
             .on('click', '[data-grid-checkbox]', Extension.Uploader.checkboxes)
-            .on('click', '[data-media-add]', Extension.Uploader.addMedia);
-
-        $('.upload__attachments').on('click', '.media-delete', function(e) {
-            var _this = this;
-
-            $(this).parent().parent().find('.overlay').show();
-            $(this).parent().parent().find('input[name="media_ids[]"]').remove();
-
-            var success = function() {
-                $(_this).closest('li').fadeOut(300, function() {
-                    $(this).remove();
-                });
-            };
-
-            if (! Extension.Uploader.linkMediaRecords(success)) {
-                $(_this).closest('li').fadeOut(300, function() {
-                    $(this).remove();
-                });
-            }
-        });
+            .on('click', '[data-media-add]', Extension.Uploader.addMedia)
+            .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia);
 
         return this;
     };
@@ -68,8 +50,8 @@ var Extension;
     // Data Grid initialization
     Extension.Uploader.dataGrid = function() {
         var config = {
-            throttle: 5,
-            threshold: 5,
+            throttle: 10,
+            threshold: 10,
             hash: false,
             callback: function(data) {
                 if (! Extension.Uploader.multiUpload) {
@@ -85,6 +67,7 @@ var Extension;
         return this;
     };
 
+    // Media manager initialization
     Extension.Uploader.initMediaManager = function() {
         Extension.Uploader.MediaManager = $.mediamanager({
             onFileQueued : function(file) {
@@ -124,50 +107,16 @@ var Extension;
         });
     };
 
-    Extension.Uploader.linkMediaRecords = function(success) {
-        var url = $('[data-upload-post-url]').data('upload-post-url');
-
-        if (! url) {
-            url = window.location.origin + window.location.pathname
-        }
-
-        var modelId;
-        var objectClass = $('[data-object-class]').data('object-class');
-
-        if (modelId = $('[data-model-id]').data('model-id')) {
-            var mediaIds = $('input[name="media_ids[]"]').map(function() {
-                return $(this).val();
-            }).get();
-
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: {
-                    model_id: modelId,
-                    object_class: objectClass,
-                    new_media_ids: JSON.stringify(mediaIds)
-                },
-                success: function(response) {
-                    success();
-                }
-            });
-
-            return true;
-        }
-
-        return false;
-    };
-
     // Handle Data Grid checkboxes
     Extension.Uploader.checkboxes = function(event) {
         event.stopPropagation();
+
+        var type = $(this).attr('data-grid-checkbox');
 
         if (! Extension.Uploader.multiUpload) {
             $('[data-grid-checkbox="all"]').prop('disabled', true);
             $('[data-grid-checkbox]').not(this).not('[data-grid-checkbox][disabled]').prop('checked', false);
         }
-
-        var type = $(this).attr('data-grid-checkbox');
 
         if (type === 'all') {
             $('[data-grid-checkbox]').not(this).not('[data-grid-checkbox][disabled]').prop('checked', this.checked);
@@ -182,18 +131,22 @@ var Extension;
     Extension.Uploader.addMedia = function(event) {
         event.preventDefault();
 
-        var _this = this;
+        var mediaIds;
+        var modelId;
+        var newMediaIdObjects;
+        var newMediaIds;
+        var success;
+        var _this        = this;
         var originalText = $(this).html();
-
-        $(this).prop('disabled', true).html(originalText + ' <i class="fa fa-spinner fa-spin"></i>');
-
-        var url = $('[data-upload-post-url]').data('upload-post-url');
+        var url          = $('[data-upload-post-url]').data('upload-post-url');
 
         if (! url) {
             url = window.location.origin + window.location.pathname
         }
 
-        var mediaIds = $('input[name="media_ids[]"]').map(function() {
+        $(this).prop('disabled', true).html(originalText + ' <i class="fa fa-spinner fa-spin"></i>');
+
+        mediaIds = $('input[name="media_ids[]"]').map(function() {
             return $(this).val();
         }).get();
 
@@ -201,11 +154,11 @@ var Extension;
             mediaIds = [];
         }
 
-        var newMediaIds = $.map($('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]'), function(event) {
+        newMediaIds = $.map($('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]'), function(event) {
             return event.value;
         });
 
-        var newMediaIdObjects = $.map($('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]'), function(event) {
+        newMediaIdObjects = $.map($('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]'), function(event) {
             var id = event.value;
 
             // Skip existing media items
@@ -220,37 +173,29 @@ var Extension;
 
         mediaIds = mediaIds.concat(newMediaIds);
 
-        var modelId = $('[data-model-id]').data('model-id');
-        var objectClass = $('[data-object-class]').data('object-class');
+        modelId = $('[data-model-id]').data('model-id');
 
         // Only fire a request if we are editing a model and have
         // newly added media objects.
         if (mediaIds.length > 0 && newMediaIdObjects.length > 0 && modelId) {
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: {
-                    model_id: modelId,
-                    object_class: objectClass,
-                    new_media_ids: JSON.stringify(mediaIds)
-                },
-                success: function(response) {
-                    $(_this).html(originalText).prop('disabled', false);
-                    $('[data-grid-checkbox]').prop('checked', false);
+            success = function() {
+                $(this).html(originalText).prop('disabled', false);
+                $('[data-grid-checkbox]').prop('checked', false);
 
-                    _.each(newMediaIdObjects, function(media) {
-                        $('.upload__attachments')[Extension.Uploader.action](
-                            Extension.Uploader.template({
-                                media: media
-                            })
-                        );
-                    });
+                _.each(newMediaIdObjects, function(media) {
+                    $('.upload__attachments')[Extension.Uploader.action](
+                        Extension.Uploader.template({
+                            media: media
+                        })
+                    );
+                });
 
-                    $('#media-selection-modal').modal('hide');
-                }
-            });
+                $('#media-selection-modal').modal('hide');
+            };
+
+            Extension.Uploader.linkMediaRecords(mediaIds, success);
         } else {
-            $(_this).html(originalText).prop('disabled', false);
+            $(this).html(originalText).prop('disabled', false);
             $('[data-grid-checkbox]').prop('checked', false);
 
             _.each(newMediaIdObjects, function(media) {
@@ -263,6 +208,58 @@ var Extension;
 
             $('#media-selection-modal').modal('hide');
         }
+    };
+
+    // Handle media deletion
+    Extension.Uploader.deleteMedia = function() {
+        var success;
+        var _this = this;
+
+        $(this).parent().parent().find('.overlay').show();
+        $(this).parent().parent().find('input[name="media_ids[]"]').remove();
+
+        success = function() {
+            $(_this).closest('li').fadeOut(300, function() {
+                $(this).remove();
+            });
+        };
+
+        if (! Extension.Uploader.linkMediaRecords(null, success)) {
+            $(_this).closest('li').fadeOut(300, function() {
+                $(this).remove();
+            });
+        }
+    };
+
+    // Link media records
+    Extension.Uploader.linkMediaRecords = function(mediaIds, success) {
+        var modelId;
+        var objectClass = $('[data-object-class]').data('object-class');
+        var url         = $('[data-upload-post-url]').data('upload-post-url');
+
+        if (! url) {
+            url = window.location.origin + window.location.pathname
+        }
+
+        if (modelId = $('[data-model-id]').data('model-id')) {
+            mediaIds = mediaIds ? mediaIds : $('input[name="media_ids[]"]').map(function() {
+                return $(this).val();
+            }).get();
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    model_id: modelId,
+                    object_class: objectClass,
+                    new_media_ids: JSON.stringify(mediaIds)
+                }
+            });
+
+            return true;
+        }
+
+        return false;
     };
 
     // Multi upload setter

@@ -62,7 +62,7 @@
                 @thumbnail($upload->id)
             </span>
             <span class="pull-right button-group">
-                <button type="button" class="btn btn-danger btn-xs media-delete"><i class="fa fa-trash"></i></button>
+                <button type="button" class="btn btn-danger btn-xs" data-media-delete><i class="fa fa-trash"></i></button>
             </span>
         </li>
         @endforeach
@@ -95,7 +95,7 @@
             <img src="{{ url('/') }}<%= media.thumbnail %>" alt=""/>
         </span>
         <span class="pull-right button-group">
-            <button type="button" class="btn btn-danger btn-xs media-delete"><i class="fa fa-trash"></i></button>
+            <button type="button" class="btn btn-danger btn-xs" data-media-delete><i class="fa fa-trash"></i></button>
         </span>
     </li>
 </script>

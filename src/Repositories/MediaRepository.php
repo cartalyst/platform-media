@@ -295,6 +295,8 @@ class MediaRepository implements MediaRepositoryInterface
 
             $this->fireEvent('platform.media.deleted', [ $media ]);
 
+            $media->relations()->delete();
+
             $media->delete();
 
             return true;

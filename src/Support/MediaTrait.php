@@ -58,6 +58,10 @@ trait MediaTrait
                 $model->media()->sync($mediaIds);
             }
         });
+
+        static::deleting(function($model) {
+            $model->media()->detach();
+        });
     }
 
     /**
