@@ -31,6 +31,16 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 - Bumped `access`, `tags` extensions' version.
 
+### v3.1.2 - 2016-05-12
+
+`FIXED`
+
+- Fix delete issue when file doesn't exist on filesystem.
+
+`ADDED`
+
+- Ability to force the name to change when a file was uploaded.
+
 ### v3.1.1 - 2016-04-29
 
 `FIXED`
@@ -47,6 +57,16 @@ We do not give estimated times for completion on `Accepted` Proposals.
 `UPDATED`
 
 - Bumped `access`, `tags` extensions' version.
+
+### v3.0.2 - 2016-05-12
+
+`FIXED`
+
+- Fix delete issue when file doesn't exist on filesystem.
+
+`ADDED`
+
+- Ability to force the name to change when a file was uploaded.
 
 ### v3.0.1 - 2016-04-29
 
