@@ -258,7 +258,7 @@ class MediaRepository implements MediaRepositoryInterface
                 ], $input);
 
                 // Should we update the name?
-                if ((bool) $input['force_name_update'] === true) {
+                if ((bool) array_get($input, 'force_name_update', false) === true) {
                     $input['name'] = $uploadedFile->getClientOriginalName();
                 }
             } else {
