@@ -256,6 +256,11 @@ class MediaRepository implements MediaRepositoryInterface
                     'width'     => $imageSize['width'],
                     'height'    => $imageSize['height'],
                 ], $input);
+
+                // Should we update the name?
+                if ((bool) $input['force_name_update'] === true) {
+                    $input['name'] = $uploadedFile->getClientOriginalName();
+                }
             } else {
                 return false;
             }

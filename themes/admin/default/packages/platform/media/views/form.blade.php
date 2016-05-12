@@ -22,6 +22,11 @@
 {{-- Inline scripts --}}
 @section('scripts')
 @parent
+<script>
+$('input#file').change(function () {
+	$('#force-name-update').show();
+});
+</script>
 @stop
 
 {{-- Page content --}}
@@ -214,7 +219,7 @@
 
 										<li class="list-group-item">
 
-											<i class="fa fa-{{ $media->private === true ? 'lock' : 'unlock' }}"></i> {{{ trans('platform/media::model.general.'.($media->private === 1 ? 'private' : 'public')) }}}
+											<i class="fa fa-{{ $media->private == 1 ? 'lock' : 'unlock' }}"></i> {{{ trans('platform/media::model.general.'.($media->private == 1 ? 'private' : 'public')) }}}
 
 										</li>
 
@@ -230,6 +235,13 @@
 											<div class="upload__select-text">Update File</div>
 											<input class="upload__select-input" type="file" name="file" id="file" />
 										</div>
+
+										<p id="force-name-update" style="display: none; padding: 10px 0 0 0;">
+											<label>
+												<input type="hidden" name="force_name_update" value="0">
+												<input type="checkbox" name="force_name_update" id="force_name_update" value="1"> Should the name be updated after upload?
+											</label>
+										</p>
 									</div>
 								</div>
 
