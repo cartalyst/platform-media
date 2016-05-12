@@ -11,6 +11,16 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v3.2.2 - 2016-05-12
+
+`FIXED`
+
+- Fix delete issue when file doesn't exist on filesystem.
+
+`ADDED`
+
+- Ability to force the name to change when a file was uploaded.
+
 ### v3.2.1 - 2016-04-29
 
 `FIXED`
