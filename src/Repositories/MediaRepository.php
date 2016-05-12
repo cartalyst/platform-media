@@ -287,7 +287,11 @@ class MediaRepository implements MediaRepositoryInterface
 
             $this->fireEvent('platform.media.deleting', [ $media, $file ]);
 
-            $this->filesystem->delete($media->path);
+            try {
+                $this->filesystem->delete($media->path);
+            } catch (FileNotFoundException $e) {
+
+            }
 
             $this->fireEvent('platform.media.deleted', [ $media ]);
 
