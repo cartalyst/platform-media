@@ -22,6 +22,7 @@ namespace Platform\Media\Repositories;
 
 use Cartalyst\Support\Traits;
 use Illuminate\Container\Container;
+use League\Flysystem\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Cartalyst\Filesystem\Exceptions\FileExistsException;
 use Cartalyst\Filesystem\Exceptions\InvalidFileException;
@@ -226,8 +227,12 @@ class MediaRepository implements MediaRepositoryInterface
 
         if ($uploadedFile instanceof UploadedFile) {
             if ($this->validForUpload($uploadedFile)) {
-                // Delete the old media file
-                $this->filesystem->delete($media->path);
+                try {
+                    // Delete the old media file
+                    $this->filesystem->delete($media->path);
+                } catch (FileNotFoundException $e) {
+
+                }
 
                 // Sanitize the file name
                 $fileName = $this->sanitizeFileName(
