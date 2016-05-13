@@ -11,10 +11,10 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.1.0
+ * @version    3.2.2
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2015, Cartalyst LLC
+ * @copyright  (c) 2011-2016, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -22,6 +22,7 @@ namespace Platform\Media\Repositories;
 
 use Cartalyst\Support\Traits;
 use Illuminate\Container\Container;
+use League\Flysystem\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Cartalyst\Filesystem\Exceptions\FileExistsException;
 use Cartalyst\Filesystem\Exceptions\InvalidFileException;
@@ -226,8 +227,12 @@ class MediaRepository implements MediaRepositoryInterface
 
         if ($uploadedFile instanceof UploadedFile) {
             if ($this->validForUpload($uploadedFile)) {
-                // Delete the old media file
-                $this->filesystem->delete($media->path);
+                try {
+                    // Delete the old media file
+                    $this->filesystem->delete($media->path);
+                } catch (FileNotFoundException $e) {
+
+                }
 
                 // Sanitize the file name
                 $fileName = $this->sanitizeFileName(
@@ -251,6 +256,11 @@ class MediaRepository implements MediaRepositoryInterface
                     'width'     => $imageSize['width'],
                     'height'    => $imageSize['height'],
                 ], $input);
+
+                // Should we update the name?
+                if ((bool) array_get($input, 'force_name_update', false) === true) {
+                    $input['name'] = $uploadedFile->getClientOriginalName();
+                }
             } else {
                 return false;
             }
@@ -277,7 +287,11 @@ class MediaRepository implements MediaRepositoryInterface
 
             $this->fireEvent('platform.media.deleting', [ $media, $file ]);
 
-            $this->filesystem->delete($media->path);
+            try {
+                $this->filesystem->delete($media->path);
+            } catch (FileNotFoundException $e) {
+
+            }
 
             $this->fireEvent('platform.media.deleted', [ $media ]);
 

@@ -11,13 +11,84 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v3.2.2 - 2016-05-12
+
+`FIXED`
+
+- Fix delete issue when file doesn't exist on filesystem.
+
+`ADDED`
+
+- Ability to force the name to change when a file was uploaded.
+
+### v3.2.1 - 2016-04-29
+
+`FIXED`
+
+- Issue when viewing private media files.
+
+`UPDATED`
+
+- Bumped Intervention Image version to `~2.3`.
+
+### v3.2.0 - 2016-01-20
+
+`REVISED`
+
+- Only register routes if not cached by the app.
+
+`UPDATED`
+
+- Bumped `access`, `tags` extensions' version.
+
+### v3.1.2 - 2016-05-12
+
+`FIXED`
+
+- Fix delete issue when file doesn't exist on filesystem.
+
+`ADDED`
+
+- Ability to force the name to change when a file was uploaded.
+
+### v3.1.1 - 2016-04-29
+
+`FIXED`
+
+- Issue when viewing private media files.
+
+`UPDATED`
+
+- Only register routes if the routes are not cached.
+- Bumped Intervention Image version to `~2.3`.
+
 ### v3.1.0 - 2015-07-24
 
 `UPDATED`
 
 - Bumped `access`, `tags` extensions' version.
 
-### v3.0.0 - 2015-06-07
+### v3.0.2 - 2016-05-12
+
+`FIXED`
+
+- Fix delete issue when file doesn't exist on filesystem.
+
+`ADDED`
+
+- Ability to force the name to change when a file was uploaded.
+
+### v3.0.1 - 2016-04-29
+
+`FIXED`
+
+- Issue when viewing private media files.
+
+`UPDATED`
+
+- Bumped Intervention Image version to `~2.3`.
+
+### v3.0.0 - 2015-07-06
 
 - Updated for Platform 4.
 
