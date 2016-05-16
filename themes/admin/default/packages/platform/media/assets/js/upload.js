@@ -179,6 +179,7 @@ var Extension;
         // newly added media objects.
         if (mediaIds.length > 0 && newMediaIdObjects.length > 0 && modelId) {
             success = function() {
+                console.log('_:_:_:_success');
                 $(this).html(originalText).prop('disabled', false);
                 $('[data-grid-checkbox]').prop('checked', false);
 
@@ -194,6 +195,8 @@ var Extension;
             };
 
             Extension.Uploader.linkMediaRecords(mediaIds, success);
+            // Why didn't the success function get called, without this line?
+            success();
         } else {
             $(this).html(originalText).prop('disabled', false);
             $('[data-grid-checkbox]').prop('checked', false);
