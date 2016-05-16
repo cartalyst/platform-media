@@ -217,6 +217,17 @@ $light-grey: #a0a0a0;
         color: $light-grey;
     }
 }
+.modal-header-icon{
+    font-size: 18px;
+    margin-right: 12px;
+    line-height: 34px;
+    color: $light-grey;
+    transition: .2s all ease-in-out;
+    &:hover, &:active, &:focus{
+        text-decoration: none;
+        color: $blue;
+    }
+}
 
 
 .modal-media-selection .modal-dialog {

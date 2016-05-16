@@ -11,12 +11,8 @@
             <div class="modal-header">
                 
                 <div class="modal-header-left">
-                    <a href="#" data-toggle="tooltip" data-original-title="Show all files" class="btn btn-default modal-header-icon">
-                        <i class="fa fa-th-large"></i>
-                    </a>
-                    <a href="#" data-toggle="tooltip" data-original-title="Show only images" class="btn btn-default modal-header-icon">
-                        <i class="fa fa-image"></i>
-                    </a>
+                    <a href="#" data-toggle="tooltip" data-original-title="Show all files" class="modal-header-icon"><i class="fa fa-th-large"></i></a>
+                    <a href="#" data-toggle="tooltip" data-original-title="Show only images" class="modal-header-icon"><i class="fa fa-image"></i></a>
                 </div>
                 <div class="modal-header-center">
                     <h4 class="modal-title">Media Manager</h4>
