@@ -2,7 +2,7 @@
 
 	<% _.each(pagination, function(p) { %>
 
-		<div class="pull-left">
+		<div class="">
 
 			<div class="pages">
 				{{{ trans('common.showing') }}} <%= p.page_start %> {{{ trans('common.to') }}} <%= p.page_limit %> {{{ trans('common.of') }}} <span class="total"><%= p.filtered %></span>
@@ -10,7 +10,7 @@
 
 		</div>
 
-		<div class="pull-right">
+		<div class="flex">
 
 			<ul class="pagination pagination-sm">
 

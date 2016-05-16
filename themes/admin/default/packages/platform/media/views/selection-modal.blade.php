@@ -7,70 +7,60 @@
     <div class="modal-dialog">
 
         <div class="modal-content">
+            
+            <div class="modal-header">
+                
+                <div class="modal-header-left">
+                    <a href="#" data-toggle="tooltip" data-original-title="Show all files" class="btn btn-default modal-header-icon">
+                        <i class="fa fa-th-large"></i>
+                    </a>
+                    <a href="#" data-toggle="tooltip" data-original-title="Show only images" class="btn btn-default modal-header-icon">
+                        <i class="fa fa-image"></i>
+                    </a>
+                </div>
+                <div class="modal-header-center">
+                    <h4 class="modal-title">Media Manager</h4>
+                </div>
+                <div class="modal-header-right">
+                    <div class="modal-header-search" data-search data-grid="main">
+                        <i class="fa fa-search"></i>
+                        <input type="text" placeholder="{{{ trans('common.search') }}}">
+                        <div class="modal-header-search-action">
+                            <a href="#" class="btn btn-default" data-grid="main" data-reset>
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
 
+            </div>
             <div class="modal-body">
 
-                <div class="input-group" data-search data-grid="main">
-
-                    <span class="input-group-btn">
-
-                        <button class="btn btn-default" type="button" disabled>
-                            {{{ trans('common.filters') }}}
-                        </button>
-
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-
-                        <ul class="dropdown-menu" role="menu">
-
-                            <li>
-                                <a data-grid="main" data-filter="private:0" data-label="private::{{{ trans('platform/media::action.filter.public') }}}" data-reset>
-                                    <i class="fa fa-unlock"></i> {{{ trans('platform/media::action.filter.public') }}}
-                                </a>
-                            </li>
-
-                            <li>
-                                <a data-grid="main" data-filter="private:1" data-label="private::{{{ trans('platform/media::action.filter.private') }}}" data-reset>
-                                    <i class="fa fa-lock"></i> {{{ trans('platform/media::action.filter.private') }}}
-                                </a>
-                            </li>
-
-                            <li class="divider"></li>
-
-                        </ul>
-
-                    </span>
-
-                    <input class="form-control" type="text" placeholder="{{{ trans('common.search') }}}">
-
-                    <span class="input-group-btn">
-
-                        <button class="btn btn-default" type="submit">
-                            <span class="fa fa-search"></span>
-                        </button>
-
-                        <button class="btn btn-default" data-grid="main" data-reset>
-                            <i class="fa fa-refresh fa-sm"></i>
-                        </button>
-
-                    </span>
-
-                </div>
 
                 {{-- Grid: Applied Filters --}}
                 <div class="btn-toolbar" role="toolbar" aria-label="data-grid-applied-filters">
-
                     <div id="data-grid_applied" class="btn-group" data-grid="main"></div>
-
                 </div>
 
                 {{-- Grid: Table --}}
-                <div class="table-responsive">
 
-                    <table id="data-grid" class="table table-hover" data-source="{{ route('admin.media.images.grid') }}" data-grid="main">
-                        <thead>
+                {{-- <div class="media-results">
+                    <i class="fa fa-check"></i>
+                    <div class="media-item">
+                        <input id="media-item-1" data-grid-checkbox type="checkbox" name="row[]" value="<%= r.id %>">
+                        <label for="media-item-1">
+                            <div class="media-img"></div>
+                            <span class="media-title">Screenshot.png</span>
+                            <span class="media-date">15 May, 2016</span>
+                        </label>
+                    </div>
+
+                </div> --}}
+                <div>
+                    <div class="media-results" id="data-grid" data-source="{{ route('admin.media.images.grid') }}" data-grid="main">
+                        
+                        <!-- <thead>
                             <tr>
                                 <th><input data-grid-checkbox="all" type="checkbox"></th>
                                 <th class="sortable" data-sort="mime"><i class="fa fa-file-o"></i></th>
@@ -82,21 +72,18 @@
                                 <th class="text-center">{{{ trans('common.actions') }}}</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
-                    </table>
+                        <tbody></tbody>-->
+                    </div>
 
                 </div>
 
-                <footer class="panel-footer clearfix">
 
-                    {{-- Grid: Pagination --}}
-                    <div id="data-grid_pagination" data-grid="main"></div>
-
-                </footer>
 
             </div>
 
             <div class="modal-footer">
+                {{-- Grid: Pagination --}}
+                <div id="data-grid_pagination" data-grid="main"></div>
 
                 <span class="pull-right text-right">
                     <button type="button" class="btn btn-default" data-dismiss="modal">{{{ trans('action.cancel') }}}</button>

@@ -1,8 +1,16 @@
 <script type="text/template" data-grid="main" data-template="results">
 
 	<% _.each(results, function(r) { %>
+        <div class="media-item" data-grid-row>
+            <input id="<%= r.id %>" data-grid-checkbox type="checkbox" name="row[]" value="<%= r.id %>" data-name="<%= r.name %>" data-thumbnail="<%= r.thumbnail %>">
+            <label for="<%= r.id %>">
+                <div class="media-img" style="background-image: url('<%= r.thumbnail %>')"></div>
+                <span class="media-title"><a href="<%= r.edit_uri %>"><%= r.name %></a></span>
+                <span class="media-date"><%= moment(r.created_at).format('MMM DD, YYYY') %></span>
+            </label>
+        </div>
 
-		<tr data-grid-row>
+		{{-- <tr data-grid-row>
 			<td><input data-grid-checkbox type="checkbox" name="row[]" value="<%= r.id %>" data-name="<%= r.name %>" data-thumbnail="<%= r.thumbnail %>"></td>
 
 			<td>
@@ -60,7 +68,7 @@
 				</a>
 
 			</td>
-		</tr>
+		</tr> --}}
 
 	<% }); %>
 
