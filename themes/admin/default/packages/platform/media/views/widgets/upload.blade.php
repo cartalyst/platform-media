@@ -58,7 +58,7 @@
             </div>
             <span class="pull-left">
                 {{ $upload->name }}
-                <input type="hidden" name="media_ids[]" value="{{ $upload->id }}">
+                <input type="hidden" name="_media_ids[]" value="{{ $upload->id }}">
                 @thumbnail($upload->id)
             </span>
             <span class="pull-right button-group">
@@ -91,7 +91,7 @@
         </div>
         <span class="pull-left">
             <%- media.name %>
-            <input type="hidden" name="media_ids[]" value="<%= media.id %>">
+            <input type="hidden" name="_media_ids[]" value="<%= media.id %>">
             <img src="{{ url('/') }}<%= media.thumbnail %>" alt=""/>
         </span>
         <span class="pull-right button-group">

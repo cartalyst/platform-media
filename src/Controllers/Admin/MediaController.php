@@ -285,7 +285,7 @@ class MediaController extends AdminController
         $class = request()->input('object_class');
         $model = (new $class)->find(request()->input('model_id'));
 
-        if ($mediaIds = request()->input('new_media_ids')) {
+        if ($mediaIds = request()->input('_new_media_ids')) {
             $preparedMediaIds = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
 
             $model->media()->sync($preparedMediaIds);
