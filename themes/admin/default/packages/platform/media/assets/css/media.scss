@@ -16,16 +16,16 @@
  * @link       http://cartalyst.com
  */
 
-$blue: #337ab7;
-$light-grey: #a0a0a0;
+ $blue: #337ab7;
+ $light-grey: #a0a0a0;
 
-.modal-media {
-	margin-left:auto;
-	margin-right:auto;
-}
+ .modal-media {
+     margin-left:auto;
+     margin-right:auto;
+ }
 
-.upload {
-	padding:16px;
+ .upload {
+   padding:16px;
 }
 
 .upload__instructions {
@@ -359,16 +359,42 @@ $light-grey: #a0a0a0;
        position: absolute;
        top: -9999px;
        left: -9999px;
-    }
-    input[type=checkbox] ~ label{
-        width: 100%;
-        font-weight: normal;
-    }
-    input[type=checkbox]:checked ~ label div.media-img {
-        border-color: $blue;
-        &:after{
-            background: $blue;
-            color: white;
-       }
+   }
+   input[type=checkbox] ~ label{
+    width: 100%;
+    font-weight: normal;
+}
+input[type=checkbox]:checked ~ label div.media-img {
+    border-color: $blue;
+    &:after{
+        background: $blue;
+        color: white;
     }
 }
+}
+
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+}
+.list-group-item-left{
+    margin-right: 10px;
+    i{
+        margin-right: 5px;
+        cursor: move;
+    }
+    img{
+        max-width: 120px;
+    }
+}
+.list-group-item-center{
+    flex: 1;
+}
+
+
+
+
+
