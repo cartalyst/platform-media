@@ -38,6 +38,7 @@ class MigrationPlatformMediaAddNamespaceAndRelations extends Migration
             $table->string('object_type');
             $table->integer('object_id')->unsigned();
             $table->integer('media_id')->unsigned();
+            $table->tinyInteger('sort')->nullable();
 
             $table->engine = 'InnoDB';
 
