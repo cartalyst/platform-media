@@ -16,13 +16,13 @@
 
 {{-- Inline scripts --}}
 @section('scripts')
-    @parent
+@parent
 
-    <script type="text/javascript">
-        Extension.Uploader.MediaManager.setUploadUrl('{{ route('admin.media.upload') }}');
-        Extension.Uploader.MediaManager.setNamespace('{{ $namespace }}');
-        Extension.Uploader.setMultiUpload('{{ $multiUpload }}');
-    </script>
+<script type="text/javascript">
+    Extension.Uploader.MediaManager.setUploadUrl('{{ route('admin.media.upload') }}');
+    Extension.Uploader.MediaManager.setNamespace('{{ $namespace }}');
+    Extension.Uploader.setMultiUpload('{{ $multiUpload }}');
+</script>
 @stop
 
 @if ($model)
@@ -56,17 +56,23 @@
     <ul id="listWithHandle" class="upload__attachments list-group">
         @foreach ($currentUploads as $upload)
         <li class="list-group-item clearfix">
+            <div class="flex-row">
+                <div class="list-group-item-left">
+                    <i class="fa fa-arrows-v"></i>
+                    @thumbnail($upload->id)
+                </div>
+                <div class="list-group-item-center">
+                    <span>{{ $upload->name }}</span>
+                    <input type="hidden" name="_media_ids[]" value="{{ $upload->id }}">
+                </div>
+                <div class="list-group-item-right">
+                    <button type="button" class="btn btn-danger btn-xs" data-media-delete><i class="fa fa-trash"></i></button>
+                </div>
+            </div>
             <div class="overlay">
                 <i class="fa fa-spinner fa-spin"></i>
             </div>
-            <span class="pull-left">
-                {{ $upload->name }}
-                <input type="hidden" name="media_ids[]" value="{{ $upload->id }}">
-                @thumbnail($upload->id)
-            </span>
-            <span class="pull-right button-group">
-                <button type="button" class="btn btn-danger btn-xs" data-media-delete><i class="fa fa-trash"></i></button>
-            </span>
+
         </li>
         @endforeach
     </ul>
@@ -104,7 +110,7 @@
         </div>
         <span class="pull-left">
             <%- media.name %>
-            <input type="hidden" name="media_ids[]" value="<%= media.id %>">
+            <input type="hidden" name="_media_ids[]" value="<%= media.id %>">
             <img src="{{ url('/') }}<%= media.thumbnail %>" alt=""/>
         </span>
         <span class="pull-right button-group">

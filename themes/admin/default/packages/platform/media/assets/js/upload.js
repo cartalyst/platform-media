@@ -146,7 +146,7 @@ var Extension;
 
         $(this).prop('disabled', true).html(originalText + ' <i class="fa fa-spinner fa-spin"></i>');
 
-        mediaIds = $('input[name="media_ids[]"]').map(function() {
+        mediaIds = $('input[name="_media_ids[]"]').map(function() {
             return $(this).val();
         }).get();
 
@@ -219,7 +219,7 @@ var Extension;
         var _this = this;
 
         $(this).parent().parent().find('.overlay').show();
-        $(this).parent().parent().find('input[name="media_ids[]"]').remove();
+        $(this).parent().parent().find('input[name="_media_ids[]"]').remove();
 
         success = function() {
             $(_this).closest('li').fadeOut(300, function() {
@@ -245,7 +245,7 @@ var Extension;
         }
 
         if (modelId = $('[data-model-id]').data('model-id')) {
-            mediaIds = mediaIds ? mediaIds : $('input[name="media_ids[]"]').map(function() {
+            mediaIds = mediaIds ? mediaIds : $('input[name="_media_ids[]"]').map(function() {
                 return $(this).val();
             }).get();
 
@@ -255,7 +255,7 @@ var Extension;
                 data: {
                     model_id: modelId,
                     object_class: objectClass,
-                    new_media_ids: JSON.stringify(mediaIds)
+                    _new_media_ids: JSON.stringify(mediaIds)
                 }
             });
 

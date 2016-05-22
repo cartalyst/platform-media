@@ -44,30 +44,42 @@ trait MediaTrait
     public static function bootMediaTrait()
     {
         static::creating(function($model) {
-            if ($mediaIds = request()->input('media_ids')) {
-                request()->replace(request()->except('media_ids'));
+            if ($mediaIds = request()->input('_media_ids')) {
+                request()->replace(request()->except('_media_ids'));
 
-                $preparedMediaIds = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
+                $mediaIds = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
+                $preparedMediaIds = [];
+                foreach ($mediaIds as $key => $id) {
+                    $preparedMediaIds[$id] = ['sort' => $key];
+                }
 
                 static::setMediaIds($preparedMediaIds);
             }
         });
 
         static::updating(function($model) {
-            if ($mediaIds = request()->input('media_ids')) {
-                request()->replace(request()->except('media_ids'));
+            if ($mediaIds = request()->input('_media_ids')) {
+                request()->replace(request()->except('_media_ids'));
 
-                $preparedMediaIds = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
+                $mediaIds = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
+                $preparedMediaIds = [];
+                foreach ($mediaIds as $key => $id) {
+                    $preparedMediaIds[$id] = ['sort' => $key];
+                }
 
                 static::setMediaIds($preparedMediaIds);
             }
         });
 
         static::saving(function($model) {
-            if ($mediaIds = request()->input('media_ids')) {
-                request()->replace(request()->except('media_ids'));
+            if ($mediaIds = request()->input('_media_ids')) {
+                request()->replace(request()->except('_media_ids'));
 
-                $preparedMediaIds = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
+                $mediaIds = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
+                $preparedMediaIds = [];
+                foreach ($mediaIds as $key => $id) {
+                    $preparedMediaIds[$id] = ['sort' => $key];
+                }
 
                 static::setMediaIds($preparedMediaIds);
             }
@@ -103,7 +115,7 @@ trait MediaTrait
      */
     public function media()
     {
-        return $this->morphToMany(static::$mediaModel, 'object', 'media_relations');
+        return $this->morphToMany(static::$mediaModel, 'object', 'media_relations')->orderBy('sort');
     }
 
     /**
