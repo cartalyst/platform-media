@@ -11,6 +11,9 @@
 {{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', ['fileapi', 'underscore']) }}
 {{ Asset::queue('upload', 'platform/media::js/upload.js', ['platform', 'mediamanager']) }}
 
+{{ Asset::queue('sortable', 'platform/media::js/sortable.min.js') }}
+
+
 {{-- Inline scripts --}}
 @section('scripts')
     @parent
@@ -50,7 +53,7 @@
 <input type="hidden" data-upload-post-url="{{ route('admin.media.link_media') }}">
 
 <div class="clearfix">
-    <ul class="upload__attachments list-group">
+    <ul id="listWithHandle" class="upload__attachments list-group">
         @foreach ($currentUploads as $upload)
         <li class="list-group-item clearfix">
             <div class="overlay">
@@ -83,6 +86,16 @@
 
 @include('platform/media::modal')
 @include('platform/media::selection-modal')
+
+<script>
+    var listWithHandle = document.getElementById('listWithHandle');
+    // List with handle
+    Sortable.create(listWithHandle, {
+      handle: '.glyphicon-move',
+      animation: 150
+    });
+
+</script>
 
 <script type="text/template" data-media-attachment-template>
     <li class="list-group-item clearfix">
