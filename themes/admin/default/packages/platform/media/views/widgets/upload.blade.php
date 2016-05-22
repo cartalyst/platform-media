@@ -25,25 +25,25 @@
 </script>
 
 <script>
-    var listWithHandle = document.getElementById('listWithHandle');
+    var mediaList = document.getElementById('mediaList');
     // List with handle
-    Sortable.create(listWithHandle, {
+    Sortable.create(mediaList, {
         handle: '.fa-arrows',
         animation: 150,
-        // dragging ended
+        // Drag on-end Event
         onEnd: function (evt) {
             var arr = new Array();
             var children = evt.to.children;
+            // Go through all media items
             for (var i = 0; i < children.length; i++) {
               var tableChild = children[i];
-              // Do stuff
+              // Push media ids into Array
               arr.push(tableChild.id);
             }
-
+            // Fill the input with the array
             document.getElementById('mediaArray').value = arr;
         }
     });
-
 </script>
 @stop
 
@@ -52,31 +52,12 @@
 <input type="hidden" data-object-class="{{ get_class($model) }}">
 @endif
 
-<style>
-    div.overlay {
-        display: none;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        background: rgba(255,255,255,0.8);
-    }
-
-    div.overlay i.fa-spinner {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-left: -7px;
-        margin-top: -7px;
-    }
-</style>
 
 <input type="hidden" data-upload-post-url="{{ route('admin.media.link_media') }}">
 
 <div class="clearfix">
     <input type="hidden" name="sort" id="mediaArray">
-    <ul id="listWithHandle" class="upload__attachments list-group">
+    <ul id="mediaList" class="upload__attachments list-group">
         @foreach ($currentUploads as $upload)
         <li class="list-group-item clearfix" id="{{ $upload->id }}">
             <div class="flex-row">

@@ -15,17 +15,34 @@
  * @copyright  (c) 2011-2016, Cartalyst LLC
  * @link       http://cartalyst.com
  */
+ div.overlay {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(255,255,255,0.8);
+}
+div.overlay i.fa-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -7px;
+    margin-top: -7px;
+}
 
- $blue: #337ab7;
- $light-grey: #a0a0a0;
 
- .modal-media {
-     margin-left:auto;
-     margin-right:auto;
- }
+$blue: #337ab7;
+$light-grey: #a0a0a0;
 
- .upload {
-   padding:16px;
+.modal-media {
+   margin-left:auto;
+   margin-right:auto;
+}
+
+.upload {
+ padding:16px;
 }
 
 .upload__instructions {
@@ -356,21 +373,21 @@
         }
     }
     input[type=checkbox] {
-       position: absolute;
-       top: -9999px;
-       left: -9999px;
-   }
-   input[type=checkbox] ~ label{
-    width: 100%;
-    font-weight: normal;
-}
-input[type=checkbox]:checked ~ label div.media-img {
-    border-color: $blue;
-    &:after{
-        background: $blue;
-        color: white;
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
     }
-}
+    input[type=checkbox] ~ label{
+        width: 100%;
+        font-weight: normal;
+    }
+    input[type=checkbox]:checked ~ label div.media-img {
+        border-color: $blue;
+        &:after{
+            background: $blue;
+            color: white;
+        }
+    }
 }
 
 
