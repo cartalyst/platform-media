@@ -23,6 +23,28 @@
     Extension.Uploader.MediaManager.setNamespace('{{ $namespace }}');
     Extension.Uploader.setMultiUpload('{{ $multiUpload }}');
 </script>
+
+<script>
+    var listWithHandle = document.getElementById('listWithHandle');
+    // List with handle
+    Sortable.create(listWithHandle, {
+        handle: '.fa-arrows',
+        animation: 150,
+        // dragging ended
+        onEnd: function (evt) {
+            var arr = new Array();
+            var children = evt.to.children;
+            for (var i = 0; i < children.length; i++) {
+              var tableChild = children[i];
+              // Do stuff
+              arr.push(tableChild.id);
+            }
+
+            document.getElementById('mediaArray').value = arr;
+        }
+    });
+
+</script>
 @stop
 
 @if ($model)
@@ -53,12 +75,13 @@
 <input type="hidden" data-upload-post-url="{{ route('admin.media.link_media') }}">
 
 <div class="clearfix">
+    <input type="hidden" name="sort" id="mediaArray">
     <ul id="listWithHandle" class="upload__attachments list-group">
         @foreach ($currentUploads as $upload)
-        <li class="list-group-item clearfix">
+        <li class="list-group-item clearfix" id="{{ $upload->id }}">
             <div class="flex-row">
                 <div class="list-group-item-left">
-                    <i class="fa fa-arrows-v"></i>
+                    <i class="fa fa-arrows"></i>
                     @thumbnail($upload->id)
                 </div>
                 <div class="list-group-item-center">
@@ -93,28 +116,24 @@
 @include('platform/media::modal')
 @include('platform/media::selection-modal')
 
-<script>
-    var listWithHandle = document.getElementById('listWithHandle');
-    // List with handle
-    Sortable.create(listWithHandle, {
-      handle: '.glyphicon-move',
-      animation: 150
-    });
-
-</script>
 
 <script type="text/template" data-media-attachment-template>
-    <li class="list-group-item clearfix">
+    <li class="list-group-item clearfix" id="<%= media.id %>">
+        <div class="flex-row">
+            <div class="list-group-item-left">
+                <i class="fa fa-arrows"></i>
+                <img src="{{ url('/') }}<%= media.thumbnail %>" alt=""/>
+            </div>
+            <div class="list-group-item-center">
+                <span><%- media.name %></span>
+                <input type="hidden" name="_media_ids[]" value="<%= media.id %>">
+            </div>
+            <div class="list-group-item-right">
+                <button type="button" class="btn btn-danger btn-xs" data-media-delete><i class="fa fa-trash"></i></button>
+            </div>
+        </div>
         <div class="overlay">
             <i class="fa fa-spinner fa-spin"></i>
         </div>
-        <span class="pull-left">
-            <%- media.name %>
-            <input type="hidden" name="_media_ids[]" value="<%= media.id %>">
-            <img src="{{ url('/') }}<%= media.thumbnail %>" alt=""/>
-        </span>
-        <span class="pull-right button-group">
-            <button type="button" class="btn btn-danger btn-xs" data-media-delete><i class="fa fa-trash"></i></button>
-        </span>
     </li>
 </script>
