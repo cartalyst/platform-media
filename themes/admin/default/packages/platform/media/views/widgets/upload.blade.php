@@ -9,10 +9,8 @@
 {{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
 {{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
 {{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', ['fileapi', 'underscore']) }}
-{{ Asset::queue('upload', 'platform/media::js/upload.js', ['platform', 'mediamanager']) }}
-
 {{ Asset::queue('sortable', 'platform/media::js/sortable.min.js') }}
-
+{{ Asset::queue('upload', 'platform/media::js/upload.js', ['platform', 'mediamanager', 'sortable']) }}
 
 {{-- Inline scripts --}}
 @section('scripts')
@@ -24,27 +22,6 @@
     Extension.Uploader.setMultiUpload('{{ $multiUpload }}');
 </script>
 
-<script>
-    var mediaList = document.getElementById('mediaList');
-    // List with handle
-    Sortable.create(mediaList, {
-        handle: '.fa-arrows',
-        animation: 150,
-        // Drag on-end Event
-        onEnd: function (evt) {
-            var arr = new Array();
-            var children = evt.to.children;
-            // Go through all media items
-            for (var i = 0; i < children.length; i++) {
-              var tableChild = children[i];
-              // Push media ids into Array
-              arr.push(tableChild.id);
-            }
-            // Fill the input with the array
-            document.getElementById('mediaArray').value = arr;
-        }
-    });
-</script>
 @stop
 
 @if ($model)

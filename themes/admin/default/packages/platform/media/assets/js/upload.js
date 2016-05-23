@@ -34,6 +34,7 @@ var Extension;
             .listeners()
             .dataGrid()
             .initMediaManager()
+            .initSorting()
         ;
     };
 
@@ -105,6 +106,33 @@ var Extension;
                 }
             }
         });
+
+        return this;
+    };
+
+    // Initialize sorting
+    Extension.Uploader.initSorting = function()
+    {
+        var mediaList = $('#mediaList')[0];
+        Sortable.create(mediaList, {
+            handle: '.fa-arrows',
+            animation: 150,
+            onEnd: function (evt) {
+                var arr = new Array();
+                var children = evt.to.children;
+
+                for (var i = 0; i < children.length; i++) {
+                  var tableChild = children[i];
+                  arr.push(tableChild.id);
+                }
+
+                $('#mediaArray').val(arr);
+
+                Extension.Uploader.linkMediaRecords();
+            }
+        });
+
+        return this;
     };
 
     // Handle Data Grid checkboxes
@@ -179,8 +207,7 @@ var Extension;
         // newly added media objects.
         if (mediaIds.length > 0 && newMediaIdObjects.length > 0 && modelId) {
             success = function() {
-                console.log('_:_:_:_success');
-                $(this).html(originalText).prop('disabled', false);
+                $(_this).html(originalText).prop('disabled', false);
                 $('[data-grid-checkbox]').prop('checked', false);
 
                 _.each(newMediaIdObjects, function(media) {
@@ -195,8 +222,6 @@ var Extension;
             };
 
             Extension.Uploader.linkMediaRecords(mediaIds, success);
-            // Why didn't the success function get called, without this line?
-            success();
         } else {
             $(this).html(originalText).prop('disabled', false);
             $('[data-grid-checkbox]').prop('checked', false);
@@ -220,9 +245,10 @@ var Extension;
 
         $(this).parent().parent().find('.overlay').show();
         $(this).parent().parent().find('input[name="_media_ids[]"]').remove();
+        $(this).addClass('disabled');
 
         success = function() {
-            $(_this).closest('li').fadeOut(300, function() {
+            $(_this).closest('li').fadeOut(500, function() {
                 $(this).remove();
             });
         };
@@ -256,7 +282,8 @@ var Extension;
                     model_id: modelId,
                     object_class: objectClass,
                     _new_media_ids: JSON.stringify(mediaIds)
-                }
+                },
+                success: success
             });
 
             return true;
