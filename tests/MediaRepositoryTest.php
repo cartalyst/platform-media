@@ -497,6 +497,13 @@ class MediaRepositoryTest extends IlluminateTestCase
             ->once()
             ->andReturn($model);
 
+        $model->shouldReceive('relations')
+            ->once()
+            ->andReturn($collection = m::mock('Illuminate\Support\Collection'));
+
+        $collection->shouldReceive('delete')
+            ->once();
+
         $model->shouldReceive('delete')
             ->once();
 
