@@ -33,7 +33,7 @@
 <input type="hidden" data-upload-post-url="{{ route('admin.media.link_media') }}">
 
 <div class="clearfix">
-    <input type="hidden" name="sort" id="mediaArray">
+    <input type="hidden" id="mediaArray">
     <ul id="mediaList" class="upload__attachments list-group">
         @foreach ($currentUploads as $upload)
         <li class="list-group-item clearfix" id="{{ $upload->id }}">
