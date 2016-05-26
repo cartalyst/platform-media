@@ -12,7 +12,7 @@
                 
                 <div class="modal-header-left">
                     <a href="#" data-toggle="tooltip" data-original-title="Show all files" class="modal-header-icon"><i class="fa fa-th-large"></i></a>
-                    <a href="#" data-toggle="tooltip" data-original-title="Show only images" class="modal-header-icon"><i class="fa fa-image"></i></a>
+                    <a href="#" data-toggle="tooltip" data-original-title="Show only images" class="modal-header-icon"><i class="fa fa-th-large"></i></a>
                 </div>
                 <div class="modal-header-center">
                     <h4 class="modal-title">Media Manager</h4>
@@ -32,7 +32,6 @@
 
             </div>
             <div class="modal-body">
-
 
                 {{-- Grid: Applied Filters --}}
                 <div class="btn-toolbar" role="toolbar" aria-label="data-grid-applied-filters">
@@ -54,7 +53,7 @@
 
                 </div> --}}
                 <div>
-                    <div class="media-results" id="data-grid" data-source="{{ route('admin.media.images.grid') }}" data-grid="main">
+                    <div class="media-results display-column" id="data-grid" data-source="{{ route('admin.media.images.grid') }}" data-grid="main">
                         
                         <!-- <thead>
                             <tr>

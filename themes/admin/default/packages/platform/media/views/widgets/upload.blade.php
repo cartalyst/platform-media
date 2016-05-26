@@ -33,6 +33,19 @@
 <input type="hidden" data-upload-post-url="{{ route('admin.media.link_media') }}">
 
 <div class="clearfix">
+    <div class="pull-right mb15">
+            <a class="tip btn btn-primary btn-md" href="#" data-toggle="modal" data-target="#media-modal" data-original-title="{{ trans('action.upload') }}">
+                <i class="fa fa-upload"></i> {{ trans('action.upload') }}
+            </a>
+
+            <a class="tip btn btn-primary btn-md" href="#" data-toggle="modal" data-target="#media-selection-modal" data-original-title="{{ trans('platform/media::action.select') }}">
+                <i class="fa fa-list-ul"></i> {{ trans('platform/media::action.select') }}
+            </a>
+    </div>
+    <label class="mt5"><i class="fa fa-info"></i> Media</label>
+</div>
+
+<div class="clearfix">
     <input type="hidden" id="mediaArray">
     <ul id="mediaList" class="upload__attachments list-group">
         @foreach ($currentUploads as $upload)
@@ -62,13 +75,6 @@
 
     <p><small><i class="fa fa-info"></i>&nbsp; {{ $multiUpload ? 'Multiple images can be added.' : 'Only a single image can be added.' }}</small></p>
 
-    <a class="tip btn btn-primary btn-md" href="#" data-toggle="modal" data-target="#media-modal" data-original-title="{{ trans('action.upload') }}">
-        <i class="fa fa-upload"></i> {{ trans('action.upload') }}
-    </a>
-
-    <a class="tip btn btn-primary btn-md" href="#" data-toggle="modal" data-target="#media-selection-modal" data-original-title="{{ trans('action.select') }}">
-        <i class="fa fa-file"></i> {{ trans('action.select') }}
-    </a>
 </div>
 
 @include('platform/media::modal')

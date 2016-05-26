@@ -23,6 +23,8 @@ return [
     'send_email' => 'Send Email',
     'share'      => 'Share',
     'download'   => 'Download',
+    'upload'   => 'Upload',
+    'select'   => 'Select',
 
     'bulk' => [
         'email'   => 'Email Selected',

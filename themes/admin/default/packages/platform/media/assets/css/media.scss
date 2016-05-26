@@ -171,6 +171,13 @@ $light-grey: #a0a0a0;
 
 // Style Additions
 
+.mb15{
+    margin-bottom: 15px;
+}
+.mt5{
+    margin-top: 5px;
+}
+
 .modal-media-selection{
     .modal-header{
         padding: 30px;
@@ -309,6 +316,9 @@ $light-grey: #a0a0a0;
         .media-title{
             display: block;
             font-size: 14px;
+            word-break: break-all;
+            max-height: 153px;
+            overflow: hidden;
         }
         .media-date{
             display: block;
@@ -386,6 +396,29 @@ $light-grey: #a0a0a0;
         &:after{
             background: $blue;
             color: white;
+        }
+    }
+    
+    .media-item-info{
+        display: inline-block;
+    }
+
+    &.display-column{
+        flex-direction: column;
+        .media-item{
+            max-width: 100%;
+            label{
+                display: flex;
+                flex-direction: row;
+            }
+
+            .media-img{
+                height: 40px;
+                width: 70px;
+            }
+        }
+        .media-item-info{
+            margin-left: 8px;
         }
     }
 }
