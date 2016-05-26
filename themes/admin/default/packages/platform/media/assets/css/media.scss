@@ -247,7 +247,7 @@ $light-grey: #a0a0a0;
     line-height: 34px;
     color: $light-grey;
     transition: .2s all ease-in-out;
-    &:hover, &:active, &:focus{
+    &:hover, &:active, &:focus, &.active{
         text-decoration: none;
         color: $blue;
     }
@@ -275,7 +275,7 @@ $light-grey: #a0a0a0;
         max-height: 100%;
         padding: 0 10px;
         margin-bottom: 10px;
-        div.media-img{
+        .media-img{
             display: block;
             width: 100%;
             height: 240px;
@@ -414,7 +414,13 @@ $light-grey: #a0a0a0;
 
             .media-img{
                 height: 40px;
-                width: 70px;
+                width: 60px;
+
+                overflow: visible;
+                margin-left: 35px;
+                &:after{
+                    left: -35px;
+                }
             }
         }
         .media-item-info{

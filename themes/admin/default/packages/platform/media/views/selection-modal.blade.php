@@ -2,6 +2,8 @@
 {{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
 {{ Asset::queue('moment', 'moment/js/moment.js', 'jquery') }}
 
+{{ Asset::queue('custom', 'platform/media::js/custom.js', 'jquery') }}
+
 <div class="modal modal-media-selection fade" id="media-selection-modal" tabindex="-1" role="dialog" aria-labelledby="media-selection-modal" aria-hidden="true">
 
     <div class="modal-dialog">
@@ -11,8 +13,8 @@
             <div class="modal-header">
                 
                 <div class="modal-header-left">
-                    <a href="#" data-toggle="tooltip" data-original-title="Show all files" class="modal-header-icon"><i class="fa fa-th-large"></i></a>
-                    <a href="#" data-toggle="tooltip" data-original-title="Show only images" class="modal-header-icon"><i class="fa fa-th-large"></i></a>
+                    <a href="#" data-toggle="tooltip" data-original-title="Show all files" data-view="grid" class="modal-header-icon active"><i class="fa fa-th-large"></i></a>
+                    <a href="#" data-toggle="tooltip" data-original-title="Show only images" data-view="list" class="modal-header-icon"><i class="fa fa-th-large"></i></a>
                 </div>
                 <div class="modal-header-center">
                     <h4 class="modal-title">Media Manager</h4>
@@ -53,7 +55,7 @@
 
                 </div> --}}
                 <div>
-                    <div class="media-results display-column" id="data-grid" data-source="{{ route('admin.media.images.grid') }}" data-grid="main">
+                    <div class="media-results" id="data-grid" data-source="{{ route('admin.media.images.grid') }}" data-grid="main">
                         
                         <!-- <thead>
                             <tr>
