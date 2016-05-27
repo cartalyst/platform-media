@@ -14,7 +14,7 @@
                 
                 <div class="modal-header-left">
                     <a href="#" data-toggle="tooltip" data-original-title="Show all files" data-view="grid" class="modal-header-icon active"><i class="fa fa-th-large"></i></a>
-                    <a href="#" data-toggle="tooltip" data-original-title="Show only images" data-view="list" class="modal-header-icon"><i class="fa fa-th-large"></i></a>
+                    <a href="#" data-toggle="tooltip" data-original-title="Show only images" data-view="list" class="modal-header-icon"><i class="fa fa-th-list"></i></a>
                 </div>
                 <div class="modal-header-center">
                     <h4 class="modal-title">Media Manager</h4>
