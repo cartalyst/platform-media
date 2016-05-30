@@ -80,13 +80,12 @@
 @include('platform/media::modal')
 @include('platform/media::selection-modal')
 
-
 <script type="text/template" data-media-attachment-template>
     <li class="list-group-item clearfix" id="<%= media.id %>">
         <div class="flex-row">
             <div class="list-group-item-left">
                 <i class="fa fa-arrows"></i>
-                <img src="{{ url('/') }}<%= media.thumbnail %>" alt=""/>
+                <img src="<%= media.thumbnail %>" alt=""/>
             </div>
             <div class="list-group-item-center">
                 <span><%- media.name %></span>

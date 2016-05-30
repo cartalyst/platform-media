@@ -114,6 +114,7 @@ var Extension;
     Extension.Uploader.initSorting = function()
     {
         var mediaList = $('#mediaList')[0];
+
         Sortable.create(mediaList, {
             handle: '.fa-arrows',
             animation: 150,
