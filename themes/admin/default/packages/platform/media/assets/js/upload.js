@@ -41,7 +41,8 @@ var Extension;
     // Add Listeners
     Extension.Uploader.listeners = function() {
         Platform.Cache.$body
-            .on('click', '[data-grid-checkbox]', Extension.Uploader.checkboxes)
+            .on('click', '.media-item', Extension.Uploader.checkboxes)
+            .on('click', '.modal-header-icon', Extension.Uploader.handleLayouts)
             .on('click', '[data-media-add]', Extension.Uploader.addMedia)
             .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia);
 
@@ -154,6 +155,20 @@ var Extension;
         }
 
         $(this).parents('[data-grid-row]').not('[data-grid-row][disabled]').toggleClass('active');
+    };
+
+    // Handle modal layouts
+    Extension.Uploader.handleLayouts = function(event) {
+        $('.modal-header-icon.active').removeClass('active');
+        $(this).addClass('active');
+
+        var view = $(this).data('view');
+
+        if (view == 'list') {
+            $('.media-results').addClass('display-column');
+        } else {
+            $('.media-results').removeClass('display-column');
+        }
     };
 
     // Handle Data Grid add media

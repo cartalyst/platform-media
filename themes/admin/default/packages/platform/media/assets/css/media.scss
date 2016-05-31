@@ -398,7 +398,7 @@ $light-grey: #a0a0a0;
             color: white;
         }
     }
-    
+
     .media-item-info{
         display: inline-block;
     }
@@ -451,6 +451,6 @@ $light-grey: #a0a0a0;
 }
 
 
-
-
-
+[data-selected-media] {
+    opacity: .5;
+}
