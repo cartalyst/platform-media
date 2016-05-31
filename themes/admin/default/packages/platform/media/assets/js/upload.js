@@ -145,7 +145,7 @@ var Extension;
 
         if (! Extension.Uploader.multiUpload) {
             $('[data-grid-checkbox="all"]').prop('disabled', true);
-            $('[data-grid-checkbox]').not(this).not('[data-grid-checkbox][disabled]').prop('checked', false);
+            $('[data-grid-checkbox]').not($(this).find('[data-grid-checkbox]')).not('[data-grid-checkbox][disabled]').prop('checked', false);
         }
 
         if (type === 'all') {
@@ -198,11 +198,11 @@ var Extension;
             mediaIds = [];
         }
 
-        newMediaIds = $.map($('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]'), function(event) {
+        newMediaIds = $.map($('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]').not('[data-grid-checkbox][disabled]'), function(event) {
             return event.value;
         });
 
-        newMediaIdObjects = $.map($('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]'), function(event) {
+        newMediaIdObjects = $.map($('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]').not('[data-grid-checkbox][disabled]'), function(event) {
             var id = event.value;
 
             // Skip existing media items
