@@ -34,6 +34,18 @@
 
             </div>
 
+            <div class="modal-selected">
+                <a href="#" class="modal-selected-header">
+                    <div class="flex-row">
+                        <div class="flex">
+                            <h3>Selected (2)</h3>
+                        </div>
+                        <i class="fa fa-chevron-down"></i>
+                    </div>
+                </a>
+            </div>
+
+
             <div class="modal-body">
 
                 {{-- Grid: Applied Filters --}}

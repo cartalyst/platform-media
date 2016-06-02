@@ -429,12 +429,37 @@ $light-grey: #a0a0a0;
     }
 }
 
+.modal-selected{
+    border-bottom: 1px solid #e5e5e5;
+}
+.modal-selected-header{
+    padding: 20px;
+    display: block;
+    color: #9f9f9f;
+    h3{
+        margin: 0;
+        font-weight: normal;
+        font-size: 14px;
+        color: #9f9f9f;
+    }
+    i{
+        font-size: 14px;
+        color: #9f9f9f;
+    }
+
+    &:active, &:focus, &:hover{
+        text-decoration: none;
+    }
+}
 
 .flex-row{
     display: flex;
     flex-direction: row;
     align-content: center;
     align-items: center;
+}
+.flex{
+    flex: 1;
 }
 .list-group-item-left{
     margin-right: 10px;
