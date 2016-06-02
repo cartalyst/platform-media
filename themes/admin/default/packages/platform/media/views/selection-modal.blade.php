@@ -2,6 +2,8 @@
 {{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
 {{ Asset::queue('moment', 'moment/js/moment.js', 'jquery') }}
 
+{{ Asset::queue('selected', 'platform/media::js/selected.js', 'jquery') }}
+
 <div class="modal modal-media-selection fade" id="media-selection-modal" tabindex="-1" role="dialog" aria-labelledby="media-selection-modal" aria-hidden="true">
 
     <div class="modal-dialog">
@@ -43,6 +45,29 @@
                         <i class="fa fa-chevron-down"></i>
                     </div>
                 </a>
+
+                <div class="modal-selected-body media-results">
+                    <div class="media-item" >
+                        <input id="mediaId" data-grid-checkbox type="checkbox" name="row[]" value="mediaId" data-name="<Media Name" data-thumbnail="thumbUrl">
+                        <label for="mediaId">
+                            <div class="media-img" style="background-image: url('thumbUrl')"></div>
+                            <div class="media-item-info">
+                                <span class="media-title"><a href="editUri">media name</a></span>
+                                <span class="media-date">6th May, 2016</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="media-item" >
+                        <input id="mediaId" data-grid-checkbox type="checkbox" name="row[]" value="mediaId" data-name="<Media Name" data-thumbnail="thumbUrl">
+                        <label for="mediaId">
+                            <div class="media-img" style="background-image: url('thumbUrl')"></div>
+                            <div class="media-item-info">
+                                <span class="media-title"><a href="editUri">media name</a></span>
+                                <span class="media-date">6th May, 2016</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
             </div>
 
 

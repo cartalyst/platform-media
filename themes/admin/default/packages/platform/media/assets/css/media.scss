@@ -37,12 +37,12 @@ $blue: #337ab7;
 $light-grey: #a0a0a0;
 
 .modal-media {
-   margin-left:auto;
-   margin-right:auto;
+ margin-left:auto;
+ margin-right:auto;
 }
 
 .upload {
- padding:16px;
+   padding:16px;
 }
 
 .upload__instructions {
@@ -431,6 +431,16 @@ $light-grey: #a0a0a0;
 
 .modal-selected{
     border-bottom: 1px solid #e5e5e5;
+}
+.modal-selected-body{
+    height: 0;
+    padding: 0px 20px;
+    overflow: hidden;
+    transition: .3s transform ease-in-out;
+    &.open{
+        padding: 20px;
+        //transform: scaleY(1);
+    }
 }
 .modal-selected-header{
     padding: 20px;
