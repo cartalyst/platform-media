@@ -63,8 +63,17 @@ var Extension;
                 $('[data-grid-checkbox-all]').prop('checked', false);
             },
             events: {
-                'switched': function(grid) {
-                    console.log('switching page');
+                'fetched': function(grid) {
+                    var selectedArray = $('input[name="_media_ids[]"]').val().split(',');
+                    // Convert all of the array items to integers
+                    for(var i=0; i<selectedArray.length; i++) { selectedArray[i] = parseInt(selectedArray[i], 10); } 
+
+                    $('.modal-body .media-results').children('.media-item').each(function(){
+                        let elementId = parseInt($(this).find('input').val());
+                        if (jQuery.inArray(elementId, selectedArray) !== parseInt('-1')){
+                            $(this).find('input').prop('checked', true);
+                        }
+                    });
                 }
             }
         };

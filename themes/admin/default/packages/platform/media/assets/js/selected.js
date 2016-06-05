@@ -32,7 +32,6 @@ var selectedArray = [];
             newItem.find('input').attr('id', 'media_selected_' + newItem.find('input').val());
             newItem.find('label').attr('for', 'media_selected_' + newItem.find('input').val());
             $('.modal-selected-body').append(newItem);
-            console.log(itemId);
             selectedArray.push(itemId);
 
             $('input[name="_media_ids[]"]').val(selectedArray);
@@ -40,7 +39,6 @@ var selectedArray = [];
         }
 
         function removeFromSelected(item, itemId){
-            console.log(itemId);
             selectedArray = jQuery.grep(selectedArray, function(value) {
               return value != itemId;
             });
