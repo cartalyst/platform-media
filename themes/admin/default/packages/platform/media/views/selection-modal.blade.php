@@ -40,35 +40,14 @@
                 <a href="#" class="modal-selected-header">
                     <div class="flex-row">
                         <div class="flex">
-                            <h3>Selected (2)</h3>
+                            <h3>Selected (<span class="selected-index">0</span>)</h3>
                         </div>
                         <i class="fa fa-chevron-down"></i>
                     </div>
                 </a>
 
                 <div class="modal-selected-body media-results">
-                    
-                    <div class="media-item" >
-                        <input id="mediaId" data-grid-checkbox type="checkbox" name="row[]" value="mediaId" data-name="<Media Name" data-thumbnail="thumbUrl">
-                        <label for="mediaId">
-                            <div class="media-img" style="background-image: url('thumbUrl')"></div>
-                            <div class="media-item-info">
-                                <span class="media-title"><a href="editUri">media name</a></span>
-                                <span class="media-date">6th May, 2016</span>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="media-item" >
-                        <input id="mediaId" data-grid-checkbox type="checkbox" name="row[]" value="mediaId" data-name="<Media Name" data-thumbnail="thumbUrl">
-                        <label for="mediaId">
-                            <div class="media-img" style="background-image: url('thumbUrl')"></div>
-                            <div class="media-item-info">
-                                <span class="media-title"><a href="editUri">media name</a></span>
-                                <span class="media-date">6th May, 2016</span>
-                            </div>
-                        </label>
-                    </div>
-                    
+
                 </div>
             </div>
 
