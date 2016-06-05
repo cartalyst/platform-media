@@ -61,6 +61,11 @@ var Extension;
                 }
 
                 $('[data-grid-checkbox-all]').prop('checked', false);
+            },
+            events: {
+                'switched': function(grid) {
+                    console.log('switching page');
+                }
             }
         };
 
