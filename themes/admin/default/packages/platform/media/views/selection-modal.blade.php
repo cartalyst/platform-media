@@ -47,6 +47,7 @@
                 </a>
 
                 <div class="modal-selected-body media-results">
+                    
                     <div class="media-item" >
                         <input id="mediaId" data-grid-checkbox type="checkbox" name="row[]" value="mediaId" data-name="<Media Name" data-thumbnail="thumbUrl">
                         <label for="mediaId">
@@ -67,6 +68,7 @@
                             </div>
                         </label>
                     </div>
+                    
                 </div>
             </div>
 
