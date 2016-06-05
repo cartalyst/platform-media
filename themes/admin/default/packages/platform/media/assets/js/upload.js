@@ -16,9 +16,10 @@
  * @link       http://cartalyst.com
  */
 
-var Extension;
+ var Extension;
 
-;(function(window, document, $, undefined) {
+ ;
+ (function(window, document, $, undefined) {
     'use strict';
 
     Extension = Extension || {
@@ -31,20 +32,19 @@ var Extension;
     Extension.Uploader.init = function() {
         Extension.Uploader.template = _.template($('[data-media-attachment-template]').html());
         Extension.Uploader
-            .listeners()
-            .dataGrid()
-            .initMediaManager()
-            .initSorting()
-        ;
+        .listeners()
+        .dataGrid()
+        .initMediaManager()
+        .initSorting();
     };
 
     // Add Listeners
     Extension.Uploader.listeners = function() {
         Platform.Cache.$body
-            .on('click', '.media-item', Extension.Uploader.checkboxes)
-            .on('click', '.modal-header-icon', Extension.Uploader.handleLayouts)
-            .on('click', '[data-media-add]', Extension.Uploader.addMedia)
-            .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia);
+        .on('click', '.media-item', Extension.Uploader.checkboxes)
+        .on('click', '.modal-header-icon', Extension.Uploader.handleLayouts)
+        .on('click', '[data-media-add]', Extension.Uploader.addMedia)
+        .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia);
 
         return this;
     };
@@ -56,7 +56,7 @@ var Extension;
             threshold: 10,
             hash: false,
             callback: function(data) {
-                if (! Extension.Uploader.multiUpload) {
+                if (!Extension.Uploader.multiUpload) {
                     $('[data-grid-checkbox="all"]').prop('disabled', true);
                 }
 
@@ -64,16 +64,24 @@ var Extension;
             },
             events: {
                 'fetched': function(grid) {
-                    var selectedArray = $('input[name="_media_ids[]"]').val().split(',');
-                    // Convert all of the array items to integers
-                    for(var i=0; i<selectedArray.length; i++) { selectedArray[i] = parseInt(selectedArray[i], 10); } 
-
-                    $('.modal-body .media-results').children('.media-item').each(function(){
-                        let elementId = parseInt($(this).find('input').val());
-                        if (jQuery.inArray(elementId, selectedArray) !== parseInt('-1')){
-                            $(this).find('input').prop('checked', true);
+                    if ($('input[name="_media_ids[]"]').val() != null) {
+                        var selectedArray = $('input[name="_media_ids[]"]').val().split(',');
+                        // Convert all of the array items to integers
+                        for (var i = 0; i < selectedArray.length; i++) {
+                            selectedArray[i] = parseInt(selectedArray[i], 10);
                         }
-                    });
+
+                        $('.modal-body .media-results').children('.media-item').each(function() {
+                            let elementId = parseInt($(this).find('input').val());
+                            if (jQuery.inArray(elementId, selectedArray) !== parseInt('-1')) {
+                                $(this).find('input').prop('checked', true);
+                            }
+                        });
+                    } else {
+                        // The input does not exist on the page yet and we would need it to see if the selected 
+                        // media are already in there. So how are you "dispaying" the input[name="_media_ids[]"] 
+                        // field? Upon select?
+                    }
                 }
             }
         };
@@ -86,7 +94,7 @@ var Extension;
     // Media manager initialization
     Extension.Uploader.initMediaManager = function() {
         Extension.Uploader.MediaManager = $.mediamanager({
-            onFileQueued : function(file) {
+            onFileQueued: function(file) {
                 $('input.file-tags').not('.selectize-control').selectize({
                     delimiter: ',',
                     persist: false,
@@ -108,14 +116,14 @@ var Extension;
                     Extension.Uploader.template({
                         media: response
                     })
-                );
+                    );
 
                 $('#media-modal').modal('hide');
             },
             onComplete: function() {
                 Extension.Uploader.linkMediaRecords();
             },
-            onRemove : function(manager, file) {
+            onRemove: function(manager, file) {
                 if (manager.totalFiles == 0) {
                     $('.upload__instructions').show();
                 }
@@ -126,20 +134,19 @@ var Extension;
     };
 
     // Initialize sorting
-    Extension.Uploader.initSorting = function()
-    {
+    Extension.Uploader.initSorting = function() {
         var mediaList = $('#mediaList')[0];
 
         Sortable.create(mediaList, {
             handle: '.fa-arrows',
             animation: 150,
-            onEnd: function (evt) {
+            onEnd: function(evt) {
                 var arr = new Array();
                 var children = evt.to.children;
 
                 for (var i = 0; i < children.length; i++) {
-                  var tableChild = children[i];
-                  arr.push(tableChild.id);
+                    var tableChild = children[i];
+                    arr.push(tableChild.id);
                 }
 
                 $('#mediaArray').val(arr);
@@ -157,7 +164,7 @@ var Extension;
 
         var type = $(this).attr('data-grid-checkbox');
 
-        if (! Extension.Uploader.multiUpload) {
+        if (!Extension.Uploader.multiUpload) {
             $('[data-grid-checkbox="all"]').prop('disabled', true);
             $('[data-grid-checkbox]').not($(this).find('[data-grid-checkbox]')).not('[data-grid-checkbox][disabled]').prop('checked', false);
         }
@@ -194,11 +201,11 @@ var Extension;
         var newMediaIdObjects;
         var newMediaIds;
         var success;
-        var _this        = this;
+        var _this = this;
         var originalText = $(this).html();
-        var url          = $('[data-upload-post-url]').data('upload-post-url');
+        var url = $('[data-upload-post-url]').data('upload-post-url');
 
-        if (! url) {
+        if (!url) {
             url = window.location.origin + window.location.pathname
         }
 
@@ -208,7 +215,7 @@ var Extension;
             return $(this).val();
         }).get();
 
-        if (! Extension.Uploader.multiUpload) {
+        if (!Extension.Uploader.multiUpload) {
             mediaIds = [];
         }
 
@@ -245,7 +252,7 @@ var Extension;
                         Extension.Uploader.template({
                             media: media
                         })
-                    );
+                        );
                 });
 
                 $('#media-selection-modal').modal('hide');
@@ -261,7 +268,7 @@ var Extension;
                     Extension.Uploader.template({
                         media: media
                     })
-                );
+                    );
             });
 
             $('#media-selection-modal').modal('hide');
@@ -283,7 +290,7 @@ var Extension;
             });
         };
 
-        if (! Extension.Uploader.linkMediaRecords(null, success)) {
+        if (!Extension.Uploader.linkMediaRecords(null, success)) {
             $(_this).closest('li').fadeOut(300, function() {
                 $(this).remove();
             });
@@ -294,9 +301,9 @@ var Extension;
     Extension.Uploader.linkMediaRecords = function(mediaIds, success) {
         var modelId;
         var objectClass = $('[data-object-class]').data('object-class');
-        var url         = $('[data-upload-post-url]').data('upload-post-url');
+        var url = $('[data-upload-post-url]').data('upload-post-url');
 
-        if (! url) {
+        if (!url) {
             url = window.location.origin + window.location.pathname
         }
 
