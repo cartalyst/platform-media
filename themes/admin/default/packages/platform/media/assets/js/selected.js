@@ -47,10 +47,18 @@ $(document).ready(function() {
         function addToSelected(item, itemId){
             console.log('Add to selected');
             console.log(item);
-            $('.modal-selected-body').append(item.clone());
+            let newItem = item.clone();
+            newItem.find('input').attr('id', 'media_selected_' + newItem.find('input').val());
+            newItem.find('label').attr('for', 'media_selected_' + newItem.find('input').val());
+            $('.modal-selected-body').append(newItem);
         }
         function removeFromSelected(item, itemId){
-            //$('modal-selected-body').find
+            let idToRemove = item.find('input').val();
+            
+            console.log(idToRemove);
+            console.log($('#media_selected_' + idToRemove));
+
+            $('#media_selected_' + idToRemove).parent().remove();
         }
 
         //console.log($(this).html());
