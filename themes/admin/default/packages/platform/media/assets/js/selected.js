@@ -36,12 +36,10 @@ var selectedArray = [];
 
         function addToSelected(item, itemId){
             var newItem = item.clone();
-            newItem.find('input').attr('id', 'media_selected_' + newItem.find('input').val());
-            newItem.find('label').attr('for', 'media_selected_' + newItem.find('input').val());
+            newItem.find('input').remove();
             $('.modal-selected-body').append(newItem);
             selectedArray.push(itemId);
 
-            $('input[name="_media_ids[]"]').val(selectedArray);
             $('.selected-index').text(selectedArray.length);
         }
 
