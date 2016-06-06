@@ -34,15 +34,15 @@
 
 <div class="clearfix">
     <div class="pull-right mb15">
-            <a class="tip btn btn-primary btn-md" href="#" data-toggle="modal" data-target="#media-modal" data-original-title="{{ trans('action.upload') }}">
-                <i class="fa fa-upload"></i> {{ trans('action.upload') }}
-            </a>
+        <a class="tip btn btn-primary btn-md" href="#" data-toggle="modal" data-target="#media-modal" data-original-title="{{ trans('action.upload') }}">
+            <i class="fa fa-upload"></i> {{ trans('action.upload') }}
+        </a>
 
-            <a class="tip btn btn-primary btn-md" href="#" data-toggle="modal" data-target="#media-selection-modal" data-original-title="{{ trans('platform/media::action.select') }}">
-                <i class="fa fa-list-ul"></i> {{ trans('platform/media::action.select') }}
-            </a>
+        <a class="tip btn btn-primary btn-md" href="#" data-toggle="modal" data-target="#media-selection-modal" data-original-title="{{ trans('platform/media::action.select') }}">
+            <i class="fa fa-list-ul"></i> {{ trans('platform/media::action.select') }}
+        </a>
     </div>
-    <label class="mt5"><i class="fa fa-info"></i> Media</label>
+    <label class="mt5"><i class="fa fa-info"></i> {{ trans('platform/media::widget.title') }}</label>
 </div>
 
 <div class="clearfix">
@@ -72,9 +72,9 @@
         @endforeach
     </ul>
 
-    <p><small><i class="fa fa-info"></i>&nbsp; Deleting an image will unlink it from this record, the image itself remains available under the media extension.</small></p>
+    <p><small><i class="fa fa-info"></i>&nbsp; {{ trans('platform/media::widget.delete_info') }}</small></p>
 
-    <p><small><i class="fa fa-info"></i>&nbsp; {{ $multiUpload ? 'Multiple images can be added.' : 'Only a single image can be added.' }}</small></p>
+    <p><small><i class="fa fa-info"></i>&nbsp; {{ $multiUpload ? trans('platform/media::widget.multi_upload') : trans('platform/media::widget.single_upload') }}</small></p>
 
 </div>
 
