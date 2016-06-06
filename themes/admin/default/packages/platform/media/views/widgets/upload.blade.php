@@ -46,7 +46,7 @@
 </div>
 
 <div class="clearfix">
-    <input type="hidden" id="mediaArray">
+    <input type="text" id="mediaArray">
     <ul id="mediaList" class="upload__attachments list-group">
         @foreach ($currentUploads as $upload)
         <li class="list-group-item clearfix" id="attached_media_{{ $upload->id }}">
@@ -58,7 +58,7 @@
                 </div>
                 <div class="list-group-item-center">
                     <span>{{ $upload->name }}</span>
-                    <input type="hidden" name="_media_ids[]" value="{{ $upload->id }}">
+                    <input type="text" name="_media_ids[]" value="{{ $upload->id }}">
                 </div>
                 <div class="list-group-item-right">
                     <button type="button" class="btn btn-danger btn-xs" data-media-delete><i class="fa fa-trash"></i></button>
@@ -90,7 +90,7 @@
             </div>
             <div class="list-group-item-center">
                 <span><%- media.name %></span>
-                <input type="hidden" name="_media_ids[]" value="<%= media.id %>">
+                <input type="text" name="_media_ids[]" value="<%= media.id %>">
             </div>
             <div class="list-group-item-right">
                 <button type="button" class="btn btn-danger btn-xs" data-media-delete><i class="fa fa-trash"></i></button>

@@ -8,15 +8,22 @@ $(document).ready(function() {
 var selectedArray = [];
 
     $('.media-results').on('click', '.media-item label', function(evt){
+        evt.preventDefault();
+
         var $this = $(this);
+        if ($this.siblings('input[type="checkbox"]')[0].checked) {
+          $this.siblings('input[type="checkbox"]').prop('checked', false);
+        } else {
+          $this.siblings('input[type="checkbox"]').prop('checked', true);
+        }
 
         setTimeout(checkSelected, 0);
 
         function checkSelected(){
-            let item = $this.parent();
-            let itemInput = $this.siblings('input[type="checkbox"]');
-            let itemChecked = itemInput[0].checked;
-            let itemId = itemInput.val();
+            var item = $this.parent();
+            var itemInput = $this.siblings('input[type="checkbox"]');
+            var itemChecked = itemInput[0].checked;
+            var itemId = itemInput.val();
 
             if(itemChecked){
                 // Add item to selected Array
@@ -28,7 +35,7 @@ var selectedArray = [];
         };
 
         function addToSelected(item, itemId){
-            let newItem = item.clone();
+            var newItem = item.clone();
             newItem.find('input').attr('id', 'media_selected_' + newItem.find('input').val());
             newItem.find('label').attr('for', 'media_selected_' + newItem.find('input').val());
             $('.modal-selected-body').append(newItem);
