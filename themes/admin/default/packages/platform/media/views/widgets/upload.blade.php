@@ -55,7 +55,8 @@
             <div class="flex-row">
                 <div class="list-group-item-left">
                     <i class="fa fa-arrows"></i>
-                    @thumbnail($upload->id)
+                    <div class="selected-media-img" style="background-image: url('@media($upload->id, 'thumbnail')')">
+                    </div>
                 </div>
                 <div class="list-group-item-center">
                     <span>{{ $upload->name }}</span>
