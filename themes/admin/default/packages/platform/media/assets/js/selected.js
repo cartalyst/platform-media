@@ -11,10 +11,11 @@ var selectedArray = [];
         evt.preventDefault();
 
         var $this = $(this);
+
         if ($this.siblings('input[type="checkbox"]')[0].checked) {
-          $this.siblings('input[type="checkbox"]').prop('checked', false);
+          $this.siblings('input[type="checkbox"]').prop("checked", false);
         } else {
-          $this.siblings('input[type="checkbox"]').prop('checked', true);
+          $this.siblings('input[type="checkbox"]').prop("checked", true);
         }
 
         setTimeout(checkSelected, 0);
@@ -48,7 +49,7 @@ var selectedArray = [];
               return value != itemId;
             });
 
-            $('#media_' + itemId).prop('checked', false);
+            $('#media_' + itemId).prop("checked", false);
             $('#media_selected_' + itemId).parent().remove();
 
             $('input[name="_media_ids[]"]').val(selectedArray);
