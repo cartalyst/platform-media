@@ -55,8 +55,21 @@
             <div class="flex-row">
                 <div class="list-group-item-left">
                     <i class="fa fa-arrows"></i>
-                    <div class="selected-media-img" style="background-image: url('@media($upload->id, 'thumbnail')')">
+
+                    @if ($upload->is_image == 1)
+                    <div class="selected-media-img" style="background-image: url('@media($upload->id)')">
                     </div>
+                    @elseif ($upload->mime == 'text/plain')
+                    <div class="selected-media-img" style="background-image: url('{{ Asset::getUrl('platform/media::img/txt.png') }}')">
+                    </div>
+                    @elseif ($upload->mime == 'application/pdf')
+                    <div class="selected-media-img" style="background-image: url('{{ Asset::getUrl('platform/media::img/pdf.png') }}')">
+                    </div>
+                    @else
+                    <div class="selected-media-img" style="background-image: url('{{ Asset::getUrl('platform/media::img/other.png') }}')">
+                    </div>
+                    @endif
+
                 </div>
                 <div class="list-group-item-center">
                     <span>{{ $upload->name }}</span>
@@ -88,8 +101,7 @@
         <div class="flex-row">
             <div class="list-group-item-left">
                 <i class="fa fa-arrows"></i>
-                <div class="selected-media-img" style="background-image: url('<%= media.thumbnail %>')">
-                </div>
+                <div class="selected-media-img" style="background-image: url('<%= media.thumbnail %>')"></div>
             </div>
             <div class="list-group-item-center">
                 <span><%- media.name %></span>

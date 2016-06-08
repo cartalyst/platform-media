@@ -328,6 +328,10 @@
                 success: success
             });
 
+            // Check where this belongs exactly
+            Extension.Uploader.Grid.refresh();
+            console.log('refresh grid');
+
             return true;
         }
 
