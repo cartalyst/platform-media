@@ -88,7 +88,8 @@
         <div class="flex-row">
             <div class="list-group-item-left">
                 <i class="fa fa-arrows"></i>
-                <img src="<%= media.thumbnail %>" alt=""/>
+                <div class="selected-media-img" style="background-image: url('<%= media.thumbnail %>')">
+                </div>
             </div>
             <div class="list-group-item-center">
                 <span><%- media.name %></span>
