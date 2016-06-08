@@ -72,7 +72,7 @@
                         }
 
                         $('.modal-body .media-results').children('.media-item').each(function() {
-                            let elementId = parseInt($(this).find('input').val());
+                            var elementId = parseInt($(this).find('input').val());
                             if (jQuery.inArray(elementId, selectedArray) !== parseInt('-1')) {
                                 $(this).find('input').prop('checked', true);
                             }
@@ -208,6 +208,11 @@
         if (!url) {
             url = window.location.origin + window.location.pathname
         }
+
+        // Reset all the selected items from the selection modal
+        $('input[name="selected_media[]"]').val('');
+        $('.modal-selected-body').html('');
+        $('.selected-index').text('0');
 
         $(this).prop('disabled', true).html(originalText + ' <i class="fa fa-spinner fa-spin"></i>');
 

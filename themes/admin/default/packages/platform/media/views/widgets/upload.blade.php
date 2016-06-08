@@ -31,6 +31,7 @@
 
 <input type="hidden" data-upload-post-url="{{ route('admin.media.link_media') }}">
 
+
 <div class="clearfix">
     <div class="pull-right mb15">
         <a class="tip btn btn-primary btn-md" href="#" data-toggle="modal" data-target="#media-modal" data-original-title="{{ trans('action.upload') }}">
@@ -45,7 +46,8 @@
 </div>
 
 <div class="clearfix">
-    <input type="text" id="mediaArray">
+    <input type="hidden" id="mediaArray">
+    <input type="hidden" name="selected_media[]"">
     <ul id="mediaList" class="upload__attachments list-group">
         @foreach ($currentUploads as $upload)
         <li class="list-group-item clearfix" id="attached_media_{{ $upload->id }}">
@@ -57,7 +59,7 @@
                 </div>
                 <div class="list-group-item-center">
                     <span>{{ $upload->name }}</span>
-                    <input type="text" name="_media_ids[]" value="{{ $upload->id }}">
+                    <input type="hidden" name="_media_ids[]" value="{{ $upload->id }}">
                 </div>
                 <div class="list-group-item-right">
                     <button type="button" class="btn btn-danger btn-xs" data-media-delete><i class="fa fa-trash"></i></button>
@@ -89,7 +91,7 @@
             </div>
             <div class="list-group-item-center">
                 <span><%- media.name %></span>
-                <input type="text" name="_media_ids[]" value="<%= media.id %>">
+                <input type="hidden" name="_media_ids[]" value="<%= media.id %>">
             </div>
             <div class="list-group-item-right">
                 <button type="button" class="btn btn-danger btn-xs" data-media-delete><i class="fa fa-trash"></i></button>

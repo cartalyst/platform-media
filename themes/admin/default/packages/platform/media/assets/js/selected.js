@@ -36,10 +36,13 @@ $(document).ready(function() {
 
         function addToSelected(item, itemId) {
             var newItem = item.clone();
-            newItem.find('input').remove();
+            newItem.find('input').attr('id', 'media_selected_' + newItem.find('input').val());
+            newItem.find('label').attr('for', 'media_selected_' + newItem.find('input').val());
+            newItem.find('input').removeAttr('data-grid-checkbox').removeAttr('name').removeAttr('value');
             $('.modal-selected-body').append(newItem);
             selectedArray.push(itemId);
 
+            $('input[name="selected_media[]"]').val(selectedArray);
             $('.selected-index').text(selectedArray.length);
         }
 
@@ -51,7 +54,7 @@ $(document).ready(function() {
             $('#media_' + itemId).prop('checked', false);
             $('#media_selected_' + itemId).parent().remove();
 
-            $('input[name="_media_ids[]"]').val(selectedArray);
+            $('input[name="selected_media[]"]').val(selectedArray);
             $('.selected-index').text(selectedArray.length);
         }
 
