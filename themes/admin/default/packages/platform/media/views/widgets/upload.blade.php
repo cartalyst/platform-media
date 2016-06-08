@@ -29,7 +29,6 @@
 <input type="hidden" data-object-class="{{ get_class($model) }}">
 @endif
 
-
 <input type="hidden" data-upload-post-url="{{ route('admin.media.link_media') }}">
 
 <div class="clearfix">
