@@ -1,31 +1,31 @@
 $(document).ready(function() {
 
     $('.modal-selected-body').hide();
-	$('.modal-selected-header').click(function() {
+    $('.modal-selected-header').click(function() {
         $('.modal-selected-body').slideToggle();
-	});
+    });
 
-var selectedArray = [];
+    var selectedArray = [];
 
-    $('.media-results').on('click', '.media-item label', function(evt){
+    $('.media-results').on('click', '.media-item label', function(evt) {
         evt.preventDefault();
 
         var $this = $(this);
         if ($this.siblings('input[type="checkbox"]')[0].checked) {
-          $this.siblings('input[type="checkbox"]').prop('checked', false);
+            $this.siblings('input[type="checkbox"]').prop('checked', false);
         } else {
-          $this.siblings('input[type="checkbox"]').prop('checked', true);
+            $this.siblings('input[type="checkbox"]').prop('checked', true);
         }
 
         setTimeout(checkSelected, 0);
 
-        function checkSelected(){
+        function checkSelected() {
             var item = $this.parent();
             var itemInput = $this.siblings('input[type="checkbox"]');
             var itemChecked = itemInput[0].checked;
             var itemId = itemInput.val();
 
-            if(itemChecked){
+            if (itemChecked) {
                 // Add item to selected Array
                 addToSelected(item, itemId);
             } else {
@@ -34,7 +34,7 @@ var selectedArray = [];
             }
         };
 
-        function addToSelected(item, itemId){
+        function addToSelected(item, itemId) {
             var newItem = item.clone();
             newItem.find('input').remove();
             $('.modal-selected-body').append(newItem);
@@ -43,9 +43,9 @@ var selectedArray = [];
             $('.selected-index').text(selectedArray.length);
         }
 
-        function removeFromSelected(item, itemId){
+        function removeFromSelected(item, itemId) {
             selectedArray = jQuery.grep(selectedArray, function(value) {
-              return value != itemId;
+                return value != itemId;
             });
 
             $('#media_' + itemId).prop('checked', false);
