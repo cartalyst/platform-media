@@ -47,7 +47,6 @@
                 </a>
 
                 <div class="modal-selected-body media-results">
-
                 </div>
             </div>
 
@@ -60,10 +59,8 @@
                 </div>
 
                 <div>
-                    <div class="media-results" id="data-grid" data-source="{{ route('admin.media.images.grid') }}" data-grid="main">
-
+                    <div class="media-results" id="data-grid" data-source="{{ route('admin.media.grid') }}" data-grid="main">
                     </div>
-
                 </div>
 
             </div>
@@ -86,7 +83,7 @@
 </div>
 
 {{-- Grid: templates --}}
-@include('platform/media::grid/uploader/results')
-@include('platform/media::grid/uploader/pagination')
-@include('platform/media::grid/uploader/filters')
-@include('platform/media::grid/uploader/no_results')
+@include('platform/media::grid/manager/results')
+@include('platform/media::grid/manager/pagination')
+@include('platform/media::grid/manager/filters')
+@include('platform/media::grid/manager/no_results')
