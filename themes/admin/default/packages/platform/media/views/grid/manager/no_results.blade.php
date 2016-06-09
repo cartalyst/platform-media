@@ -1,7 +1,5 @@
 <script type="text/template" data-grid="main" data-template="no_results">
 
-	<tr>
-		<td class="no-results" colspan="8">{{{ trans('common.no_results') }}}</td>
-	</tr>
+	<p class="media-no-results">{{{ trans('common.no_results') }}}</p>
 
 </script>

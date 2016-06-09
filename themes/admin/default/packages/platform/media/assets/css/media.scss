@@ -465,6 +465,14 @@ $light-grey: #a0a0a0;
     }
 }
 
+.media-no-results {
+    margin: 0;
+    padding-left: 20px;
+    font-weight: normal;
+    font-size: 14px;
+    color: #9f9f9f;
+}
+
 .flex-row{
     display: flex;
     flex-direction: row;
