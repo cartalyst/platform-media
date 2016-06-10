@@ -16,10 +16,10 @@
  * @link       http://cartalyst.com
  */
 
- var Extension;
+var Extension;
 
- ;
- (function(window, document, $, undefined) {
+;
+(function(window, document, $, undefined) {
     'use strict';
 
     Extension = Extension || {
@@ -34,21 +34,21 @@
     Extension.Uploader.init = function() {
         Extension.Uploader.template = _.template($('[data-media-attachment-template]').html());
         Extension.Uploader
-        .listeners()
-        .dataGrid()
-        .initMediaManager()
-        .initSorting();
+            .listeners()
+            .dataGrid()
+            .initMediaManager()
+            .initSorting();
     };
 
     // Add Listeners
     Extension.Uploader.listeners = function() {
         Platform.Cache.$body
-        .on('click', '.media-item', Extension.Uploader.checkboxes)
-        .on('click', '.modal-header-icon', Extension.Uploader.handleLayouts)
-        .on('click', '[data-media-add]', Extension.Uploader.addMedia)
-        .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia)
-        .on('click', '.modal-selected-header', Extension.Uploader.toggleSelectedMedia)
-        .on('click', '.media-item label', Extension.Uploader.selectMedia);
+            .on('click', '.media-item', Extension.Uploader.checkboxes)
+            .on('click', '.modal-header-icon', Extension.Uploader.handleLayouts)
+            .on('click', '[data-media-add]', Extension.Uploader.addMedia)
+            .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia)
+            .on('click', '.modal-selected-header', Extension.Uploader.toggleSelectedMedia)
+            .on('click', '.media-item label', Extension.Uploader.selectMedia);
 
         return this;
     };
@@ -123,7 +123,7 @@
                     Extension.Uploader.template({
                         media: response
                     })
-                    );
+                );
 
                 $('#media-modal').modal('hide');
             },
@@ -243,7 +243,9 @@
                 return {
                     id: id,
                     name: $(event).data('name'),
-                    thumbnail: $(event).data('thumbnail')
+                    thumbnail: $(event).data('thumbnail'),
+                    mime: $(event).data('mime'),
+                    is_image: $(event).data('is_image')
                 };
             }
         });
@@ -264,7 +266,7 @@
                         Extension.Uploader.template({
                             media: media
                         })
-                        );
+                    );
                 });
 
                 $('#media-selection-modal').modal('hide');
@@ -280,7 +282,7 @@
                     Extension.Uploader.template({
                         media: media
                     })
-                    );
+                );
             });
 
             $('#media-selection-modal').modal('hide');
