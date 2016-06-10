@@ -157,46 +157,6 @@ class MediaController extends AdminController
     }
 
     /**
-     * Datasource for the media images Data Grid.
-     *
-     * @return \Cartalyst\DataGrid\DataGrid
-     */
-    public function imagesGrid()
-    {
-        $columns = [
-            'id',
-            'name',
-            'mime',
-            'path',
-            'size',
-            'private',
-            'is_image',
-            'thumbnail',
-            'width',
-            'height',
-            'created_at',
-        ];
-
-        $settings = [
-            'sort'      => 'created_at',
-            'direction' => 'desc',
-            'pdf_view'  => 'pdf',
-        ];
-
-        $transformer = function ($element) {
-            $element->thumbnail_uri = url($element->thumbnail);
-            $element->view_uri = route('media.view', $element->path);
-            $element->edit_uri = route('admin.media.edit', $element->id);
-            $element->email_uri = route('admin.media.email', $element->id);
-            $element->download_uri = route('media.download', $element->path);
-
-            return $element;
-        };
-
-        return datagrid($this->media->grid()->whereIsImage(true), $columns, $settings, $transformer);
-    }
-
-    /**
      * Media files list.
      *
      * @return string
