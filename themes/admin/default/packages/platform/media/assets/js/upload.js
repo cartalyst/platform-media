@@ -16,10 +16,10 @@
  * @link       http://cartalyst.com
  */
 
-var Extension;
+ var Extension;
 
-;
-(function(window, document, $, undefined) {
+ ;
+ (function(window, document, $, undefined) {
     'use strict';
 
     Extension = Extension || {
@@ -34,21 +34,22 @@ var Extension;
     Extension.Uploader.init = function() {
         Extension.Uploader.template = _.template($('[data-media-attachment-template]').html());
         Extension.Uploader
-            .listeners()
-            .dataGrid()
-            .initMediaManager()
-            .initSorting();
+        .listeners()
+        .dataGrid()
+        .initMediaManager()
+        .initSorting();
     };
 
     // Add Listeners
     Extension.Uploader.listeners = function() {
         Platform.Cache.$body
-            .on('click', '.media-item', Extension.Uploader.checkboxes)
-            .on('click', '.modal-header-icon', Extension.Uploader.handleLayouts)
-            .on('click', '[data-media-add]', Extension.Uploader.addMedia)
-            .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia)
-            .on('click', '.modal-selected-header', Extension.Uploader.toggleSelectedMedia)
-            .on('click', '.media-item label', Extension.Uploader.selectMedia);
+        .on('click', '.media-item', Extension.Uploader.checkboxes)
+        .on('click', '.modal-header-icon', Extension.Uploader.handleLayouts)
+        .on('click', '[data-media-add]', Extension.Uploader.addMedia)
+        .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia)
+        .on('click', '.modal-selected-header', Extension.Uploader.toggleSelectedMedia)
+        .on('click', '.media-item label', Extension.Uploader.selectMedia)
+        .on('click', '[data-target="#media-selection-modal"]', Extension.Uploader.refreshGrid);
 
         return this;
     };
@@ -56,8 +57,8 @@ var Extension;
     // Data Grid initialization
     Extension.Uploader.dataGrid = function() {
         var config = {
-            throttle: 10,
-            threshold: 10,
+            throttle: 12,
+            threshold: 12,
             hash: false,
             callback: function(data) {
                 if (!Extension.Uploader.multiUpload) {
@@ -123,7 +124,7 @@ var Extension;
                     Extension.Uploader.template({
                         media: response
                     })
-                );
+                    );
 
                 $('#media-modal').modal('hide');
             },
@@ -240,6 +241,16 @@ var Extension;
 
             // Skip existing media items
             if (_.indexOf(mediaIds, id) === -1) {
+                // Test whatsup
+                console.log({
+                    id: id,
+                    name: $(event).data('name'),
+                    thumbnail: $(event).data('thumbnail'),
+                    mime: $(event).data('mime'),
+                    is_image: $(event).data('is_image')
+                });
+                console.log($(event));
+
                 return {
                     id: id,
                     name: $(event).data('name'),
@@ -266,7 +277,7 @@ var Extension;
                         Extension.Uploader.template({
                             media: media
                         })
-                    );
+                        );
                 });
 
                 $('#media-selection-modal').modal('hide');
@@ -282,7 +293,7 @@ var Extension;
                     Extension.Uploader.template({
                         media: media
                     })
-                );
+                    );
             });
 
             $('#media-selection-modal').modal('hide');
@@ -336,10 +347,6 @@ var Extension;
                 },
                 success: success
             });
-
-            // Check where this belongs exactly
-            Extension.Uploader.Grid.refresh();
-            console.log('refresh grid');
 
             return true;
         }
@@ -413,6 +420,11 @@ var Extension;
 
         $('input[name="selected_media[]"]').val(Extension.Uploader.selectedArray);
         $('.selected-index').text(Extension.Uploader.selectedArray.length);
+    };
+
+    // Refresh grid
+    Extension.Uploader.refreshGrid = function() {
+        Extension.Uploader.Grid.refresh();
     };
 
     // Job done, lets run.

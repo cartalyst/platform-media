@@ -97,7 +97,7 @@
 @include('platform/media::selection-modal')
 
 <script type="text/template" data-media-attachment-template>
-    <li class="list-group-item clearfix" id="<%= media.id %>">
+    <li class="list-group-item clearfix" id="attached_media_<%= media.id %>">
         <div class="flex-row">
             <div class="list-group-item-left">
                 <i class="fa fa-arrows"></i>
@@ -110,7 +110,6 @@
                 <% } else { %>
                 <div class="selected-media-img" style="background-image:url('{{ Asset::getUrl('platform/media::img/other.png') }}')"></div>
                 <% } %>
-
             </div>
             <div class="list-group-item-center">
                 <span><%- media.name %></span>
