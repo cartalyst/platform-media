@@ -69,8 +69,8 @@
             },
             events: {
                 'fetched': function(grid) {
-                    if ($('input[name="_media_ids[]"]').val() != null) {
-                        var selectedArray = $('input[name="_media_ids[]"]').val().split(',');
+                    if ($('input[name="selected_media[]"]').val() != null) {
+                        var selectedArray = $('input[name="selected_media[]"]').val().split(',');
                         // Convert all of the array items to integers
                         for (var i = 0; i < selectedArray.length; i++) {
                             selectedArray[i] = parseInt(selectedArray[i], 10);
@@ -241,16 +241,6 @@
 
             // Skip existing media items
             if (_.indexOf(mediaIds, id) === -1) {
-                // Test whatsup
-                console.log({
-                    id: id,
-                    name: $(event).data('name'),
-                    thumbnail: $(event).data('thumbnail'),
-                    mime: $(event).data('mime'),
-                    is_image: $(event).data('is_image')
-                });
-                console.log($(event));
-
                 return {
                     id: id,
                     name: $(event).data('name'),
@@ -424,6 +414,7 @@
 
     // Refresh grid
     Extension.Uploader.refreshGrid = function() {
+        Extension.Uploader.selectedArray = [];
         Extension.Uploader.Grid.refresh();
     };
 
