@@ -57,8 +57,8 @@
     // Data Grid initialization
     Extension.Uploader.dataGrid = function() {
         var config = {
-            throttle: 12,
-            threshold: 12,
+            throttle: 20,
+            threshold: 20,
             hash: false,
             callback: function(data) {
                 if (!Extension.Uploader.multiUpload) {
@@ -82,10 +82,6 @@
                                 $(this).find('input').prop('checked', true);
                             }
                         });
-                    } else {
-                        // The input does not exist on the page yet and we would need it to see if the selected 
-                        // media are already in there. So how are you "dispaying" the input[name="_media_ids[]"] 
-                        // field? Upon select?
                     }
                 }
             }
