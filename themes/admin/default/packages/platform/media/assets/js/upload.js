@@ -44,7 +44,9 @@
         .on('click', '.media-item', Extension.Uploader.checkboxes)
         .on('click', '.modal-header-icon', Extension.Uploader.handleLayouts)
         .on('click', '[data-media-add]', Extension.Uploader.addMedia)
-        .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia);
+        .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia)
+        .on('click', '.modal-selected-header', Extension.Uploader.toggleSelectedMedia)
+        .on('click', '.media-item label', Extension.Uploader.selectMedia);
 
         return this;
     };
@@ -344,6 +346,68 @@
 
         Extension.Uploader.action = multiUpload ? 'append' : 'html';
     };
+
+    // Toggle selected media
+    Extension.Uploader.toggleSelectedMedia = function(event) {
+        $('.modal-selected-body').slideToggle();
+    };
+
+    // Select Media
+    Extension.Uploader.selectMedia = function(event) {
+        event.preventDefault();
+
+        var $this = $(this);
+        if ($this.siblings('input[type="checkbox"]')[0].checked) {
+            $this.siblings('input[type="checkbox"]').prop('checked', false);
+        } else {
+            $this.siblings('input[type="checkbox"]').prop('checked', true);
+        }
+
+        setTimeout(checkSelected, 0);
+
+        function checkSelected() {
+            var item = $this.parent();
+            var itemInput = $this.siblings('input[type="checkbox"]');
+            var itemChecked = itemInput[0].checked;
+            var itemId = itemInput.val();
+
+            if (itemChecked) {
+                // Add item to selected Array
+                addToSelected(item, itemId);
+            } else {
+                // Remove item from selected Array
+                removeFromSelected(item, itemId);
+            }
+        };
+
+        function addToSelected(item, itemId) {
+            var newItem = item.clone();
+            newItem.find('input').attr('id', 'media_selected_' + newItem.find('input').val());
+            newItem.find('label').attr('for', 'media_selected_' + newItem.find('input').val());
+            newItem.find('input').removeAttr('data-grid-checkbox').removeAttr('name').removeAttr('value');
+            $('.modal-selected-body').append(newItem);
+            selectedArray.push(itemId);
+
+            $('input[name="selected_media[]"]').val(selectedArray);
+            $('.selected-index').text(selectedArray.length);
+        }
+
+        function removeFromSelected(item, itemId) {
+            selectedArray = jQuery.grep(selectedArray, function(value) {
+                return value != itemId;
+            });
+
+            $('#media_' + itemId).prop('checked', false);
+            $('#media_selected_' + itemId).parent().remove();
+
+            $('input[name="selected_media[]"]').val(selectedArray);
+            $('.selected-index').text(selectedArray.length);
+        }
+    };
+
+    var selectedArray = [];
+
+    $('.modal-selected-body').hide();
 
     // Job done, lets run.
     Extension.Uploader.init();
