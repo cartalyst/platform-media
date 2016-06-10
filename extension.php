@@ -173,7 +173,6 @@ return [
                 Route::post('/', ['as' => 'admin.media.all', 'uses' => 'MediaController@executeAction']);
 
                 Route::get('grid', ['as' => 'admin.media.grid', 'uses' => 'MediaController@grid']);
-                Route::get('images/grid', ['as' => 'admin.media.images.grid', 'uses' => 'MediaController@imagesGrid']);
 
                 Route::get('files_list', ['as' => 'admin.media.files_list', 'uses' => 'MediaController@filesList']);
                 Route::get('images_list', ['as' => 'admin.media.images_list', 'uses' => 'MediaController@imagesList']);
