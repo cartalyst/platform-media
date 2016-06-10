@@ -28,6 +28,8 @@
 
     Extension.Uploader = {};
 
+    Extension.Uploader.selectedArray = [];
+
     // Initialize functions
     Extension.Uploader.init = function() {
         Extension.Uploader.template = _.template($('[data-media-attachment-template]').html());
@@ -95,6 +97,9 @@
 
     // Media manager initialization
     Extension.Uploader.initMediaManager = function() {
+        // Hide selected modal
+        $('.modal-selected-body').hide();
+
         Extension.Uploader.MediaManager = $.mediamanager({
             onFileQueued: function(file) {
                 $('input.file-tags').not('.selectize-control').selectize({
@@ -366,6 +371,7 @@
         setTimeout(Extension.Uploader.checkSelected($this), 0);
     };
 
+    // Check selected
     Extension.Uploader.checkSelected = function($this) {
         var item = $this.parent();
         var itemInput = $this.siblings('input[type="checkbox"]');
@@ -381,33 +387,31 @@
         }
     };
 
+    // Add to selected
     Extension.Uploader.addToSelected = function(item, itemId) {
         var newItem = item.clone();
         newItem.find('input').attr('id', 'media_selected_' + newItem.find('input').val());
         newItem.find('label').attr('for', 'media_selected_' + newItem.find('input').val());
         newItem.find('input').removeAttr('data-grid-checkbox').removeAttr('name').removeAttr('value');
         $('.modal-selected-body').append(newItem);
-        selectedArray.push(itemId);
+        Extension.Uploader.selectedArray.push(itemId);
 
-        $('input[name="selected_media[]"]').val(selectedArray);
-        $('.selected-index').text(selectedArray.length);
+        $('input[name="selected_media[]"]').val(Extension.Uploader.selectedArray);
+        $('.selected-index').text(Extension.Uploader.selectedArray.length);
     };
 
+    // Remove from selected
     Extension.Uploader.removeFromSelected = function(item, itemId) {
-        selectedArray = jQuery.grep(selectedArray, function(value) {
+        Extension.Uploader.selectedArray = jQuery.grep(Extension.Uploader.selectedArray, function(value) {
             return value != itemId;
         });
 
         $('#media_' + itemId).prop('checked', false);
         $('#media_selected_' + itemId).parent().remove();
 
-        $('input[name="selected_media[]"]').val(selectedArray);
-        $('.selected-index').text(selectedArray.length);
+        $('input[name="selected_media[]"]').val(Extension.Uploader.selectedArray);
+        $('.selected-index').text(Extension.Uploader.selectedArray.length);
     };
-
-    var selectedArray = [];
-
-    $('.modal-selected-body').hide();
 
     // Job done, lets run.
     Extension.Uploader.init();
