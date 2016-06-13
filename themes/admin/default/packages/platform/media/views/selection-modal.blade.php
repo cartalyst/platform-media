@@ -2,7 +2,6 @@
 {{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
 {{ Asset::queue('moment', 'moment/js/moment.js', 'jquery') }}
 
-{{ Asset::queue('selected', 'platform/media::js/selected.js', 'jquery') }}
 
 <div class="modal modal-media-selection fade" id="media-selection-modal" tabindex="-1" role="dialog" aria-labelledby="media-selection-modal" aria-hidden="true">
 
