@@ -387,7 +387,7 @@
         var newItem = item.clone();
         newItem.find('input').attr('id', 'media_selected_' + newItem.find('input').val());
         newItem.find('label').attr('for', 'media_selected_' + newItem.find('input').val());
-        newItem.find('input').removeAttr('data-grid-checkbox').removeAttr('name').removeAttr('value');
+        newItem.find('input').removeAttr('data-grid-checkbox').removeAttr('name');
         $('.modal-selected-body').append(newItem);
         Extension.Uploader.selectedArray.push(itemId);
 
@@ -397,6 +397,10 @@
 
     // Remove from selected
     Extension.Uploader.removeFromSelected = function(item, itemId) {
+        console.log('Remove!');
+        console.log(itemId);
+        console.log($('#media_selected_' + itemId));
+
         Extension.Uploader.selectedArray = jQuery.grep(Extension.Uploader.selectedArray, function(value) {
             return value != itemId;
         });

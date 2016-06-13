@@ -16,13 +16,13 @@
 
 				<% if (p.previous_page !== null) { %>
 
-					<li><a href="#" data-grid="main" data-page="1"><i class="fa fa-angle-double-left"></i></a></li>
+					<!-- <li><a href="#" data-grid="main" data-page="1"><i class="fa fa-angle-double-left"></i></a></li> -->
 
 					<li><a href="#" data-grid="main" data-page="<%= p.previous_page %>"><i class="fa fa-chevron-left"></i></a></li>
 
 				<% } else { %>
 
-					<li class="disabled"><span><i class="fa fa-angle-double-left"></i></span></li>
+					<!-- <li class="disabled"><span><i class="fa fa-angle-double-left"></i></span></li> -->
 
 					<li class="disabled"><span><i class="fa fa-chevron-left"></i></span></li>
 
@@ -53,11 +53,11 @@
 
 					<% if (p.page === i) { %>
 
-					<li class="active"><span><%= i %></span></li>
+					<!-- <li class="active"><span><%= i %></span></li> -->
 
 					<% } else { %>
 
-					<li><a href="#" data-grid="main" data-page="<%= i %>"><%= i %></a></li>
+					<!-- <li><a href="#" data-grid="main" data-page="<%= i %>"><%= i %></a></li> -->
 
 					<% } %>
 
@@ -67,13 +67,13 @@
 
 					<li><a href="#" data-grid="main" data-page="<%= p.next_page %>"><i class="fa fa-chevron-right"></i></a></li>
 
-					<li><a href="#" data-grid="main" data-page="<%= p.pages %>"><i class="fa fa-angle-double-right"></i></a></li>
+					<!-- <li><a href="#" data-grid="main" data-page="<%= p.pages %>"><i class="fa fa-angle-double-right"></i></a></li> -->
 
 				<% } else { %>
 
 					<li class="disabled"><span><i class="fa fa-chevron-right"></i></span></li>
 
-					<li class="disabled"><span><i class="fa fa-angle-double-right"></i></span></li>
+					<!-- <li class="disabled"><span><i class="fa fa-angle-double-right"></i></span></li> -->
 
 				<% } %>
 
