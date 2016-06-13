@@ -400,7 +400,7 @@ $light-grey: #a0a0a0;
     input[type=checkbox]:checked ~ label:hover .media-img {
         border-color: $blue;
         &:after{
-            content: "\f1f8";
+            content: "\f00d";
         }
     }
 

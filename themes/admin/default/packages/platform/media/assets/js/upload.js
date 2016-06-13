@@ -49,7 +49,8 @@
         .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia)
         .on('click', '.modal-selected-header', Extension.Uploader.toggleSelectedMedia)
         .on('click', '.media-item label', Extension.Uploader.selectMedia)
-        .on('click', '[data-target="#media-selection-modal"]', Extension.Uploader.refreshGrid);
+        .on('click', '[data-target="#media-selection-modal"]', Extension.Uploader.refreshGrid)
+        .on('focusin', '.modal-header-search input', Extension.Uploader.preventSubmit);
 
         return this;
     };
@@ -417,6 +418,19 @@
         Extension.Uploader.selectedArray = [];
         Extension.Uploader.Grid.refresh();
     };
+
+    Extension.Uploader.preventSubmit = function() {
+      $(window).keydown(function(event){
+
+        if(event.target.parentNode.classList.contains('modal-header-search') && event.keyCode == 13) {
+          event.preventDefault();
+          return false;
+        }
+      });
+    };
+
+
+
 
     // Job done, lets run.
     Extension.Uploader.init();
