@@ -4,7 +4,7 @@
 
 		<button class="btn btn-default btn-sm">
 
-			<span><i class="fa fa-trash-o"></i></span>
+			<span><i class="fa fa-times"></i></span>
 
 			<% if (f.from !== undefined && f.to !== undefined) { %>
 

@@ -385,6 +385,7 @@
 
     // Add to selected
     Extension.Uploader.addToSelected = function(item, itemId) {
+        $('.no-results').hide();
         var newItem = item.clone();
         newItem.find('input').attr('id', 'media_selected_' + newItem.find('input').val());
         newItem.find('label').attr('for', 'media_selected_' + newItem.find('input').val());
@@ -398,14 +399,12 @@
 
     // Remove from selected
     Extension.Uploader.removeFromSelected = function(item, itemId) {
-        console.log('Remove!');
-        console.log(itemId);
-        console.log($('#media_selected_' + itemId));
-
         Extension.Uploader.selectedArray = jQuery.grep(Extension.Uploader.selectedArray, function(value) {
             return value != itemId;
         });
-
+        if(Extension.Uploader.selectedArray.length == 0){
+            $('.no-results').show();
+        }
         $('#media_' + itemId).prop('checked', false);
         $('#media_selected_' + itemId).parent().remove();
 

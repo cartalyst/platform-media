@@ -438,6 +438,20 @@ $light-grey: #a0a0a0;
     border-bottom: 1px solid #e5e5e5;
 }
 
+.inline-block{
+    display: inline-block;
+}
+.modal-body{
+    padding: 30px 15px;
+}
+.no-results{
+    padding: 0px 10px;
+    color: #9f9f9f;
+}
+.modal-body .btn-toolbar{
+    margin-bottom: 15px;
+}
+
 .modal-selected-body{
     //height: 0;
     padding: 15px;
@@ -446,7 +460,7 @@ $light-grey: #a0a0a0;
 }
 
 .modal-selected-header{
-    padding: 20px;
+    padding: 20px 15px;
     display: block;
     color: #9f9f9f;
     h3{

@@ -14,6 +14,19 @@
                 <div class="modal-header-left">
                     <a href="#" data-toggle="tooltip" data-original-title="Show all files" data-view="grid" class="modal-header-icon active"><i class="fa fa-th-large"></i></a>
                     <a href="#" data-toggle="tooltip" data-original-title="Show only images" data-view="list" class="modal-header-icon"><i class="fa fa-th-list"></i></a>
+                    <div class="dropdown inline-block">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        All Files
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                      @foreach(collect(app('platform.media')->all()->lists('mime'))->unique()->values()->all() as $media)
+                            <li><a href="#" data-filter="mime:{{ $media }}" data-grid="main">{{ $media }}</a></li>
+                        @endforeach
+
+
+                      </ul>
+                    </div>
                 </div>
 
                 <div class="modal-header-center">
@@ -46,6 +59,9 @@
                 </a>
 
                 <div class="modal-selected-body media-results">
+                    <div class="no-results">
+                        <p>No items selected.</p>
+                    </div>
                 </div>
             </div>
 
