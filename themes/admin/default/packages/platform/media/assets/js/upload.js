@@ -33,24 +33,24 @@
     // Initialize functions
     Extension.Uploader.init = function() {
         Extension.Uploader.template = _.template($('[data-media-attachment-template]').html());
+
         Extension.Uploader
-        .listeners()
-        .dataGrid()
-        .initMediaManager()
-        .initSorting();
+            .listeners()
+            .dataGrid()
+            .initMediaManager()
+            .initSorting();
     };
 
     // Add Listeners
     Extension.Uploader.listeners = function() {
         Platform.Cache.$body
-        .on('click', '.media-item', Extension.Uploader.checkboxes)
-        .on('click', '.modal-header-icon', Extension.Uploader.handleLayouts)
-        .on('click', '[data-media-add]', Extension.Uploader.addMedia)
-        .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia)
-        .on('click', '.modal-selected-header', Extension.Uploader.toggleSelectedMedia)
-        .on('click', '.media-item label', Extension.Uploader.selectMedia)
-        .on('click', '[data-target="#media-selection-modal"]', Extension.Uploader.refreshGrid)
-        .on('focusin', '.modal-header-search input', Extension.Uploader.preventSubmit);
+            .on('click', '.media-item', Extension.Uploader.checkboxes)
+            .on('click', '.modal-header-icon', Extension.Uploader.handleLayouts)
+            .on('click', '[data-media-add]', Extension.Uploader.addMedia)
+            .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia)
+            .on('click', '.modal-selected-header', Extension.Uploader.toggleSelectedMedia)
+            .on('click', '.media-item label', Extension.Uploader.selectMedia)
+            .on('focusin', '.modal-header-search input', Extension.Uploader.preventSubmit);
 
         return this;
     };
@@ -214,11 +214,6 @@
             url = window.location.origin + window.location.pathname
         }
 
-        // Reset all the selected items from the selection modal
-        $('input[name="selected_media[]"]').val('');
-        $('.modal-selected-body').html('');
-        $('.selected-index').text('0');
-
         $(this).prop('disabled', true).html(originalText + ' <i class="fa fa-spinner fa-spin"></i>');
 
         mediaIds = $('input[name="_media_ids[]"]').map(function() {
@@ -229,21 +224,19 @@
             mediaIds = [];
         }
 
-        newMediaIds = $.map($('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]').not('[data-grid-checkbox][disabled]'), function(event) {
-            return event.value;
-        });
+        newMediaIds = $('.modal-selected input').map(function() {
+            return $(this).val()
+        }).get();
 
-        newMediaIdObjects = $.map($('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]').not('[data-grid-checkbox][disabled]'), function(event) {
-            var id = event.value;
-
+        newMediaIdObjects = $('.modal-selected input').map(function() {
             // Skip existing media items
-            if (_.indexOf(mediaIds, id) === -1) {
+            if (_.indexOf(mediaIds, $(this).val()) === -1) {
                 return {
-                    id: id,
-                    name: $(event).data('name'),
-                    thumbnail: $(event).data('thumbnail'),
-                    mime: $(event).data('mime'),
-                    is_image: $(event).data('is_image')
+                    id: $(this).val(),
+                    name: $(this).data('name'),
+                    thumbnail: $(this).data('thumbnail'),
+                    mime: $(this).data('mime'),
+                    is_image: $(this).data('is_image')
                 };
             }
         });
@@ -268,6 +261,8 @@
                 });
 
                 $('#media-selection-modal').modal('hide');
+
+                Extension.Uploader.resetSelectedArea();
             };
 
             Extension.Uploader.linkMediaRecords(mediaIds, success);
@@ -280,11 +275,15 @@
                     Extension.Uploader.template({
                         media: media
                     })
-                    );
+                );
             });
 
             $('#media-selection-modal').modal('hide');
+
+            Extension.Uploader.resetSelectedArea();
         }
+
+        Extension.Uploader.refreshGrid();
     };
 
     // Handle media deletion
@@ -299,10 +298,12 @@
         success = function() {
             $(_this).closest('li').fadeOut(500, function() {
                 $(this).remove();
+
+                Extension.Uploader.refreshGrid();
             });
         };
 
-        if (!Extension.Uploader.linkMediaRecords(null, success)) {
+        if (! Extension.Uploader.linkMediaRecords(null, success)) {
             $(_this).closest('li').fadeOut(300, function() {
                 $(this).remove();
             });
@@ -402,7 +403,7 @@
         Extension.Uploader.selectedArray = jQuery.grep(Extension.Uploader.selectedArray, function(value) {
             return value != itemId;
         });
-        if(Extension.Uploader.selectedArray.length == 0){
+        if (Extension.Uploader.selectedArray.length == 0){
             $('.no-results').show();
         }
         $('#media_' + itemId).prop('checked', false);
@@ -418,18 +419,21 @@
         Extension.Uploader.Grid.refresh();
     };
 
-    Extension.Uploader.preventSubmit = function() {
-      $(window).keydown(function(event){
-
-        if(event.target.parentNode.classList.contains('modal-header-search') && event.keyCode == 13) {
-          event.preventDefault();
-          return false;
-        }
-      });
+    // Resets the selected area
+    Extension.Uploader.resetSelectedArea = function() {
+        $('input[name="selected_media[]"]').val('');
+        $('.modal-selected-body').html('');
+        $('.selected-index').text('0');
     };
 
-
-
+    Extension.Uploader.preventSubmit = function() {
+        $(window).keydown(function(event){
+            if (event.target.parentNode.classList.contains('modal-header-search') && event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    };
 
     // Job done, lets run.
     Extension.Uploader.init();
