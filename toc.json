@@ -9,6 +9,8 @@
 	],
 	"usage": [
 		"index",
-		"repository"
+		"repository",
+		"manager",
+		"cropping"
 	]
 }
