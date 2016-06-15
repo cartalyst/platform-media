@@ -8,7 +8,7 @@ The model must use `Platform\Media\Support\MediaTrait` and implement `Cartalyst\
 
 ##### Example
 
-```
+```php
 <?php
 
 use Platform\Media\Support\MediaTrait;
@@ -65,7 +65,7 @@ Third argument is optional and can be a view that would override the default wid
 
 ###### Use the media manager in a Platform Extension / Model Form
 
-```
+```php
 @extends('layouts/default')
 
 {{-- Page content --}}
@@ -121,8 +121,7 @@ You can attach media to your entity by using the Media Manager Selector.
 #### Sort media
 The media manager is built with sorting in mind. Just drag the media by clicking and dragging the arrows icon.
 
-(img)
-
+![Upload Image](/img/upload.png)
 
 #### Detach media
 Detach a media by clicking on the trash Icon. The File is not going to be entirely deleted, only the relation to the entity. If you want to delete a media permanently you can use the **Media Extension**.

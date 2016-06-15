@@ -1,15 +1,18 @@
 ### Cropping Media
+
 Often you would like to have uniform images attached to your entities. This example is going to show you how you could crop your images for a specific entity. As an example, we will continue to use an `Employee` model.
 
 #### Set up the Media Style
+
 I have created a new `Organization\Employee` Extension with `Platform's Workshop`, which simplifies the process of creating all the files and views significantly. This is an excellent starting point to work with.
 
 ##### Example: ImageMacro
+
 We're going to create our own `ImageMacro` that is extending Platform's `Platform\Media\Styles\Macros\AbstractMacro`.
 
 This file is going to be saved under `workbench/organization/employees/src/Styles/Macros/ImageMacro.php`. Feel free to apply your own coding style and save the `ImageMacro` where ever it feels right to you.
 
-```
+```php
 <?php
 namespace Organization\Employees\Styles\Macros;
 
@@ -145,9 +148,10 @@ class ImageMacro extends AbstractMacro implements MacroInterface
 >
 
 ##### Example: Set Image Style
+
 We've created the `ImageMacro` sucessfully and need to set the style so that the media manager is going to apply it when ever a file is uploaded. Here, we are putting the logic to set the style in the `Organization\Employees\Providers\EmployeeServiceProvider`. We are registering the Style which is applying the `ImageMacro` that we created before.
 
-```
+```php
 <?php
 namespace Organization\Employees\Providers;
 
@@ -211,6 +215,7 @@ class EmployeeServiceProvider extends ServiceProvider
     }
 }
 ```
+
 > **Note**
 >
 > In this example the image is going to be cropped to fit **1200x1200px**. The thumbnail is resized to **600x600px**.
