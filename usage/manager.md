@@ -92,6 +92,7 @@ Third argument is optional and can be a view that would override the default wid
 ```
 
 #### Upload media
+
 1. Click on **Upload**
 2. Drop your files on the uploadable area
 3. **Start Upload**
@@ -104,6 +105,7 @@ Third argument is optional and can be a view that would override the default wid
 
 #### Select media
 You can attach media to your entity by using the Media Manager Selector.
+
 1. Click **Select**
 2. Select your files
 3. **Select** to attach the selected media to your entityNamespace
@@ -122,4 +124,5 @@ The media manager is built with sorting in mind. Just drag the media by clicking
 (img)
 
 
-#### Delete media
+#### Detach media
+Detach a media by clicking on the trash Icon. The File is not going to be entirely deleted, only the relation to the entity. If you want to delete a media permanently you can use the **Media Extension**.
