@@ -90,3 +90,36 @@ Third argument is optional and can be a view that would override the default wid
 </section>
 @stop
 ```
+
+#### Upload media
+1. Click on **Upload**
+2. Drop your files on the uploadable area
+3. **Start Upload**
+
+(img)
+
+> **Note**
+>
+> The files are going to be attached to your entity.
+
+#### Select media
+You can attach media to your entity by using the Media Manager Selector.
+1. Click **Select**
+2. Select your files
+3. **Select** to attach the selected media to your entityNamespace
+
+(img)
+
+> **Note**
+>
+> You can select/unselect files by clicking on the **Selected** Collapse or by clicking again on the selected media. Furthermore you can search your media library or narrow your library down by applying mime-type filters.
+
+(img)
+
+#### Sort media
+The media manager is built with sorting in mind. Just drag the media by clicking and dragging the arrows icon.
+
+(img)
+
+
+#### Delete media
