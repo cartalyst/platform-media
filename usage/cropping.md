@@ -1,11 +1,13 @@
 ### Cropping Media
 Often you would like to have uniform images attached to your entities. This example is going to show you how you could crop your images for a specific entity. As an example, we will continue to use an `Employee` model.
 
-#### Setup the Media Style
-I have created a new `Organization\Employee` Extension with `Platform's Workshop`, which simplifies the process of creating all the files and views significantly. This is an excellent starting point.
+#### Set up the Media Style
+I have created a new `Organization\Employee` Extension with `Platform's Workshop`, which simplifies the process of creating all the files and views significantly. This is an excellent starting point to work with.
 
-##### Organization\Employees\Styles\Macros\ImageMacro
-We're going to create our own `ImageMacro` that is extending Platform's `AbstractMacro`. This file is saved under `workbench/organization/employees/src/Styles/Macros/ImageMacro`.
+##### Example: ImageMacro
+We're going to create our own `ImageMacro` that is extending Platform's `Platform\Media\Styles\Macros\AbstractMacro`.
+
+This file is going to be saved under `workbench/organization/employees/src/Styles/Macros/ImageMacro.php`. Feel free to apply your own coding style and save the `ImageMacro` where ever it feels right to you.
 
 ```
 <?php
@@ -98,7 +100,7 @@ class ImageMacro extends AbstractMacro implements MacroInterface
      */
     public function up(Media $media, File $file, UploadedFile $uploadedFile)
     {
-        // Check if the file is an image
+        // Check if the file is an image and has the namespace of an Employee
         if ($file->isImage() && $media->namespace == 'organization/employees.employee') {
             $path = $this->getPath($file, $media);
 
@@ -135,10 +137,15 @@ class ImageMacro extends AbstractMacro implements MacroInterface
         return "{$this->style->path}/{$media->id}_{$name}.{$file->getExtension()}";
     }
 }
-
 ```
 
-##### Service Provider
+> **Note**
+>
+> Dependend upon what Filesystem Disk you are using, we are making sure that we are creating a cached file first and then replace the original file. Feel free to adjust the function to your needs.
+>
+
+##### Example: Set Image Style
+We've created the `ImageMacro` sucessfully and need to set the style so that the media manager is going to apply it when ever a file is uploaded. Here, we are putting the logic to set the style in the `Organization\Employees\Providers\EmployeeServiceProvider`. We are registering the Style which is applying the `ImageMacro` that we created before.
 
 ```
 <?php
@@ -204,3 +211,8 @@ class EmployeeServiceProvider extends ServiceProvider
     }
 }
 ```
+> **Note**
+>
+> In this example the image is going to be cropped to fit **1200x1200px**. The thumbnail is resized to **600x600px**.
+>
+> When a file is uploaded, the Media Manager is going through all Styles and its  Macros. In the **up() function** we are checking if the uploaded file is an image and has the namespace `organization/employees.employee`. The Macro is handling the cropping and creating the thumbnail. This way you are able to set up as many Styles and Macros as you need and every Macro can have different rules in the **up() function**. Every Entity could have its own ImageMacro and Style. Let's say you're not only working with an `Employee` model, but you have a `Organization` too, you could easily follow the steps above and create an `ImageMacro` for the `Organization`.
