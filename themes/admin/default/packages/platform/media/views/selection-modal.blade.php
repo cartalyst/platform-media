@@ -21,43 +21,44 @@
 
                 <div class="modal-header-right" data-search data-grid="main">
 
-                    <div class="input-group">
+                    <div>
+                      <div class="input-group">
+                          <span class="input-group-btn">
 
-                        <span class="input-group-btn">
+                              <button class="btn btn-default" type="button" disabled>
+                                  {{{ trans('common.filters') }}}
+                              </button>
 
-                            <button class="btn btn-default" type="button" disabled>
-                                {{{ trans('common.filters') }}}
-                            </button>
+                              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                  <span class="caret"></span>
+                                  <span class="sr-only">Toggle Dropdown</span>
+                              </button>
 
-                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
+                              <ul class="dropdown-menu" role="menu">
 
-                            <ul class="dropdown-menu" role="menu">
+                                  @foreach(collect(app('platform.media')->all()->lists('mime'))->unique()->values()->all() as $media)
+                                  <li><a href="#" data-filter="mime:{{ $media }}" data-grid="main">{{ $media }}</a></li>
+                                  @endforeach
 
-                                @foreach(collect(app('platform.media')->all()->lists('mime'))->unique()->values()->all() as $media)
-                                <li><a href="#" data-filter="mime:{{ $media }}" data-grid="main">{{ $media }}</a></li>
-                                @endforeach
+                              </ul>
 
-                            </ul>
+                          </span>
 
-                        </span>
+                          <input class="form-control" name="filter" type="text" placeholder="{{{ trans('common.search') }}}">
 
-                        <input class="form-control" name="filter" type="text" placeholder="{{{ trans('common.search') }}}">
+                          <span class="input-group-btn">
 
-                        <span class="input-group-btn">
+                              <button class="btn btn-default" type="submit">
+                                  <span class="fa fa-search"></span>
+                              </button>
 
-                            <button class="btn btn-default" type="submit">
-                                <span class="fa fa-search"></span>
-                            </button>
+                              <button class="btn btn-default" data-grid="main" data-reset>
+                                  <i class="fa fa-refresh fa-sm"></i>
+                              </button>
 
-                            <button class="btn btn-default" data-grid="main" data-reset>
-                                <i class="fa fa-refresh fa-sm"></i>
-                            </button>
+                          </span>
 
-                        </span>
-
+                      </div>
                     </div>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
