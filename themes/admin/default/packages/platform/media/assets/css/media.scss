@@ -37,12 +37,12 @@ $blue: #337ab7;
 $light-grey: #a0a0a0;
 
 .modal-media {
-   margin-left:auto;
-   margin-right:auto;
+ margin-left:auto;
+ margin-right:auto;
 }
 
 .upload {
- padding:16px;
+   padding:16px;
 }
 
 .upload__instructions {
@@ -188,6 +188,7 @@ $light-grey: #a0a0a0;
             flex-shrink: 1;
         }
         .modal-header-right{
+            width: 30%;
             display: flex;
             flex-direction: row;
             .close{
