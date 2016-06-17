@@ -10,6 +10,7 @@ The model must use `Platform\Media\Support\MediaTrait` and implement `Cartalyst\
 
 ```php
 <?php
+namespace Platform\Employees\Models;
 
 use Platform\Media\Support\MediaTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -24,7 +25,7 @@ class Employee extends Model implements NamespacedEntityInterface
       ...
     ];
 
-    protected static $entityNamespace = 'organization/employee';
+    protected static $entityNamespace = 'platform/employees';
 
     ...
 }
