@@ -122,7 +122,7 @@ You can attach media to your entity by using the Media Manager Selector.
 #### Sort media
 The media manager is built with sorting in mind. Just drag the media by clicking and dragging the arrows icon.
 
-![Upload Image](/img/upload.png)
+![Upload Image](/assets/upload.png)
 
 #### Detach media
 Detach a media by clicking on the trash Icon. The File is not going to be entirely deleted, only the relation to the entity. If you want to delete a media permanently you can use the **Media Extension**.
