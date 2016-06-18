@@ -98,7 +98,7 @@ Third argument is optional and can be a view that would override the default wid
 2. Drop your files on the uploadable area
 3. **Start Upload**
 
-(img)
+![Upload Media](/assets/upload-media.gif)
 
 > **Note**
 >
@@ -111,18 +111,18 @@ You can attach media to your entity by using the Media Manager Selector.
 2. Select your files
 3. **Select** to attach the selected media to your entityNamespace
 
-(img)
+![Select Media](/assets/select-media.gif)
 
 > **Note**
 >
 > You can select/unselect files by clicking on the **Selected** Collapse or by clicking again on the selected media. Furthermore you can search your media library or narrow your library down by applying mime-type filters.
 
-(img)
-
 #### Sort media
 The media manager is built with sorting in mind. Just drag the media by clicking and dragging the arrows icon.
 
-![Upload Image](/assets/upload.png)
+![Upload Image](/assets/drag-media.gif)
 
 #### Detach media
 Detach a media by clicking on the trash Icon. The File is not going to be entirely deleted, only the relation to the entity. If you want to delete a media permanently you can use the **Media Extension**.
+
+![Detach Media](/assets/detach-media.gif)
