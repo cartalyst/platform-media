@@ -98,7 +98,7 @@ Third argument is optional and can be a view that would override the default wid
 2. Drop your files on the uploadable area
 3. **Start Upload**
 
-![Upload Media](/assets/upload-media.gif)
+![upload-media](https://cloud.githubusercontent.com/assets/3426944/16172857/6a9333a2-3591-11e6-909e-7ada257c15a8.gif)
 
 > **Note**
 >
@@ -111,7 +111,7 @@ You can attach media to your entity by using the Media Manager Selector.
 2. Select your files
 3. **Select** to attach the selected media to your entityNamespace
 
-![Select Media](/assets/select-media.gif)
+![select-media](https://cloud.githubusercontent.com/assets/3426944/16172856/6a928164-3591-11e6-9c92-07096990a20c.gif)
 
 > **Note**
 >
@@ -120,9 +120,9 @@ You can attach media to your entity by using the Media Manager Selector.
 #### Sort media
 The media manager is built with sorting in mind. Just drag the media by clicking and dragging the arrows icon.
 
-![Upload Image](/assets/drag-media.gif)
+![drag-media](https://cloud.githubusercontent.com/assets/3426944/16172855/6a91c15c-3591-11e6-8474-a843d1b59087.gif)
 
 #### Detach media
 Detach a media by clicking on the trash Icon. The File is not going to be entirely deleted, only the relation to the entity. If you want to delete a media permanently you can use the **Media Extension**.
 
-![Detach Media](/assets/detach-media.gif)
+![detach-media](https://cloud.githubusercontent.com/assets/3426944/16172854/6a90e2be-3591-11e6-9f56-42030d704725.gif)
