@@ -35,22 +35,22 @@
         Extension.Uploader.template = _.template($('[data-media-attachment-template]').html());
 
         Extension.Uploader
-            .listeners()
-            .dataGrid()
-            .initMediaManager()
-            .initSorting();
+        .listeners()
+        .dataGrid()
+        .initMediaManager()
+        .initSorting();
     };
 
     // Add Listeners
     Extension.Uploader.listeners = function() {
         Platform.Cache.$body
-            .on('click', '.media-item', Extension.Uploader.checkboxes)
-            .on('click', '.modal-header-icon', Extension.Uploader.handleLayouts)
-            .on('click', '[data-media-add]', Extension.Uploader.addMedia)
-            .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia)
-            .on('click', '.modal-selected-header', Extension.Uploader.toggleSelectedMedia)
-            .on('click', '.media-item label', Extension.Uploader.selectMedia)
-            .on('focusin', '.modal-header-search input', Extension.Uploader.preventSubmit);
+        .on('click', '.media-item', Extension.Uploader.checkboxes)
+        .on('click', '.modal-header-icon', Extension.Uploader.handleLayouts)
+        .on('click', '[data-media-add]', Extension.Uploader.addMedia)
+        .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia)
+        .on('click', '.modal-selected-header', Extension.Uploader.toggleSelectedMedia)
+        .on('click', '.media-item label', Extension.Uploader.selectMedia)
+        .on('focusin', '.modal-header-search input', Extension.Uploader.preventSubmit);
 
         return this;
     };
@@ -275,7 +275,7 @@
                     Extension.Uploader.template({
                         media: media
                     })
-                );
+                    );
             });
 
             $('#media-selection-modal').modal('hide');
@@ -303,7 +303,7 @@
             });
         };
 
-        if (! Extension.Uploader.linkMediaRecords(null, success)) {
+        if (!Extension.Uploader.linkMediaRecords(null, success)) {
             $(_this).closest('li').fadeOut(300, function() {
                 $(this).remove();
             });
@@ -386,6 +386,10 @@
 
     // Add to selected
     Extension.Uploader.addToSelected = function(item, itemId) {
+        if (!Extension.Uploader.multiUpload) {
+            $('.modal-selected-body').html('');
+            Extension.Uploader.selectedArray = [];
+        }
         $('.no-results').hide();
         var newItem = item.clone();
         newItem.find('input').attr('id', 'media_selected_' + newItem.find('input').val());
@@ -403,7 +407,7 @@
         Extension.Uploader.selectedArray = jQuery.grep(Extension.Uploader.selectedArray, function(value) {
             return value != itemId;
         });
-        if (Extension.Uploader.selectedArray.length == 0){
+        if (Extension.Uploader.selectedArray.length == 0) {
             $('.no-results').show();
         }
         $('#media_' + itemId).prop('checked', false);
@@ -427,7 +431,7 @@
     };
 
     Extension.Uploader.preventSubmit = function() {
-        $(window).keydown(function(event){
+        $(window).keydown(function(event) {
             if (event.target.parentNode.classList.contains('modal-header-search') && event.keyCode == 13) {
                 event.preventDefault();
                 return false;
