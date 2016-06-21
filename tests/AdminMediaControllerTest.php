@@ -40,9 +40,9 @@ class AdminMediaControllerTest extends IlluminateTestCase
         $this->app['view']->shouldReceive('share');
 
         // Media Repository
-        $this->media = m::mock('Platform\Media\Repositories\MediaRepositoryInterface');
-        $this->roles = m::mock('Platform\Roles\Repositories\RoleRepositoryInterface');
-        $this->tags  = m::mock('Platform\Tags\Repositories\TagsRepositoryInterface');
+        $this->media       = m::mock('Platform\Media\Repositories\MediaRepositoryInterface');
+        $this->roles       = m::mock('Platform\Roles\Repositories\RoleRepositoryInterface');
+        $this->tags        = m::mock('Platform\Tags\Repositories\TagsRepositoryInterface');
         $this->namespaces  = m::mock('Platform\Attributes\Repositories\ManagerRepositoryInterface');
 
         // Media Controller

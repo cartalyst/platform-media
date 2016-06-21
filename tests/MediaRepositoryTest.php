@@ -34,16 +34,16 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         // Additional Bindings
         $this->app['cartalyst.filesystem']                  = m::mock('Cartalyst\Filesystem\Filesystem');
-        $this->app['platform.content']            = m::mock('Platform\Content\Repositories\ContentRepositoryInterface');
-        $this->app['platform.media.handler.data'] = m::mock('Platform\Media\Handlers\DataHandlerInterface');
-        $this->app['platform.media.manager']      = m::mock('Platform\Media\Repositories\ManagerRepository');
-        $this->app['platform.media.validator']    = m::mock('Cartalyst\Support\Validator');
-        $this->app['platform.menus']              = m::mock('Platform\Menus\Repositories\MenuRepositoryInterface');
-        $this->app['platform.menus.manager']      = m::mock('Platform\Menus\Repositories\ManagerRepositoryInterface');
-        $this->app['platform.permissions']        = m::mock('Platform\Permissions\Repositories\PermissionsRepositoryInterface');
-        $this->app['platform.roles']              = m::mock('Platform\Roles\Repositories\RoleRepositoryInterface');
-        $this->app['platform.tags']               = m::mock('Platform\Tags\Repositories\TagsRepositoryInterface');
-        $this->app['themes']                      = m::mock('Cartalyst\Themes\ThemeBag');
+        $this->app['platform.content']                      = m::mock('Platform\Content\Repositories\ContentRepositoryInterface');
+        $this->app['platform.media.handler.data']           = m::mock('Platform\Media\Handlers\DataHandlerInterface');
+        $this->app['platform.media.manager']                = m::mock('Platform\Media\Repositories\ManagerRepository');
+        $this->app['platform.media.validator']              = m::mock('Cartalyst\Support\Validator');
+        $this->app['platform.menus']                        = m::mock('Platform\Menus\Repositories\MenuRepositoryInterface');
+        $this->app['platform.menus.manager']                = m::mock('Platform\Menus\Repositories\ManagerRepositoryInterface');
+        $this->app['platform.permissions']                  = m::mock('Platform\Permissions\Repositories\PermissionsRepositoryInterface');
+        $this->app['platform.roles']                        = m::mock('Platform\Roles\Repositories\RoleRepositoryInterface');
+        $this->app['platform.tags']                         = m::mock('Platform\Tags\Repositories\TagsRepositoryInterface');
+        $this->app['themes']                                = m::mock('Cartalyst\Themes\ThemeBag');
 
         $this->app['platform.menus.manager']->shouldIgnoreMissing();
 
@@ -72,6 +72,7 @@ class MediaRepositoryTest extends IlluminateTestCase
             ->once()
             ->with('platform.media.1', m::on(function ($callback) {
                 $callback();
+
                 return true;
             }))->andReturn($model);
 
@@ -94,6 +95,7 @@ class MediaRepositoryTest extends IlluminateTestCase
             ->once()
             ->with('platform.media.path.foo', m::on(function ($callback) {
                 $callback();
+
                 return true;
             }))->andReturn($model);
 
@@ -151,7 +153,7 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $this->app['cartalyst.filesystem']->shouldReceive('validateFile')
             ->once()
-            ->andThrow(new \Cartalyst\Filesystem\Exceptions\InvalidFileException);
+            ->andThrow(new \Cartalyst\Filesystem\Exceptions\InvalidFileException());
 
         $this->repository->validForUpload($file);
 
@@ -172,7 +174,7 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $this->app['cartalyst.filesystem']->shouldReceive('validateFile')
             ->once()
-            ->andThrow(new \Cartalyst\Filesystem\Exceptions\MaxFileSizeExceededException);
+            ->andThrow(new \Cartalyst\Filesystem\Exceptions\MaxFileSizeExceededException());
 
         $this->repository->validForUpload($file);
 
@@ -193,7 +195,7 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $this->app['cartalyst.filesystem']->shouldReceive('validateFile')
             ->once()
-            ->andThrow(new \Cartalyst\Filesystem\Exceptions\InvalidMimeTypeException);
+            ->andThrow(new \Cartalyst\Filesystem\Exceptions\InvalidMimeTypeException());
 
         $this->repository->validForUpload($file);
 
@@ -388,6 +390,7 @@ class MediaRepositoryTest extends IlluminateTestCase
             ->once()
             ->with('platform.media.1', m::on(function ($callback) {
                 $callback();
+
                 return true;
             }))->andReturn($model);
 
@@ -433,7 +436,7 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $this->app['cartalyst.filesystem']->shouldReceive('validateFile')
             ->once()
-            ->andThrow(new \Cartalyst\Filesystem\Exceptions\InvalidFileException);
+            ->andThrow(new \Cartalyst\Filesystem\Exceptions\InvalidFileException());
 
         $this->app['translator']->shouldReceive('trans')
                 ->once()
@@ -449,6 +452,7 @@ class MediaRepositoryTest extends IlluminateTestCase
             ->once()
             ->with('platform.media.1', m::on(function ($callback) {
                 $callback();
+
                 return true;
             }))->andReturn($model);
 
@@ -490,6 +494,7 @@ class MediaRepositoryTest extends IlluminateTestCase
             ->once()
             ->with('platform.media.1', m::on(function ($callback) {
                 $callback();
+
                 return true;
             }))->andReturn($model);
 
@@ -537,6 +542,7 @@ class MediaRepositoryTest extends IlluminateTestCase
             ->once()
             ->with('platform.media.1', m::on(function ($callback) {
                 $callback();
+
                 return true;
             }));
 

@@ -124,7 +124,7 @@ class Media extends Model implements TaggableInterface
         }
 
         if (! empty($roles)) {
-            $roles = array_values(array_map('intval', $roles));
+            $roles                     = array_values(array_map('intval', $roles));
             $this->attributes['roles'] = json_encode($roles);
         } else {
             $this->attributes['roles'] = '';

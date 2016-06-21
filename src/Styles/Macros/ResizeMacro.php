@@ -106,7 +106,7 @@ class ResizeMacro extends AbstractMacro implements MacroInterface
      */
     protected function getPath(File $file, Media $media)
     {
-        $width = $this->style->width;
+        $width  = $this->style->width;
         $height = $this->style->height;
 
         $name = Str::slug(implode([ $file->getFilename(), $width, $height ?: $width ], ' '));

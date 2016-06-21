@@ -43,7 +43,7 @@ trait MediaTrait
      */
     public static function bootMediaTrait()
     {
-        static::creating(function($model) {
+        static::creating(function ($model) {
             if ($mediaIds = request()->input('_media_ids')) {
                 request()->replace(request()->except('_media_ids'));
 
@@ -57,7 +57,7 @@ trait MediaTrait
             }
         });
 
-        static::updating(function($model) {
+        static::updating(function ($model) {
             if ($mediaIds = request()->input('_media_ids')) {
                 request()->replace(request()->except('_media_ids'));
 
@@ -71,7 +71,7 @@ trait MediaTrait
             }
         });
 
-        static::saving(function($model) {
+        static::saving(function ($model) {
             if ($mediaIds = request()->input('_media_ids')) {
                 request()->replace(request()->except('_media_ids'));
 
@@ -85,25 +85,25 @@ trait MediaTrait
             }
         });
 
-        static::updated(function($model) {
+        static::updated(function ($model) {
             if ($mediaIds = static::getMediaIds()) {
                 $model->media()->sync($mediaIds);
             }
         });
 
-        static::saved(function($model) {
+        static::saved(function ($model) {
             if ($mediaIds = static::getMediaIds()) {
                 $model->media()->sync($mediaIds);
             }
         });
 
-        static::updated(function($model) {
+        static::updated(function ($model) {
             if ($mediaIds = static::getMediaIds()) {
                 $model->media()->sync($mediaIds);
             }
         });
 
-        static::deleting(function($model) {
+        static::deleting(function ($model) {
             $model->media()->detach();
         });
     }

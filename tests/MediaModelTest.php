@@ -32,7 +32,7 @@ class MediaModelTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->media = new Media;
+        $this->media = new Media();
     }
 
     /** @test */
@@ -56,7 +56,7 @@ class MediaModelTest extends PHPUnit_Framework_TestCase
      */
     public function it_throws_in_exception_if_roles_cannot_be_decoded()
     {
-        $roles = "foo";
+        $roles = 'foo';
 
         $this->media->roles = $roles;
 

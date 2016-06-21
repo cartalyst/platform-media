@@ -29,11 +29,11 @@ class MigrationPlatformMediaAddNamespaceAndRelations extends Migration
      */
     public function up()
     {
-        Schema::table('media', function($table) {
+        Schema::table('media', function ($table) {
             $table->string('namespace')->before('created_at')->nullable();
         });
 
-        Schema::create('media_relations', function($table) {
+        Schema::create('media_relations', function ($table) {
             $table->increments('id');
             $table->string('object_type');
             $table->integer('object_id')->unsigned();

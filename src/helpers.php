@@ -9,6 +9,6 @@ if (! function_exists('formatBytes')) {
 
         $suffix = $suffixes[floor($base)];
 
-        return round(pow(1024, $base - floor($base)), $precision) . " {$suffix}";
+        return round(pow(1024, $base - floor($base)), $precision)." {$suffix}";
     }
 }

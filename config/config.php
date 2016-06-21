@@ -69,6 +69,6 @@ return [
 
     'macros' => function (Manager $manager) {
         $manager->setMacro('resize', 'Platform\Media\Styles\Macros\ResizeMacro');
-    }
+    },
 
 ];

@@ -96,7 +96,7 @@ class MediaMailerController extends AdminController
     }
 
     /**
-     *
+     * Displays the main mailing page.
      *
      * @param  mixed  $id
      * @return \Illuminate\View\View
@@ -125,7 +125,7 @@ class MediaMailerController extends AdminController
     }
 
     /**
-     *
+     * Processes the mailing request.
      *
      * @param  mixed  $id
      * @return \Illuminate\Http\Response
@@ -163,7 +163,7 @@ class MediaMailerController extends AdminController
         $body = input('body');
 
         // Prepare the recipients
-        $recipients = new Collection;
+        $recipients = new Collection();
 
         foreach (input('users', []) as $email) {
             if ($user = $this->users->findByEmail($email)) {

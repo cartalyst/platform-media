@@ -231,7 +231,6 @@ class MediaRepository implements MediaRepositoryInterface
                     // Delete the old media file
                     $this->filesystem->delete($media->path);
                 } catch (FileNotFoundException $e) {
-
                 }
 
                 // Sanitize the file name
@@ -290,7 +289,6 @@ class MediaRepository implements MediaRepositoryInterface
             try {
                 $this->filesystem->delete($media->path);
             } catch (FileNotFoundException $e) {
-
             }
 
             $this->fireEvent('platform.media.deleted', [ $media ]);

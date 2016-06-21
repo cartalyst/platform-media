@@ -52,8 +52,7 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface
      */
     public function uploaded(Media $media, File $file, UploadedFile $uploadedFile)
     {
-        if ($thumbnail = $media->thumbnail)
-        {
+        if ($thumbnail = $media->thumbnail) {
             \Illuminate\Support\Facades\File::delete($thumbnail);
         }
 

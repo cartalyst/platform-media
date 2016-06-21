@@ -23,7 +23,6 @@ namespace Platform\Media\Styles\Macros;
 use Cartalyst\Filesystem\File;
 use Platform\Media\Styles\Style;
 use Platform\Media\Models\Media;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 abstract class AbstractMacro implements MacroInterface
 {

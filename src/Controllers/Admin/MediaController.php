@@ -21,10 +21,10 @@
 namespace Platform\Media\Controllers\Admin;
 
 use Platform\Access\Controllers\AdminController;
-use Platform\Attributes\Repositories\ManagerRepositoryInterface;
 use Platform\Tags\Repositories\TagsRepositoryInterface;
 use Platform\Roles\Repositories\RoleRepositoryInterface;
 use Platform\Media\Repositories\MediaRepositoryInterface;
+use Platform\Attributes\Repositories\ManagerRepositoryInterface;
 
 class MediaController extends AdminController
 {
@@ -145,10 +145,10 @@ class MediaController extends AdminController
 
         $transformer = function ($element) {
             $element->thumbnail_uri = url($element->thumbnail);
-            $element->view_uri = route('media.view', $element->path);
-            $element->edit_uri = route('admin.media.edit', $element->id);
-            $element->email_uri = route('admin.media.email', $element->id);
-            $element->download_uri = route('media.download', $element->path);
+            $element->view_uri      = route('media.view', $element->path);
+            $element->edit_uri      = route('admin.media.edit', $element->id);
+            $element->email_uri     = route('admin.media.email', $element->id);
+            $element->download_uri  = route('media.download', $element->path);
 
             return $element;
         };
@@ -177,9 +177,9 @@ class MediaController extends AdminController
         $transformer = function ($media) {
             return [
                 'title' => $media->name,
-                'name' => $media->name,
-                'link' => route('media.download', $media->link),
-                'size' => formatBytes($media->size),
+                'name'  => $media->name,
+                'link'  => route('media.download', $media->link),
+                'size'  => formatBytes($media->size),
             ];
         };
 
@@ -194,8 +194,8 @@ class MediaController extends AdminController
     public function imagesList()
     {
         $columns = [
-            'name' => 'title',
-            'path' => 'image',
+            'name'      => 'title',
+            'path'      => 'image',
             'thumbnail' => 'thumb',
         ];
 
@@ -243,11 +243,10 @@ class MediaController extends AdminController
     public function linkMedia()
     {
         $class = request()->input('object_class');
-        $model = (new $class)->find(request()->input('model_id'));
+        $model = (new $class())->find(request()->input('model_id'));
 
         if ($mediaIds = request()->input('_new_media_ids')) {
-
-            $mediaIds = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
+            $mediaIds         = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
             $preparedMediaIds = [];
             foreach ($mediaIds as $key => $id) {
                 $preparedMediaIds[$id] = ['sort' => $key];

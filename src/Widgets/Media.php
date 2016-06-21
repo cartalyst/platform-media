@@ -21,7 +21,6 @@
 namespace Platform\Media\Widgets;
 
 use Cartalyst\Support\Contracts\NamespacedEntityInterface;
-use Cartalyst\Support\Traits\NamespacedEntityTrait;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 
 class Media
@@ -79,7 +78,7 @@ class Media
 
         if ($namespace instanceof NamespacedEntityInterface) {
             $currentUploads = $model->media;
-            $namespace = $namespace->getEntityNamespace();
+            $namespace      = $namespace->getEntityNamespace();
         } else {
             $namespace = (string) $namespace;
         }
