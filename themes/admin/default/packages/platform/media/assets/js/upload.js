@@ -16,10 +16,9 @@
  * @link       http://cartalyst.com
  */
 
- var Extension;
+var Extension;
 
- ;
- (function(window, document, $, undefined) {
+;(function(window, document, $, undefined) {
     'use strict';
 
     Extension = Extension || {
@@ -35,22 +34,22 @@
         Extension.Uploader.template = _.template($('[data-media-attachment-template]').html());
 
         Extension.Uploader
-        .listeners()
-        .dataGrid()
-        .initMediaManager()
-        .initSorting();
+            .listeners()
+            .dataGrid()
+            .initMediaManager()
+            .initSorting();
     };
 
     // Add Listeners
     Extension.Uploader.listeners = function() {
         Platform.Cache.$body
-        .on('click', '.media-item', Extension.Uploader.checkboxes)
-        .on('click', '.modal-header-icon', Extension.Uploader.handleLayouts)
-        .on('click', '[data-media-add]', Extension.Uploader.addMedia)
-        .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia)
-        .on('click', '.modal-selected-header', Extension.Uploader.toggleSelectedMedia)
-        .on('click', '.media-item label', Extension.Uploader.selectMedia)
-        .on('focusin', '.modal-header-search input', Extension.Uploader.preventSubmit);
+            .on('click', '.media-item', Extension.Uploader.checkboxes)
+            .on('click', '.modal-header-icon', Extension.Uploader.handleLayouts)
+            .on('click', '[data-media-add]', Extension.Uploader.addMedia)
+            .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia)
+            .on('click', '.modal-selected-header', Extension.Uploader.toggleSelectedMedia)
+            .on('click', '.media-item label', Extension.Uploader.selectMedia)
+            .on('focusin', '.modal-header-search input', Extension.Uploader.preventSubmit);
 
         return this;
     };
@@ -62,7 +61,7 @@
             threshold: 20,
             hash: false,
             callback: function(data) {
-                if (!Extension.Uploader.multiUpload) {
+                if (! Extension.Uploader.multiUpload) {
                     $('[data-grid-checkbox="all"]').prop('disabled', true);
                 }
 
@@ -121,7 +120,7 @@
                     Extension.Uploader.template({
                         media: response
                     })
-                    );
+                );
 
                 $('#media-modal').modal('hide');
             },
@@ -169,7 +168,7 @@
 
         var type = $(this).attr('data-grid-checkbox');
 
-        if (!Extension.Uploader.multiUpload) {
+        if (! Extension.Uploader.multiUpload) {
             $('[data-grid-checkbox="all"]').prop('disabled', true);
             $('[data-grid-checkbox]').not($(this).find('[data-grid-checkbox]')).not('[data-grid-checkbox][disabled]').prop('checked', false);
         }
@@ -210,7 +209,7 @@
         var originalText = $(this).html();
         var url = $('[data-upload-post-url]').data('upload-post-url');
 
-        if (!url) {
+        if (! url) {
             url = window.location.origin + window.location.pathname
         }
 
@@ -220,7 +219,7 @@
             return $(this).val();
         }).get();
 
-        if (!Extension.Uploader.multiUpload) {
+        if (! Extension.Uploader.multiUpload) {
             mediaIds = [];
         }
 
@@ -257,7 +256,7 @@
                         Extension.Uploader.template({
                             media: media
                         })
-                        );
+                    );
                 });
 
                 $('#media-selection-modal').modal('hide');
@@ -275,7 +274,7 @@
                     Extension.Uploader.template({
                         media: media
                     })
-                    );
+                );
             });
 
             $('#media-selection-modal').modal('hide');
@@ -303,7 +302,7 @@
             });
         };
 
-        if (!Extension.Uploader.linkMediaRecords(null, success)) {
+        if (! Extension.Uploader.linkMediaRecords(null, success)) {
             $(_this).closest('li').fadeOut(300, function() {
                 $(this).remove();
             });
@@ -316,7 +315,7 @@
         var objectClass = $('[data-object-class]').data('object-class');
         var url = $('[data-upload-post-url]').data('upload-post-url');
 
-        if (!url) {
+        if (! url) {
             url = window.location.origin + window.location.pathname
         }
 
@@ -386,16 +385,21 @@
 
     // Add to selected
     Extension.Uploader.addToSelected = function(item, itemId) {
-        if (!Extension.Uploader.multiUpload) {
+        if (! Extension.Uploader.multiUpload) {
             $('.modal-selected-body').html('');
             Extension.Uploader.selectedArray = [];
         }
+
         $('.no-results').hide();
+
         var newItem = item.clone();
+
         newItem.find('input').attr('id', 'media_selected_' + newItem.find('input').val());
         newItem.find('label').attr('for', 'media_selected_' + newItem.find('input').val());
         newItem.find('input').removeAttr('data-grid-checkbox').removeAttr('name');
+
         $('.modal-selected-body').append(newItem);
+
         Extension.Uploader.selectedArray.push(itemId);
 
         $('input[name="selected_media[]"]').val(Extension.Uploader.selectedArray);
@@ -407,9 +411,11 @@
         Extension.Uploader.selectedArray = jQuery.grep(Extension.Uploader.selectedArray, function(value) {
             return value != itemId;
         });
+
         if (Extension.Uploader.selectedArray.length == 0) {
             $('.no-results').show();
         }
+
         $('#media_' + itemId).prop('checked', false);
         $('#media_selected_' + itemId).parent().remove();
 
