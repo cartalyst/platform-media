@@ -11,15 +11,12 @@
       <div class="modal-header">
 
         <div class="modal-header-left">
-          <h4 class="modal-title">Media Manager</h4>
+          <h4 class="modal-title">{{ trans('platform/media::widget.manager_title') }}</h4>
         </div>
 
         <div class="modal-header-center"></div>
 
         <div class="modal-header-right" data-search data-grid="main">
-
-          <!-- <a href="#" data-toggle="tooltip" data-original-title="Show all files" data-view="grid" class="modal-header-icon active"><i class="fa fa-th-large"></i></a>
-          <a href="#" data-toggle="tooltip" data-original-title="Show only images" data-view="list" class="modal-header-icon"><i class="fa fa-th-list"></i></a> -->
 
           <div>
             <div class="input-group">
@@ -39,7 +36,6 @@
 
                 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                   <span class="caret"></span>
-                  <span class="sr-only">Toggle Dropdown</span>
                 </button>
 
                 <ul class="dropdown-menu" role="menu">
@@ -76,7 +72,7 @@
         <a href="#" class="modal-selected-header">
           <div class="flex-row">
             <div class="flex">
-              <h3>Selected (<span class="selected-index">0</span>)</h3>
+              <h3>{{ trans('platform/media::widget.selected') }} (<span class="selected-index">0</span>)</h3>
             </div>
             <i class="fa fa-chevron-down"></i>
           </div>
@@ -84,7 +80,7 @@
 
         <div class="modal-selected-body media-results">
           <div class="no-results">
-            <p>No items selected.</p>
+            <p>{{ trans('platform/media::widget.manager_title') }}</p>
           </div>
         </div>
       </div>
@@ -110,7 +106,7 @@
         <span class="pull-right text-right">
           <button type="button" class="btn btn-default" data-dismiss="modal">{{{ trans('action.cancel') }}}</button>
 
-          <button type="button" class="btn btn-primary" data-media-add><i class="fa fa-upload"></i> Select</button>
+          <button type="button" class="btn btn-primary" data-media-add><i class="fa fa-upload"></i> {{ trans('platform/media::action.select') }}</button>
         </span>
       </div>
 

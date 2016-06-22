@@ -28,4 +28,10 @@ return [
 
     'single_upload' => 'Only a single image can be added.',
 
+    'manager_title' => 'Media Manager',
+
+    'selected' => 'Selected',
+
+    'no_items_selected' => 'No items selected.'
+
 ];
