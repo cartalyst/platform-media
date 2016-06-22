@@ -44,12 +44,12 @@ var Extension;
     Extension.Uploader.listeners = function() {
         Platform.Cache.$body
             .on('click', '.media-item', Extension.Uploader.checkboxes)
-            .on('click', '.modal-header-icon', Extension.Uploader.handleLayouts)
+            .on('click', '[data-view]', Extension.Uploader.handleLayouts)
             .on('click', '[data-media-add]', Extension.Uploader.addMedia)
             .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia)
             .on('click', '.modal-selected-header', Extension.Uploader.toggleSelectedMedia)
             .on('click', '.media-item label', Extension.Uploader.selectMedia)
-            .on('focusin', '.modal-header-search input', Extension.Uploader.preventSubmit);
+            .on('focusin', '.modal-header-right input', Extension.Uploader.preventSubmit);
 
         return this;
     };
@@ -184,7 +184,7 @@ var Extension;
 
     // Handle modal layouts
     Extension.Uploader.handleLayouts = function(event) {
-        $('.modal-header-icon.active').removeClass('active');
+        $('[data-view].active').removeClass('active');
         $(this).addClass('active');
 
         var view = $(this).data('view');
@@ -438,7 +438,7 @@ var Extension;
 
     Extension.Uploader.preventSubmit = function() {
         $(window).keydown(function(event) {
-            if (event.target.parentNode.classList.contains('modal-header-search') && event.keyCode == 13) {
+            if (event.target.parentNode.parentNode.parentNode.classList.contains('modal-header-right') && event.keyCode == 13) {
                 event.preventDefault();
                 return false;
             }

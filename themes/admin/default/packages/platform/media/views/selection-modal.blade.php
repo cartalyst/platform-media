@@ -18,12 +18,20 @@
 
         <div class="modal-header-right" data-search data-grid="main">
 
-          <a href="#" data-toggle="tooltip" data-original-title="Show all files" data-view="grid" class="modal-header-icon active"><i class="fa fa-th-large"></i></a>
-          <a href="#" data-toggle="tooltip" data-original-title="Show only images" data-view="list" class="modal-header-icon"><i class="fa fa-th-list"></i></a>
+          <!-- <a href="#" data-toggle="tooltip" data-original-title="Show all files" data-view="grid" class="modal-header-icon active"><i class="fa fa-th-large"></i></a>
+          <a href="#" data-toggle="tooltip" data-original-title="Show only images" data-view="list" class="modal-header-icon"><i class="fa fa-th-list"></i></a> -->
 
           <div>
             <div class="input-group">
               <span class="input-group-btn">
+
+                <a class="btn btn-default active" data-view="grid" class="modal-header-icon active">
+                  <i class="fa fa-th-large"></i>
+                </a>
+
+                <a class="btn btn-default" data-view="list" class="modal-header-icon">
+                  <i class="fa fa-th-list"></i>
+                </a>
 
                 <button class="btn btn-default" type="button" disabled>
                   {{{ trans('common.filters') }}}
@@ -48,9 +56,6 @@
 
               <span class="input-group-btn">
 
-                <button class="btn btn-default" type="submit">
-                  <span class="fa fa-search"></span>
-                </button>
 
                 <button class="btn btn-default" data-grid="main" data-reset>
                   <i class="fa fa-refresh fa-sm"></i>
@@ -62,6 +67,7 @@
           </div>
 
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
         </div>
 
       </div>
