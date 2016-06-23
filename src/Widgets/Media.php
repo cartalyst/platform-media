@@ -82,7 +82,9 @@ class Media
 
         $namespace = $isNamespaced ? $namespace->getEntityNamespace() : (string) $namespace;
 
-        $options = compact('model', 'namespace', 'multiUpload', 'mimes', 'currentUploads');
+        $uploadedMimeTypes = collect(app('platform.media')->all()->lists('mime'))->unique()->values()->all();
+
+        $options = compact('model', 'namespace', 'multiUpload', 'mimes', 'currentUploads', 'uploadedMimeTypes');
 
         $view = $view ?: 'platform/media::widgets.upload';
 

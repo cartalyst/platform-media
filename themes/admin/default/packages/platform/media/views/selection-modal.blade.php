@@ -40,8 +40,8 @@
 
                 <ul class="dropdown-menu" role="menu">
 
-                  @foreach(collect(app('platform.media')->all()->lists('mime'))->unique()->values()->all() as $media)
-                  <li><a href="#" data-filter="mime:{{ $media }}" data-grid="main">{{ $media }}</a></li>
+                  @foreach($uploadedMimeTypes as $mimeType)
+                  <li><a href="#" data-filter="mime:{{ $mimeType }}" data-grid="main">{{ $mimeType }}</a></li>
                   @endforeach
 
                 </ul>
