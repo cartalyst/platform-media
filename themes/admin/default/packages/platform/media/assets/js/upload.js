@@ -37,7 +37,8 @@ var Extension;
             .listeners()
             .dataGrid()
             .initMediaManager()
-            .initSorting();
+            .initSorting()
+        ;
     };
 
     // Add Listeners
@@ -49,7 +50,8 @@ var Extension;
             .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia)
             .on('click', '.modal-selected-header', Extension.Uploader.toggleSelectedMedia)
             .on('click', '.media-item label', Extension.Uploader.selectMedia)
-            .on('focusin', '.modal-header-right input', Extension.Uploader.preventSubmit);
+            .on('focusin', '.modal-header-right input', Extension.Uploader.preventSubmit)
+        ;
 
         return this;
     };
@@ -69,8 +71,11 @@ var Extension;
             },
             events: {
                 'fetched': function(grid) {
-                    if ($('input[name="selected_media[]"]').val() != null) {
-                        var selectedArray = $('input[name="selected_media[]"]').val().split(',');
+                    var selectedMedia = $('input[name="selected_media[]"]').val();
+
+                    if (selectedMedia != null) {
+                        var selectedArray = selectedMedia.split(',');
+
                         // Convert all of the array items to integers
                         for (var i = 0; i < selectedArray.length; i++) {
                             selectedArray[i] = parseInt(selectedArray[i], 10);
@@ -78,6 +83,7 @@ var Extension;
 
                         $('.modal-body .media-results').children('.media-item').each(function() {
                             var elementId = parseInt($(this).find('input').val());
+
                             if (jQuery.inArray(elementId, selectedArray) !== parseInt('-1')) {
                                 $(this).find('input').prop('checked', true);
                             }
@@ -87,7 +93,9 @@ var Extension;
             }
         };
 
-        Extension.Uploader.Grid = $.datagrid('main', '#data-grid', '#data-grid_pagination', '#data-grid_applied', config);
+        Extension.Uploader.Grid = $.datagrid(
+            'main', '#data-grid', '#data-grid_pagination', '#data-grid_applied', config
+        );
 
         return this;
     };
@@ -172,13 +180,25 @@ var Extension;
 
         if (! Extension.Uploader.multiUpload) {
             $('[data-grid-checkbox="all"]').prop('disabled', true);
-            $('[data-grid-checkbox]').not($(this).find('[data-grid-checkbox]')).not('[data-grid-checkbox][disabled]').prop('checked', false);
+            $('[data-grid-checkbox]')
+                .not($(this).find('[data-grid-checkbox]'))
+                .not('[data-grid-checkbox][disabled]')
+                .prop('checked', false)
+            ;
         }
 
         if (type === 'all') {
-            $('[data-grid-checkbox]').not(this).not('[data-grid-checkbox][disabled]').prop('checked', this.checked);
+            $('[data-grid-checkbox]')
+                .not(this)
+                .not('[data-grid-checkbox][disabled]')
+                .prop('checked', this.checked)
+            ;
 
-            $('[data-grid-row]').not('[data-grid-row][disabled]').not(this).toggleClass('active', this.checked);
+            $('[data-grid-row]')
+                .not('[data-grid-row][disabled]')
+                .not(this)
+                .toggleClass('active', this.checked)
+            ;
         }
 
         $(this).parents('[data-grid-row]').not('[data-grid-row][disabled]').toggleClass('active');
@@ -187,6 +207,7 @@ var Extension;
     // Handle modal layouts
     Extension.Uploader.handleLayouts = function(event) {
         $('[data-view].active').removeClass('active');
+
         $(this).addClass('active');
 
         var view = $(this).data('view');
@@ -207,7 +228,7 @@ var Extension;
         var newMediaIdObjects;
         var newMediaIds;
         var success;
-        var _this = this;
+        var $this = this;
         var originalText = $(this).html();
         var url = $('[data-upload-post-url]').data('upload-post-url');
 
@@ -250,7 +271,8 @@ var Extension;
         // newly added media objects.
         if (mediaIds.length > 0 && newMediaIdObjects.length > 0 && modelId) {
             success = function() {
-                $(_this).html(originalText).prop('disabled', false);
+                $($this).html(originalText).prop('disabled', false);
+
                 $('[data-grid-checkbox]').prop('checked', false);
 
                 _.each(newMediaIdObjects, function(media) {
@@ -290,14 +312,14 @@ var Extension;
     // Handle media deletion
     Extension.Uploader.deleteMedia = function() {
         var success;
-        var _this = this;
+        var $this = this;
 
         $(this).parent().parent().find('.overlay').show();
         $(this).parent().parent().find('input[name="_media_ids[]"]').remove();
         $(this).addClass('disabled');
 
         success = function() {
-            $(_this).closest('li').fadeOut(500, function() {
+            $($this).closest('li').fadeOut(500, function() {
                 $(this).remove();
 
                 Extension.Uploader.refreshGrid();
@@ -305,7 +327,7 @@ var Extension;
         };
 
         if (! Extension.Uploader.linkMediaRecords(null, success)) {
-            $(_this).closest('li').fadeOut(300, function() {
+            $($this).closest('li').fadeOut(300, function() {
                 $(this).remove();
             });
         }
@@ -360,11 +382,10 @@ var Extension;
         event.preventDefault();
 
         var $this = $(this);
-        if ($this.siblings('input[type="checkbox"]')[0].checked) {
-            $this.siblings('input[type="checkbox"]').prop('checked', false);
-        } else {
-            $this.siblings('input[type="checkbox"]').prop('checked', true);
-        }
+
+        var siblings = $this.siblings('input[type="checkbox"]');
+
+        siblings.prop('checked', ! siblings[0].checked);
 
         setTimeout(Extension.Uploader.checkSelected($this), 0);
     };
@@ -373,8 +394,8 @@ var Extension;
     Extension.Uploader.checkSelected = function($this) {
         var item = $this.parent();
         var itemInput = $this.siblings('input[type="checkbox"]');
-        var itemChecked = itemInput[0].checked;
         var itemId = itemInput.val();
+        var itemChecked = itemInput[0].checked;
 
         if (itemChecked) {
             // Add item to selected Array
@@ -389,6 +410,7 @@ var Extension;
     Extension.Uploader.addToSelected = function(item, itemId) {
         if (! Extension.Uploader.multiUpload) {
             $('.modal-selected-body').html('');
+
             Extension.Uploader.selectedArray = [];
         }
 
@@ -428,13 +450,16 @@ var Extension;
     // Refresh grid
     Extension.Uploader.refreshGrid = function() {
         Extension.Uploader.selectedArray = [];
+
         Extension.Uploader.Grid.refresh();
     };
 
     // Resets the selected area
     Extension.Uploader.resetSelectedArea = function() {
         $('input[name="selected_media[]"]').val('');
+
         $('.modal-selected-body').html('');
+
         $('.selected-index').text('0');
     };
 
@@ -442,6 +467,7 @@ var Extension;
         $(window).keydown(function(event) {
             if (event.target.parentNode.parentNode.parentNode.classList.contains('modal-header-right') && event.keyCode == 13) {
                 event.preventDefault();
+
                 return false;
             }
         });
