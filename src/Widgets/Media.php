@@ -20,8 +20,8 @@
 
 namespace Platform\Media\Widgets;
 
-use Cartalyst\Support\Contracts\NamespacedEntityInterface;
 use Platform\Media\Repositories\MediaRepositoryInterface;
+use Cartalyst\Support\Contracts\NamespacedEntityInterface;
 
 class Media
 {
@@ -40,7 +40,7 @@ class Media
      * Returns the given media path or the HTML <img> tag.
      *
      * @param  int  $id
-     * @param  string  $type
+     * @param  string|null  $type
      * @return string
      */
     public function show($id, $type = null)
@@ -67,32 +67,22 @@ class Media
      *
      * @param  \Cartalyst\Support\Contracts\NamespacedEntityInterface|string  $namespace
      * @param  bool  $multiUpload
-     * @param  string $view
+     * @param  string  $view
      * @return string
      */
     public function upload($namespace, $multiUpload = true, $view = '')
     {
-        $currentUploads = [];
+        $isNamespaced = $namespace instanceof NamespacedEntityInterface;
 
-        $model = $namespace instanceof NamespacedEntityInterface ? $namespace : null;
+        $mimes = $this->prepareMimes();
 
-        if ($namespace instanceof NamespacedEntityInterface) {
-            $currentUploads = $model->media;
-            $namespace      = $namespace->getEntityNamespace();
-        } else {
-            $namespace = (string) $namespace;
-        }
+        $model = $isNamespaced ? $namespace : null;
 
-        $namespace = $namespace instanceof NamespacedEntityInterface ?
-            $namespace->getEntityNamespace() : (string) $namespace;
+        $currentUploads = $isNamespaced ? $model->media : [];
 
-        $options = [
-            'model'          => $model,
-            'namespace'      => $namespace,
-            'multiUpload'    => $multiUpload,
-            'mimes'          => $this->prepareMimes(),
-            'currentUploads' => $currentUploads,
-        ];
+        $namespace = $isNamespaced ? $namespace->getEntityNamespace() : (string) $namespace;
+
+        $options = compact('model', 'namespace', 'multiUpload', 'mimes', 'currentUploads');
 
         $view = $view ?: 'platform/media::widgets.upload';
 
@@ -104,17 +94,15 @@ class Media
      *
      * @param  int  $id
      * @param  array  $options
-     * @param  string  $default
+     * @param  string|null  $default
      * @return string
      */
     public function thumbnail($id, array $options = [], $default = null)
     {
         if ($media = $this->media->find($id)) {
-            $options = implode(' ', $options);
-
             $path = $media->is_image ? url($media->thumbnail) : $default;
 
-            return '<img src="'.$path.'"'.$options.'>';
+            return '<img src="'.$path.'"'.implode(' ', $options).'>';
         }
     }
 
@@ -125,10 +113,8 @@ class Media
      */
     protected function prepareMimes()
     {
-        $mimes = array_map(function ($el) {
+        return implode(', ', array_map(function ($el) {
             return last(explode('/', $el));
-        }, $this->media->getAllowedMimes());
-
-        return implode(', ', $mimes);
+        }, $this->media->getAllowedMimes()));
     }
 }
