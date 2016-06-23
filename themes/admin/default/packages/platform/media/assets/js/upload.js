@@ -123,6 +123,8 @@ var Extension;
                 );
 
                 $('#media-modal').modal('hide');
+
+                Extension.Uploader.Grid.refresh();
             },
             onComplete: function() {
                 Extension.Uploader.linkMediaRecords();
