@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v3.3.0 - 2016-06-24
+
+`ADDED`
+
+- Media Widget Upload.
+
 ### v3.2.2 - 2016-05-12
 
 `FIXED`
