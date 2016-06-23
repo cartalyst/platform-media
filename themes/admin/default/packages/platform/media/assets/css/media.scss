@@ -414,6 +414,8 @@ $light-grey: #a0a0a0;
         flex-direction: column;
         .media-item{
             max-width: 100%;
+            width: 100%;
+            flex-shrink: 0;
             label{
                 display: flex;
                 flex-direction: row;
@@ -536,5 +538,9 @@ $light-grey: #a0a0a0;
 
     overflow: visible;
     margin-left: 0px;
+}
 
+.modal-backdrop{
+    position: fixed;
+    pointer-events: none;
 }

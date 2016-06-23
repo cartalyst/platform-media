@@ -217,6 +217,8 @@ var Extension;
         } else {
             $('.media-results').removeClass('display-column');
         }
+
+        $('.modal').handleUpdate();
     };
 
     // Handle Data Grid add media
@@ -404,6 +406,7 @@ var Extension;
             // Remove item from selected Array
             Extension.Uploader.removeFromSelected(item, itemId);
         }
+        $('.modal').handleUpdate();
     };
 
     // Add to selected
