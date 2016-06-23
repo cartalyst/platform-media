@@ -80,7 +80,7 @@
 
         <div class="modal-selected-body media-results">
           <div class="no-results">
-            <p>{{ trans('platform/media::widget.manager_title') }}</p>
+            <p>{{ trans('platform/media::widget.no_items_selected') }}</p>
           </div>
         </div>
       </div>
