@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v3.3.1 - 2016-06-25
+
+`FIXED`
+
+- A js bug on the upload widget.
+
 ### v3.3.0 - 2016-06-24
 
 `ADDED`
