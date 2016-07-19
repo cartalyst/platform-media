@@ -22,6 +22,7 @@ namespace Platform\Media\Providers;
 
 use Cartalyst\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
+use Platform\Media\Commands\ReGenerateImages;
 
 class MediaServiceProvider extends ServiceProvider
 {
@@ -54,6 +55,9 @@ class MediaServiceProvider extends ServiceProvider
 
         // Register the Intervention Service Provider and Facade alias.
         $this->registerInterventionPackage();
+
+        // Register the regenerate images command.
+        $this->registerReGenerateImagesCommand();
 
         // Register the repository
         $this->bindIf('platform.media', 'Platform\Media\Repositories\MediaRepository');
@@ -138,5 +142,19 @@ class MediaServiceProvider extends ServiceProvider
         $compiler->directive('mediaUploader', function ($value) {
             return "<?php echo Widget::make('platform/media::media.upload', array$value); ?>";
         });
+    }
+
+    /**
+     * Register the regenerate images command.
+     *
+     * @return void
+     */
+    protected function registerReGenerateImagesCommand()
+    {
+        $this->app['command.platform.media.regenerate'] = $this->app->share(function ($app) {
+            return new ReGenerateImages($app);
+        });
+
+        $this->commands('command.platform.media.regenerate');
     }
 }

@@ -46,10 +46,7 @@ return [
     */
 
     'styles' => function (Manager $manager) {
-        $manager->setStyle('thumbnail', function (Style $style) {
-            // Set the style image width.
-            $style->width = 300;
-
+        $manager->setStyle('resize', function (Style $style) {
             // Set the style macros
             $style->macros = [ 'resize' ];
 
@@ -70,5 +67,36 @@ return [
     'macros' => function (Manager $manager) {
         $manager->setMacro('resize', 'Platform\Media\Styles\Macros\ResizeMacro');
     },
+
+    /*
+    |--------------------------------------------------------------------------
+    | Presets
+    |--------------------------------------------------------------------------
+    |
+    | Define here the image presets that should be generated upon upload.
+    |
+    */
+
+    'presets' => [
+
+        'thumb' => [
+            'width' => 400,
+        ],
+
+        'medium' => [
+            'width' => 800,
+        ],
+
+        '720p' => [
+            'width' => 1280,
+            'height' => 720,
+        ],
+
+        '1080p' => [
+            'width' => 1920,
+            'height' => 1080,
+        ],
+
+    ],
 
 ];
