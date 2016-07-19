@@ -18,6 +18,8 @@
  * @link       http://cartalyst.com
  */
 
+use Platform\Media\Models\Media;
+
 if (! function_exists('formatBytes')) {
     function formatBytes($size, $precision = 2)
     {
@@ -28,5 +30,15 @@ if (! function_exists('formatBytes')) {
         $suffix = $suffixes[floor($base)];
 
         return round(pow(1024, $base - floor($base)), $precision)." {$suffix}";
+    }
+}
+
+if (! function_exists('getGalleryImagePath')) {
+    function getGalleryImagePath(Media $media, $style)
+    {
+        $path = $media->path;
+        $thumb = $media->thumbnail;
+
+        return asset(str_replace(basename($thumb), "{$style}/".basename($path), $thumb));
     }
 }
