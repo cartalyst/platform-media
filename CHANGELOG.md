@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v3.3.2 - 2016-07-20
+
+`FIXED`
+
+- A bug preventing guarded from being used on the model.
+
 ### v3.3.1 - 2016-06-25
 
 `FIXED`
