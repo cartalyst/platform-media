@@ -21,10 +21,6 @@ class Employee extends Model implements NamespacedEntityInterface
 {
     use NamespacedEntityTrait, MediaTrait;
 
-    protected $fillable = [
-      ...
-    ];
-
     protected static $entityNamespace = 'platform/employees';
 
     ...
@@ -32,11 +28,7 @@ class Employee extends Model implements NamespacedEntityInterface
 
 ```
 
-> **Note**
->
-> You must use the model's fillable property when using the media widget.
->
-> The `$entityNamespace` of your model is used by the media when uploading images.
+> **Note** The `$entityNamespace` of your model is used by the media when uploading images.
 
 #### View setup
 
