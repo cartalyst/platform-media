@@ -47,7 +47,7 @@
 
 <div class="clearfix">
     <input type="hidden" id="mediaArray">
-    <input type="hidden" name="selected_media[]"">
+    <input type="hidden" name="_selected_media[]"">
     <ul id="mediaList" class="upload__attachments list-group">
         @foreach ($currentUploads as $upload)
         <li class="list-group-item clearfix" id="attached_media_{{ $upload->id }}">

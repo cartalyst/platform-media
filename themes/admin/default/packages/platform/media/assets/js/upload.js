@@ -71,7 +71,7 @@ var Extension;
             },
             events: {
                 'fetched': function(grid) {
-                    var selectedMedia = $('input[name="selected_media[]"]').val();
+                    var selectedMedia = $('input[name="_selected_media[]"]').val();
 
                     if (selectedMedia != null) {
                         var selectedArray = selectedMedia.split(',');
@@ -426,7 +426,7 @@ var Extension;
 
         Extension.Uploader.selectedArray.push(itemId);
 
-        $('input[name="selected_media[]"]').val(Extension.Uploader.selectedArray);
+        $('input[name="_selected_media[]"]').val(Extension.Uploader.selectedArray);
         $('.selected-index').text(Extension.Uploader.selectedArray.length);
     };
 
@@ -443,7 +443,7 @@ var Extension;
         $('#media_' + itemId).prop('checked', false);
         $('#media_selected_' + itemId).parent().remove();
 
-        $('input[name="selected_media[]"]').val(Extension.Uploader.selectedArray);
+        $('input[name="_selected_media[]"]').val(Extension.Uploader.selectedArray);
         $('.selected-index').text(Extension.Uploader.selectedArray.length);
     };
 
@@ -456,7 +456,7 @@ var Extension;
 
     // Resets the selected area
     Extension.Uploader.resetSelectedArea = function() {
-        $('input[name="selected_media[]"]').val('');
+        $('input[name="_selected_media[]"]').val('');
 
         $('.modal-selected-body').html('');
 

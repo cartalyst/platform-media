@@ -48,7 +48,7 @@
 
               </span>
 
-              <input class="form-control" name="filter" type="text" placeholder="{{{ trans('common.search') }}}">
+              <input class="form-control" type="text" placeholder="{{{ trans('common.search') }}}">
 
               <span class="input-group-btn">
 
