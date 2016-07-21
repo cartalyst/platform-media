@@ -49,6 +49,9 @@
 {{-- Grid --}}
 <section class="panel panel-default panel-grid" data-grid="main" data-source="{{ route('admin.media.grid') }}">
 
+	{{-- Loader --}}
+    <div class="loading"></div>
+
 	{{-- Grid: Header --}}
 	<header class="panel-heading">
 
@@ -243,17 +246,12 @@
 					<th class="text-center">{{{ trans('common.actions') }}}</th>
 				</tr>
 			</thead>
-			<tbody></tbody>
+			<tbody data-grid-layout="table"></tbody>
 		</table>
 
 	</div>
 
-	<footer class="panel-footer clearfix">
-
-		{{-- Grid: Pagination --}}
-		<div id="data-grid_pagination" data-grid="main"></div>
-
-	</footer>
+	<footer class="panel-footer clearfix" data-grid-layout="pagination"></footer>
 
 	{{-- Grid: templates --}}
 	@include('platform/media::grid/dg4/table')
