@@ -157,6 +157,18 @@ var Extension;
 
 		Extension.Index.Grid = $.datagrid('main', '#data-grid', '#data-grid_pagination', '#data-grid_applied', config);
 
+	 //    var dg = new DataGridManager();
+	 //    var grid = dg.create('main', {
+	 //        //source: '{{ route('admin.media.grid') }}',
+	 //        pagination: {
+	 //            threshold: '10',
+	 //            throttle: '10'
+	 //        },
+	 //        loader: {
+	 //            element: '.loading'
+	 //        }
+	 //    });
+
 		return this;
 	};
 
