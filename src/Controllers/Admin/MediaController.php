@@ -115,7 +115,7 @@ class MediaController extends AdminController
         $mimes = $this->prepareMimes($allowedMimes);
 
         // Show the page
-        return view('platform/media::index', compact('tags', 'roles', 'mimes'));
+        return view('platform/media::indexdg4', compact('tags', 'roles', 'mimes'));
     }
 
     /**

@@ -37,13 +37,15 @@
 		.MediaManager.setUploadUrl('{{ route('admin.media.upload') }}')
 	;
 </script>
+
+@include('platform/media::grid/dg4/init-js')
 @stop
 
 {{-- Page content --}}
 @section('page')
 
 {{-- Grid --}}
-<section class="panel panel-default panel-grid">
+<section class="panel panel-default panel-grid" data-grid="main" data-source="{{ route('admin.media.grid') }}">
 
 	{{-- Grid: Header --}}
 	<header class="panel-heading">
@@ -226,7 +228,7 @@
 	{{-- Grid: Table --}}
 	<div class="table-responsive">
 
-		<table id="data-grid" class="table table-hover" data-source="{{ route('admin.media.grid') }}" data-grid="main">
+		<table id="data-grid" class="table table-hover">
 			<thead>
 				<tr>
 					<th><input data-grid-checkbox="all" type="checkbox"></th>
@@ -252,10 +254,10 @@
 	</footer>
 
 	{{-- Grid: templates --}}
-	@include('platform/media::grid/index/results')
-	@include('platform/media::grid/index/pagination')
-	@include('platform/media::grid/index/filters')
-	@include('platform/media::grid/index/no_results')
+	@include('platform/media::grid/dg4/results')
+	@include('platform/media::grid/dg4/pagination')
+	@include('platform/media::grid/dg4/filters')
+	@include('platform/media::grid/dg4/no_results')
 
 </section>
 
