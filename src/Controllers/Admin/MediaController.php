@@ -21,9 +21,11 @@
 namespace Platform\Media\Controllers\Admin;
 
 use Platform\Access\Controllers\AdminController;
+use Cartalyst\DataGrid\Laravel\Facades\DataGrid;
 use Platform\Tags\Repositories\TagsRepositoryInterface;
 use Platform\Roles\Repositories\RoleRepositoryInterface;
 use Platform\Media\Repositories\MediaRepositoryInterface;
+use Cartalyst\DataGrid\Laravel\DataHandlers\DatabaseHandler;
 use Platform\Attributes\Repositories\ManagerRepositoryInterface;
 
 class MediaController extends AdminController
@@ -123,6 +125,7 @@ class MediaController extends AdminController
      */
     public function grid()
     {
+        // The columns we want to retrieve from our data source
         $columns = [
             'id',
             'name',
@@ -136,12 +139,14 @@ class MediaController extends AdminController
             'created_at',
         ];
 
-        $settings = [
-            'sort'      => 'created_at',
+        // The column that will be sorted by default is created_at
+        $sorts = [
+            'column' => 'created_at',
             'direction' => 'desc',
-            'pdf_view'  => 'pdf',
+            //'pdf_view'  => 'pdf',
         ];
 
+        // The transformer to manipulate data
         $transformer = function ($element) {
             $element->thumbnail_uri = getImagePath($element, 'thumb');
             $element->view_uri      = route('media.view', $element->path);
@@ -152,7 +157,16 @@ class MediaController extends AdminController
             return $element;
         };
 
-        return datagrid($this->media->grid(), $columns, $settings, $transformer);
+        // The Data Grid settings
+        $settings = compact('columns', 'sorts', 'transformer');
+
+        // Prepare the Data Grid handler
+        $handler = new DatabaseHandler($this->media->grid(), $settings);
+
+        // Return the Data Grid
+        return DataGrid::make($handler);
+
+        //return datagrid($this->media->grid(), $columns, $settings, $transformer);
     }
 
     /**
