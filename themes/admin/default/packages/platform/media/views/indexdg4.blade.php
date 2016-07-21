@@ -14,7 +14,9 @@
 {{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
 {{ Asset::queue('moment', 'moment/js/moment.js', 'jquery') }}
 {{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'jquery') }}
-{{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
+{{ Asset::queue('exoskeleton', 'cartalyst/js/exoskeleton.min.js', 'jquery') }}
+{{ Asset::queue('lodash', 'cartalyst/js/lodash.min.js', 'jquery') }}
+
 {{ Asset::queue('bootstrap-daterange', 'bootstrap/js/daterangepicker.js', 'jquery') }}
 {{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', ['jquery']) }}
 {{ Asset::queue('index', 'platform/media::js/index.js', ['platform', 'mediamanager']) }}
@@ -254,10 +256,10 @@
 	</footer>
 
 	{{-- Grid: templates --}}
-	@include('platform/media::grid/dg4/results')
+	@include('platform/media::grid/dg4/table')
+	@include('platform/media::grid/dg4/grid')
 	@include('platform/media::grid/dg4/pagination')
 	@include('platform/media::grid/dg4/filters')
-	@include('platform/media::grid/dg4/no_results')
 
 </section>
 

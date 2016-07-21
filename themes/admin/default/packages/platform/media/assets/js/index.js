@@ -128,34 +128,34 @@ var Extension;
 	// Data Grid initialization
 	Extension.Index.dataGrid = function()
 	{
-		var config = {
-			scroll: '#data-grid',
-			events: {
-				removing: function(dg)
-				{
-					_.each(dg.applied_filters, function(filter)
-					{
-						if (filter.column === 'created_at' && filter.from !== undefined && filter.to !== undefined)
-						{
-							$('[data-grid-calendar]').val('');
-						}
-					});
-				}
-			},
-			callback: function(data)
-			{
-				$('[data-grid-checkbox-all]').prop('checked', false);
+		// var config = {
+		// 	scroll: '#data-grid',
+		// 	events: {
+		// 		removing: function(dg)
+		// 		{
+		// 			_.each(dg.applied_filters, function(filter)
+		// 			{
+		// 				if (filter.column === 'created_at' && filter.from !== undefined && filter.to !== undefined)
+		// 				{
+		// 					$('[data-grid-calendar]').val('');
+		// 				}
+		// 			});
+		// 		}
+		// 	},
+		// 	callback: function(data)
+		// 	{
+		// 		$('[data-grid-checkbox-all]').prop('checked', false);
 
-				$('[data-action]').prop('disabled', true);
+		// 		$('[data-action]').prop('disabled', true);
 
-				Extension.Index
-					.bulkStatus()
-					.exporterStatus(data)
-				;
-			}
-		};
+		// 		Extension.Index
+		// 			.bulkStatus()
+		// 			.exporterStatus(data)
+		// 		;
+		// 	}
+		// };
 
-		Extension.Index.Grid = $.datagrid('main', '#data-grid', '#data-grid_pagination', '#data-grid_applied', config);
+		// Extension.Index.Grid = $.datagrid('main', '#data-grid', '#data-grid_pagination', '#data-grid_applied', config);
 
 	 //    var dg = new DataGridManager();
 	 //    var grid = dg.create('main', {
