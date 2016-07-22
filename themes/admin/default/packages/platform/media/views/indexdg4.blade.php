@@ -120,7 +120,7 @@
 					</ul>
 
 					{{-- Grid: Filters --}}
-					<form class="navbar-form navbar-right" method="post" accept-charset="utf-8" data-search role="form">
+					<form class="navbar-form navbar-right" method="post" accept-charset="utf-8" data-grid-search role="form">
 
 						@if ( ! empty($tags))
 						<div class="btn-group">
@@ -154,13 +154,13 @@
 								<ul class="dropdown-menu" role="menu" data-grid-group data-grid-reset-group>
 
 									<li>
-										<a data-grid-filter="private:0" data-grid-query="private:0" data-grid-label="private::{{{ trans('platform/media::action.filter.public') }}}">
+										<a data-grid-filter="private:0" data-grid-query="private:0" data-grid-label="{{{ trans('platform/media::action.filter.public') }}}">
 											<i class="fa fa-unlock"></i> {{{ trans('platform/media::action.filter.public') }}}
 										</a>
 									</li>
 
 									<li>
-										<a data-grid-filter="private:1" data-grid-query="private:1" data-grid-label="private::{{{ trans('platform/media::action.filter.private') }}}">
+										<a data-grid-filter="private:1" data-grid-query="private:1" data-grid-label="{{{ trans('platform/media::action.filter.private') }}}">
 											<i class="fa fa-lock"></i> {{{ trans('platform/media::action.filter.private') }}}
 										</a>
 									</li>

@@ -16,8 +16,6 @@
             '!='   : 'is not equal to',
             'like' : 'contains',
         };
-
-		console.log(filters);
 	%>
 
 	<% if (_.isObject(filters)) { %>
