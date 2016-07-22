@@ -149,8 +149,8 @@ class Manager
             // Initialize the preset
             $preset = new Preset($name, $attributes);
 
-            // Check if the uploaded file mime type is allowed for this preset
-            if (! in_array($mimeType, $preset->mimes)) {
+            // Check if the mime type of the uploaded file is allowed for this preset
+            if (! empty($preset->mimes) && ! in_array($mimeType, $preset->mimes)) {
                 continue;
             }
 
