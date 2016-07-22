@@ -120,7 +120,7 @@
 					</ul>
 
 					{{-- Grid: Filters --}}
-					<form class="navbar-form navbar-right" method="post" accept-charset="utf-8" data-search data-grid="main" role="form">
+					<form class="navbar-form navbar-right" method="post" accept-charset="utf-8" data-search role="form">
 
 						@if ( ! empty($tags))
 						<div class="btn-group">
@@ -129,9 +129,9 @@
 								<i class="fa fa-tags"></i> <span class="caret"></span>
 							</button>
 
-							<ul class="dropdown-menu" role="tags">
+							<ul class="dropdown-menu" role="tags" data-grid-group data-grid-reset-group>
 								@foreach ($tags as $tag)
-								<li><a href="#" data-grid="main" data-filter="tags..name:{{{ $tag }}}" data-label="tags..name::{{{ $tag }}}">{{{ $tag }}}</a></li>
+								<li><a href="#" data-grid-filter="tags" data-grid-query="tags..name:{{{ $tag }}}" data-grid-label="{{{ $tag }}}">{{{ $tag }}}</a></li>
 								@endforeach
 							</ul>
 
@@ -154,13 +154,13 @@
 								<ul class="dropdown-menu" role="menu">
 
 									<li>
-										<a data-grid="main" data-filter="private:0" data-label="private::{{{ trans('platform/media::action.filter.public') }}}" data-reset>
+										<a data-grid-filter="private:0" data-label="private::{{{ trans('platform/media::action.filter.public') }}}" data-reset>
 											<i class="fa fa-unlock"></i> {{{ trans('platform/media::action.filter.public') }}}
 										</a>
 									</li>
 
 									<li>
-										<a data-grid="main" data-filter="private:1" data-label="private::{{{ trans('platform/media::action.filter.private') }}}" data-reset>
+										<a data-grid-filter="private:1" data-label="private::{{{ trans('platform/media::action.filter.private') }}}" data-reset>
 											<i class="fa fa-lock"></i> {{{ trans('platform/media::action.filter.private') }}}
 										</a>
 									</li>
@@ -201,7 +201,7 @@
 									<span class="fa fa-search"></span>
 								</button>
 
-								<button class="btn btn-default" data-grid="main" data-reset>
+								<button class="btn btn-default" data-reset>
 									<i class="fa fa-refresh fa-sm"></i>
 								</button>
 
@@ -224,7 +224,7 @@
 		{{-- Grid: Applied Filters --}}
 		<div class="btn-toolbar" role="toolbar" aria-label="data-grid-applied-filters">
 
-			<div id="data-grid_applied" class="btn-group" data-grid="main"></div>
+			<div id="data-grid_applied" class="btn-group"></div>
 
 		</div>
 

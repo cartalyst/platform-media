@@ -21,9 +21,9 @@
 
             <% if (p.previousPage !== null) { %>
 
-                <li><a href="#" data-grid="main" data-grid-page="1"><i class="fa fa-angle-double-left"></i></a></li>
+                <li><a href="#" data-grid-page="1"><i class="fa fa-angle-double-left"></i></a></li>
 
-                <li><a href="#" data-grid="main" data-grid-page="<%= p.previousPage %>"><i class="fa fa-chevron-left"></i></a></li>
+                <li><a href="#" data-grid-page="<%= p.previousPage %>"><i class="fa fa-chevron-left"></i></a></li>
 
             <% } else { %>
 
@@ -62,7 +62,7 @@
 
                 <% } else { %>
 
-                <li><a href="#" data-grid="main" data-grid-page="<%= i %>"><%= i %></a></li>
+                <li><a href="#" data-grid-page="<%= i %>"><%= i %></a></li>
 
                 <% } %>
 
@@ -70,9 +70,9 @@
 
             <% if (p.nextPage !== null) { %>
 
-                <li><a href="#" data-grid="main" data-grid-page="<%= p.nextPage %>"><i class="fa fa-chevron-right"></i></a></li>
+                <li><a href="#" data-grid-page="<%= p.nextPage %>"><i class="fa fa-chevron-right"></i></a></li>
 
-                <li><a href="#" data-grid="main" data-grid-page="<%= p.pages %>"><i class="fa fa-angle-double-right"></i></a></li>
+                <li><a href="#" data-grid-page="<%= p.pages %>"><i class="fa fa-angle-double-right"></i></a></li>
 
             <% } else { %>
 
@@ -85,6 +85,5 @@
         </ul>
 
     </div>
-
 
 </script>
