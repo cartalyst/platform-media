@@ -131,7 +131,7 @@
 
 							<ul class="dropdown-menu" role="tags" data-grid-group data-grid-reset-group>
 								@foreach ($tags as $tag)
-								<li><a href="#" data-grid-filter="tags" data-grid-query="tags..name:{{{ $tag }}}" data-grid-label="{{{ $tag }}}">{{{ $tag }}}</a></li>
+								<li><a href="#" data-grid-filter="tag:{{{ $tag }}}" data-grid-query="tags..name:{{{ $tag }}}" data-grid-label="{{{ $tag }}}">{{{ $tag }}}</a></li>
 								@endforeach
 							</ul>
 
@@ -151,16 +151,16 @@
 									<span class="sr-only">Toggle Dropdown</span>
 								</button>
 
-								<ul class="dropdown-menu" role="menu">
+								<ul class="dropdown-menu" role="menu" data-grid-group data-grid-reset-group>
 
 									<li>
-										<a data-grid-filter="private:0" data-label="private::{{{ trans('platform/media::action.filter.public') }}}" data-reset>
+										<a data-grid-filter="private:0" data-grid-query="private:0" data-grid-label="private::{{{ trans('platform/media::action.filter.public') }}}">
 											<i class="fa fa-unlock"></i> {{{ trans('platform/media::action.filter.public') }}}
 										</a>
 									</li>
 
 									<li>
-										<a data-grid-filter="private:1" data-label="private::{{{ trans('platform/media::action.filter.private') }}}" data-reset>
+										<a data-grid-filter="private:1" data-grid-query="private:1" data-grid-label="private::{{{ trans('platform/media::action.filter.private') }}}">
 											<i class="fa fa-lock"></i> {{{ trans('platform/media::action.filter.private') }}}
 										</a>
 									</li>
@@ -220,6 +220,9 @@
 	</header>
 
 	<div class="panel-body">
+
+		{{-- Applied filters container --}}
+    	<div data-grid-layout="filters"></div>
 
 		{{-- Grid: Applied Filters --}}
 		<div class="btn-toolbar" role="toolbar" aria-label="data-grid-applied-filters">
