@@ -21,7 +21,6 @@
 namespace Platform\Media\Controllers\Admin;
 
 use Platform\Access\Controllers\AdminController;
-use Cartalyst\DataGrid\Laravel\Facades\DataGrid;
 use Platform\Tags\Repositories\TagsRepositoryInterface;
 use Platform\Roles\Repositories\RoleRepositoryInterface;
 use Platform\Media\Repositories\MediaRepositoryInterface;
@@ -164,10 +163,7 @@ class MediaController extends AdminController
         $handler = new DatabaseHandler($this->media->grid(), $settings);
 
         // Return the Data Grid
-        return DataGrid::make($handler);
-
-        // Todo: Use the helper function when it is ready here.!
-        //return datagrid($this->media->grid(), $columns, $settings, $transformer);
+        return datagrid($handler);
     }
 
     /**
