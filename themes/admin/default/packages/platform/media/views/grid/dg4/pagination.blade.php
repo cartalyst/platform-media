@@ -1,26 +1,90 @@
 <script type="text/template" data-grid="main" data-grid-template="pagination">
 
 	<%
-        // Declare some variables to avoid duplication
-        var previousPage = pagination.previousPage;
-        var nextPage = pagination.nextPage;
 
-        // We'll verify here if the previous and next
-        // buttons are meant to be clickable.
-        var previousButton = previousPage ? 'data-grid-page="' + previousPage + '"' : 'disabled';
-        var nextButton = nextPage ? 'data-grid-page="' + nextPage + '"' : 'disabled';
+        // Declare the pagination variable
+        var p = pagination;
+
     %>
 
-    <nav>
-        <%- pagination.pageStart %> {{ trans('pagination.to') }} <%- pagination.pageLimit %> {{ trans('pagination.of') }} <%- pagination.filtered %>
+    <div class="pull-left">
 
-        <button <%= previousButton %>>
-            <i class="material-icons">chevron_left</i>
-        </button>
+        <div class="pages">
+            {{{ trans('common.showing') }}} <%= p.pageStart %> {{{ trans('common.to') }}} <%= p.pageLimit %> {{{ trans('common.of') }}} <span class="total"><%= p.filtered %></span>
+        </div>
 
-        <button <%= nextButton %>>
-            <i class="material-icons">chevron_right</i>
-        </button>
-    </nav>
+    </div>
+
+    <div class="pull-right">
+
+        <ul class="pagination pagination-sm">
+
+            <% if (p.previousPage !== null) { %>
+
+                <li><a href="#" data-grid="main" data-grid-page="1"><i class="fa fa-angle-double-left"></i></a></li>
+
+                <li><a href="#" data-grid="main" data-grid-page="<%= p.previousPage %>"><i class="fa fa-chevron-left"></i></a></li>
+
+            <% } else { %>
+
+                <li class="disabled"><span><i class="fa fa-angle-double-left"></i></span></li>
+
+                <li class="disabled"><span><i class="fa fa-chevron-left"></i></span></li>
+
+            <% } %>
+
+            <%
+
+            var numPages = 11,
+                split    = numPages - 1,
+                middle   = Math.floor(split / 2);
+
+            var i = p.page - middle > 0 ? p.page - middle : 1,
+                j = p.pages;
+
+            j = p.page + middle > p.pages ? j : p.page + middle;
+
+            i = j - i < split ? j - split : i;
+
+            if (i < 1)
+            {
+                i = 1;
+                j = p.pages > split ? split + 1 : p.pages;
+            }
+
+            %>
+
+            <% for(i; i <= j; i++) { %>
+
+                <% if (p.page === i) { %>
+
+                <li class="active"><span><%= i %></span></li>
+
+                <% } else { %>
+
+                <li><a href="#" data-grid="main" data-grid-page="<%= i %>"><%= i %></a></li>
+
+                <% } %>
+
+            <% } %>
+
+            <% if (p.nextPage !== null) { %>
+
+                <li><a href="#" data-grid="main" data-grid-page="<%= p.nextPage %>"><i class="fa fa-chevron-right"></i></a></li>
+
+                <li><a href="#" data-grid="main" data-grid-page="<%= p.pages %>"><i class="fa fa-angle-double-right"></i></a></li>
+
+            <% } else { %>
+
+                <li class="disabled"><span><i class="fa fa-chevron-right"></i></span></li>
+
+                <li class="disabled"><span><i class="fa fa-angle-double-right"></i></span></li>
+
+            <% } %>
+
+        </ul>
+
+    </div>
+
 
 </script>
