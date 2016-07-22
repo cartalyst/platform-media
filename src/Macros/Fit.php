@@ -11,21 +11,21 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.3.1
+ * @version    4.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
-namespace Platform\Media\Styles\Macros;
+namespace Platform\Media\Macros;
 
 use Cartalyst\Filesystem\File;
 use Platform\Media\Models\Media;
 use Illuminate\Container\Container;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class ResizeMacro extends AbstractMacro implements MacroInterface
+class Fit extends AbstractMacro
 {
     /**
      * The Illuminate Container instance.
@@ -65,45 +65,55 @@ class ResizeMacro extends AbstractMacro implements MacroInterface
     {
         $this->app = $app;
 
-        $this->intervention = $app['image'];
-
         $this->filesystem = $app['files'];
+
+        $this->intervention = $app['image'];
 
         $this->presets = $app['config']->get('platform-media.presets');
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function up(Media $media, File $file, UploadedFile $uploadedFile)
     {
-        // Check if the file is an image
-        if ($file->isImage()) {
-            foreach ($this->presets as $name => $info) {
-                $path = $this->getPath($file, $media, $name);
-
-                // Create the image
-                $this->intervention->make($file->getContents())
-                    ->fit(array_get($info, 'width'), array_get($info, 'height'), function ($constraint) use ($info) {
-                        foreach (array_get($info, 'constraints', []) as $_constraint) {
-                            $constraint->{$_constraint}();
-                        }
-                    })->save($path);
-            }
+        if (! $file->isImage()) {
+            return;
         }
+
+        $info = $this->getPreset();
+
+        $path = $this->getPath($file, $media, $name);
+
+        $width = isset($info['width']) ? $info['width'] : null;
+
+        $height = isset($info['height']) ? $info['height'] : null;
+
+        $constraints = isset($info['constraints']) ? $info['constraints'] : [];
+
+        $this->intervention->make($contents)
+            ->fit($width, $height, function ($constraint) use ($constraints) {
+                foreach ($constraints as $_constraint) {
+                    $constraint->{$_constraint}();
+                }
+            })->save($path)
+        ;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function down(Media $media, File $file)
     {
-        if ($file->isImage()) {
-            foreach ($this->presets as $name => $info) {
-                $path = $this->getPath($file, $media, $name);
+        if (! $file->isImage()) {
+            return;
+        }
 
-                $this->filesystem->delete($path);
-            }
+        #
+        foreach ($this->presets as $name => $info) {
+            $path = $this->getPath($file, $media, $name);
+
+            $this->filesystem->delete($path);
         }
     }
 
@@ -117,10 +127,14 @@ class ResizeMacro extends AbstractMacro implements MacroInterface
      */
     protected function getPath(File $file, Media $media, $style)
     {
-        if (! $this->filesystem->exists("{$this->style->path}/{$style}")) {
-            $this->filesystem->makeDirectory("{$this->style->path}/{$style}");
+        $filesystem = $this->filesystem;
+
+        $path = $this->style->path.'/'.$style;
+
+        if (! $filesystem->exists($path)) {
+            $filesystem->makeDirectory($path);
         }
 
-        return "{$this->style->path}/{$style}/{$file->getFilename()}.{$file->getExtension()}";
+        return $path.'/'.$file->getFilename().'.'.$file->getExtension();
     }
 }

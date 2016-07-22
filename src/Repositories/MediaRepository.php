@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.3.1
+ * @version    4.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -83,7 +83,7 @@ class MediaRepository implements MediaRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function grid()
     {
@@ -91,7 +91,7 @@ class MediaRepository implements MediaRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function find($id)
     {
@@ -101,7 +101,7 @@ class MediaRepository implements MediaRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findByPath($path)
     {
@@ -111,7 +111,7 @@ class MediaRepository implements MediaRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAllTags()
     {
@@ -119,7 +119,7 @@ class MediaRepository implements MediaRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAllowedMimes()
     {
@@ -127,7 +127,7 @@ class MediaRepository implements MediaRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function validForUpdate($id, array $data)
     {
@@ -135,7 +135,7 @@ class MediaRepository implements MediaRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function validForUpload(UploadedFile $file)
     {
@@ -155,7 +155,7 @@ class MediaRepository implements MediaRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function upload(UploadedFile $uploadedFile, array $input)
     {
@@ -206,7 +206,7 @@ class MediaRepository implements MediaRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function create($data)
     {
@@ -214,7 +214,7 @@ class MediaRepository implements MediaRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function update($id, array $input, $uploadedFile = null)
     {
@@ -277,7 +277,7 @@ class MediaRepository implements MediaRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function delete($id)
     {
@@ -334,7 +334,7 @@ class MediaRepository implements MediaRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getError()
     {
@@ -342,7 +342,7 @@ class MediaRepository implements MediaRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setError($error)
     {

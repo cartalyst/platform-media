@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.3.1
+ * @version    4.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -31,12 +31,12 @@ class Media extends Model implements TaggableInterface
     use NamespacedEntityTrait, TaggableTrait;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public $table = 'media';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected $fillable = [
         'mime',
@@ -46,7 +46,6 @@ class Media extends Model implements TaggableInterface
         'private',
         'is_image',
         'extension',
-        'thumbnail',
         'width',
         'height',
         'roles',
@@ -54,7 +53,7 @@ class Media extends Model implements TaggableInterface
     ];
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected static $entityNamespace = 'platform/media';
 

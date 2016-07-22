@@ -11,15 +11,12 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.3.1
+ * @version    4.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
  * @link       http://cartalyst.com
  */
-
-use Platform\Media\Styles\Style;
-use Platform\Media\Styles\Manager;
 
 return [
 
@@ -37,26 +34,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Styles
-    |--------------------------------------------------------------------------
-    |
-    | Define here the required Style config sets that will
-    | be executed whenever a file gets uploaded.
-    |
-    */
-
-    'styles' => function (Manager $manager) {
-        $manager->setStyle('resize', function (Style $style) {
-            // Set the style macros
-            $style->macros = [ 'resize' ];
-
-            // Set the storage path
-            $style->path = public_path('cache/media');
-        });
-    },
-
-    /*
-    |--------------------------------------------------------------------------
     | Macros
     |--------------------------------------------------------------------------
     |
@@ -64,9 +41,15 @@ return [
     |
     */
 
-    'macros' => function (Manager $manager) {
-        $manager->setMacro('resize', 'Platform\Media\Styles\Macros\ResizeMacro');
-    },
+    'macros' => [
+
+        'fit' => 'Platform\Media\Macros\Fit',
+
+        # 'resize' => 'Platform\Media\Macros\Resize',
+
+    ],
+
+    'defaultMacro' => 'fit',
 
     /*
     |--------------------------------------------------------------------------
@@ -88,14 +71,28 @@ return [
         ],
 
         '720p' => [
-            'width' => 1280,
+            'width'  => 1280,
             'height' => 720,
         ],
 
         '1080p' => [
-            'width' => 1920,
+            'width'  => 1920,
             'height' => 1080,
+
+            // // Custom parameters
+            // 'namespace' => 'platform/gallery', # only execute if the media namespace is the given one
+            // 'mimes'     => [ 'image/png' ],    # only execute if the mime type is valid
+            // 'macros'    => [ 'resize' ],       # ignore all of the above parameters and execute these macros
         ],
+
+        /*
+            - width
+            - height
+            - namespace
+            - mime-types []
+            - macros []
+            - constraints []
+        */
 
     ],
 

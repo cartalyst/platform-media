@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.3.1
+ * @version    4.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -40,26 +40,26 @@ class Media
      * Returns the given media path or the HTML <img> tag.
      *
      * @param  int  $id
-     * @param  string|null  $type
+     * @param  string|array  $type
      * @return string
      */
-    public function show($id, $type = null)
+    public function path($id, $type = null)
     {
-        if ($media = $this->media->find((int) $id)) {
-            switch ($type) {
-                case 'thumbnail':
-
-                    return url($media->thumbnail);
-
-                case 'download':
-
-                    return route('media.download', $media->path);
-
-                default:
-
-                    return route('media.view', $media->path);
-            }
-        }
+        // if ($media = $this->media->find((int) $id)) {
+        //     switch ($type) {
+        //         case 'thumbnail':
+        //
+        //             return url($media->thumbnail);
+        //
+        //         case 'download':
+        //
+        //             return route('media.download', $media->path);
+        //
+        //         default:
+        //
+        //             return route('media.view', $media->path);
+        //     }
+        // }
     }
 
     /**
@@ -99,14 +99,14 @@ class Media
      * @param  string|null  $default
      * @return string
      */
-    public function thumbnail($id, array $options = [], $default = null)
-    {
-        if ($media = $this->media->find($id)) {
-            $path = $media->is_image ? url($media->thumbnail) : $default;
-
-            return '<img src="'.$path.'"'.implode(' ', $options).'>';
-        }
-    }
+    // public function thumbnail($id, array $options = [], $default = null)
+    // {
+    //     if ($media = $this->media->find($id)) {
+    //         $path = $media->is_image ? url($media->thumbnail) : $default;
+    //
+    //         return '<img src="'.$path.'"'.implode(' ', $options).'>';
+    //     }
+    // }
 
     /**
      * Prepares a mime types list.

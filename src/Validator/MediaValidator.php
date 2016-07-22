@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.3.1
+ * @version    4.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -25,14 +25,14 @@ use Cartalyst\Support\Validator;
 class MediaValidator extends Validator implements MediaValidatorInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected $rules = [
         'name' => 'required',
     ];
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function onUpdate()
     {

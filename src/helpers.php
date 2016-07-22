@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.3.1
+ * @version    4.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -33,12 +33,13 @@ if (! function_exists('formatBytes')) {
     }
 }
 
-if (! function_exists('getGalleryImagePath')) {
-    function getGalleryImagePath(Media $media, $style)
+if (! function_exists('getImagePath')) {
+    function getImagePath(Media $media, $style)
     {
         $path = $media->path;
+
         $thumb = $media->thumbnail;
 
-        return asset(str_replace(basename($thumb), "{$style}/".basename($path), $thumb));
+        return asset(str_replace(basename($thumb), $style.'/'.basename($path), $thumb));
     }
 }

@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.3.1
+ * @version    4.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -29,7 +29,7 @@ use Cartalyst\Support\Handlers\EventHandler as BaseEventHandler;
 class EventHandler extends BaseEventHandler implements EventHandlerInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function subscribe(Dispatcher $dispatcher)
     {
@@ -69,6 +69,7 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface
      */
     public function updating(Media $media)
     {
+        # We need to verify if a file was uploaded while updating
     }
 
     /**
@@ -113,7 +114,10 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface
      */
     protected function flushCache(Media $media)
     {
-        $this->app['cache']->forget('platform.media.'.$media->id);
-        $this->app['cache']->forget('platform.media.path.'.$media->path);
+        $cache = $this->app['cache'];
+
+        $cache->forget('platform.media.'.$media->id);
+
+        $cache->forget('platform.media.path.'.$media->path);
     }
 }

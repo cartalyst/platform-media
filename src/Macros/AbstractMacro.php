@@ -11,42 +11,42 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.3.1
+ * @version    4.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
-namespace Platform\Media\Styles\Macros;
+namespace Platform\Media\Presets\Macros;
 
 use Cartalyst\Filesystem\File;
-use Platform\Media\Styles\Style;
 use Platform\Media\Models\Media;
+use Platform\Media\Presets\Preset;
 
 abstract class AbstractMacro implements MacroInterface
 {
     /**
-     * The Style object.
+     * The Preset object.
      *
-     * @var \Platform\Media\Styles\Style
+     * @var \Platform\Media\Presets\Preset
      */
-    protected $style;
+    protected $preset;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function getStyle()
+    public function getPreset()
     {
-        return $this->style;
+        return $this->preset;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function setStyle(Style $style)
+    public function setPreset(Preset $preset)
     {
-        $this->style = $style;
+        $this->preset = $preset;
 
         return $this;
     }

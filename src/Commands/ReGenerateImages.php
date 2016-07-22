@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.3.1
+ * @version    4.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -28,47 +28,61 @@ use Symfony\Component\Console\Input\InputOption;
 class ReGenerateImages extends Command
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    protected $name = 'images:regenerate';
+    protected $signature = 'images:regenerate
+                            {--media : Whether or not if we should filter by the given media.}
+                            {--preset : Whether or not if we should filter by the given preset.}';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected $description = 'Regenerates images according to defined sizes.';
 
     /**
-     * {@inheritDoc}
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
-    public function fire()
+    public function handle()
     {
-        $presets = $this->laravel['config']->get('platform-media.presets');
+        $files = $this->laravel['files'];
+
+        $intervention = $this->laravel['image'];
 
         $medias = $this->laravel['platform.media']->get();
+
+        $filesystem = $this->laravel['cartalyst.filesystem'];
+
+        $presets = $this->laravel['config']->get('platform-media.presets');
 
         foreach ($medias as $media) {
             foreach ($presets as $name => $info) {
                 $path = $this->getPath($media, $name);
 
-                if (! $this->laravel['files']->exists($path)) {
-                    $contents = $this->laravel['cartalyst.filesystem']->read($media->path);
+                if (! $files->exists($path)) {
+                    $contents = $filesystem->read($media->path);
 
-                    $this->laravel['image']->make($contents)
-                        ->fit(array_get($info, 'width'), array_get($info, 'height'), function ($constraint) use ($info) {
-                            foreach (array_get($info, 'constraints', []) as $_constraint) {
-                                $constraint->{$_constraint}();
-                            }
-                        })->save($path);
+                    $macro = isset($info['macro']) ? $info['macro'] : null;
+
+                    // Do we have a macro to run against?
+                    if ($macro) {
+
+                    } else {
+                        $width = isset($info['width']) ? $info['width'] : null;
+
+                        $height = isset($info['height']) ? $info['height'] : null;
+
+                        $constraints = isset($info['constraints']) ? $info['constraints'] : [];
+
+                        $intervention->make($contents)
+                            ->fit($width, $height, function ($constraint) use ($constraints) {
+                                foreach ($constraints as $_constraint) {
+                                    $constraint->{$_constraint}();
+                                }
+                            })->save($path)
+                        ;
+                    }
                 }
             }
         }
@@ -81,20 +95,23 @@ class ReGenerateImages extends Command
      *
      * @param  \Platform\Media\Models\Media $media
      * @param  string  $dir
-     *
      * @return string
      */
     protected function getPath(Media $media, $dir)
     {
         $path = public_path('cache/media');
 
-        if (! $this->laravel['files']->exists("{$path}/{$dir}")) {
-            $this->laravel['files']->makeDirectory("{$path}/{$dir}");
+        $files = $this->laravel['files'];
+
+        $directory = $path.'/'.$dir;
+
+        if (! $files->exists($directory)) {
+            $files->makeDirectory($directory);
         }
 
         $mediaName = $this->prepareFileName($media->name, $media->id);
 
-        return "{$path}/{$dir}/{$mediaName}";
+        return $directory.'/'.$mediaName;
     }
 
     /**

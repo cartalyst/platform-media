@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.3.1
+ * @version    4.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -20,17 +20,17 @@
 
 namespace Platform\Media\Styles;
 
-class Style
+class Preset
 {
     /**
-     * The Style name.
+     * The Preset name.
      *
      * @var string
      */
     public $name;
 
     /**
-     * The Style attributes.
+     * The Preset attributes.
      *
      * @var array
      */
@@ -40,11 +40,62 @@ class Style
      * Constructor.
      *
      * @param  string  $name
+     * @param  array  $attributes
      * @return void
      */
-    public function __construct($name)
+    public function __construct($name, array $attributes)
     {
         $this->name = $name;
+
+        $this->attributes = $attributes;
+    }
+
+    /**
+     * Accessor for the "constraints" attribute.
+     *
+     * @param  array  $constraints
+     * @return array
+     */
+    public function getConstraintsAttribute($constraints)
+    {
+        return $constraints ?: [];
+    }
+
+    /**
+     * Mutator for the "constraints" attribute.
+     *
+     * @param  array  $constraints
+     * @return void
+     */
+    public function setConstraintsAttribute(array $constraints)
+    {
+        foreach (array_unique($constraints) as $constraint) {
+            $this->attributes['constraints'][] = $constraint;
+        }
+    }
+
+    /**
+     * Accessor for the "mimes" attribute.
+     *
+     * @param  array  $mimes
+     * @return array
+     */
+    public function getMimessAttribute($mimes)
+    {
+        return $mimes ?: [];
+    }
+
+    /**
+     * Mutator for the "mimes" attribute.
+     *
+     * @param  array  $mimes
+     * @return void
+     */
+    public function setMimessAttribute(array $mimes)
+    {
+        foreach (array_unique($mimes) as $mime) {
+            $this->attributes['mimes'][] = $mime;
+        }
     }
 
     /**

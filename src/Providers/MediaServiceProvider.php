@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.3.1
+ * @version    4.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -27,7 +27,7 @@ use Platform\Media\Commands\ReGenerateImages;
 class MediaServiceProvider extends ServiceProvider
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function boot()
     {
@@ -44,7 +44,7 @@ class MediaServiceProvider extends ServiceProvider
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function register()
     {
@@ -131,15 +131,11 @@ class MediaServiceProvider extends ServiceProvider
     {
         $compiler = $this->app['blade.compiler'];
 
-        $compiler->directive('media', function ($value) {
-            return "<?php echo Widget::make('platform/media::media.show', array$value); ?>";
+        $compiler->directive('mediaPath', function ($value) {
+            return "<?php echo Widget::make('platform/media::media.path', array$value); ?>";
         });
 
-        $compiler->directive('thumbnail', function ($value) {
-            return "<?php echo Widget::make('platform/media::media.thumbnail', array$value); ?>";
-        });
-
-        $compiler->directive('mediaUploader', function ($value) {
+        $compiler->directive('mediaUpload', function ($value) {
             return "<?php echo Widget::make('platform/media::media.upload', array$value); ?>";
         });
     }

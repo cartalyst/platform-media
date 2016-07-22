@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.3.1
+ * @version    4.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -27,20 +27,20 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface MacroInterface
 {
-    /**
-     * Returns the Style.
-     *
-     * @return \Platform\Media\Styles\Style
-     */
-    public function getStyle();
-
-    /**
-     * Sets the Style.
-     *
-     * @param  \Platform\Media\Styles\Style  $style
-     * @return $this
-     */
-    public function setStyle(Style $style);
+    // /**
+    //  * Returns the Style.
+    //  *
+    //  * @return \Platform\Media\Styles\Style
+    //  */
+    // public function getStyle();
+    //
+    // /**
+    //  * Sets the Style.
+    //  *
+    //  * @param  \Platform\Media\Styles\Style  $style
+    //  * @return $this
+    //  */
+    // public function setStyle(Style $style);
 
     /**
      * Executes the macro.

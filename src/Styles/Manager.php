@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    3.3.1
+ * @version    4.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -29,11 +29,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class Manager
 {
     /**
-     * The registered styles.
+     * The registered presets.
      *
      * @var array
      */
-    protected $styles = [];
+    protected $presets = [];
 
     /**
      * The registered macros.
@@ -50,36 +50,35 @@ class Manager
      */
     public function __construct(Container $app)
     {
-        // Get the config
         $config = $app['config']->get('platform-media');
 
-        // Register the styles from the config
-        call_user_func(array_get($config, 'styles'), $this);
+        $this->macros = $config['macros'];
 
-        // Register the macros from the config
-        call_user_func(array_get($config, 'macros'), $this);
+        $this->presets = $config['presets'];
+
+        $this->defaultMacro = $config['defaultMacro'];
     }
 
     /**
-     * Returns all the registered styles.
+     * Returns all the registered presets.
      *
      * @return array
      */
-    public function getStyles()
+    public function getPresets()
     {
-        return $this->styles;
+        return $this->presets;
     }
 
     /**
-     * Sets a new style.
+     * Sets a new preset.
      *
      * @param  string  $name
-     * @param  \Closure  $callable
+     * @param  array  $info
      * @return $this
      */
-    public function setStyle($name, Closure $callable)
+    public function setPreset($name, array $info)
     {
-        $this->styles[$name] = $callable;
+        $this->presets[$name] = $info;
 
         return $this;
     }
@@ -98,55 +97,30 @@ class Manager
      * Sets a new macro.
      *
      * @param  string  $name
-     * @param  \Closure|string  $callable
+     * @param  string  $class
      * @return $this
      */
-    public function setMacro($name, $callable)
+    public function setMacro($name, $class)
     {
-        $this->macros[$name] = $callable;
+        $this->macros[$name] = $class;
 
         return $this;
     }
 
     /**
-     * Handles the macros on upload.
+     * Handles the presets on upload.
      *
      * @param  \Platform\Media\Models\Media  $media
      * @param  \Cartalyst\Filesystem\File  $file
-     * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $uploadedFile
      * @return void
      */
-    public function handleUp(Media $media, File $file, UploadedFile $uploadedFile)
+    public function handleUp(Media $media, File $file)
     {
-        // Get the uploaded file mime type
-        $mimeType = $uploadedFile->getMimeType();
-
-        // Loop through all the registered styles
-        foreach ($this->getStyles() as $name => $style) {
-            // Initialize the style
-            call_user_func($style, $style = new Style($name));
-
-            // Check if the uploaded file mime type is valid
-            if ($style->mimes && ! in_array($mimeType, $style->mimes)) {
-                continue;
-            }
-
-            // Loop through the style macros
-            foreach ($style->macros as $name => $macro) {
-                // Initialize the macro
-                $macro = $this->initializeMacro($macro);
-
-                // Set the requirements on the macro
-                $macro->setStyle($style);
-
-                // Execute the macro
-                $macro->up($media, $file, $uploadedFile);
-            }
-        }
+        $this->applyPresets('up', $media, $file);
     }
 
     /**
-     * Handles the macros on delete.
+     * Handles the presets on delete.
      *
      * @param  \Platform\Media\Models\Media  $media
      * @param  \Cartalyst\Filesystem\File  $file
@@ -154,50 +128,47 @@ class Manager
      */
     public function handleDown(Media $media, File $file)
     {
-        // Get the uploaded file mime type
-        $mimeType = $file->getMimeType();
-
-        // Loop through all the registered styles
-        foreach ($this->getStyles() as $name => $style) {
-            // Initialize the style
-            call_user_func($style, $style = new Style($name));
-
-            // Check if the uploaded file mime type is valid
-            if ($style->mimes && ! in_array($mimeType, $style->mimes)) {
-                continue;
-            }
-
-            // Loop through the style macros
-            foreach ($style->macros as $name => $macro) {
-                // Initialize the macro
-                $macro = $this->initializeMacro($macro);
-
-                // Set the requirements on the macro
-                $macro->setStyle($style);
-
-                // Execute the macro
-                $macro->down($media, $file);
-            }
-        }
+        $this->applyPresets('down', $media, $file);
     }
 
     /**
-     * Initialize the given macro.
+     * Apply the presets on the given media.
      *
-     * @param  mixed  $macro
-     * @return \Platform\Media\Styles\Macros\MacroInterface
+     * @param  string  $method
+     * @param  \Platform\Media\Models\Media  $media
+     * @param  \Cartalyst\Filesystem\File  $file
+     * @return void
      */
-    protected function initializeMacro($macro)
+    protected function applyPresets($method, Media $media, File $file)
     {
-        // Get the macro class name or class object
-        $macro = array_get($this->getMacros(), $macro);
+        // Get the uploaded file mime type
+        $mimeType = $file->getMimeType();
 
-        if (is_string($macro)) {
-            $macro = app($macro);
-        } elseif ($macro instanceof Closure) {
-            $macro = $macro();
+        // Loop through all the registered presets
+        foreach ($this->getPresets() as $name => $attributes) {
+            // Initialize the preset
+            $preset = new Preset($name, $attributes);
+
+            // Check if the uploaded file mime type is allowed for this preset
+            if (! in_array($mimeType, $preset->mimes)) {
+                continue;
+            }
+
+            // If this preset doesn't have any macros,
+            // we will then use the default macro.
+            if (empty($macros = $preset->macros)) {
+                $default = $this->defaultMacro;
+
+                $macros = [ $default => $this->macros[$default] ];
+            }
+
+            // Loop through the preset macros
+            foreach ($macros as $name => $attributes) {
+                $macro = array_get($this->getMacros(), $attributes);
+                # need to make sure we detect invalid macros
+
+                $macro->setPreset($preset)->{$method}($media, $file);
+            }
         }
-
-        return $macro;
     }
 }
