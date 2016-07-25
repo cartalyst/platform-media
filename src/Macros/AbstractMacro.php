@@ -18,11 +18,11 @@
  * @link       http://cartalyst.com
  */
 
-namespace Platform\Media\Presets\Macros;
+namespace Platform\Media\Macros;
 
 use Cartalyst\Filesystem\File;
 use Platform\Media\Models\Media;
-use Platform\Media\Presets\Preset;
+use Platform\Media\Styles\Preset;
 
 abstract class AbstractMacro implements MacroInterface
 {

@@ -144,6 +144,9 @@ class Manager
         // Get the uploaded file mime type
         $mimeType = $file->getMimeType();
 
+        // Get the default macro
+        $default = $this->defaultMacro;
+
         // Loop through all the registered presets
         foreach ($this->getPresets() as $name => $attributes) {
             // Initialize the preset
@@ -154,20 +157,18 @@ class Manager
                 continue;
             }
 
+            // Get this preset defined macros
+            $macros = $preset->macros;
+
             // If this preset doesn't have any macros,
             // we will then use the default macro.
-            if (empty($macros = $preset->macros)) {
-                $default = $this->defaultMacro;
-
+            if (empty($macros) && $default) {
                 $macros = [ $default => $this->macros[$default] ];
             }
 
             // Loop through the preset macros
-            foreach ($macros as $name => $attributes) {
-                $macro = array_get($this->getMacros(), $attributes);
-                # need to make sure we detect invalid macros
-
-                $macro->setPreset($preset)->{$method}($media, $file);
+            foreach ($macros as $macro) {
+                app($macro)->setPreset($preset)->{$method}($media, $file);
             }
         }
     }

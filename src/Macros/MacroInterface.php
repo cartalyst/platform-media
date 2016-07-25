@@ -18,36 +18,35 @@
  * @link       http://cartalyst.com
  */
 
-namespace Platform\Media\Styles\Macros;
+namespace Platform\Media\Macros;
 
 use Cartalyst\Filesystem\File;
-use Platform\Media\Styles\Style;
 use Platform\Media\Models\Media;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Platform\Media\Styles\Preset;
 
 interface MacroInterface
 {
-    // /**
-    //  * Returns the Style.
-    //  *
-    //  * @return \Platform\Media\Styles\Style
-    //  */
-    // public function getStyle();
-    //
-    // /**
-    //  * Sets the Style.
-    //  *
-    //  * @param  \Platform\Media\Styles\Style  $style
-    //  * @return $this
-    //  */
-    // public function setStyle(Style $style);
+    /**
+     * Returns the Preset.
+     *
+     * @return \Platform\Media\Styles\Preset
+     */
+    public function getPreset();
+
+    /**
+     * Sets the Preset.
+     *
+     * @param  \Platform\Media\Styles\Preset  $preset
+     * @return $this
+     */
+    public function setPreset(Preset $preset);
 
     /**
      * Executes the macro.
      *
      * @return void
      */
-    public function up(Media $media, File $file, UploadedFile $uploadedFile);
+    public function up(Media $media, File $file);
 
     /**
      * Reverts the executed macro.
@@ -55,4 +54,6 @@ interface MacroInterface
      * @return void
      */
     public function down(Media $media, File $file);
+
+    public function getPath(File $file, Media $media, Preset $preset);
 }

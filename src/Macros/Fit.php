@@ -22,8 +22,8 @@ namespace Platform\Media\Macros;
 
 use Cartalyst\Filesystem\File;
 use Platform\Media\Models\Media;
+use Platform\Media\Styles\Preset;
 use Illuminate\Container\Container;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Fit extends AbstractMacro
 {
@@ -75,25 +75,19 @@ class Fit extends AbstractMacro
     /**
      * {@inheritdoc}
      */
-    public function up(Media $media, File $file, UploadedFile $uploadedFile)
+    public function up(Media $media, File $file)
     {
         if (! $file->isImage()) {
             return;
         }
 
-        $info = $this->getPreset();
+        $preset = $this->getPreset();
 
-        $path = $this->getPath($file, $media, $name);
+        $path = $this->getPath($file, $media, $preset);
 
-        $width = isset($info['width']) ? $info['width'] : null;
-
-        $height = isset($info['height']) ? $info['height'] : null;
-
-        $constraints = isset($info['constraints']) ? $info['constraints'] : [];
-
-        $this->intervention->make($contents)
-            ->fit($width, $height, function ($constraint) use ($constraints) {
-                foreach ($constraints as $_constraint) {
+        $this->intervention->make($file->getContents())
+            ->fit($preset->width, $preset->height, function ($constraint) use ($preset) {
+                foreach ($preset->constraints as $_constraint) {
                     $constraint->{$_constraint}();
                 }
             })->save($path)
@@ -110,11 +104,11 @@ class Fit extends AbstractMacro
         }
 
         #
-        foreach ($this->presets as $name => $info) {
-            $path = $this->getPath($file, $media, $name);
-
-            $this->filesystem->delete($path);
-        }
+        // foreach ($this->presets as $name => $info) {
+        //     $path = $this->getPath($file, $media, $name);
+        //
+        //     $this->filesystem->delete($path);
+        // }
     }
 
     /**
@@ -122,14 +116,18 @@ class Fit extends AbstractMacro
      *
      * @param  \Cartalyst\Filesystem\File  $file
      * @param  \Platform\Media\Models\Media  $media
-     * @param  string  $style
+     * @param  \Platform\Media\Styles\Preset  $preset
      * @return string
      */
-    protected function getPath(File $file, Media $media, $style)
+    public function getPath(File $file, Media $media, Preset $preset)
     {
         $filesystem = $this->filesystem;
 
-        $path = $this->style->path.'/'.$style;
+        if (! $path = $preset->path) {
+            $path = public_path('cache/media');
+        }
+
+        $path = $path.'/'.$preset->name;
 
         if (! $filesystem->exists($path)) {
             $filesystem->makeDirectory($path);
