@@ -14,7 +14,9 @@
 {{ Asset::queue('selectize', 'selectize/js/selectize.min.js', 'jquery') }}
 {{ Asset::queue('moment', 'moment/js/moment.js', 'jquery') }}
 {{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'jquery') }}
-{{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
+{{ Asset::queue('exoskeleton', 'cartalyst/js/exoskeleton.min.js', 'jquery') }}
+{{ Asset::queue('lodash', 'cartalyst/js/lodash.min.js', 'jquery') }}
+
 {{ Asset::queue('bootstrap-daterange', 'bootstrap/js/daterangepicker.js', 'jquery') }}
 {{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', ['jquery']) }}
 {{ Asset::queue('index', 'platform/media::js/index.js', ['platform', 'mediamanager']) }}
@@ -37,13 +39,18 @@
 		.MediaManager.setUploadUrl('{{ route('admin.media.upload') }}')
 	;
 </script>
+
+@include('platform/media::grid/dg4/init-js')
 @stop
 
 {{-- Page content --}}
 @section('page')
 
 {{-- Grid --}}
-<section class="panel panel-default panel-grid">
+<section class="panel panel-default panel-grid" data-grid="main" data-grid-source="{{ route('admin.media.grid') }}">
+
+	{{-- Loader --}}
+    <div class="loading"></div>
 
 	{{-- Grid: Header --}}
 	<header class="panel-heading">
@@ -113,7 +120,7 @@
 					</ul>
 
 					{{-- Grid: Filters --}}
-					<form class="navbar-form navbar-right" method="post" accept-charset="utf-8" data-search data-grid="main" role="form">
+					<form class="navbar-form navbar-right" method="post" accept-charset="utf-8" data-grid-search role="form">
 
 						@if ( ! empty($tags))
 						<div class="btn-group">
@@ -122,9 +129,9 @@
 								<i class="fa fa-tags"></i> <span class="caret"></span>
 							</button>
 
-							<ul class="dropdown-menu" role="tags">
+							<ul class="dropdown-menu" role="tags" data-grid-group data-grid-reset-group>
 								@foreach ($tags as $tag)
-								<li><a href="#" data-grid="main" data-filter="tags..name:{{{ $tag }}}" data-label="tags..name::{{{ $tag }}}">{{{ $tag }}}</a></li>
+								<li><a href="#" data-grid-filter="tag:{{{ $tag }}}" data-grid-query="tags..name:{{{ $tag }}}" data-grid-label="{{{ $tag }}}">{{{ $tag }}}</a></li>
 								@endforeach
 							</ul>
 
@@ -144,16 +151,16 @@
 									<span class="sr-only">Toggle Dropdown</span>
 								</button>
 
-								<ul class="dropdown-menu" role="menu">
+								<ul class="dropdown-menu" role="menu" data-grid-group data-grid-reset-group>
 
 									<li>
-										<a data-grid="main" data-filter="private:0" data-label="private::{{{ trans('platform/media::action.filter.public') }}}" data-reset>
+										<a data-grid-filter="private:0" data-grid-query="private:0" data-grid-label="{{{ trans('platform/media::action.filter.public') }}}">
 											<i class="fa fa-unlock"></i> {{{ trans('platform/media::action.filter.public') }}}
 										</a>
 									</li>
 
 									<li>
-										<a data-grid="main" data-filter="private:1" data-label="private::{{{ trans('platform/media::action.filter.private') }}}" data-reset>
+										<a data-grid-filter="private:1" data-grid-query="private:1" data-grid-label="{{{ trans('platform/media::action.filter.private') }}}">
 											<i class="fa fa-lock"></i> {{{ trans('platform/media::action.filter.private') }}}
 										</a>
 									</li>
@@ -180,7 +187,7 @@
 
 								</ul>
 
-								<button class="btn btn-default hidden-xs" type="button" data-grid-calendar data-range-filter="created_at">
+								<button class="btn btn-default hidden-xs" type="button" data-grid-calendar>
 									<i class="fa fa-calendar"></i>
 								</button>
 
@@ -194,7 +201,7 @@
 									<span class="fa fa-search"></span>
 								</button>
 
-								<button class="btn btn-default" data-grid="main" data-reset>
+								<button class="btn btn-default" data-reset>
 									<i class="fa fa-refresh fa-sm"></i>
 								</button>
 
@@ -214,10 +221,13 @@
 
 	<div class="panel-body">
 
+		{{-- Applied filters container --}}
+    	<div data-grid-layout="filters"></div>
+
 		{{-- Grid: Applied Filters --}}
 		<div class="btn-toolbar" role="toolbar" aria-label="data-grid-applied-filters">
 
-			<div id="data-grid_applied" class="btn-group" data-grid="main"></div>
+			<div id="data-grid_applied" class="btn-group"></div>
 
 		</div>
 
@@ -226,36 +236,31 @@
 	{{-- Grid: Table --}}
 	<div class="table-responsive">
 
-		<table id="data-grid" class="table table-hover" data-source="{{ route('admin.media.grid') }}" data-grid="main">
+		<table id="data-grid" class="table table-hover">
 			<thead>
 				<tr>
 					<th><input data-grid-checkbox="all" type="checkbox"></th>
-					<th class="sortable" data-sort="mime"><i class="fa fa-file-o"></i></th>
-					<th class="sortable" data-sort="mime"><i class="fa fa-shield"></i></th>
-					<th class="sortable" data-sort="name">{{{ trans('model.name') }}}</th>
+					<th class="sortable" data-grid-sort="mime"><i class="fa fa-file-o"></i></th>
+					<th class="sortable" data-grid-sort="mime"><i class="fa fa-shield"></i></th>
+					<th class="sortable" data-grid-sort="name">{{{ trans('model.name') }}}</th>
 					<th>{{{ trans('platform/tags::model.tag.legend') }}}</th>
-					<th class="sortable" data-sort="size">{{{ trans('platform/media::model.general.size') }}}</th>
-					<th class="sortable hidden-xs" data-sort="created_at">{{{ trans('model.created_at') }}}</th>
+					<th class="sortable" data-grid-sort="size">{{{ trans('platform/media::model.general.size') }}}</th>
+					<th class="sortable hidden-xs" data-grid-sort="created_at">{{{ trans('model.created_at') }}}</th>
 					<th class="text-center">{{{ trans('common.actions') }}}</th>
 				</tr>
 			</thead>
-			<tbody></tbody>
+			<tbody data-grid-layout="table"></tbody>
 		</table>
 
 	</div>
 
-	<footer class="panel-footer clearfix">
-
-		{{-- Grid: Pagination --}}
-		<div id="data-grid_pagination" data-grid="main"></div>
-
-	</footer>
+	<footer class="panel-footer clearfix" data-grid-layout="pagination"></footer>
 
 	{{-- Grid: templates --}}
-	@include('platform/media::grid/index/results')
+	@include('platform/media::grid/index/table')
+	@include('platform/media::grid/index/grid')
 	@include('platform/media::grid/index/pagination')
 	@include('platform/media::grid/index/filters')
-	@include('platform/media::grid/index/no_results')
 
 </section>
 
