@@ -187,7 +187,7 @@
 
 								</ul>
 
-								<button class="btn btn-default hidden-xs" type="button" data-grid-calendar data-grid-filter="created_at" data-grid-type="range" data-grid-range="start" data-grid-label="Created At">
+								<button class="btn btn-default hidden-xs" type="button" data-grid-calendar>
 									<i class="fa fa-calendar"></i>
 								</button>
 

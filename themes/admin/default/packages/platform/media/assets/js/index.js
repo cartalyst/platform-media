@@ -112,18 +112,21 @@ var Extension;
 
 		$('input[name="daterangepicker_start"]')
 			.attr('data-format', 'MM/DD/YYYY')
+			.attr('data-grid-type', 'range')
+			.attr('data-grid-query', 'created_at:>:' + $('input[name="daterangepicker_start"]').val())
 			.attr('data-grid-range', 'start')
 			.attr('data-grid-filter', 'created_at')
+			.attr('data-grid-label', 'Created At')
 		;
 
 		$('input[name="daterangepicker_end"]')
 			.attr('data-format', 'MM/DD/YYYY')
+			.attr('data-grid-type', 'range')
+			.attr('data-grid-query', 'created_at:<:' + $('input[name="daterangepicker_end"]').val())
 			.attr('data-grid-range', 'end')
 			.attr('data-grid-filter', 'created_at')
+			.attr('data-grid-label', 'Created At')
 		;
-
-		console.log('date range init: ');
-		console.log(this);
 
 		return this;
 	};
