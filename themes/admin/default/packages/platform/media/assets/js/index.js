@@ -82,7 +82,7 @@ var Extension;
 		if (startDate && endDate)
 		{
 			$('[data-grid-calendar]').val(
-				startDate.format('MM/DD/YYYY') + ' - ' + endDate.format('MM/DD/YYYY')
+				startDate.format('YYYY-MM-DD') + ' - ' + endDate.format('YYYY-MM-DD')
 			);
 
 			config = {
@@ -97,7 +97,7 @@ var Extension;
 			$('input[name="daterangepicker_start"]').trigger('change');
 
 			$('[data-grid-calendar]').val(
-				moment($('input[name="daterangepicker_start"]').val()).format('MM/DD/YYYY') + ' - ' + moment($('input[name="daterangepicker_end"]').val()).format('MM/DD/YYYY')
+				moment($('input[name="daterangepicker_start"]').val()).format('YYYY-MM-DD') + ' - ' + moment($('input[name="daterangepicker_end"]').val()).format('YYYY-MM-DD')
 			);
 		});
 
@@ -111,7 +111,7 @@ var Extension;
 		$('.daterangepicker_end_input').attr('data-grid', 'main');
 
 		$('input[name="daterangepicker_start"]')
-			.attr('data-format', 'MM/DD/YYYY')
+			.attr('data-format', 'YYYY-MM-DD')
 			.attr('data-grid-type', 'range')
 			.attr('data-grid-query', 'created_at:>:' + $('input[name="daterangepicker_start"]').val())
 			.attr('data-grid-range', 'start')
@@ -120,7 +120,7 @@ var Extension;
 		;
 
 		$('input[name="daterangepicker_end"]')
-			.attr('data-format', 'MM/DD/YYYY')
+			.attr('data-format', 'YYYY-MM-DD')
 			.attr('data-grid-type', 'range')
 			.attr('data-grid-query', 'created_at:<:' + $('input[name="daterangepicker_end"]').val())
 			.attr('data-grid-range', 'end')
@@ -291,17 +291,17 @@ var Extension;
 		switch ($(this).data('grid-calendar-preset'))
 		{
 			case 'day':
-				start = end = moment().subtract(1, 'day').startOf('day').format('MM/DD/YYYY');
+				start = end = moment().subtract(1, 'day').startOf('day').format('YYYY-MM-DD');
 			break;
 
 			case 'week':
-				start = moment().startOf('week').format('MM/DD/YYYY');
-				end   = moment().endOf('week').format('MM/DD/YYYY');
+				start = moment().startOf('week').format('YYYY-MM-DD');
+				end   = moment().endOf('week').format('YYYY-MM-DD');
 			break;
 
 			case 'month':
-				start = moment().startOf('month').format('MM/DD/YYYY');
-				end   = moment().endOf('month').format('MM/DD/YYYY');
+				start = moment().startOf('month').format('YYYY-MM-DD');
+				end   = moment().endOf('month').format('YYYY-MM-DD');
 			break;
 
 			default:
