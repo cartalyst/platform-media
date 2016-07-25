@@ -46,99 +46,22 @@ class ReGenerateImages extends Command
      */
     public function handle()
     {
-        $files = $this->laravel['files'];
-
-        $intervention = $this->laravel['image'];
+        $manager = app('platform.media.manager');
 
         $medias = $this->laravel['platform.media']->get();
 
         $filesystem = $this->laravel['cartalyst.filesystem'];
 
-        $presets = $this->laravel['config']->get('platform-media.presets');
+        $bar = $this->output->createProgressBar(count($medias));
 
         foreach ($medias as $media) {
-            foreach ($presets as $name => $info) {
-                $path = $this->getPath($media, $name);
+            $file = $filesystem->get($media->path);
 
-                if (! $files->exists($path)) {
-                    $contents = $filesystem->read($media->path);
+            $manager->applyPresets('up', $media, $file);
 
-                    $macro = isset($info['macro']) ? $info['macro'] : null;
-
-                    // Do we have a macro to run against?
-                    if ($macro) {
-
-                    } else {
-                        $width = isset($info['width']) ? $info['width'] : null;
-
-                        $height = isset($info['height']) ? $info['height'] : null;
-
-                        $constraints = isset($info['constraints']) ? $info['constraints'] : [];
-
-                        $intervention->make($contents)
-                            ->fit($width, $height, function ($constraint) use ($constraints) {
-                                foreach ($constraints as $_constraint) {
-                                    $constraint->{$_constraint}();
-                                }
-                            })->save($path)
-                        ;
-                    }
-                }
-            }
+            $bar->advance();
         }
 
-        $this->info('done');
-    }
-
-    /**
-     * Returns the prepared file path.
-     *
-     * @param  \Platform\Media\Models\Media $media
-     * @param  string  $dir
-     * @return string
-     */
-    protected function getPath(Media $media, $dir)
-    {
-        $path = public_path('cache/media');
-
-        $files = $this->laravel['files'];
-
-        $directory = $path.'/'.$dir;
-
-        if (! $files->exists($directory)) {
-            $files->makeDirectory($directory);
-        }
-
-        $mediaName = $this->prepareFileName($media->name, $media->id);
-
-        return $directory.'/'.$mediaName;
-    }
-
-    /**
-     * Sanitizes the file name.
-     *
-     * @param  string  $fileName
-     * @return string
-     */
-    protected function sanitizeFileName($fileName)
-    {
-        $regex = [ '#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#', '#[ ]#', '![_]+!u' ];
-
-        return preg_replace($regex, '_', strtolower($fileName));
-    }
-
-    /**
-     * Prepares the filename by sanitizing it and
-     * appending the media id to the end.
-     *
-     * @param  string  $fileName
-     * @param  string  $id
-     * @return string
-     */
-    protected function prepareFileName($fileName, $id)
-    {
-        $fileName = $this->sanitizeFileName($fileName);
-
-        return pathinfo($fileName, PATHINFO_FILENAME)."_{$id}.".pathinfo($fileName, PATHINFO_EXTENSION);
+        $bar->finish();
     }
 }

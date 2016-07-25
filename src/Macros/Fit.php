@@ -103,12 +103,11 @@ class Fit extends AbstractMacro
             return;
         }
 
-        #
-        // foreach ($this->presets as $name => $info) {
-        //     $path = $this->getPath($file, $media, $name);
-        //
-        //     $this->filesystem->delete($path);
-        // }
+        $preset = $this->getPreset();
+
+        $path = $this->getPath($file, $media);
+
+        $this->filesystem->delete($path);
     }
 
     /**
@@ -120,14 +119,23 @@ class Fit extends AbstractMacro
      */
     protected function getPath(File $file, Media $media)
     {
-        $filesystem = $this->filesystem;
+        $this->ensurePathExists($path = $this->getPreset()->path);
 
-        $path = $this->getPreset()->path;
+        return $path.'/'.$file->getFilename().'.'.$file->getExtension();
+    }
+
+    /**
+     * Ensures the given path exists on the filesystem.
+     *
+     * @param  string  $path
+     * @return void
+     */
+    protected function ensurePathExists($path)
+    {
+        $filesystem = $this->filesystem;
 
         if (! $filesystem->exists($path)) {
             $filesystem->makeDirectory($path);
         }
-
-        return $path.'/'.$file->getFilename().'.'.$file->getExtension();
     }
 }

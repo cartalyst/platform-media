@@ -24,7 +24,6 @@ use Closure;
 use Cartalyst\Filesystem\File;
 use Platform\Media\Models\Media;
 use Illuminate\Container\Container;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Manager
 {
@@ -137,7 +136,7 @@ class Manager
      * @param  \Cartalyst\Filesystem\File  $file
      * @return void
      */
-    protected function applyPresets($method, Media $media, File $file)
+    public function applyPresets($method, Media $media, File $file)
     {
         // Loop through all the registered presets
         foreach ($this->getPresets() as $name => $attributes) {
