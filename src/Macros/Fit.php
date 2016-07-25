@@ -83,7 +83,7 @@ class Fit extends AbstractMacro
 
         $preset = $this->getPreset();
 
-        $path = $this->getPath($file, $media, $preset);
+        $path = $this->getPath($file, $media);
 
         $this->intervention->make($file->getContents())
             ->fit($preset->width, $preset->height, function ($constraint) use ($preset) {
@@ -116,18 +116,13 @@ class Fit extends AbstractMacro
      *
      * @param  \Cartalyst\Filesystem\File  $file
      * @param  \Platform\Media\Models\Media  $media
-     * @param  \Platform\Media\Styles\Preset  $preset
      * @return string
      */
-    public function getPath(File $file, Media $media, Preset $preset)
+    protected function getPath(File $file, Media $media)
     {
         $filesystem = $this->filesystem;
 
-        if (! $path = $preset->path) {
-            $path = public_path('cache/media');
-        }
-
-        $path = $path.'/'.$preset->name;
+        $path = $this->getPreset()->path;
 
         if (! $filesystem->exists($path)) {
             $filesystem->makeDirectory($path);

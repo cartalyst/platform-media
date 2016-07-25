@@ -54,6 +54,4 @@ interface MacroInterface
      * @return void
      */
     public function down(Media $media, File $file);
-
-    public function getPath(File $file, Media $media, Preset $preset);
 }

@@ -20,21 +20,31 @@
 
 namespace Platform\Media\Styles;
 
+use Cartalyst\Filesystem\File;
+use Platform\Media\Models\Media;
+
 class Preset
 {
     /**
-     * The Preset name.
-     *
-     * @var string
-     */
-    public $name;
-
-    /**
-     * The Preset attributes.
+     * The attributes.
      *
      * @var array
      */
     protected $attributes = [];
+
+    /**
+     * The media entity.
+     *
+     * @var \Platform\Media\Models\Media
+     */
+    protected $media;
+
+    /**
+     * The media file object.
+     *
+     * @var \Cartalyst\Filesystem\File
+     */
+    protected $file;
 
     /**
      * Constructor.
@@ -45,9 +55,102 @@ class Preset
      */
     public function __construct($name, array $attributes)
     {
-        $this->name = $name;
+        $this->attributes = array_merge(compact('name'), $attributes);
+    }
 
-        $this->attributes = $attributes;
+    /**
+     * Returns the media entity.
+     *
+     * @return \Platform\Media\Models\Media
+     */
+    public function getMedia()
+    {
+        return $this->media;
+    }
+
+    /**
+     * Sets the media entity.
+     *
+     * @param  \Platform\Media\Models\Media  $media
+     * @return $this
+     */
+    public function setMedia(Media $media)
+    {
+        $this->media = $media;
+
+        return $this;
+    }
+
+    /**
+     * Returns the media file object.
+     *
+     * @return \Cartalyst\Filesystem\File
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * Sets the media file object.
+     *
+     * @param  \Cartalyst\Filesystem\File  $file
+     * @return void
+     */
+    public function setFile(File $file)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Determines if the preset is in a valid state
+     * so we can apply the macros more safely.
+     *
+     * @return bool
+     */
+    public function isValid()
+    {
+        $mimes = $this->mimes;
+
+        $mimeType = $this->file->getMimeType();
+
+        if (! empty($mimes) && ! in_array($mimeType, $mimes)) {
+            return false;
+        }
+
+        ###
+        # Check for the namespace here!
+        ###
+
+        return true;
+    }
+
+    /**
+     * Apply all the relevant macros on this preset.
+     *
+     * @param  string  $method
+     * @return void
+     */
+    public function applyMacros($method = 'up')
+    {
+        foreach ($this->macros as $macro) {
+            $instance = app($this->availableMacros[$macro]);
+
+            $instance->setPreset($this)->{$method}($this->media, $this->file);
+        }
+    }
+
+    /**
+     * Accessor for the "path" attribute.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    public function getPathAttribute($path)
+    {
+        return $path ?: public_path('cache/media/'.$this->name);
     }
 
     /**
@@ -80,7 +183,7 @@ class Preset
      * @param  array  $mimes
      * @return array
      */
-    public function getMimessAttribute($mimes)
+    public function getMimesAttribute($mimes)
     {
         return $mimes ?: [];
     }
@@ -91,7 +194,7 @@ class Preset
      * @param  array  $mimes
      * @return void
      */
-    public function setMimessAttribute(array $mimes)
+    public function setMimesAttribute(array $mimes)
     {
         foreach (array_unique($mimes) as $mime) {
             $this->attributes['mimes'][] = $mime;
@@ -132,7 +235,7 @@ class Preset
     {
         $method = 'get'.ucfirst($key).'Attribute';
 
-        $value = array_get($this->attributes, $key, null);
+        $value = isset($this->attributes[$key]) ? $this->attributes[$key] : null;
 
         if (method_exists($this, $method)) {
             return $this->{$method}($value);

@@ -55,8 +55,6 @@ class Manager
         $this->macros = $config['macros'];
 
         $this->presets = $config['presets'];
-
-        $this->defaultMacro = $config['defaultMacro'];
     }
 
     /**
@@ -141,34 +139,24 @@ class Manager
      */
     protected function applyPresets($method, Media $media, File $file)
     {
-        // Get the uploaded file mime type
-        $mimeType = $file->getMimeType();
-
-        // Get the default macro
-        $default = $this->defaultMacro;
-
         // Loop through all the registered presets
         foreach ($this->getPresets() as $name => $attributes) {
             // Initialize the preset
             $preset = new Preset($name, $attributes);
 
-            // Check if the mime type of the uploaded file is allowed for this preset
-            if (! empty($preset->mimes) && ! in_array($mimeType, $preset->mimes)) {
-                continue;
-            }
+            // Set the media entity
+            $preset->setMedia($media);
 
-            // Get this preset defined macros
-            $macros = $preset->macros;
+            // Set the media file object
+            $preset->setFile($file);
 
-            // If this preset doesn't have any macros,
-            // we will then use the default macro.
-            if (empty($macros) && $default) {
-                $macros = [ $default => $this->macros[$default] ];
-            }
+            // Check if the preset is in a valid state
+            if ($preset->isValid()) {
+                // Store all the available macros
+                $preset->availableMacros = $this->macros;
 
-            // Loop through the preset macros
-            foreach ($macros as $macro) {
-                app($macro)->setPreset($preset)->{$method}($media, $file);
+                // Apply the macros on this preset
+                $preset->applyMacros();
             }
         }
     }

@@ -45,11 +45,7 @@ return [
 
         'fit' => 'Platform\Media\Macros\Fit',
 
-        # 'resize' => 'Platform\Media\Macros\Resize',
-
     ],
-
-    'defaultMacro' => 'fit',
 
     /*
     |--------------------------------------------------------------------------
@@ -64,32 +60,36 @@ return [
 
         'thumb' => [
             'width' => 400,
+
+            'macros' => [ 'fit' ],
         ],
 
         'medium' => [
             'width' => 800,
+
+            'macros' => [ 'fit' ],
         ],
 
         '720p' => [
             'width'  => 1280,
             'height' => 720,
+
+            'macros' => [ 'fit' ],
         ],
 
         '1080p' => [
             'width'  => 1920,
             'height' => 1080,
 
-            // // Custom parameters
-            // 'namespace' => 'platform/gallery', # only execute if the media namespace is the given one
-            // 'mimes'     => [ 'image/png' ],    # only execute if the mime type is valid
-            // 'macros'    => [ 'resize' ],       # ignore all of the above parameters and execute these macros
+            'macros' => [ 'fit' ],
         ],
 
         /*
             - width
             - height
+            - path
             - namespace
-            - mime-types []
+            - mimes []
             - macros []
             - constraints []
         */
