@@ -26,6 +26,7 @@ var Extension;
 	Extension = Extension || {
 		Index: {},
 		Config: {},
+        lastChecked: null,
 	};
 
 	// Initialize functions
@@ -170,10 +171,10 @@ var Extension;
 
 		Extension.Index.Grid = Extension.Index.DataGridManager.create('main', config);
 
-        Extension.Index.Grid.setLayout('count', {
-            template: '[data-grid-template="count"]',
-            layout: '[data-grid-layout="count"]'
-        });
+        // Extension.Index.Grid.setLayout('count', {
+        //     template: '[data-grid-template="count"]',
+        //     layout: '[data-grid-layout="count"]'
+        // });
 
 		return this;
 	};
@@ -192,9 +193,29 @@ var Extension;
 			$('[data-grid-row]').not('[data-grid-row][disabled]').not(this).toggleClass('active', this.checked);
 		}
 
-		$(this).parents('[data-grid-row]').not('[data-grid-row][disabled]').toggleClass('active');
+        // Multi Select
+        if(!Extension.lastChecked) {
+            Extension.lastChecked = this;
+        }
 
-		Extension.Index.bulkStatus();
+        if(event.shiftKey) {
+            var start = $('[data-grid-checkbox]').index(this);
+            var end = $('[data-grid-checkbox]').index(Extension.lastChecked);
+
+            $('[data-grid-checkbox]').slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', Extension.lastChecked.checked);
+
+            if(Extension.lastChecked.checked){
+                $('[data-grid-checkbox]').slice(Math.min(start,end), Math.max(start,end)+ 1).parents('[data-grid-row]').not('[data-grid-row][disabled]').addClass('active');
+            } else {
+                $('[data-grid-checkbox]').slice(Math.min(start,end), Math.max(start,end)+ 1).parents('[data-grid-row]').not('[data-grid-row][disabled]').removeClass('active');
+            }
+        } else {
+            $(this).parents('[data-grid-row]').not('[data-grid-row][disabled]').toggleClass('active');
+        }
+
+        Extension.Index.bulkStatus();
+
+        Extension.lastChecked = this;
 	};
 
 	// Handle Data Grid row checking
