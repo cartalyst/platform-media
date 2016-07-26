@@ -114,15 +114,19 @@ class Preset
     {
         $mimes = $this->mimes;
 
+        $namespaces = $this->namespaces;
+
         $mimeType = $this->file->getMimeType();
+
+        $namespace = $this->media->getEntityNamespace();
 
         if (! empty($mimes) && ! in_array($mimeType, $mimes)) {
             return false;
         }
 
-        ###
-        # Check for the namespace here!
-        ###
+        if (! empty($namespaces) && ! in_array($namespace, $namespaces)) {
+            return false;
+        }
 
         return true;
     }
@@ -222,6 +226,30 @@ class Preset
     {
         foreach (array_unique($macros) as $macro) {
             $this->attributes['macros'][] = $macro;
+        }
+    }
+
+    /**
+     * Accessor for the "namespaces" attribute.
+     *
+     * @param  array  $namespaces
+     * @return array
+     */
+    public function getNamespacesAttribute($namespaces)
+    {
+        return $namespaces ?: [];
+    }
+
+    /**
+     * Mutator for the "namespaces" attribute.
+     *
+     * @param  array  $namespaces
+     * @return void
+     */
+    public function setNamespacesAttribute(array $namespaces)
+    {
+        foreach (array_unique($namespaces) as $namespace) {
+            $this->attributes['namespaces'][] = $namespace;
         }
     }
 

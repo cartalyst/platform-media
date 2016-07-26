@@ -88,10 +88,10 @@ return [
             - width
             - height
             - path
-            - namespace
             - mimes []
             - macros []
             - constraints []
+            - namespaces []
         */
 
     ],
