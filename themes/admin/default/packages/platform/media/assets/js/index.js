@@ -170,6 +170,11 @@ var Extension;
 
 		Extension.Index.Grid = Extension.Index.DataGridManager.create('main', config);
 
+        Extension.Index.Grid.setLayout('count', {
+            template: '[data-grid-template="count"]',
+            layout: '[data-grid-layout="count"]'
+        });
+
 		return this;
 	};
 

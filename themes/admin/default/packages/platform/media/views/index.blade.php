@@ -66,7 +66,8 @@
 						<span class="icon-bar"></span>
 					</button>
 
-					<span class="navbar-brand">{{{ trans('platform/media::common.title') }}} (count)</span>
+					<span class="navbar-brand">{{{ trans('platform/media::common.title') }}}</span>
+					<span class="panel-title-count" data-grid-layout="count"></span>
 
 				</div>
 
@@ -242,8 +243,8 @@
 					<th class="sortable" data-grid-sort="mime"><i class="fa fa-file-o"></i></th>
 					<th class="sortable" data-grid-sort="mime"><i class="fa fa-shield"></i></th>
 					<th class="sortable" data-grid-sort="name">{{{ trans('model.name') }}}</th>
-					<th>{{{ trans('platform/tags::model.tag.legend') }}}</th>
-					<th class="sortable" data-grid-sort="size">{{{ trans('platform/media::model.general.size') }}}</th>
+					<th class="hidden-xs">{{{ trans('platform/tags::model.tag.legend') }}}</th>
+					<th class="sortable hidden-xs" data-grid-sort="size">{{{ trans('platform/media::model.general.size') }}}</th>
 					<th class="sortable hidden-xs" data-grid-sort="created_at">{{{ trans('model.created_at') }}}</th>
 					<th class="text-center">{{{ trans('common.actions') }}}</th>
 				</tr>
@@ -260,6 +261,7 @@
 	@include('platform/media::grid/index/grid')
 	@include('platform/media::grid/index/pagination')
 	@include('platform/media::grid/index/filters')
+	@include('platform/media::grid/index/count')
 
 </section>
 
