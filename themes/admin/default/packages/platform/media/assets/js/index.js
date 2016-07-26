@@ -340,7 +340,7 @@ var Extension;
 
 				$('.upload__instructions').show();
 
-				Extension.Index.Grid.refresh();
+				Extension.Index.Grid.refresh(true);
 			},
 			onFail : function(e)
 			{

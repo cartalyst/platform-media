@@ -66,7 +66,7 @@
 						<span class="icon-bar"></span>
 					</button>
 
-					<span class="navbar-brand">{{{ trans('platform/media::common.title') }}}</span>
+					<span class="navbar-brand">{{{ trans('platform/media::common.title') }}} (count)</span>
 
 				</div>
 
@@ -121,7 +121,7 @@
 					{{-- Grid: Filters --}}
 					<form class="navbar-form navbar-right" method="post" accept-charset="utf-8" data-grid-search role="form">
 
-						@if ( ! empty($tags))
+						@if (count($tags))
 						<div class="btn-group">
 
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
