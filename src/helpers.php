@@ -36,8 +36,12 @@ if (! function_exists('formatBytes')) {
 if (! function_exists('getImagePath')) {
     function getImagePath(Media $media, $presetName)
     {
-        $preset = app('platform.media.manager')->getPreset($presetName);
+        $manager = app('platform.media.manager');
 
-        return url(str_replace(public_path(), null, $preset->path).'/'.basename($media->path));
+        if ($manager->isValidPreset($presetName)) {
+            $preset = $manager->getPreset($presetName);
+
+            return url(str_replace(public_path(), null, $preset->path).'/'.basename($media->path));
+        }
     }
 }
