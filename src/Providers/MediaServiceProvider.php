@@ -20,9 +20,9 @@
 
 namespace Platform\Media\Providers;
 
+use Platform\Media\Commands;
 use Cartalyst\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
-use Platform\Media\Commands\ImagesGenerate;
 
 class MediaServiceProvider extends ServiceProvider
 {
@@ -50,14 +50,14 @@ class MediaServiceProvider extends ServiceProvider
     {
         $this->prepareResources();
 
-        // Register the Cartalyst Filesystem Service Provider and Facade alias.
+        // Register the Cartalyst Filesystem Service Provider and Facade alias
         $this->registerFilesystemPackage();
 
-        // Register the Intervention Service Provider and Facade alias.
+        // Register the Intervention Service Provider and Facade alias
         $this->registerInterventionPackage();
 
-        // Register the images generate command.
-        $this->registerImagesGenerateCommand();
+        // Register the commands
+        $this->registerCommands();
 
         // Register the repository
         $this->bindIf('platform.media', 'Platform\Media\Repositories\MediaRepository');
@@ -141,14 +141,20 @@ class MediaServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the image generate command.
+     * Register the commands.
      *
      * @return void
      */
-    protected function registerImagesGenerateCommand()
+    protected function registerCommands()
     {
+        $this->app['command.platform.media.images.clear'] = $this->app->share(function ($app) {
+            return new Commands\ImagesClear($app);
+        });
+
+        $this->commands('command.platform.media.images.clear');
+
         $this->app['command.platform.media.images.generate'] = $this->app->share(function ($app) {
-            return new ImagesGenerate($app);
+            return new Commands\ImagesGenerate($app);
         });
 
         $this->commands('command.platform.media.images.generate');

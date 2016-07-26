@@ -24,12 +24,12 @@ use Illuminate\Console\Command;
 use Platform\Media\Models\Media;
 use Symfony\Component\Console\Helper\ProgressBar;
 
-class ImagesGenerate extends Command
+class ImagesClear extends Command
 {
     /**
      * {@inheritdoc}
      */
-    protected $signature = 'images:generate
+    protected $signature = 'images:clear
                             {--mime= : Whether or not if we should filter by the given mime.}
                             {--media= : Whether or not if we should filter by the given media.}
                             {--preset= : Whether or not if we should filter by the given preset.}
@@ -38,7 +38,7 @@ class ImagesGenerate extends Command
     /**
      * {@inheritdoc}
      */
-    protected $description = 'Generates images using the given criteria and presets.';
+    protected $description = 'Clears images using the given criteria and presets.';
 
     /**
      * Execute the console command.
@@ -88,7 +88,7 @@ class ImagesGenerate extends Command
             throw new \Exception('No results found.');
         }
 
-        $confirm = $this->confirm('This will replace all previously generated images, do you wish to continue?');
+        $confirm = $this->confirm('This will permantently remove all previously generated images, do you wish to continue?');
 
         if ($confirm) {
             $bar = $this->output->createProgressBar(count($medias));
@@ -97,9 +97,9 @@ class ImagesGenerate extends Command
                 $file = $filesystem->get($media->path);
 
                 if ($preset) {
-                    $manager->applyPreset($preset, 'up', $media, $file);
+                    $manager->applyPreset($preset, 'down', $media, $file);
                 } else {
-                    $manager->applyPresets('up', $media, $file);
+                    $manager->applyPresets('down', $media, $file);
                 }
 
                 $bar->advance();
