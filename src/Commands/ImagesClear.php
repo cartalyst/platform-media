@@ -57,8 +57,6 @@ class ImagesClear extends Command
 
         $manager = app('platform.media.manager');
 
-        $filesystem = app('cartalyst.filesystem');
-
         if ($preset && ! $manager->isValidPreset($preset)) {
             throw new \Exception('The given preset does not exist.');
         }
@@ -94,12 +92,10 @@ class ImagesClear extends Command
             $bar = $this->output->createProgressBar(count($medias));
 
             foreach ($medias as $media) {
-                $file = $filesystem->get($media->path);
-
                 if ($preset) {
-                    $manager->applyPreset($preset, 'down', $media, $file);
+                    $manager->applyPreset($preset, 'down', $media);
                 } else {
-                    $manager->applyPresets('down', $media, $file);
+                    $manager->applyPresets('down', $media);
                 }
 
                 $bar->advance();

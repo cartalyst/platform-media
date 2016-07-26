@@ -57,8 +57,6 @@ class ImagesGenerate extends Command
 
         $manager = app('platform.media.manager');
 
-        $filesystem = app('cartalyst.filesystem');
-
         if ($preset && ! $manager->isValidPreset($preset)) {
             throw new \Exception('The given preset does not exist.');
         }
@@ -94,12 +92,10 @@ class ImagesGenerate extends Command
             $bar = $this->output->createProgressBar(count($medias));
 
             foreach ($medias as $media) {
-                $file = $filesystem->get($media->path);
-
                 if ($preset) {
-                    $manager->applyPreset($preset, 'up', $media, $file);
+                    $manager->applyPreset($preset, 'up', $media);
                 } else {
-                    $manager->applyPresets('up', $media, $file);
+                    $manager->applyPresets('up', $media);
                 }
 
                 $bar->advance();
