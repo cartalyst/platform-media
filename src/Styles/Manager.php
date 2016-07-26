@@ -129,34 +129,61 @@ class Manager
     }
 
     /**
-     * Apply the presets on the given media.
+     * Determines if the given preset is valid.
      *
-     * @param  string  $method
+     * @param  string  $name
+     * @return bool
+     */
+    public function isValidPreset($name)
+    {
+        return array_key_exists($name, $this->presets);
+    }
+
+    /**
+     * Apply the preset on the given media.
+     *
+     * @param  string  $name
+     * @param  string  $direction
      * @param  \Platform\Media\Models\Media  $media
      * @param  \Cartalyst\Filesystem\File  $file
      * @return void
      */
-    public function applyPresets($method, Media $media, File $file)
+    public function applyPreset($name, $direction, Media $media, File $file)
     {
-        // Loop through all the registered presets
+        // Get the attributes of the given preset
+        $attributes = $this->presets[$name];
+
+        // Initialize the preset
+        $preset = new Preset($name, $attributes);
+
+        // Set the media entity
+        $preset->setMedia($media);
+
+        // Set the media file object
+        $preset->setFile($file);
+
+        // Check if the preset is in a valid state
+        if ($preset->isValid()) {
+            // Store all the available macros
+            $preset->availableMacros = $this->macros;
+
+            // Apply the macros on this preset
+            $preset->applyMacros($direction);
+        }
+    }
+
+    /**
+     * Apply the presets on the given media.
+     *
+     * @param  string  $direction
+     * @param  \Platform\Media\Models\Media  $media
+     * @param  \Cartalyst\Filesystem\File  $file
+     * @return void
+     */
+    public function applyPresets($direction, Media $media, File $file)
+    {
         foreach ($this->getPresets() as $name => $attributes) {
-            // Initialize the preset
-            $preset = new Preset($name, $attributes);
-
-            // Set the media entity
-            $preset->setMedia($media);
-
-            // Set the media file object
-            $preset->setFile($file);
-
-            // Check if the preset is in a valid state
-            if ($preset->isValid()) {
-                // Store all the available macros
-                $preset->availableMacros = $this->macros;
-
-                // Apply the macros on this preset
-                $preset->applyMacros();
-            }
+            $this->applyPreset($name, $direction, $media, $file);
         }
     }
 }

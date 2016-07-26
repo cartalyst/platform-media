@@ -1,0 +1,115 @@
+<?php
+
+/**
+ * Part of the Platform Media extension.
+ *
+ * NOTICE OF LICENSE
+ *
+ * Licensed under the Cartalyst PSL License.
+ *
+ * This source file is subject to the Cartalyst PSL License that is
+ * bundled with this package in the LICENSE file.
+ *
+ * @package    Platform Media extension
+ * @version    4.0.0
+ * @author     Cartalyst LLC
+ * @license    Cartalyst PSL
+ * @copyright  (c) 2011-2016, Cartalyst LLC
+ * @link       http://cartalyst.com
+ */
+
+namespace Platform\Media\Commands;
+
+use Illuminate\Console\Command;
+use Platform\Media\Models\Media;
+use Symfony\Component\Console\Helper\ProgressBar;
+
+class ImagesGenerate extends Command
+{
+    /**
+     * {@inheritdoc}
+     */
+    protected $signature = 'images:generate
+                            {--mime= : Whether or not if we should filter by the given mime.}
+                            {--media= : Whether or not if we should filter by the given media.}
+                            {--preset= : Whether or not if we should filter by the given preset.}
+                            {--namespace= : Whether or not if we should filter by the given namespace.}';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $description = 'Regenerates images according to defined sizes.';
+
+    /**
+     * Execute the console command.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        $mime = $this->option('mime');
+
+        $media = $this->option('media');
+
+        $preset = $this->option('preset');
+
+        $namespace = $this->option('namespace');
+
+        $manager = app('platform.media.manager');
+
+        $filesystem = app('cartalyst.filesystem');
+
+        if ($preset && ! $manager->isValidPreset($preset)) {
+            throw new \Exception('The given preset does not exist.');
+        }
+
+        $query = app('platform.media')->newQuery();
+
+        if ($media) {
+            $query->where(function ($query) use ($media) {
+                $query
+                    ->orWhere('id', $media)
+                    ->orWhere('name', $media)
+                ;
+            });
+        }
+
+        if ($mime) {
+            $query->where('mime', $mime);
+        }
+
+        if ($namespace) {
+            $query->where('namespace', $namespace);
+        }
+
+        $medias = $query->get();
+
+        if (count($medias) === 0) {
+            throw new \Exception('No results found.');
+        }
+
+        $confirm = $this->confirm('Generating will replace all previously generated images, do you wish to continue?');
+
+        if ($confirm) {
+            $bar = $this->output->createProgressBar(count($medias));
+
+            foreach ($medias as $media) {
+                $file = $filesystem->get($media->path);
+
+                if ($preset) {
+                    $manager->applyPreset($preset, 'up', $media, $file);
+                } else {
+                    $manager->applyPresets('up', $media, $file);
+                }
+
+                $bar->advance();
+            }
+
+            $bar->finish();
+
+            $this->info(' ');
+
+            $this->info('Done!');
+        }
+    }
+}
