@@ -269,7 +269,7 @@ var Extension;
 					},
 					success: function(response)
 					{
-						Extension.Index.Grid.refresh();
+						Extension.Index.Grid.refresh(true);
 					}
 				});
 			}
