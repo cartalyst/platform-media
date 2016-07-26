@@ -40,26 +40,29 @@ class Media
      * Returns the given media path or the HTML <img> tag.
      *
      * @param  int  $id
-     * @param  string|array  $type
+     * @param  string|array  $style
      * @return string
      */
-    public function path($id, $type = null)
+    public function path($id, $style)
     {
-        // if ($media = $this->media->find((int) $id)) {
-        //     switch ($type) {
-        //         case 'thumbnail':
-        //
-        //             return url($media->thumbnail);
-        //
-        //         case 'download':
-        //
-        //             return route('media.download', $media->path);
-        //
-        //         default:
-        //
-        //             return route('media.view', $media->path);
-        //     }
-        // }
+        $media = $this->media->find((int) $id);
+
+        if (! $media) {
+            return;
+        }
+
+        if (! is_array($style)) {
+            $manager = app('platform.media.manager');
+
+            $preset = $manager->getPreset($style);
+
+            if (! app('files')->exists($preset->path.'/'.basename($media->path))) {
+                $manager->applyPreset($style, 'up', $media);
+            }
+
+            return getImagePath($media, $style);
+        }
+
     }
 
     /**
@@ -80,33 +83,16 @@ class Media
 
         $currentUploads = $isNamespaced ? $model->media : [];
 
+        $uploadedMimeTypes = app('platform.media')->lists('mime')->unique()->toArray();
+
         $namespace = $isNamespaced ? $namespace->getEntityNamespace() : (string) $namespace;
-
-        $uploadedMimeTypes = collect(app('platform.media')->all()->lists('mime'))->unique()->values()->all();
-
-        $options = compact('model', 'namespace', 'multiUpload', 'mimes', 'currentUploads', 'uploadedMimeTypes');
 
         $view = $view ?: 'platform/media::widgets.upload';
 
-        return view($view, $options);
+        return view($view, compact(
+            'model', 'namespace', 'multiUpload', 'mimes', 'currentUploads', 'uploadedMimeTypes'
+        ));
     }
-
-    /**
-     * Returns the given media thumbnail in a <img> tag.
-     *
-     * @param  int  $id
-     * @param  array  $options
-     * @param  string|null  $default
-     * @return string
-     */
-    // public function thumbnail($id, array $options = [], $default = null)
-    // {
-    //     if ($media = $this->media->find($id)) {
-    //         $path = $media->is_image ? url($media->thumbnail) : $default;
-    //
-    //         return '<img src="'.$path.'"'.implode(' ', $options).'>';
-    //     }
-    // }
 
     /**
      * Prepares a mime types list.

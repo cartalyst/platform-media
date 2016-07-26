@@ -28,6 +28,13 @@ use Illuminate\Container\Container;
 class Manager
 {
     /**
+     * The filesystem instance.
+     *
+     * @var \Cartalyst\Filesystem\Filesystem
+     */
+    protected $filesystem;
+
+    /**
      * The registered presets.
      *
      * @var array
@@ -49,6 +56,8 @@ class Manager
      */
     public function __construct(Container $app)
     {
+        $this->filesystem = $app['cartalyst.filesystem'];
+
         $config = $app['config']->get('platform-media');
 
         $this->macros = $config['macros'];
@@ -108,24 +117,22 @@ class Manager
      * Handles the presets on upload.
      *
      * @param  \Platform\Media\Models\Media  $media
-     * @param  \Cartalyst\Filesystem\File  $file
      * @return void
      */
-    public function handleUp(Media $media, File $file)
+    public function handleUp(Media $media)
     {
-        $this->applyPresets('up', $media, $file);
+        $this->applyPresets('up', $media);
     }
 
     /**
      * Handles the presets on delete.
      *
      * @param  \Platform\Media\Models\Media  $media
-     * @param  \Cartalyst\Filesystem\File  $file
      * @return void
      */
-    public function handleDown(Media $media, File $file)
+    public function handleDown(Media $media)
     {
-        $this->applyPresets('down', $media, $file);
+        $this->applyPresets('down', $media);
     }
 
     /**
@@ -145,10 +152,9 @@ class Manager
      * @param  string  $name
      * @param  string  $direction
      * @param  \Platform\Media\Models\Media  $media
-     * @param  \Cartalyst\Filesystem\File  $file
      * @return void
      */
-    public function applyPreset($name, $direction, Media $media, File $file)
+    public function applyPreset($name, $direction, Media $media)
     {
         // Initialize the preset
         $preset = $this->getPreset($name);
@@ -157,7 +163,9 @@ class Manager
         $preset->setMedia($media);
 
         // Set the media file object
-        $preset->setFile($file);
+        $preset->setFile(
+            $this->filesystem->get($media->path)
+        );
 
         // Check if the preset is in a valid state
         if ($preset->isValid()) {
@@ -174,13 +182,12 @@ class Manager
      *
      * @param  string  $direction
      * @param  \Platform\Media\Models\Media  $media
-     * @param  \Cartalyst\Filesystem\File  $file
      * @return void
      */
-    public function applyPresets($direction, Media $media, File $file)
+    public function applyPresets($direction, Media $media)
     {
         foreach ($this->getPresets() as $name => $attributes) {
-            $this->applyPreset($name, $direction, $media, $file);
+            $this->applyPreset($name, $direction, $media);
         }
     }
 
