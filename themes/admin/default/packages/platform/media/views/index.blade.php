@@ -66,8 +66,11 @@
 						<span class="icon-bar"></span>
 					</button>
 
-					<span class="navbar-brand">{{{ trans('platform/media::common.title') }}}</span>
-					<span class="panel-title-count" data-grid-layout="count"></span>
+					<span class="navbar-brand">
+						{{{ trans('platform/media::common.title') }}}
+						<span class="panel-title-count" data-grid-layout="count"></span>
+					</span>
+
 
 				</div>
 
