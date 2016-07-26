@@ -34,12 +34,10 @@ if (! function_exists('formatBytes')) {
 }
 
 if (! function_exists('getImagePath')) {
-    function getImagePath(Media $media, $style)
+    function getImagePath(Media $media, $presetName)
     {
-        $path = $media->path;
+        $preset = app('platform.media.manager')->getPreset($presetName);
 
-        $thumb = $media->thumbnail;
-
-        return asset(str_replace(basename($thumb), $style.'/'.basename($path), $thumb));
+        return url(str_replace(public_path(), null, $preset->path).'/'.basename($media->path));
     }
 }

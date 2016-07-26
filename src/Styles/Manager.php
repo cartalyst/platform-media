@@ -150,11 +150,8 @@ class Manager
      */
     public function applyPreset($name, $direction, Media $media, File $file)
     {
-        // Get the attributes of the given preset
-        $attributes = $this->presets[$name];
-
         // Initialize the preset
-        $preset = new Preset($name, $attributes);
+        $preset = $this->getPreset($name);
 
         // Set the media entity
         $preset->setMedia($media);
@@ -185,5 +182,18 @@ class Manager
         foreach ($this->getPresets() as $name => $attributes) {
             $this->applyPreset($name, $direction, $media, $file);
         }
+    }
+
+    /**
+     * Returns the given preset instance.
+     *
+     * @param  string  $name
+     * @return \Platform\Media\Styles\Preset
+     */
+    public function getPreset($name)
+    {
+        $attributes = $this->getPresets()[$name];
+
+        return new Preset($name, $attributes);
     }
 }
