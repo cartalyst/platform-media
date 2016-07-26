@@ -153,7 +153,7 @@ var Extension;
 					});
 				}
 			},
-	        callback: function(data)
+	        callback: function()
 			{
 				$('[data-grid-checkbox-all]').prop('checked', false);
 
@@ -161,7 +161,7 @@ var Extension;
 
 				Extension.Index
 					.bulkStatus()
-					.exporterStatus(data) // This doesn't work atm. data is undefined, why?
+					.exporterStatus(this)
 				;
 			}
 		};

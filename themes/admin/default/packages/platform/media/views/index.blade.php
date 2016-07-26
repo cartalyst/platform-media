@@ -40,7 +40,6 @@
 	;
 </script>
 
-@include('platform/media::grid/dg4/init-js')
 @stop
 
 {{-- Page content --}}
@@ -105,9 +104,9 @@
 								<i class="fa fa-download"></i> <span class="visible-xs-inline">{{{ trans('action.export') }}}</span>
 							</a>
 							<ul class="dropdown-menu" role="menu">
-								<li><a data-download="pdf"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
-								<li><a data-download="csv"><i class="fa fa-file-excel-o"></i> CSV</a></li>
-								<li><a data-download="json"><i class="fa fa-file-code-o"></i> JSON</a></li>
+								<li><a data-grid-download="pdf"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+								<li><a data-grid-download="csv"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+								<li><a data-grid-download="json"><i class="fa fa-file-code-o"></i> JSON</a></li>
 							</ul>
 						</li>
 

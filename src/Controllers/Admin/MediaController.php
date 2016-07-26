@@ -22,6 +22,7 @@ namespace Platform\Media\Controllers\Admin;
 
 use Platform\Access\Controllers\AdminController;
 use Platform\Tags\Repositories\TagsRepositoryInterface;
+use Cartalyst\DataGrid\Export\Providers\ExportProvider;
 use Platform\Roles\Repositories\RoleRepositoryInterface;
 use Platform\Media\Repositories\MediaRepositoryInterface;
 use Cartalyst\DataGrid\Laravel\DataHandlers\DatabaseHandler;
@@ -153,7 +154,7 @@ class MediaController extends AdminController
             $element->email_uri     = route('admin.media.email', $element->id);
             $element->download_uri  = route('media.download', $element->path);
 
-            return $element;
+            return $element->toArray();
         };
 
         // The Data Grid settings
@@ -162,8 +163,11 @@ class MediaController extends AdminController
         // Prepare the Data Grid handler
         $handler = new DatabaseHandler($this->media->grid(), $settings);
 
+        // Create export provider
+        $provider = new ExportProvider();
+
         // Return the Data Grid
-        return datagrid($handler);
+        return datagrid($handler, $provider);
     }
 
     /**
