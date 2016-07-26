@@ -166,7 +166,9 @@ var Extension;
 			}
 		};
 
-	    Extension.Index.Grid = new DataGridManager().create('main', config);
+		Extension.Index.DataGridManager = new DataGridManager();
+
+		Extension.Index.Grid = Extension.Index.DataGridManager.create('main', config);
 
 		return this;
 	};
