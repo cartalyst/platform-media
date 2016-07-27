@@ -124,6 +124,18 @@
 
 					{{-- Grid: Filters --}}
 					<form class="navbar-form navbar-right" method="post" accept-charset="utf-8" data-grid-search role="form">
+						<div class="btn-group">
+						{{-- Layouts --}}
+
+			                <button class="btn btn-default" data-grid-switch-layout="table:table">
+			                    <i class="fa fa-th-list"></i>
+			                </button>
+
+			                <button class="btn btn-default" data-grid-switch-layout="table:grid">
+			                    <i class="fa fa-th-large"></i>
+			                </button>
+
+			            </div>
 
 						@if (count($tags))
 						<div class="btn-group">
@@ -210,7 +222,13 @@
 
 							</span>
 
+
+
 						</div>
+
+						<button class="btn btn-default">
+		                    <i class="fa fa-question-circle"></i>
+		                </button>
 
 					</form>
 
