@@ -140,9 +140,11 @@ class Preset
     public function applyMacros($method = 'up')
     {
         foreach ($this->macros as $macro) {
-            $instance = app($this->availableMacros[$macro]);
+            if (isset($this->availableMacros[$macro])) {
+                $instance = app($this->availableMacros[$macro]);
 
-            $instance->setPreset($this)->{$method}($this->media, $this->file);
+                $instance->setPreset($this)->{$method}($this->media, $this->file);
+            }
         }
     }
 

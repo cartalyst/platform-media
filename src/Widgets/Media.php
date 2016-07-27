@@ -40,10 +40,11 @@ class Media
      * Returns the given media path or the HTML <img> tag.
      *
      * @param  int  $id
-     * @param  string|array  $style
+     * @param  string|array  $name
+     * @param  array  $attributes
      * @return string
      */
-    public function path($id, $style)
+    public function path($id, $name, array $attributes = [])
     {
         $media = $this->media->find((int) $id);
 
@@ -51,18 +52,23 @@ class Media
             return;
         }
 
-        if (! is_array($style)) {
-            $manager = app('platform.media.manager');
+        $manager = app('platform.media.manager');
 
-            $preset = $manager->getPreset($style);
-
-            if (! app('files')->exists($preset->path.'/'.basename($media->path))) {
-                $manager->applyPreset($style, 'up', $media);
+        if (! $manager->isValidPreset($name)) {
+            if (! isset($attributes['macros'])) {
+                $attributes['macros'][] = 'fit';
             }
 
-            return getImagePath($media, $style);
+            $manager->setPreset($name, $attributes);
         }
 
+        $preset = $manager->getPreset($name);
+
+        if (! app('files')->exists($preset->path.'/'.basename($media->path))) {
+            $manager->applyPreset($name, 'up', $media);
+        }
+
+        return getImagePath($media, $name);
     }
 
     /**
