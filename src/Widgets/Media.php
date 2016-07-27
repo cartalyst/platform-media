@@ -44,12 +44,16 @@ class Media
      * @param  array  $attributes
      * @return string
      */
-    public function path($id, $name, array $attributes = [])
+    public function path($id, $name = null, array $attributes = [])
     {
         $media = $this->media->find((int) $id);
 
         if (! $media) {
             return;
+        }
+
+        if (! $name) {
+            return route('media.view', $media->path);
         }
 
         $manager = app('platform.media.manager');
