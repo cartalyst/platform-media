@@ -56,7 +56,7 @@ This blade call allows you to retrieve the url to the original media file or to 
 
 ---
 
-#### @mediaUploader
+#### @mediaUpload
 
 This blade call allows you to use the media manager in your form/view and associate media to any model in your app.
 
@@ -98,7 +98,7 @@ This blade call allows you to use the media manager in your form/view and associ
 ##### Usage
 
 	// Returns the media manager for any model
-	@mediaUploader($model)
+	@mediaUpload($model)
 
 **Note:** Read our manual to set up your models in order to use the media manager.
 
