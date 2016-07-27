@@ -9,44 +9,32 @@
 		</tr>
 
     <% } else { %>
-
+		<div class="media-results grid-layout">
 		<% _.each(results, function(r) { %>
-			<div data-grid-row>
-				<label>
-					<input data-grid-checkbox type="checkbox" name="row[]" value="<%= r.id %>">
-					<img src="">
-				</label>
-				<a href="<%= r.edit_uri %>"><%= r.name %></a>
 
-				<% if (r.private == 1) { %>
-					<i class="fa fa-lock"></i>
-				<% } else { %>
-					<i class="fa fa-unlock"></i>
-				<% } %>
+			<div class="media-item" data-grid-row <% if ($('#attached_media_' + r.id).length > 0) { %> data-selected-media<% } %>>
+		        <input id="media_<%= r.id %>" data-grid-checkbox type="checkbox" name="row[]" value="<%= r.id %>" data-name="<%= r.name %>" data-thumbnail="<%= r.thumbnail_uri %>" data-mime="<%= r.mime %>" data-is_image="<%= r.is_image %>"<% if ($('#attached_media_' + r.id).length > 0) { %> checked disabled<% } %>>
+		        <label for="media_<%= r.id %>">
 
-				<div class="hidden-xs">
-					<small>
-					<% _.each(r.tags, function(tag) { %>
-						<span class="label label-default"><%= tag.name %></span>
-					<% }); %>
-					</small>
-				</div>
+		            <% if (r.is_image == 1) { %>
+		            <div class="media-img" style="background-image: url('<%= r.thumbnail_uri %>')"></div>
+		            <% } else if (r.mime == 'text/plain') { %>
+		            <div class="media-img" style="background-image:url('{{ Asset::getUrl('platform/media::img/txt.png') }}')"></div>
+		            <% } else if (r.mime == 'application/pdf') { %>
+		            <div class="media-img" style="background-image:url('{{ Asset::getUrl('platform/media::img/pdf.png') }}')"></div>
+		            <% } else { %>
+		            <div class="media-img" style="background-image:url('{{ Asset::getUrl('platform/media::img/other.png') }}')"></div>
+		            <% } %>
 
-				<div class="text-center">
-
-					<a class="btn btn-default btn-sm" href="<%= r.view_uri %>" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.share') }}}">
-						<i class="fa fa-share-alt"></i>
-					</a>
-
-					<a class="btn btn-default btn-sm" href="<%= r.download_uri %>" target="_blank" data-toggle="tooltip" data-original-title="{{{ trans('platform/media::action.download') }}}">
-						<i class="fa fa-download"></i>
-					</a>
-
-				</div>
-			</div>
-
+		            <div class="media-item-info">
+		                <span class="media-title"><a href="<%= r.edit_uri %>"><%= r.name %></a></span>
+		                <span class="media-date"><%= moment(r.created_at).format('MMM DD, YYYY') %></span>
+		            </div>
+		        </label>
+		    </div>
 
 		<% }); %>
+		</div>
 
 	<% } %>
 

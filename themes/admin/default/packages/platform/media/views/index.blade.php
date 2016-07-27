@@ -131,7 +131,7 @@
 			                    <i class="fa fa-th-list"></i>
 			                </button>
 
-			                <button class="btn btn-default" data-grid-switch-layout="table:grid">
+			                <button class="btn btn-default" data-grid-switch-layout="grid:grid">
 			                    <i class="fa fa-th-large"></i>
 			                </button>
 
@@ -272,6 +272,8 @@
 			</thead>
 			<tbody data-grid-layout="table"></tbody>
 		</table>
+
+		<div data-grid-layout="grid"></div>
 
 	</div>
 
