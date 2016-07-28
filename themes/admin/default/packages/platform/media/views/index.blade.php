@@ -226,9 +226,15 @@
 
 						</div>
 
+						@if (config('platform.app.help'))
+
 						<button class="btn btn-default">
 		                    <i class="fa fa-question-circle"></i>
 		                </button>
+
+		                {{-- @content('platform-media-help', 'platform/media::content/help.md') --}}
+
+						@endif
 
 					</form>
 

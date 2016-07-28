@@ -47,6 +47,7 @@ var Extension;
 			.on('click', '[data-grid-row]', Extension.Index.checkRow)
 			.on('click', '[data-grid-row] a', Extension.Index.titleClick)
 			.on('click', '[data-grid-checkbox]', Extension.Index.checkboxes)
+			.on('click', '.media-item', Extension.Index.shiftMultiSelect)
 			.on('click', '#modal-confirm button.confirm', Extension.Index.bulkActions)
 			.on('click', '[data-grid-calendar-preset]', Extension.Index.calendarPresets)
 			.on('click', '[data-grid-bulk-action]:not([data-grid-bulk-action="delete"])', Extension.Index.bulkActions)
@@ -171,11 +172,6 @@ var Extension;
 
 		Extension.Index.Grid = Extension.Index.DataGridManager.create('main', config);
 
-        // Extension.Index.Grid.setLayout('count', {
-        //     template: '[data-grid-template="count"]',
-        //     layout: '[data-grid-layout="count"]'
-        // });
-
 		return this;
 	};
 
@@ -216,6 +212,40 @@ var Extension;
         Extension.Index.bulkStatus();
 
         Extension.lastChecked = this;
+	};
+
+	// Handle Data Grid shift multi select
+	Extension.Index.shiftMultiSelect = function(event)
+	{
+		event.stopPropagation();
+
+        var checkbox = $(this).find('[data-grid-checkbox]')[0];
+
+        if(!Extension.lastChecked) {
+            Extension.lastChecked = checkbox;
+        }
+
+        if(event.shiftKey) {
+            var start = $('[data-grid-checkbox]').index(checkbox);
+            var end = $('[data-grid-checkbox]').index(Extension.lastChecked);
+
+            $('[data-grid-checkbox]').slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', Extension.lastChecked.checked);
+        }
+
+        Extension.Index.bulkStatus();
+
+        Extension.lastChecked = checkbox;
+
+        // Remove Selection
+        if (window.getSelection) {
+          if (window.getSelection().empty) {  // Chrome
+            window.getSelection().empty();
+          } else if (window.getSelection().removeAllRanges) {  // Firefox
+            window.getSelection().removeAllRanges();
+          }
+        } else if (document.selection) {  // IE?
+          document.selection.empty();
+        }
 	};
 
 	// Handle Data Grid row checking

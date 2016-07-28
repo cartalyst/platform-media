@@ -1,42 +1,45 @@
 <script type="text/template" data-grid="main" data-grid-template="grid">
 
-	<% var results = response.results; %>
+	<div id="data-grid">
 
-    <% if (_.isEmpty(results)) { %>
+		<% var results = response.results; %>
 
-        <tr>
-			<td class="no-results" colspan="8">{{{ trans('common.no_results') }}}</td>
-		</tr>
+	    <% if (_.isEmpty(results)) { %>
 
-    <% } else { %>
-		<div class="media-results grid-layout">
-		<% _.each(results, function(r) { %>
+	        <tr>
+				<td class="no-results" colspan="8">{{{ trans('common.no_results') }}}</td>
+			</tr>
 
-			<div class="media-item media-grid" data-grid-row <% if ($('#attached_media_' + r.id).length > 0) { %> data-selected-media<% } %>>
-		        <input id="media_<%= r.id %>" data-grid-checkbox type="checkbox" name="row[]" value="<%= r.id %>" data-name="<%= r.name %>" data-thumbnail="<%= r.thumbnail_uri %>" data-mime="<%= r.mime %>" data-is_image="<%= r.is_image %>"<% if ($('#attached_media_' + r.id).length > 0) { %> checked disabled<% } %>>
-		        <label for="media_<%= r.id %>">
+	    <% } else { %>
+			<div class="media-results grid-layout">
+			<% _.each(results, function(r) { %>
 
-		            <% if (r.is_image == 1) { %>
-		            <div class="media-img" style="background-image: url('<%= r.thumbnail_uri %>')"></div>
-		            <% } else if (r.mime == 'text/plain') { %>
-		            <div class="media-img" style="background-image:url('{{ Asset::getUrl('platform/media::img/txt.png') }}')"></div>
-		            <% } else if (r.mime == 'application/pdf') { %>
-		            <div class="media-img" style="background-image:url('{{ Asset::getUrl('platform/media::img/pdf.png') }}')"></div>
-		            <% } else { %>
-		            <div class="media-img" style="background-image:url('{{ Asset::getUrl('platform/media::img/other.png') }}')"></div>
-		            <% } %>
+				<div class="media-item media-grid" data-grid-row <% if ($('#attached_media_' + r.id).length > 0) { %> data-selected-media<% } %>>
+			        <input id="media_<%= r.id %>" data-grid-checkbox type="checkbox" name="row[]" value="<%= r.id %>" data-name="<%= r.name %>" data-thumbnail="<%= r.thumbnail_uri %>" data-mime="<%= r.mime %>" data-is_image="<%= r.is_image %>"<% if ($('#attached_media_' + r.id).length > 0) { %> checked disabled<% } %>>
+			        <label for="grid_media_<%= r.id %>">
 
-		            <div class="media-item-info">
-		                <span class="media-title"><a href="<%= r.edit_uri %>"><%= r.name %></a></span>
-		                <span class="media-date"><%= moment(r.created_at).format('MMM DD, YYYY') %></span>
-		            </div>
-		        </label>
-		    </div>
+			            <% if (r.is_image == 1) { %>
+			            <div class="media-img" style="background-image: url('<%= r.thumbnail_uri %>')"></div>
+			            <% } else if (r.mime == 'text/plain') { %>
+			            <div class="media-img" style="background-image:url('{{ Asset::getUrl('platform/media::img/txt.png') }}')"></div>
+			            <% } else if (r.mime == 'application/pdf') { %>
+			            <div class="media-img" style="background-image:url('{{ Asset::getUrl('platform/media::img/pdf.png') }}')"></div>
+			            <% } else { %>
+			            <div class="media-img" style="background-image:url('{{ Asset::getUrl('platform/media::img/other.png') }}')"></div>
+			            <% } %>
 
-		<% }); %>
-		</div>
+			            <div class="media-item-info">
+			                <span class="media-title"><a href="<%= r.edit_uri %>"><%= r.name %></a></span>
+			                <span class="media-date"><%= moment(r.created_at).format('MMM DD, YYYY') %></span>
+			            </div>
+			        </label>
+			    </div>
 
-	<% } %>
+			<% }); %>
+			</div>
 
+		<% } %>
+
+	</div>
 
 </script>
