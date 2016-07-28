@@ -44,7 +44,7 @@ var Extension;
     // Add Listeners
     Extension.Uploader.listeners = function() {
         Platform.Cache.$body
-            .on('click', '.media-item', Extension.Uploader.checkboxes)
+            .on('click', '.media-item:not(.grid-layout .media-item)', Extension.Uploader.checkboxes)
             .on('click', '[data-view]', Extension.Uploader.handleLayouts)
             .on('click', '[data-media-add]', Extension.Uploader.addMedia)
             .on('click', '[data-media-delete]', Extension.Uploader.deleteMedia)

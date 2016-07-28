@@ -12,7 +12,7 @@
 		<div class="media-results grid-layout">
 		<% _.each(results, function(r) { %>
 
-			<div class="media-item" data-grid-row <% if ($('#attached_media_' + r.id).length > 0) { %> data-selected-media<% } %>>
+			<div class="media-item media-grid" data-grid-row <% if ($('#attached_media_' + r.id).length > 0) { %> data-selected-media<% } %>>
 		        <input id="media_<%= r.id %>" data-grid-checkbox type="checkbox" name="row[]" value="<%= r.id %>" data-name="<%= r.name %>" data-thumbnail="<%= r.thumbnail_uri %>" data-mime="<%= r.mime %>" data-is_image="<%= r.is_image %>"<% if ($('#attached_media_' + r.id).length > 0) { %> checked disabled<% } %>>
 		        <label for="media_<%= r.id %>">
 

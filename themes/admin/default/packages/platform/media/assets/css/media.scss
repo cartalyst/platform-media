@@ -382,7 +382,7 @@ $light-grey: #a0a0a0;
             }
         }
     }
-    input[type=checkbox] {
+    input[type=checkbox]:not(.grid-layout input) {
         position: absolute;
         top: -9999px;
         left: -9999px;
