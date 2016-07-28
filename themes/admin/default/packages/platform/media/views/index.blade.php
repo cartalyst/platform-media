@@ -228,11 +228,27 @@
 
 						@if (config('platform.app.help'))
 
-						<button class="btn btn-default">
+						<button class="btn btn-default" data-toggle="modal" data-target="#helpModal">
 		                    <i class="fa fa-question-circle"></i>
 		                </button>
 
-		                {{-- @content('platform-media-help', 'platform/media::content/help.md') --}}
+		                {{-- Modal --}}
+						<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel">
+						  <div class="modal-dialog" role="document">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						        <h4 class="modal-title" id="helpModalLabel">Data Grid Usage</h4>
+						      </div>
+						      <div class="modal-body">
+						        @content('platform-media-help', 'platform/media::content/dg4help.md')
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						      </div>
+						    </div>
+						  </div>
+						</div>
 
 						@endif
 
