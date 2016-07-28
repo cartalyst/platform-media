@@ -37,7 +37,10 @@ return [
         'roles_help'     => 'Select the roles to assign to this media file.',
 
         'status'         => 'Status',
-        'status_help'    => '..',
+        'status_help'    => 'The media status.',
+
+        'description'         => 'Description',
+        'description_help'    => 'The media description.',
 
         'share'          => 'Share',
         'download'       => 'Download',

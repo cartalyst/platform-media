@@ -163,6 +163,20 @@ $('input#file').change(function () {
 
                                     </div>
 
+                                    {{-- Description --}}
+                                    <div class="form-group">
+
+                                        <label class="control-label" for="description">
+                                            <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/media::model.general.description_help') }}}"></i>
+                                            {{{ trans('platform/media::model.general.description') }}}
+                                        </label>
+
+                                        <div class="controls">
+                                            <textarea name="description" id="description" class="form-control" rows="6">{{ $media->description }}</textarea>
+                                        </div>
+
+                                    </div>
+
                                     {{-- Status --}}
                                     <div class="form-group{{ Alert::onForm('private', ' has-error') }}">
 

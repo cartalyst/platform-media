@@ -50,6 +50,7 @@ class Media extends Model implements TaggableInterface
         'height',
         'roles',
         'namespace',
+        'description',
     ];
 
     /**
