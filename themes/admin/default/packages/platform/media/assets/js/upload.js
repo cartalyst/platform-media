@@ -256,7 +256,7 @@ var Extension;
                 return {
                     id: $(this).val(),
                     name: $(this).data('name'),
-                    thumbnail_uri: $(this).data('thumbnail'),
+                    preset_paths: {'thumb': $(this).data('thumbnail')},
                     mime: $(this).data('mime'),
                     is_image: $(this).data('is_image')
                 };
