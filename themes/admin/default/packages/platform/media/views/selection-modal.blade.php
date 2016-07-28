@@ -93,8 +93,7 @@
         </div>
 
         <div>
-          <div class="media-results" id="data-grid" data-source="{{ route('admin.media.grid') }}" data-grid="main">
-          </div>
+          <div class="media-results" id="data-grid" data-source="{{ route('admin.media.grid') }}" data-grid="main"></div>
         </div>
 
       </div>

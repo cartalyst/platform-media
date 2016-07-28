@@ -144,7 +144,7 @@ class MediaController extends AdminController
         ];
 
         $transformer = function ($element) {
-            $element->thumbnail_uri = url($element->thumbnail);
+            $element->thumbnail_uri = getImagePath($element, 'thumb');
             $element->view_uri      = route('media.view', $element->path);
             $element->edit_uri      = route('admin.media.edit', $element->id);
             $element->email_uri     = route('admin.media.email', $element->id);
@@ -206,7 +206,7 @@ class MediaController extends AdminController
 
         $transformer = function ($media) {
             return [
-                'thumb' => url($media->thumb),
+                'thumb' => getImagePath($media, 'thumb'),
                 'image' => route('media.view', $media->image),
                 'title' => $media->name,
             ];

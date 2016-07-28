@@ -57,17 +57,13 @@
                     <i class="fa fa-arrows"></i>
 
                     @if ($upload->is_image == 1)
-                    <div class="selected-media-img" style="background-image: url('@media($upload->id)')">
-                    </div>
+                    <div class="selected-media-img" style="background-image: url('@mediaPath($upload->id)')"></div>
                     @elseif ($upload->mime == 'text/plain')
-                    <div class="selected-media-img" style="background-image: url('{{ Asset::getUrl('platform/media::img/txt.png') }}')">
-                    </div>
+                    <div class="selected-media-img" style="background-image: url('{{ Asset::getUrl('platform/media::img/txt.png') }}')"></div>
                     @elseif ($upload->mime == 'application/pdf')
-                    <div class="selected-media-img" style="background-image: url('{{ Asset::getUrl('platform/media::img/pdf.png') }}')">
-                    </div>
+                    <div class="selected-media-img" style="background-image: url('{{ Asset::getUrl('platform/media::img/pdf.png') }}')"></div>
                     @else
-                    <div class="selected-media-img" style="background-image: url('{{ Asset::getUrl('platform/media::img/other.png') }}')">
-                    </div>
+                    <div class="selected-media-img" style="background-image: url('{{ Asset::getUrl('platform/media::img/other.png') }}')"></div>
                     @endif
 
                 </div>
@@ -76,7 +72,8 @@
                     <input type="hidden" name="_media_ids[]" value="{{ $upload->id }}">
                 </div>
                 <div class="list-group-item-right">
-                    <button type="button" class="btn btn-danger btn-xs" data-media-delete><i class="fa fa-trash"></i></button>
+                    <a href="{{ route('admin.media.edit', [ $upload->id ]) }}" class="btn btn-xs btn-success"><i class="fa fa-fw fa-pencil"></i></a>
+                    <button type="button" class="btn btn-xs btn-danger" data-media-delete><i class="fa fa-fw fa-trash"></i></button>
                 </div>
             </div>
             <div class="overlay">
@@ -116,7 +113,9 @@
                 <input type="hidden" name="_media_ids[]" value="<%= media.id %>">
             </div>
             <div class="list-group-item-right">
-                <button type="button" class="btn btn-danger btn-xs" data-media-delete><i class="fa fa-trash"></i></button>
+                <a href="<%- '{{ route('admin.media.edit', [ 'id' ]) }}'.replace('id', media.id) %>" class="btn btn-xs btn-success"><i class="fa fa-fw fa-pencil"></i></a>
+
+                <button type="button" class="btn btn-xs btn-danger" data-media-delete><i class="fa fa-fw fa-trash"></i></button>
             </div>
         </div>
         <div class="overlay">
