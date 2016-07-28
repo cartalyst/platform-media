@@ -256,7 +256,7 @@ var Extension;
                 return {
                     id: $(this).val(),
                     name: $(this).data('name'),
-                    thumbnail: $(this).data('thumbnail'),
+                    thumbnail_uri: $(this).data('thumbnail'),
                     mime: $(this).data('mime'),
                     is_image: $(this).data('is_image')
                 };

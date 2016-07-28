@@ -49,6 +49,13 @@ class Manager
     protected $macros = [];
 
     /**
+     * The media repository.
+     *
+     * @var \Platform\Media\Repositories\MediaRepositoryInterface
+     */
+    protected $media;
+
+    /**
      * Constructor.
      *
      * @param  \Illuminate\Container\Container  $app
@@ -63,6 +70,8 @@ class Manager
         $this->macros = $config['macros'];
 
         $this->presets = $config['presets'];
+
+        $this->media = $app['platform.media'];
     }
 
     /**
@@ -85,6 +94,8 @@ class Manager
     public function setPreset($name, array $info)
     {
         $this->presets[$name] = $info;
+
+        $this->setModelPresets();
 
         return $this;
     }
@@ -202,5 +213,15 @@ class Manager
         $attributes = $this->getPresets()[$name];
 
         return new Preset($name, $attributes);
+    }
+
+    /**
+     * Updates the presets on the model.
+     *
+     * @return void
+     */
+    protected function setModelPresets()
+    {
+        $this->media->createModel()->setPresets($this->presets);
     }
 }

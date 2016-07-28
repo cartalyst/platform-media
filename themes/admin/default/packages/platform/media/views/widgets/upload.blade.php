@@ -99,7 +99,7 @@
             <div class="list-group-item-left">
                 <i class="fa fa-arrows"></i>
                 <% if (media.is_image == 1) { %>
-                <div class="selected-media-img" style="background-image: url('<%= media.thumbnail %>')"></div>
+                <div class="selected-media-img" style="background-image: url('<%= media.preset_paths.thumb %>')"></div>
                 <% } else if (media.mime == 'text/plain') { %>
                 <div class="selected-media-img" style="background-image:url('{{ Asset::getUrl('platform/media::img/txt.png') }}')"></div>
                 <% } else if (media.mime == 'application/pdf') { %>

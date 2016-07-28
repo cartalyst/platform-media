@@ -38,6 +38,13 @@ class Media extends Model implements TaggableInterface
     /**
      * {@inheritdoc}
      */
+    protected $appends = [
+        'preset_paths',
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $fillable = [
         'mime',
         'name',
@@ -66,6 +73,13 @@ class Media extends Model implements TaggableInterface
     protected static $mediaRelationModel = 'Platform\Media\Models\MediaRelation';
 
     /**
+     * Holds available media presets.
+     *
+     * @var array
+     */
+    protected static $presets = [];
+
+    /**
      * Returns the media relation model.
      *
      * @return string
@@ -84,6 +98,27 @@ class Media extends Model implements TaggableInterface
     public static function setMediaRelationModel($model)
     {
         static::$mediaRelationModel = $model;
+    }
+
+    /**
+     * Sets media presets.
+     *
+     * @param  array  $presets
+     * @return void
+     */
+    public static function setPresets(array $presets)
+    {
+        static::$presets = $presets;
+    }
+
+    /**
+     * Returns media presets.
+     *
+     * @return array
+     */
+    public static function getPresets()
+    {
+        return static::$presets;
     }
 
     /**
@@ -142,6 +177,22 @@ class Media extends Model implements TaggableInterface
         if (! empty($namespace)) {
             $this->attributes['namespace'] = $namespace;
         }
+    }
+
+    /**
+     * Preset Paths mutator.
+     *
+     * @return array
+     */
+    public function getPresetPathsAttribute()
+    {
+        $presets = [];
+
+        foreach (array_keys(static::$presets) as $preset) {
+            $presets[$preset] = getImagePath($this, $preset);
+        }
+
+        return $presets;
     }
 
     /**
