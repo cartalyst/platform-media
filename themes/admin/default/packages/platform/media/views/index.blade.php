@@ -127,11 +127,11 @@
 						<div class="btn-group">
 						{{-- Layouts --}}
 
-			                <button class="btn btn-default" data-grid-switch-layout="table:table">
+			                <button class="btn btn-default" data-grid-switch-layout="view:view">
 			                    <i class="fa fa-th-list"></i>
 			                </button>
 
-			                <button class="btn btn-default" data-grid-switch-layout="grid:grid">
+			                <button class="btn btn-default" data-grid-switch-layout="view:grid">
 			                    <i class="fa fa-th-large"></i>
 			                </button>
 
@@ -254,28 +254,8 @@
 
 	</div>
 
-	{{-- Grid: Table --}}
-	<div class="table-responsive">
-
-		<table id="data-grid" class="table table-hover">
-			<thead>
-				<tr>
-					<th><input data-grid-checkbox="all" type="checkbox"></th>
-					<th class="sortable" data-grid-sort="mime"><i class="fa fa-file-o"></i></th>
-					<th class="sortable" data-grid-sort="mime"><i class="fa fa-shield"></i></th>
-					<th class="sortable" data-grid-sort="name">{{{ trans('model.name') }}}</th>
-					<th class="hidden-xs">{{{ trans('platform/tags::model.tag.legend') }}}</th>
-					<th class="sortable hidden-xs" data-grid-sort="size">{{{ trans('platform/media::model.general.size') }}}</th>
-					<th class="sortable hidden-xs" data-grid-sort="created_at">{{{ trans('model.created_at') }}}</th>
-					<th class="text-center">{{{ trans('common.actions') }}}</th>
-				</tr>
-			</thead>
-			<tbody data-grid-layout="table"></tbody>
-		</table>
-
-		<div data-grid-layout="grid"></div>
-
-	</div>
+	{{-- Grid: View --}}
+	<div data-grid-layout="view"></div>
 
 	<footer class="panel-footer clearfix" data-grid-layout="pagination"></footer>
 
