@@ -25,7 +25,7 @@ use Cartalyst\Filesystem\File;
 use Platform\Media\Models\Media;
 use Illuminate\Container\Container;
 
-class Manager
+class Manager implements ManagerInterface
 {
     /**
      * The filesystem instance.
@@ -75,9 +75,7 @@ class Manager
     }
 
     /**
-     * Returns all the registered presets.
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function getPresets()
     {
@@ -85,15 +83,15 @@ class Manager
     }
 
     /**
-     * Sets a new preset.
-     *
-     * @param  string  $name
-     * @param  array  $info
-     * @return $this
+     * {@inheritDoc}
      */
-    public function setPreset($name, array $info)
+    public function setPreset($preset, array $info = [])
     {
-        $this->presets[$name] = $info;
+        if ($preset instanceof Preset) {
+            $this->presets[$preset->name] = $preset;
+        } else {
+            $this->presets[$preset] = new Preset($preset, $info);
+        }
 
         $this->setModelPresets();
 
@@ -101,9 +99,7 @@ class Manager
     }
 
     /**
-     * Returns all the registered macros.
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function getMacros()
     {
@@ -111,11 +107,7 @@ class Manager
     }
 
     /**
-     * Sets a new macro.
-     *
-     * @param  string  $name
-     * @param  string  $class
-     * @return $this
+     * {@inheritDoc}
      */
     public function setMacro($name, $class)
     {
@@ -125,10 +117,7 @@ class Manager
     }
 
     /**
-     * Handles the presets on upload.
-     *
-     * @param  \Platform\Media\Models\Media  $media
-     * @return void
+     * {@inheritDoc}
      */
     public function handleUp(Media $media)
     {
@@ -136,10 +125,7 @@ class Manager
     }
 
     /**
-     * Handles the presets on delete.
-     *
-     * @param  \Platform\Media\Models\Media  $media
-     * @return void
+     * {@inheritDoc}
      */
     public function handleDown(Media $media)
     {
@@ -147,10 +133,7 @@ class Manager
     }
 
     /**
-     * Determines if the given preset is valid.
-     *
-     * @param  string  $name
-     * @return bool
+     * {@inheritDoc}
      */
     public function isValidPreset($name)
     {
@@ -158,12 +141,7 @@ class Manager
     }
 
     /**
-     * Apply the preset on the given media.
-     *
-     * @param  string  $name
-     * @param  string  $direction
-     * @param  \Platform\Media\Models\Media  $media
-     * @return void
+     * {@inheritDoc}
      */
     public function applyPreset($name, $direction, Media $media)
     {
@@ -189,11 +167,7 @@ class Manager
     }
 
     /**
-     * Apply the presets on the given media.
-     *
-     * @param  string  $direction
-     * @param  \Platform\Media\Models\Media  $media
-     * @return void
+     * {@inheritDoc}
      */
     public function applyPresets($direction, Media $media)
     {
@@ -203,16 +177,11 @@ class Manager
     }
 
     /**
-     * Returns the given preset instance.
-     *
-     * @param  string  $name
-     * @return \Platform\Media\Styles\Preset
+     * {@inheritDoc}
      */
     public function getPreset($name)
     {
-        $attributes = $this->getPresets()[$name];
-
-        return new Preset($name, $attributes);
+        return $this->getPresets()[$name];
     }
 
     /**
