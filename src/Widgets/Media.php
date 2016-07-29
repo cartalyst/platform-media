@@ -56,23 +56,7 @@ class Media
             return route('media.view', $media->path);
         }
 
-        $manager = app('platform.media.manager');
-
-        if (! $manager->isValidPreset($name)) {
-            if (! isset($attributes['macros'])) {
-                $attributes['macros'][] = 'fit';
-            }
-
-            $manager->setPreset($name, $attributes);
-        }
-
-        $preset = $manager->getPreset($name);
-
-        if (! app('files')->exists($preset->path.'/'.basename($media->path))) {
-            $manager->applyPreset($name, 'up', $media);
-        }
-
-        return getImagePath($media, $name);
+        return getImagePath($media, $name, $attributes);
     }
 
     /**

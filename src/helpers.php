@@ -34,14 +34,26 @@ if (! function_exists('formatBytes')) {
 }
 
 if (! function_exists('getImagePath')) {
-    function getImagePath(Media $media, $presetName)
+    function getImagePath(Media $media, $presetName, array $attributes = [])
     {
         $manager = app('platform.media.manager');
 
-        if ($manager->isValidPreset($presetName)) {
-            $preset = $manager->getPreset($presetName);
+        if (! $manager->isValidPreset($presetName)) {
+            if (! isset($attributes['macros'])) {
+                $attributes['macros'][] = 'fit';
+            }
 
-            return url(str_replace(public_path(), null, $preset->path).'/'.basename($media->path));
+            $manager->setPreset($presetName, $attributes);
         }
+
+        $preset = $manager->getPreset($presetName);
+
+        $cachedMediaPath = $preset->path.'/'.basename($media->path);
+
+        if (! app('files')->exists($cachedMediaPath)) {
+            $manager->applyPreset($presetName, 'up', $media);
+        }
+
+        return url(str_replace(public_path(), null, $cachedMediaPath));
     }
 }
