@@ -39,6 +39,9 @@ class MediaServiceProvider extends ServiceProvider
         // Register the event handler
         $this->app['events']->subscribe('platform.media.handler.event');
 
+        // Set media presets and macros
+        $this->setPresetsAndMacros();
+
         // Register the Blade @media extension
         $this->registerBladeMediaWidget();
     }
@@ -119,6 +122,28 @@ class MediaServiceProvider extends ServiceProvider
             $this->app->register($serviceProvider);
 
             AliasLoader::getInstance()->alias('Image', 'Intervention\Image\Facades\Image');
+        }
+    }
+
+    /**
+     * Sets media presets and macros.
+     *
+     * @return void
+     */
+    protected function setPresetsAndMacros()
+    {
+        $manager = $this->app['platform.media.manager'];
+
+        $presets = $this->app['config']->get('platform-media.presets');
+
+        foreach ($presets as $presetName => $preset) {
+            $manager->setPreset($presetName, $preset);
+        }
+
+        $macros = $this->app['config']->get('platform-media.macros');
+
+        foreach ($macros as $macroName => $macro) {
+            $manager->setMacro($macroName, $macro);
         }
     }
 

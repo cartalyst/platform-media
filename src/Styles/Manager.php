@@ -65,12 +65,6 @@ class Manager implements ManagerInterface
     {
         $this->filesystem = $app['cartalyst.filesystem'];
 
-        $config = $app['config']->get('platform-media');
-
-        $this->macros = $config['macros'];
-
-        $this->presets = $config['presets'];
-
         $this->media = $app['platform.media'];
     }
 
