@@ -23,10 +23,10 @@ namespace Platform\Media\Tests;
 use Mockery as m;
 use Cartalyst\Filesystem\File;
 use Platform\Media\Models\Media;
-use Platform\Media\Styles\Style;
+use Platform\Media\Styles\Preset;
 use Platform\Media\Styles\Manager;
+use Platform\Media\Macros\AbstractMacro;
 use Cartalyst\Testing\IlluminateTestCase;
-use Platform\Media\Styles\Macros\AbstractMacro;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class StyleManagerTest extends IlluminateTestCase
@@ -40,34 +40,36 @@ class StyleManagerTest extends IlluminateTestCase
     {
         parent::setUp();
 
-        $config = [
-            'styles' => function ($manager) {},
-            'macros' => function ($manager) {},
-        ];
-
-        $this->app['config'] = m::mock('Illuminate\Config\Repository');
-        $this->app['config']->shouldReceive('get')
-            ->with('platform-media')
-            ->once()
-            ->andReturn($config);
+        $this->app['cartalyst.filesystem'] = m::mock('Cartalyst\Filesystem\Filesystem');
+        $this->app['platform.media'] = m::mock('Platform\Media\Repositories\MediaRepositoryInterface');
 
         $this->manager = new Manager($this->app);
     }
 
     /** @test */
-    public function it_can_set_and_retrieve_styles()
+    public function it_can_set_and_retrieve_presets()
     {
-        $styles = [
-            'foo' => function () {},
-            'bar' => function () {},
+        $presets = [
+            'foo' => [],
+            'bar' => [],
         ];
 
-        foreach ($styles as $key => $style) {
-            $this->manager->setStyle($key, $style);
+        $this->app['platform.media']->shouldReceive('createModel')
+            ->twice()
+            ->andReturn($media = m::mock('Platform\Media\Models\Media'));
+
+        $media->shouldReceive('setPresets')
+            ->twice();
+
+        foreach ($presets as $key => $preset) {
+            $this->manager->setPreset($key, $preset);
         }
 
-        $this->assertSame($styles['foo'], array_get($this->manager->getStyles(), 'foo'));
-        $this->assertSame($styles['bar'], array_get($this->manager->getStyles(), 'bar'));
+        $this->assertInstanceOf('Platform\Media\Styles\Preset', $this->manager->getPreset('foo'));
+        $this->assertInstanceOf('Platform\Media\Styles\Preset', $this->manager->getPreset('bar'));
+
+        $this->assertSame('foo', $this->manager->getPreset('foo')->name);
+        $this->assertSame('bar', $this->manager->getPreset('bar')->name);
     }
 
     /** @test */
@@ -89,44 +91,54 @@ class StyleManagerTest extends IlluminateTestCase
     /** @test */
     public function it_can_handle_up_and_down()
     {
-        $style = function (Style $style) {
-            $style->macros = ['resize'];
-        };
-
+        $filePath = '2016/07/foo.jpg';
         $media    = m::mock('Platform\Media\Models\Media');
         $file     = m::mock('Cartalyst\Filesystem\File');
         $uploaded = m::mock('Symfony\Component\HttpFoundation\File\UploadedFile');
 
-        $media->shouldReceive('up')
+        $this->app['platform.media']->shouldReceive('createModel')
+            ->once()
+            ->andReturn($media);
+
+        $media->shouldReceive('setPresets')
             ->once();
 
-        $this->manager->setMacro('resize', 'Platform\Media\Tests\FooMacro');
-        $this->manager->setStyle('foo', $style);
+        $media->shouldReceive('getAttribute')
+            ->with('path')
+            ->twice()
+            ->andReturn($filePath);
 
-        $uploaded->shouldReceive('getMimeType')
+        $this->app['cartalyst.filesystem']->shouldReceive('get')
+            ->with($filePath)
+            ->twice()
+            ->andReturn($file);
+
+        $preset = m::mock('Platform\Media\Styles\Preset');
+
+        $preset->shouldReceive('setMedia')
+            ->with($media)
+            ->twice();
+
+        $preset->shouldReceive('setFile')
+            ->with($file)
+            ->twice();
+
+        $preset->shouldReceive('isValid')
+            ->twice()
+            ->andReturn(true);
+
+        $preset->shouldReceive('applyMacros')
+            ->with('up')
             ->once();
 
-        $this->manager->handleUp($media, $file, $uploaded);
-
-        $file->shouldReceive('getMimetype')
+        $preset->shouldReceive('applyMacros')
+            ->with('down')
             ->once();
 
-        $media->shouldReceive('down')
-            ->once();
+        $this->manager->setPreset($preset);
 
-        $this->manager->handleDown($media, $file);
-    }
-}
+        $this->manager->handleUp($media);
 
-class FooMacro extends AbstractMacro
-{
-    public function up(Media $media, File $file, UploadedFile $uploadedFile)
-    {
-        $media->up();
-    }
-
-    public function down(Media $media, File $file)
-    {
-        $media->down();
+        $this->manager->handleDown($media);
     }
 }

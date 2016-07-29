@@ -21,11 +21,11 @@
 namespace Platform\Media\Tests;
 
 use Mockery as m;
-use Platform\Media\Styles\Style;
+use Platform\Media\Macros\Fit;
+use Platform\Media\Styles\Preset;
 use Cartalyst\Testing\IlluminateTestCase;
-use Platform\Media\Styles\Macros\ResizeMacro;
 
-class ResizeMacroTest extends IlluminateTestCase
+class FitMacroTest extends IlluminateTestCase
 {
     /**
      * Setup.
@@ -36,27 +36,14 @@ class ResizeMacroTest extends IlluminateTestCase
     {
         parent::setUp();
 
-        $this->app['cartalyst.filesystem']  = m::mock('Illuminate\Filesystem\Filesystem');
         $this->app['image']                 = m::mock('Intervention\Image\ImageManager');
-        $this->app['path.public']           = '/';
+        $this->app['path.public']           = '';
 
-        $this->macro = new ResizeMacro($this->app);
+        $this->macro = new Fit($this->app);
 
-        $style         = new Style('foo');
-        $style->width  = 200;
-        $style->height = 200;
+        $this->preset = new Preset('foo', ['width' => 200, 'height' => 200, 'macros' => ['fit']]);
 
-        $this->macro->setStyle($style);
-    }
-
-    /** @test */
-    public function it_can_set_and_retrieve_styles()
-    {
-        $style = new Style('foo');
-
-        $this->macro->setStyle($style);
-
-        $this->assertSame($style, $this->macro->getStyle());
+        $this->macro->setPreset($this->preset);
     }
 
     /** @test */
@@ -65,17 +52,19 @@ class ResizeMacroTest extends IlluminateTestCase
         $image    = m::mock('Intervention\Image\ImageManager');
         $media    = m::mock('Platform\Media\Models\Media');
         $file     = m::mock('Cartalyst\Filesystem\File');
-        $uploaded = m::mock('Symfony\Component\HttpFoundation\File\UploadedFile');
-
-        $media->shouldReceive('getAttribute');
-        $media->shouldReceive('setAttribute');
-
-        $media->shouldReceive('save')
-            ->once();
 
         $file->shouldReceive('isImage')
             ->once()
             ->andReturn(true);
+
+        $this->app['files']->shouldReceive('exists')
+            ->with('/cache/media/foo')
+            ->once()
+            ->andReturn(false);
+
+        $this->app['files']->shouldReceive('makeDirectory')
+            ->with('/cache/media/foo')
+            ->once();
 
         $file->shouldReceive('getFilename')
             ->once()
@@ -92,16 +81,16 @@ class ResizeMacroTest extends IlluminateTestCase
             ->once()
             ->andReturn($image);
 
-        $image->shouldReceive('resize')
-            ->with('', 200, m::any())
+        $image->shouldReceive('fit')
+            ->with(200, 200, m::any())
             ->once()
             ->andReturn($image);
 
         $image->shouldReceive('save')
-            ->with('/_foo-200-200.jpg')
+            ->with('/cache/media/foo/foo.jpg')
             ->once();
 
-        $this->macro->up($media, $file, $uploaded);
+        $this->macro->up($media, $file);
     }
 
     /** @test */
@@ -110,7 +99,14 @@ class ResizeMacroTest extends IlluminateTestCase
         $media = m::mock('Platform\Media\Models\Media');
         $file  = m::mock('Cartalyst\Filesystem\File');
 
-        $media->shouldReceive('getAttribute');
+        $file->shouldReceive('isImage')
+            ->once()
+            ->andReturn(true);
+
+        $this->app['files']->shouldReceive('exists')
+            ->with('/cache/media/foo')
+            ->once()
+            ->andReturn(true);
 
         $file->shouldReceive('getFilename')
             ->once()
@@ -120,8 +116,8 @@ class ResizeMacroTest extends IlluminateTestCase
             ->once()
             ->andReturn('jpg');
 
-        \Illuminate\Support\Facades\File::shouldReceive('delete')
-            ->with('/_foo-200-200.jpg')
+        $this->app['files']->shouldReceive('delete')
+            ->with('/cache/media/foo/foo.jpg')
             ->once();
 
         $this->macro->down($media, $file);

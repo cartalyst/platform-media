@@ -21,9 +21,9 @@
 namespace Platform\Media\Tests;
 
 use PHPUnit_Framework_TestCase;
-use Platform\Media\Styles\Style;
+use Platform\Media\Styles\Preset;
 
-class StyleTest extends PHPUnit_Framework_TestCase
+class PresetTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Setup.
@@ -32,7 +32,7 @@ class StyleTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->style = new Style('foo');
+        $this->style = new Preset('foo', []);
     }
 
     /** @test */

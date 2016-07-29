@@ -37,11 +37,15 @@ class MediaWidgetTest extends IlluminateTestCase
 
         $this->media = m::mock('Platform\Media\Repositories\MediaRepositoryInterface');
 
+        $this->app['platform.media.manager'] = $this->manager = m::mock('Platform\Media\Styles\ManagerInterface');
+
+        $this->app['path.public'] = '/';
+
         $this->widget = new Media($this->media);
     }
 
     /** @test */
-    public function it_can_retrieve_the_thumbnail_url()
+    public function it_can_retrieve_a_preset_url()
     {
         $media = m::mock('Platform\Media\Models\Media');
 
@@ -52,34 +56,30 @@ class MediaWidgetTest extends IlluminateTestCase
 
         $media->shouldReceive('getAttribute')
             ->andReturn('foo');
+
+        $this->manager->shouldReceive('isValidPreset')
+            ->with('thumbnail')
+            ->once()
+            ->andReturn(true);
+
+        $this->manager->shouldReceive('getPreset')
+            ->with('thumbnail')
+            ->once()
+            ->andReturn($preset = m::mock('Platform\Media\Styles\Preset'));
+
+        $preset->shouldReceive('getPathAttribute')
+            ->once();
+
+        $this->app['files']->shouldReceive('exists')
+            ->with('/foo')
+            ->once()
+            ->andReturn(true);
 
         $this->app['url']->shouldReceive('to')
             ->with('foo', [], '')
             ->once();
 
-        $this->widget->show(1, 'thumbnail');
-    }
-
-    /** @test */
-    public function it_can_retrieve_the_download_url()
-    {
-        $media = m::mock('Platform\Media\Models\Media');
-
-        $this->media->shouldReceive('find')
-            ->with(1)
-            ->once()
-            ->andReturn($media);
-
-        $media->shouldReceive('getAttribute')
-            ->with('path')
-            ->once()
-            ->andReturn('foo');
-
-        $this->app['url']->shouldReceive('route')
-            ->with('media.download', 'foo', true, '')
-            ->once();
-
-        $this->widget->show(1, 'download');
+        $this->widget->path(1, 'thumbnail');
     }
 
     /** @test */
@@ -101,6 +101,6 @@ class MediaWidgetTest extends IlluminateTestCase
             ->with('media.view', 'foo', true, '')
             ->once();
 
-        $this->widget->show(1);
+        $this->widget->path(1);
     }
 }
