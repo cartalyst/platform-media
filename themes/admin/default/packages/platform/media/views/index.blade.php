@@ -11,7 +11,7 @@
 {{ Asset::queue('selectize', 'selectize/css/selectize.bootstrap3.css', 'style') }}
 {{ Asset::queue('media', 'platform/media::css/media.scss', 'style') }}
 
-{{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
+{{ Asset::queue('selectize', 'selectize/js/selectize.min.js', 'jquery') }}
 {{ Asset::queue('moment', 'moment/js/moment.js', 'jquery') }}
 {{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'jquery') }}
 {{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
