@@ -1,61 +1,56 @@
 {
-	"name": "platform/media",
-	"type": "platform-extension",
-	"description": "Media management for Platform.",
-	"keywords": [
+    "name": "platform/media",
+    "type": "platform-extension",
+    "description": "Media management for Platform.",
+    "keywords": [
         "php",
-		"cartalyst",
-		"platform",
-		"laravel",
-		"extension",
-		"media"
-	],
-	"license": "proprietary",
-	"authors": [
+        "cartalyst",
+        "platform",
+        "laravel",
+        "extension",
+        "media"
+    ],
+    "license": "proprietary",
+    "authors": [
         {
             "name": "Cartalyst LLC",
             "email": "help@cartalyst.com",
             "homepage": "https://cartalyst.com"
         }
-	],
-	"repositories": [
-		{
-			"type": "composer",
-			"url": "https://packages.cartalyst.com"
-		}
-	],
-	"require": {
-		"php": ">=5.5.9",
-		"cartalyst/composer-installers": "1.2.*",
-		"cartalyst/filesystem": "3.0.*",
-		"cartalyst/support": "~1.2",
-		"intervention/image": "~2.3",
-		"intervention/imagecache": "~2.3",
-		"platform/access": "dev-feature/five",
-		"platform/foundation": "dev-feature/five",
-		"platform/tags": "dev-feature/five"
-	},
-	"require-dev": {
-		"cartalyst/testing": "~2.0@dev",
-		"patchwork/utf8": "~1.1"
-	},
-	"autoload": {
-		"classmap": [
-			"database/migrations",
-			"database/seeds"
-		],
-		"files": [
-			"src/helpers.php"
-		],
-		"psr-4": {
-			"Platform\\Media\\" : "src/"
-		}
-	},
-	"extra": {
-		"component": "extension",
-		"branch-alias": {
-			"dev-master": "3.3.x-dev"
-		}
-	},
-	"minimum-stability": "stable"
+    ],
+    "repositories": [
+        { "type": "composer", "url": "https://packages.cartalyst.com" }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "cartalyst/composer-installers": "1.2.*",
+        "cartalyst/filesystem": "3.0.*",
+        "cartalyst/support": "~1.2",
+        "intervention/image": "~2.3",
+        "intervention/imagecache": "~2.3",
+        "platform/access": "dev-feature/five",
+        "platform/foundation": "dev-feature/five",
+        "platform/tags": "dev-feature/five"
+    },
+    "require-dev": {
+        "cartalyst/testing": "~2.0@dev",
+        "patchwork/utf8": "~1.1"
+    },
+    "autoload": {
+        "classmap": [
+            "database/migrations",
+            "database/seeds"
+        ],
+        "files": [
+            "src/helpers.php"
+        ],
+        "psr-4": { "Platform\\Media\\" : "src/" }
+    },
+    "extra": {
+        "component": "extension",
+        "branch-alias": {
+            "dev-master": "4.0.x-dev"
+        }
+    },
+    "minimum-stability": "stable"
 }
