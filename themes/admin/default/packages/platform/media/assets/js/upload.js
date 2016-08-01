@@ -93,9 +93,9 @@ var Extension;
             }
         };
 
-        Extension.Uploader.Grid = $.datagrid(
-            'main', '#data-grid', '#data-grid_pagination', '#data-grid_applied', config
-        );
+        Extension.Uploader.DataGridManager = new DataGridManager();
+
+        Extension.Uploader.Grid = Extension.Index.DataGridManager.create('main', config);
 
         return this;
     };
