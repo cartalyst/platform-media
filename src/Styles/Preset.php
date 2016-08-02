@@ -123,7 +123,7 @@ class Preset
             return false;
         }
 
-        $namespace = $this->media->getEntityNamespace();
+        $namespace = $this->media->namespace;
 
         if (! empty($mimes) && ! in_array($mimeType, $mimes)) {
             return false;
