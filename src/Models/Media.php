@@ -186,10 +186,6 @@ class Media extends Model implements TaggableInterface
      */
     public function getPresetPathsAttribute()
     {
-        if (! $this->exists) {
-            return;
-        }
-
         $presets = [];
 
         foreach (array_keys(static::$presets) as $preset) {

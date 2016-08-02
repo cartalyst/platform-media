@@ -22,6 +22,7 @@ namespace Platform\Media\Styles;
 
 use Cartalyst\Filesystem\File;
 use Platform\Media\Models\Media;
+use League\Flysystem\FileNotFoundException;
 
 class Preset
 {
@@ -116,9 +117,13 @@ class Preset
 
         $namespaces = $this->namespaces;
 
-        $mimeType = $this->file->getMimeType();
+        try {
+            $mimeType = $this->file->getMimeType();
+        } catch (FileNotFoundException $e) {
+            return false;
+        }
 
-        $namespace = $this->media->getEntityNamespace();
+        $namespace = $this->media->namespace;
 
         if (! empty($mimes) && ! in_array($mimeType, $mimes)) {
             return false;
