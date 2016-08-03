@@ -1,3 +1,4 @@
+
 {{-- Queue assets --}}
 {{ Asset::queue('media', 'platform/media::css/media.scss', 'style') }}
 {{ Asset::queue('selectize', 'selectize/css/selectize.bootstrap3.css', 'style') }}
@@ -5,14 +6,11 @@
 {{ Asset::queue('fileapi', 'platform/media::js/FileAPI/FileAPI.min.js', 'jquery') }}
 {{ Asset::queue('fileexif', 'platform/media::js/FileAPI/FileAPI.exif.js', 'fileapi') }}
 
-{{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'jquery') }}
-{{ Asset::queue('exoskeleton', 'cartalyst/js/exoskeleton.min.js', 'jquery') }}
-{{ Asset::queue('lodash', 'cartalyst/js/lodash.min.js', 'jquery') }}
-
 {{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
-{{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', ['fileapi', 'data-grid']) }}
+{{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
+{{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', ['fileapi', 'underscore']) }}
 {{ Asset::queue('sortable', 'platform/media::js/sortable.min.js') }}
-{{ Asset::queue('upload', 'platform/media::js/upload.js', ['platform', 'mediamanager', 'sortable', 'data-grid']) }}
+{{ Asset::queue('upload', 'platform/media::js/upload.js', ['platform', 'mediamanager', 'sortable']) }}
 
 {{-- Inline scripts --}}
 @section('scripts')

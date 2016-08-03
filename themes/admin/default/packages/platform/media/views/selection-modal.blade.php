@@ -1,8 +1,3 @@
-{{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'jquery') }}
-{{ Asset::queue('exoskeleton', 'cartalyst/js/exoskeleton.min.js', 'jquery') }}
-{{ Asset::queue('lodash', 'cartalyst/js/lodash.min.js', 'jquery') }}
-{{ Asset::queue('moment', 'moment/js/moment.js', 'jquery') }}
-
 <div class="modal modal-media-selection fade" id="media-selection-modal" tabindex="-1" role="dialog" aria-labelledby="media-selection-modal" aria-hidden="true">
 
   <div class="modal-dialog">
