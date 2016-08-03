@@ -95,7 +95,7 @@ var Extension;
 
         Extension.Uploader.DataGridManager = new DataGridManager();
 
-        Extension.Uploader.Grid = Extension.Index.DataGridManager.create('main', config);
+        Extension.Uploader.Grid = Extension.Uploader.DataGridManager.create('main', config);
 
         return this;
     };
