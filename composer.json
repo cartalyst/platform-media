@@ -28,9 +28,9 @@
         "cartalyst/support": "~1.2",
         "intervention/image": "~2.3",
         "intervention/imagecache": "~2.3",
-        "platform/access": "dev-feature/five",
-        "platform/foundation": "dev-feature/five",
-        "platform/tags": "dev-feature/five"
+        "platform/access": "4.0.*",
+        "platform/foundation": "4.0.*",
+        "platform/tags": "4.0.*"
     },
     "require-dev": {
         "cartalyst/testing": "~2.0@dev",
