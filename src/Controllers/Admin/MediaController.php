@@ -131,7 +131,6 @@ class MediaController extends AdminController
             'size',
             'private',
             'is_image',
-            'thumbnail',
             'width',
             'height',
             'created_at',
