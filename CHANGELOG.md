@@ -13,7 +13,15 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ### v4.0.0 - 2016-08-03
 
+`UPDATED`
+
 - Updated for Platform 5.
+- Reworked Styles into Presets to allow more flexibility with Macros.
+- Blade Widget calls were renamed to `@mediaPath` and `@mediaUpload`.
+
+`REMOVED`
+
+- `@thumbnail` Blade widget call, use `@mediaPath`.
 
 ### v3.3.1 - 2016-06-25
 
