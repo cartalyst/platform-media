@@ -61,7 +61,9 @@ var Extension;
         var config = {
             throttle: 20,
             threshold: 20,
-            hash: false,
+            url: {
+                hash: false
+            },
             callback: function(data) {
                 if (! Extension.Uploader.multiUpload) {
                     $('[data-grid-checkbox="all"]').prop('disabled', true);

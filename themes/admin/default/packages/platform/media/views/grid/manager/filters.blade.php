@@ -1,7 +1,7 @@
 <script type="text/template" data-grid="main" data-grid-template="filters">
 
-	<%
-		// Get the applied filters, but we'll make sure to not
+    <%
+        // Get the applied filters, but we'll make sure to not
         // show filters when doing any kind of live search.
         var filters = _.reject(grid.appliedFilters, function(f) { return f.type === 'live'; });
 
@@ -16,50 +16,52 @@
             '!='   : 'is not equal to',
             'like' : 'contains',
         };
-	%>
+    %>
 
-	<% if (_.isObject(filters)) { %>
+    <% if (_.isObject(filters)) { %>
 
-		<% _.each(filters, function(f) { %>
+        <% _.each(filters, function(f) { %>
 
-			<button class="btn btn-default btn-sm">
+            <button data-grid-reset-filter="<%- f.name %>" class="btn btn-default btn-sm">
 
-				<span><i class="fa fa-times"></i></span>
+                <span><i class="fa fa-trash-o"></i></span>
 
-				<% if (f.from !== undefined && f.to !== undefined) { %>
+                <% if (f.query.from !== undefined && f.query.to !== undefined) { %>
 
-					<% if (/[0-9]{4}-[0-9]{2}-[0-9]{2}/g.test(f.from) && /[0-9]{4}-[0-9]{2}-[0-9]{2}/g.test(f.to)) { %>
+                    <% if (dateRegex.test(f.query.from) && dateRegex.test(f.query.to)) { %>
 
-						<%= f.label %> <em><%= moment(f.from).format('MMM DD, YYYY') %> - <%= moment(f.to).format('MMM DD, YYYY') %></em>
+                        <%- f.label.from %> <em><%- moment(f.query.from).format('MMM DD, YYYY') %></em> <%- f.label.to %> <em><%- moment(f.query.to).format('MMM DD, YYYY') %></em>
 
-					<% } else { %>
+                    <% } else { %>
 
-						<%= f.label %> <em><%= f.from %> - <%= f.to %></em>
+                        <%- f.label.from %> <em><%- f.query.from %></em> <%- f.label.to %> <em><%- f.query.to %></em>
 
-					<% } %>
+                    <% } %>
 
-				<% } else if (f.col_mask !== undefined && f.val_mask !== undefined) { %>
+                <% } else if (f.label) { %>
 
-					<%= f.col_mask %> <em><%= f.val_mask %></em>
+                    <%- f.label %>
 
-				<% } else { %>
+                <% } else if (f.type === 'search') { %>
 
-					<% if (f.column === 'all') { %>
+                    <%- f.query.value %> in <em><%- f.query.column %>
 
-						<%= f.value %>
+                <% } else { %>
 
-					<% } else { %>
+                    <% _.each(f.query, function (q) { %>
 
-						<%= f.value %> {{{ trans('common.in') }}} <em><%= f.column %></em>
+                        <% var operator = q.operator ? q.operator : 'like' %>
 
-					<% } %>
+                        <i><%- q.column %></i> <%- operators[operator] %> <i><%- q.value %></i>
 
-				<% } %>
+                    <% })%>
 
-			</button>
+                <% } %>
 
-		<% }); %>
+            </button>
 
-	<% } %>
+        <% }); %>
+
+    <% } %>
 
 </script>
