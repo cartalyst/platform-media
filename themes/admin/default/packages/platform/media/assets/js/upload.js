@@ -132,7 +132,7 @@ var Extension;
 
                 $('#media-modal').modal('hide');
 
-                Extension.Uploader.Grid.refresh();
+                Extension.Uploader.Grid.refresh(true);
             },
             onComplete: function() {
                 Extension.Uploader.linkMediaRecords();
@@ -450,7 +450,7 @@ var Extension;
     Extension.Uploader.refreshGrid = function() {
         Extension.Uploader.selectedArray = [];
 
-        Extension.Uploader.Grid.refresh();
+        Extension.Uploader.Grid.refresh(true);
     };
 
     // Resets the selected area
