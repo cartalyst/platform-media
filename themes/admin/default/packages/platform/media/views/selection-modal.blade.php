@@ -1,3 +1,7 @@
+{{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'jquery') }}
+{{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
+{{ Asset::queue('moment', 'moment/js/moment.js', 'jquery') }}
+
 <div class="modal modal-media-selection fade" id="media-selection-modal" tabindex="-1" role="dialog" aria-labelledby="media-selection-modal" aria-hidden="true">
 
   <div class="modal-dialog">
@@ -22,7 +26,7 @@
                   <i class="fa fa-th-large"></i>
                 </a>
 
-                <a class="btn btn-default" data-grid-view="list" class="modal-header-icon">
+                <a class="btn btn-default" data-view="list" class="modal-header-icon">
                   <i class="fa fa-th-list"></i>
                 </a>
 
@@ -30,14 +34,14 @@
                   {{{ trans('common.filters') }}}
                 </button>
 
-                <button class="btn btn-default dropdown-toggle" type="button" data-grid-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                   <span class="caret"></span>
                 </button>
 
                 <ul class="dropdown-menu" role="menu">
 
                   @foreach($uploadedMimeTypes as $mimeType)
-                  <li><a href="#" data-grid-filter="mime:{{ $mimeType }}" data-grid="main">{{ $mimeType }}</a></li>
+                  <li><a href="#" data-filter="mime:{{ $mimeType }}" data-grid="main">{{ $mimeType }}</a></li>
                   @endforeach
 
                 </ul>
@@ -49,7 +53,7 @@
               <span class="input-group-btn">
 
 
-                <button class="btn btn-default" data-grid="main" data-grid-reset>
+                <button class="btn btn-default" data-grid="main" data-reset>
                   <i class="fa fa-refresh fa-sm"></i>
                 </button>
 
@@ -89,7 +93,7 @@
         </div>
 
         <div>
-          <div class="media-results" id="data-grid" data-grid-source="{{ route('admin.media.grid') }}" data-grid="main">
+          <div class="media-results" id="data-grid" data-source="{{ route('admin.media.grid') }}" data-grid="main"></div>
         </div>
 
       </div>

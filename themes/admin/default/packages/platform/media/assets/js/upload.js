@@ -410,7 +410,6 @@ var Extension;
     Extension.Uploader.addToSelected = function(item, itemId) {
         if (! Extension.Uploader.multiUpload) {
             $('.modal-selected-body').html('');
-
             Extension.Uploader.selectedArray = [];
         }
 

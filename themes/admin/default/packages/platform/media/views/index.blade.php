@@ -216,13 +216,11 @@
 									<span class="fa fa-search"></span>
 								</button>
 
-								<button class="btn btn-default" data-reset>
+								<button class="btn btn-default" data-grid-reset>
 									<i class="fa fa-refresh fa-sm"></i>
 								</button>
 
 							</span>
-
-
 
 						</div>
 
@@ -264,13 +262,10 @@
 
 	<div class="panel-body">
 
-		{{-- Applied filters container --}}
-    	<div data-grid-layout="filters"></div>
-
-		{{-- Grid: Applied Filters --}}
+		{{-- Grid: Filters --}}
 		<div class="btn-toolbar" role="toolbar" aria-label="data-grid-applied-filters">
 
-			<div id="data-grid_applied" class="btn-group"></div>
+			<div data-grid-layout="filters" id="data-grid_applied" class="btn-group"></div>
 
 		</div>
 
