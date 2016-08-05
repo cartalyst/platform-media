@@ -466,7 +466,7 @@ var Extension;
 
     Extension.Uploader.preventSubmit = function() {
         $(window).keydown(function(event) {
-            if (event.target.parentNode.parentNode.parentNode.classList.contains('modal-header-right') && event.keyCode == 13) {
+            if (event.target.classList.contains('search-media') && event.keyCode == 13) {
                 event.preventDefault();
 
                 return false;
