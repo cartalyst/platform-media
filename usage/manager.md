@@ -41,19 +41,19 @@ Third argument is optional and can be a view that would override the default wid
 ###### Allow only a single image to be attached to the model
 
 ```
-@mediaUploader($employee, false)
+@mediaUpload($employee, false)
 ```
 
 ###### Allow multiple images to be attached to the model
 
 ```
-@mediaUploader($employee)
+@mediaUpload($employee)
 ```
 
 ###### Use a custom view for the media widget
 
 ```
-@mediaUploader($employee, true, 'yourvendor/yourextension::widgets.upload')
+@mediaUpload($employee, true, 'yourvendor/yourextension::widgets.upload')
 ```
 
 ###### Use the media manager in a Platform Extension / Model Form
@@ -74,7 +74,7 @@ Third argument is optional and can be a view that would override the default wid
 
 		<div class="row">
 
-			@mediaUploader($employee)
+			@mediaUpload($employee)
 
 		</div>
 
