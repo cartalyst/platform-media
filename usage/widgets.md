@@ -24,6 +24,6 @@ By passing the attributes below for a non existing preset, an image will be crea
 @mediaPath(1, 'new_preset', ['width' => 100, 'height' => 100, 'macros' => [ 'fit' ]])
 ```
 
-#### `@mediaUploader($namespace, $multiUpload, $view)`
+#### `@mediaUpload($namespace, $multiUpload, $view)`
 
 Documented under the Manager section above.
