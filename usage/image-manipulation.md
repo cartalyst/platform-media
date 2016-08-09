@@ -117,7 +117,6 @@ $manager->setPreset('mini', [
 
 Here's a list of allowed keys that can be used on each preset, but you're free to pass any key for your custom macros.
 
---- table here ---
 <table class="table table-bordered">
     <thead>
         <tr>
