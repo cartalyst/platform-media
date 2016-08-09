@@ -89,7 +89,7 @@ Open the `config/platform-media.php` config file and add the preset to the `pres
     'mini' => [
         'width'  => 80,
         'macros' => [ 'fit' ],
-        'mimes'  => [ 'image/jpg' ],
+        'mimes'  => [ 'image/jpeg' ],
     ],
 
 ],
@@ -107,7 +107,7 @@ $manager = app('platform.media.manager');
 $manager->setPreset('mini', [
     'width'  => 80,
     'macros' => [ 'fit' ],
-    'mimes'  => [ 'image/jpg' ],
+    'mimes'  => [ 'image/jpeg' ],
 ]);
 ```
 

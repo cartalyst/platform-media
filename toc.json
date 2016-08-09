@@ -11,6 +11,8 @@
 		"index",
 		"repository",
 		"manager",
-		"image-manipulation"
+		"image-manipulation",
+		"widgets",
+		"artisan"
 	]
 }
