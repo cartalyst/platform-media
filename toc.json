@@ -11,6 +11,6 @@
 		"index",
 		"repository",
 		"manager",
-		"cropping"
+		"image-manipulation"
 	]
 }

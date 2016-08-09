@@ -5,7 +5,7 @@
 - Set media visibility to private/public.
 - Share file urls.
 - Download files.
-- Blade call @media('id', 'download|thumbnail')
-- Blade call @thumbnail('id', [ 'options' ], 'default')
+- Blade call to retrieve the path to a media file.
+- Blade call to perform file uploads.
 - Add tags.
 - Create config styles.
