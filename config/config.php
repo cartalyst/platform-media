@@ -84,16 +84,6 @@ return [
             'macros' => [ 'fit' ],
         ],
 
-        /*
-            - width
-            - height
-            - path
-            - mimes []
-            - macros []
-            - constraints []
-            - namespaces []
-        */
-
     ],
 
 ];
