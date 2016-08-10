@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v3.3.3 - 2016-08-10
+
+`FIXED`
+
+- An issue where some users couldn't unlink media entries due to incorrect permissions.
+
 ### v3.3.2 - 2016-07-20
 
 `FIXED`
