@@ -225,7 +225,7 @@ return [
             $g->permission('media.upload', function ($p) {
                 $p->label = trans('platform/media::permissions.upload');
 
-                $p->controller('Platform\Media\Controllers\Admin\MediaController', 'upload, uploadJson');
+                $p->controller('Platform\Media\Controllers\Admin\MediaController', 'upload, linkMedia');
             });
 
             $g->permission('media.edit', function ($p) {
