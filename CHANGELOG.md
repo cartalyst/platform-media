@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v4.0.1 - 2016-08-10
+
+`FIXED`
+
+- An issue where some users couldn't unlink media entries due to incorrect permissions.
+
 ### v4.0.0 - 2016-08-03
 
 `UPDATED`
@@ -22,6 +28,18 @@ We do not give estimated times for completion on `Accepted` Proposals.
 `REMOVED`
 
 - `@thumbnail` Blade widget call, use `@mediaPath`.
+
+### v3.3.3 - 2016-08-10
+
+`FIXED`
+
+- An issue where some users couldn't unlink media entries due to incorrect permissions.
+
+### v3.3.2 - 2016-07-20
+
+`FIXED`
+
+- A bug preventing guarded from being used on the model.
 
 ### v3.3.1 - 2016-06-25
 
