@@ -6,7 +6,7 @@ The `$media` variable used below is a reference to the MediaRepository.
 $media = app('platform.media');
 ```
 
-###### Retrieve all media
+###### Retrieve a media entry
 
 ```php
 $media = $media->find(1);
