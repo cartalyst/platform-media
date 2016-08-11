@@ -6,18 +6,18 @@ The `$media` variable used below is a reference to the MediaRepository.
 $media = app('platform.media');
 ```
 
-###### Retrieve all media.
+###### Retrieve all media
 
 ```php
 $media = $media->find(1);
 ```
 
-###### Dynamically create a new employee.
+###### Dynamically upload a new file
 
 ```php
 // $file must be an instance of `Symfony\Component\HttpFoundation\File\UploadedFile`
 
 $media->upload($file, [
-    'name'  => 'Foobar',
+    'name' => 'Foobar',
 ]);
 ```
