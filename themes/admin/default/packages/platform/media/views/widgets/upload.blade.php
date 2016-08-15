@@ -129,9 +129,9 @@
             </div>
 
             <div class="list-group-item-right">
-                <a href="<%- '{{ route('admin.media.edit', [ 'id' ]) }}'.replace('id', media.id) %>" class="btn btn-xs btn-success"><i class="fa fa-fw fa-pencil"></i></a>
+                <a href="<%- '{{ route('admin.media.edit', [ 'id' ]) }}'.replace('id', media.id) %>" class="btn btn-sm btn-default"><i class="fa fa-fw fa-pencil"></i></a>
 
-                <button type="button" class="btn btn-xs btn-danger" data-media-delete><i class="fa fa-fw fa-trash"></i></button>
+                <button type="button" class="btn btn-sm btn-danger" data-media-delete><i class="fa fa-fw fa-trash"></i></button>
             </div>
 
         </div>
