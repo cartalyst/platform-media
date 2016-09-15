@@ -22,6 +22,7 @@ use Cartalyst\Extensions\ExtensionInterface;
 use Cartalyst\Settings\Repository as Settings;
 use Illuminate\Contracts\Foundation\Application;
 use Cartalyst\Permissions\Container as Permissions;
+use Illuminate\Contracts\Routing\Registrar as Router;
 
 return [
 
