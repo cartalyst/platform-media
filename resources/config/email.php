@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    4.0.3
+ * @version    5.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -20,18 +20,13 @@
 
 return [
 
-    'title'         => 'Media',
+    // Total of allowed attachments per email
+    'max_attachments' => 10,
 
-    'delete_info'   => 'Deleting an image will unlink it from this record, the image itself remains available under the media extension.',
+    // Limit of the attachments that we'll be sending on the email
+    'attachments_max_size' => 10485760, // 10 mb
 
-    'multi_upload'  => 'Multiple images can be added.',
-
-    'single_upload' => 'Only a single image can be added.',
-
-    'manager_title' => 'Media Manager',
-
-    'selected' => 'Selected',
-
-    'no_items_selected' => 'No items selected.'
+    // Default email subject
+    'subject' => "You've Got Media!",
 
 ];

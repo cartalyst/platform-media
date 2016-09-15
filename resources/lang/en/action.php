@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    4.0.3
+ * @version    5.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -20,13 +20,21 @@
 
 return [
 
-    // Total of allowed attachments per email
-    'max_attachments' => 10,
+    'send_email' => 'Send Email',
+    'share'      => 'Share',
+    'download'   => 'Download',
+    'upload'     => 'Upload',
+    'select'     => 'Select',
 
-    // Limit of the attachments that we'll be sending on the email
-    'attachments_max_size' => 10485760, // 10 mb
+    'bulk' => [
+        'email'   => 'Email Selected',
+        'private' => 'Make Private',
+        'public'  => 'Make Public',
+    ],
 
-    // Default email subject
-    'subject' => "You've Got Media!",
+    'filter' => [
+        'private' => 'All Private',
+        'public'  => 'All Public',
+    ],
 
 ];

@@ -1,7 +1,7 @@
 {
     "name": "platform/media",
     "type": "platform-extension",
-    "description": "Media management for Platform.",
+    "description": "A Platform 6 media manager.",
     "keywords": [
         "php",
         "cartalyst",
@@ -22,15 +22,15 @@
         { "type": "composer", "url": "https://packages.cartalyst.com" }
     ],
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=5.6.4",
         "cartalyst/composer-installers": "1.2.*",
-        "cartalyst/filesystem": "3.0.*",
+        "cartalyst/filesystem": "3.0.*@dev",
         "cartalyst/support": "~1.2",
         "intervention/image": "~2.3",
         "intervention/imagecache": "~2.3",
-        "platform/access": "4.0.*",
-        "platform/foundation": "4.0.*",
-        "platform/tags": "4.0.*"
+        "platform/access": "dev-feature/six@dev",
+        "platform/foundation": "dev-feature/six@dev",
+        "platform/tags": "dev-feature/six@dev"
     },
     "require-dev": {
         "cartalyst/testing": "~2.0@dev",
@@ -38,8 +38,8 @@
     },
     "autoload": {
         "classmap": [
-            "database/migrations",
-            "database/seeds"
+            "resources/database/migrations",
+            "resources/database/seeds"
         ],
         "files": [
             "src/helpers.php"
@@ -49,8 +49,9 @@
     "extra": {
         "component": "extension",
         "branch-alias": {
-            "dev-master": "4.0.x-dev"
+            "dev-master": "5.0.x-dev"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "dev",
+    "prefer-stable"
 }

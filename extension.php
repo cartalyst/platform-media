@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    4.0.3
+ * @version    5.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -27,10 +27,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Slug
+    |--------------------------------------------------------------------------
+    |
+    | This is the extension unique identifier and should not be
+    | changed as it will be recognized as a new extension.
+    |
+    | Note:
+    |
+    |   Ideally this should match the folder structure within the
+    |   extensions folder, however this is completely optional.
+    |
+    */
+
+    'slug' => 'platform/media',
+
+    /*
+    |--------------------------------------------------------------------------
     | Name
     |--------------------------------------------------------------------------
     |
-    | Your extension name (it's only required for presentational purposes).
+    | This is the extension name, used mainly for presentational purposes.
     |
     */
 
@@ -38,18 +55,26 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Slug
+    | Description
     |--------------------------------------------------------------------------
     |
-    | Your extension unique identifier and should not be changed as
-    | it will be recognized as a whole new extension.
-    |
-    | Ideally, this should match the folder structure within the extensions
-    | folder, but this is completely optional.
+    | A brief sentence describing what the extension does.
     |
     */
 
-    'slug' => 'platform/media',
+    'description' => 'Manage your website media.',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Version
+    |--------------------------------------------------------------------------
+    |
+    | This is the extension version and it should be set as a string
+    | so it can be used with the version_compare() function.
+    |
+    */
+
+    'version' => '5.0.0',
 
     /*
     |--------------------------------------------------------------------------
@@ -64,43 +89,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Description
-    |--------------------------------------------------------------------------
-    |
-    | One or two sentences describing what the extension do for
-    | users to view when they are installing the extension.
-    |
-    */
-
-    'description' => 'Manage your website media.',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Version
-    |--------------------------------------------------------------------------
-    |
-    | Version should be a string that can be used with version_compare().
-    |
-    */
-
-    'version' => '4.0.3',
-
-    /*
-    |--------------------------------------------------------------------------
     | Requirements
     |--------------------------------------------------------------------------
     |
-    | List here all the extensions that this extension requires to work.
+    | Define here all the extensions that this extension depends on to work.
     |
-    | This is used in conjunction with composer, so you should put the
-    | same extension dependencies on your main composer.json require
-    | key, so that they get resolved using composer, however you
-    | can use without composer, at which point you'll have to
-    | ensure that the required extensions are available.
+    | Note:
+    |
+    |   This is used in conjunction with Composer, so you should put the
+    |   exact same dependencies on the extension composer.json require
+    |   array, so that they get resolved automatically by Composer.
+    |
+    |   However you can use without Composer, at which point you will
+    |   have to ensure that the required extensions are available!
     |
     */
 
-    'require' => [
+    'requires' => [
 
         'platform/access',
 
@@ -108,43 +113,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Autoload Logic
-    |--------------------------------------------------------------------------
-    |
-    | You can define here your extension autoloading logic, it may either
-    | be 'composer', 'platform' or a 'Closure'.
-    |
-    | If composer is defined, your composer.json file specifies the autoloading
-    | logic.
-    |
-    | If platform is defined, your extension receives convetion autoloading
-    | based on the Platform standards.
-    |
-    | If a Closure is defined, it should take two parameters as defined
-    | bellow:
-    |
-    |	object \Composer\Autoload\ClassLoader  $loader
-    |	object \Illuminate\Contracts\Foundation\Application  $app
-    |
-    | Supported: "composer", "platform", "Closure"
-    |
-    */
-
-    'autoload' => 'composer',
-
-    /*
-    |--------------------------------------------------------------------------
     | Service Providers
     |--------------------------------------------------------------------------
     |
-    | Define your extension service providers here. They will be dynamically
-    | registered without having to include them in app/config/app.php.
+    | Define here your extension service providers. They will be dynamically
+    | registered without having to include them in config/app.php file.
     |
     */
 
     'providers' => [
 
-        'Platform\Media\Providers\MediaServiceProvider',
+        Platform\Media\Providers\MediaServiceProvider::class,
 
     ],
 
@@ -158,12 +137,13 @@ return [
     |
     | The closure parameters are:
     |
+    |   object \Illuminate\Contracts\Routing\Registrar  $router
     |	object \Cartalyst\Extensions\ExtensionInterface  $extension
     |	object \Illuminate\Contracts\Foundation\Application  $app
     |
     */
 
-    'routes' => function (ExtensionInterface $extension, Application $app) {
+    'routes' => function (Router $router, ExtensionInterface $extension, Application $app) {
         if (! $app->routesAreCached()) {
             Route::group([
                 'prefix'    => admin_uri().'/media',
@@ -178,7 +158,6 @@ return [
                 Route::get('images_list', ['as' => 'admin.media.images_list', 'uses' => 'MediaController@imagesList']);
 
                 Route::post('upload', ['as' => 'admin.media.upload', 'uses' => 'MediaController@upload']);
-                Route::post('upload_redactor', ['as' => 'admin.media.upload_redactor', 'uses' => 'MediaController@uploadRedactor']);
                 Route::post('link_media', ['as' => 'admin.media.link_media', 'uses' => 'MediaController@linkMedia']);
 
                 Route::get('email/{id}', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@index']);
@@ -211,6 +190,11 @@ return [
     | For detailed instructions on how to register the permissions, please
     | refer to the following url https://cartalyst.com/manual/permissions
     |
+    | The closure parameters are:
+    |
+    |   object \Cartalyst\Permissions\Container  $permissions
+    |	object \Illuminate\Contracts\Foundation\Application  $app
+    |
     */
 
     'permissions' => function (Permissions $permissions, Application $app) {
@@ -226,7 +210,7 @@ return [
             $g->permission('media.upload', function ($p) {
                 $p->label = trans('platform/media::permissions.upload');
 
-                $p->controller('Platform\Media\Controllers\Admin\MediaController', 'upload, uploadRedactor, linkMedia');
+                $p->controller('Platform\Media\Controllers\Admin\MediaController', 'upload, linkMedia');
             });
 
             $g->permission('media.edit', function ($p) {
@@ -253,6 +237,11 @@ return [
     | For detailed instructions on how to register the settings, please
     | refer to the following url https://cartalyst.com/manual/settings
     |
+    | The closure parameters are:
+    |
+    |   object \Cartalyst\Settings\Repository  $settings
+    |	object \Illuminate\Contracts\Foundation\Application  $app
+    |
     */
 
     'settings' => function (Settings $settings, Application $app) {
@@ -275,7 +264,7 @@ return [
     | extensions installed through the Operations extension.
     |
     | The default order (for extensions installed initially) can be
-    | found by editing the file "app/config/platform.php".
+    | found by editing the file "config/platform.php".
     |
     */
 
@@ -294,19 +283,5 @@ return [
         ],
 
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Widgets
-    |--------------------------------------------------------------------------
-    |
-    | Closure that is called when the extension is started. You can register
-    | all your custom widgets here. Of course, Platform will guess the
-    | widget class for you, this is just for custom widgets or if you
-    | do not wish to make a new class for a very small widget.
-    |
-    */
-
-    'widgets' => null,
 
 ];

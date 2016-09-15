@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    4.0.3
+ * @version    5.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -20,7 +20,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class MigrationPlatformMediaAddNamespaceAndRelations extends Migration
+class MigrationPlatformMediaAddDescriptionColumn extends Migration
 {
     /**
      * Run the migrations.
@@ -30,19 +30,7 @@ class MigrationPlatformMediaAddNamespaceAndRelations extends Migration
     public function up()
     {
         Schema::table('media', function ($table) {
-            $table->string('namespace')->before('created_at')->nullable();
-        });
-
-        Schema::create('media_relations', function ($table) {
-            $table->increments('id');
-            $table->string('object_type');
-            $table->integer('object_id')->unsigned();
-            $table->integer('media_id')->unsigned();
-            $table->tinyInteger('sort')->nullable();
-
-            $table->engine = 'InnoDB';
-
-            $table->index([ 'object_type', 'object_id' ]);
+            $table->text('description')->before('created_at')->nullable();
         });
     }
 
@@ -53,10 +41,8 @@ class MigrationPlatformMediaAddNamespaceAndRelations extends Migration
      */
     public function down()
     {
-        Schema::drop('media_relations');
-
         Schema::table('media', function ($table) {
-            $table->dropColumn('namespace');
+            $table->dropColumn('description');
         });
     }
 }

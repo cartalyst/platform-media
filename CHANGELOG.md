@@ -11,18 +11,9 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
-### v4.0.3 - 2016-11-04
+### v5.0.0 - TBA
 
-`FIXED`
-
-- Redactor upload route name.
-- Redactor upload permission.
-
-### v4.0.2 - 2016-10-27
-
-`UPDATED`
-
-- Update index view to use the new Blade help widget.
+- Updated for Platform 6.
 
 ### v4.0.1 - 2016-08-10
 

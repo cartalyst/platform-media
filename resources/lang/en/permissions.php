@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    4.0.3
+ * @version    5.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -20,21 +20,9 @@
 
 return [
 
-    'send_email' => 'Send Email',
-    'share'      => 'Share',
-    'download'   => 'Download',
-    'upload'     => 'Upload',
-    'select'     => 'Select',
-
-    'bulk' => [
-        'email'   => 'Email Selected',
-        'private' => 'Make Private',
-        'public'  => 'Make Public',
-    ],
-
-    'filter' => [
-        'private' => 'All Private',
-        'public'  => 'All Public',
-    ],
+    'index'  => 'List Media',
+    'upload' => 'Upload\Link Media',
+    'edit'   => 'Edit Media',
+    'delete' => 'Delete Media',
 
 ];

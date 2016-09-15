@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    4.0.3
+ * @version    5.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -247,20 +247,6 @@ class MediaController extends AdminController
         }
 
         return response($this->media->getError(), 400);
-    }
-
-    /**
-     * Media upload form processing for redactor.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function uploadRedactor()
-    {
-        $media = json_decode($this->upload()->content());
-
-        return response([
-            'filelink' => route('media.view', $media->path),
-        ]);
     }
 
     /**
