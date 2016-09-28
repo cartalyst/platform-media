@@ -1,5 +1,5 @@
 {
-    "name": "platform/media",
+    "name": "nomadme/media",
     "type": "platform-extension",
     "description": "Media management for Platform.",
     "keywords": [
