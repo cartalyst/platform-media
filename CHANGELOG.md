@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v4.0.2 - 2016-10-27
+
+`UPDATED`
+
+- Update index view to use the new Blade help widget.
+
 ### v4.0.1 - 2016-08-10
 
 `FIXED`
