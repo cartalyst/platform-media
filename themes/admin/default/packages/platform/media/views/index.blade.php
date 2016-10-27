@@ -261,8 +261,6 @@
 
 @include('platform/media::modal')
 
-@if (config('platform.app.help'))
-@include('platform/media::help')
-@endif
+@help('platform/media::help')
 
 @stop
