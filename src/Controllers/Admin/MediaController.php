@@ -160,14 +160,11 @@ class MediaController extends AdminController
         // The Data Grid settings
         $settings = compact('columns', 'sorts', 'transformer');
 
-        // Prepare the Data Grid handler
-        $handler = new DatabaseHandler($this->media->grid(), $settings);
-
         // Create export provider
         $provider = new ExportProvider();
 
         // Return the Data Grid
-        return datagrid($handler, $provider);
+        return datagrid($this->media->grid(), $settings, $provider);
     }
 
     /**

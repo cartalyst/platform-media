@@ -122,7 +122,7 @@ class MediaController extends Controller
 
                 $mediaRoles = $media->roles;
 
-                $userRoles = $user->roles->lists('id')->toArray();
+                $userRoles = $user->roles->pluck('id')->toArray();
 
                 if (! empty($mediaRoles) and ! array_intersect($mediaRoles, $userRoles)) {
                     $pass = false;

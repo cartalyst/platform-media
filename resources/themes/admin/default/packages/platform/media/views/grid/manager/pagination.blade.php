@@ -15,7 +15,7 @@
 
 			<% if (p.previousPage !== null) { %>
 
-				<li><a href="#" data-grid-page="<%= p.previous_page %>"><i class="fa fa-chevron-left"></i></a></li>
+				<li><a href="#" data-grid-page="<%= p.previousPage %>"><i class="fa fa-chevron-left"></i></a></li>
 
 			<% } else { %>
 

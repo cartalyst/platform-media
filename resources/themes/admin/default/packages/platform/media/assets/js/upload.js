@@ -64,7 +64,7 @@ var Extension;
             url: {
                 hash: false
             },
-            callback: function(data) {
+            callback: function() {
                 if (! Extension.Uploader.multiUpload) {
                     $('[data-grid-checkbox="all"]').prop('disabled', true);
                 }

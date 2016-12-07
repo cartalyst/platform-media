@@ -77,7 +77,7 @@ class Media
 
         $currentUploads = $isNamespaced ? $model->media : [];
 
-        $uploadedMimeTypes = app('platform.media')->lists('mime')->unique()->toArray();
+        $uploadedMimeTypes = app('platform.media')->pluck('mime')->unique()->toArray();
 
         $namespace = $isNamespaced ? $namespace->getEntityNamespace() : (string) $namespace;
 
