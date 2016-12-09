@@ -100,7 +100,7 @@
 
       <div class="modal-footer">
         {{-- Grid: Pagination --}}
-        <div id="data-grid_pagination" data-grid="main"></div>
+        <div id="data-grid_pagination" data-grid-layout="pagination" data-grid="main"></div>
 
         <span class="pull-right text-right">
           <button type="button" class="btn btn-default" data-dismiss="modal">{{{ trans('action.cancel') }}}</button>
