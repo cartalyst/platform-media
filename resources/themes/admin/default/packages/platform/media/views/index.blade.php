@@ -224,7 +224,7 @@
 
 						</div>
 
-						@if (config('platform.app.help'))
+						@if (config('platform.config.app.help'))
 
 						<button class="btn btn-default" data-toggle="modal" data-target="#helpModal">
 		                    <i class="fa fa-question-circle"></i>
