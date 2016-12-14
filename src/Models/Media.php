@@ -35,18 +35,8 @@ class Media extends Model implements TaggableInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected $fillable = [
-		'mime',
-		'name',
-		'path',
-		'size',
-		'private',
-		'is_image',
-		'extension',
-		'thumbnail',
-		'width',
-		'height',
-		'roles',
+	protected $guarded = [
+		'id',
 	];
 
 	/**
