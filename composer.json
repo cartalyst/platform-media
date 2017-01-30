@@ -28,9 +28,9 @@
         "cartalyst/support": "~2.0",
         "intervention/image": "~2.3",
         "intervention/imagecache": "~2.3",
-        "platform/access": "~5.0",
-        "platform/foundation": "~5.0",
-        "platform/tags": "~5.0"
+        "platform/access": "~6.0",
+        "platform/foundation": "~6.0",
+        "platform/tags": "~6.0"
     },
     "require-dev": {
         "laravel/framework": "~5.3",
