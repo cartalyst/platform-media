@@ -172,13 +172,13 @@ class MediaServiceProvider extends ServiceProvider
      */
     protected function registerCommands()
     {
-        $this->app['command.platform.media.images.clear'] = $this->app->share(function ($app) {
+        $this->app->singleton('command.platform.media.images.clear', function ($app) {
             return new Commands\ImagesClear($app);
         });
 
         $this->commands('command.platform.media.images.clear');
 
-        $this->app['command.platform.media.images.generate'] = $this->app->share(function ($app) {
+        $this->app->singleton('command.platform.media.images.generate', function ($app) {
             return new Commands\ImagesGenerate($app);
         });
 
