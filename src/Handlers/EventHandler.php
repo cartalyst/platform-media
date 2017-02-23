@@ -22,7 +22,7 @@ namespace Platform\Media\Handlers;
 
 use Cartalyst\Filesystem\File;
 use Platform\Media\Models\Media;
-use Illuminate\Events\Dispatcher;
+use Illuminate\Contracts\Events\Dispatcher;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Cartalyst\Support\Handlers\EventHandler as BaseEventHandler;
 

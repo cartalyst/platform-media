@@ -43,7 +43,7 @@ class MediaEventHandlerTest extends IlluminateTestCase
     /** @test */
     public function test_subscribe()
     {
-        $dispatcher = m::mock('Illuminate\Events\Dispatcher');
+        $dispatcher = m::mock('Illuminate\Contracts\Events\Dispatcher');
 
         $dispatcher->shouldReceive('listen')->once()->with('platform.media.uploaded', get_class($this->handler).'@uploaded');
 
