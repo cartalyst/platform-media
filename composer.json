@@ -24,13 +24,13 @@
     "require": {
         "php": ">=5.6.4",
         "cartalyst/composer-installers": "^2.0",
-        "cartalyst/filesystem": "3.0.*@dev",
+        "cartalyst/filesystem": "3.0.*",
         "cartalyst/support": "~2.0",
         "intervention/image": "~2.3",
         "intervention/imagecache": "~2.3",
-        "platform/access": "dev-feature/six@dev",
-        "platform/foundation": "dev-feature/six@dev",
-        "platform/tags": "dev-feature/six@dev"
+        "platform/access": "~5.0",
+        "platform/foundation": "~5.0",
+        "platform/tags": "~5.0"
     },
     "require-dev": {
         "laravel/framework": "~5.3",

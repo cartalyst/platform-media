@@ -16,7 +16,7 @@ Raw files can be found [here](https://github.com/cartalyst/platform-media/tree/d
 
 Important versions listed below. Refer to the [Change Log](CHANGELOG.md) for a full history of the project.
 
-- [5.0](CHANGELOG.md) - TBA
+- [5.0](CHANGELOG.md) - 2017-02-24
 - [4.0](CHANGELOG.md) - 2016-08-03
 - [3.0](CHANGELOG.md) - 2015-07-06
 - [2.0](CHANGELOG.md) - 2015-03-05
@@ -41,4 +41,4 @@ Bug reports, feature requests, and pull requests can be submitted by following o
 
 This software is released under the [Cartalyst PSL](LICENSE) License.
 
-© 2011-2016 Cartalyst LLC, All rights reserved.
+© 2011-2017 Cartalyst LLC, All rights reserved.
