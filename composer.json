@@ -33,6 +33,7 @@
         "platform/tags": "dev-feature/six@dev"
     },
     "require-dev": {
+        "laravel/framework": "~5.3",
         "cartalyst/testing": "~2.0@dev",
         "patchwork/utf8": "~1.1"
     },

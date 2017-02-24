@@ -117,7 +117,8 @@ class AdminMediaControllerTest extends IlluminateTestCase
             ->once();
 
         $this->media->shouldReceive('grid')
-            ->once();
+            ->once()
+            ->andReturn([]);
 
         $this->controller->grid();
     }

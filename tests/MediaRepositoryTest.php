@@ -122,7 +122,7 @@ class MediaRepositoryTest extends IlluminateTestCase
             ->once()
             ->andReturn($collection = m::mock('Illuminate\Support\Collection'));
 
-        $collection->shouldReceive('lists')
+        $collection->shouldReceive('pluck')
             ->with('name')
             ->once();
 
