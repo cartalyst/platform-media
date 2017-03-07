@@ -247,6 +247,20 @@ class MediaController extends AdminController
     }
 
     /**
+     * Media upload form processing for redactor.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function uploadRedactor()
+    {
+        $media = json_decode($this->upload()->content());
+
+        return response([
+            'filelink' => route('media.view', $media->path),
+        ]);
+    }
+
+    /**
      * Associates media records to objects.
      *
      * @return string
