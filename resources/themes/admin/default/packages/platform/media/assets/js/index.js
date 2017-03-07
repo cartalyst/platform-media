@@ -20,7 +20,6 @@ var Extension;
 
 ;(function(window, document, $, undefined)
 {
-
 	'use strict';
 
 	Extension = Extension || {

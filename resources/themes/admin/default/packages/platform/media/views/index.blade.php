@@ -265,7 +265,7 @@
 		{{-- Grid: Filters --}}
 		<div class="btn-toolbar" role="toolbar" aria-label="data-grid-applied-filters">
 
-			<div data-grid-layout="filters" id="data-grid_applied" class="btn-group"></div>
+			<div id="data-grid_applied" class="btn-group" data-grid-layout="filters"></div>
 
 		</div>
 

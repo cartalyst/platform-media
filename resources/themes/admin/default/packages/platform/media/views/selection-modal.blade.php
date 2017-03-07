@@ -17,7 +17,7 @@
 
         <div class="modal-header-center"></div>
 
-        <div class="modal-header-right" data-grid-search data-grid="main">
+        <div class="modal-header-right" data-grid-search>
 
           <div>
             <div class="input-group">
@@ -42,7 +42,7 @@
                 <ul class="dropdown-menu" role="menu">
 
                   @foreach($uploadedMimeTypes as $mimeType)
-                  <li><a href="#" data-grid-filter="{{ $mimeType }}" data-grid-query="mime:{{ $mimeType }}" data-grid="main">{{ $mimeType }}</a></li>
+                  <li><a href="#" data-grid-filter="{{ $mimeType }}" data-grid-query="mime:{{ $mimeType }}">{{ $mimeType }}</a></li>
                   @endforeach
 
                 </ul>
@@ -53,7 +53,7 @@
 
               <span class="input-group-btn">
 
-                <button class="btn btn-default" data-grid="main" data-grid-reset>
+                <button class="btn btn-default" data-grid-reset>
                   <i class="fa fa-refresh fa-sm"></i>
                 </button>
 
@@ -89,18 +89,18 @@
 
         {{-- Grid: Applied Filters --}}
         <div class="btn-toolbar" role="toolbar" aria-label="data-grid-applied-filters">
-          <div id="data-grid_applied" class="btn-group" data-grid="main"></div>
+          <div id="data-grid_applied" class="btn-group" data-grid-layout="filters"></div>
         </div>
 
         <div>
-          <div class="media-results" id="data-grid" data-grid-source="{{ route('admin.media.grid') }}" data-grid="main" data-grid-layout="results"></div>
+          <div class="media-results" id="data-grid" data-grid-source="{{ route('admin.media.grid') }}" data-grid-layout="results"></div>
         </div>
 
       </div>
 
       <div class="modal-footer">
         {{-- Grid: Pagination --}}
-        <div id="data-grid_pagination" data-grid-layout="pagination" data-grid="main"></div>
+        <div id="data-grid_pagination" data-grid-layout="pagination"></div>
 
         <span class="pull-right text-right">
           <button type="button" class="btn btn-default" data-dismiss="modal">{{{ trans('action.cancel') }}}</button>
