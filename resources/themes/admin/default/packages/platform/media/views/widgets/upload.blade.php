@@ -7,7 +7,7 @@
 {{ Asset::queue('fileexif', 'platform/media::js/FileAPI/FileAPI.exif.js', 'fileapi') }}
 
 {{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
-{{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
+{{ Asset::queue('lodash', 'cartalyst/js/lodash.min.js', 'jquery') }}
 {{ Asset::queue('mediamanager', 'platform/media::js/mediamanager.js', ['fileapi', 'underscore']) }}
 {{ Asset::queue('sortable', 'platform/media::js/sortable.min.js') }}
 {{ Asset::queue('upload', 'platform/media::js/upload.js', ['platform', 'mediamanager', 'sortable']) }}
