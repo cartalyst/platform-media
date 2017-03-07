@@ -11,9 +11,23 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v6.0.1 - 2017-03-07
+
+`FIXED`
+
+- Media manager.
+- Redactor upload.
+
 ### v6.0.0 - 2017-02-24
 
 - Updated for Platform 7.
+
+### v5.0.1 - 2017-03-07
+
+`FIXED`
+
+- Media manager.
+- Redactor upload.
 
 ### v5.0.0 - 2017-02-24
 

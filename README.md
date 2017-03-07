@@ -1,21 +1,22 @@
 # Media
 
-[![Build Status](https://magnum.travis-ci.com/cartalyst/platform-media.svg?token=98Zt8zYdwyheTKqziswS&branch=5.0)](https://magnum.travis-ci.com/cartalyst/platform-media)
+[![Build Status](https://magnum.travis-ci.com/cartalyst/platform-media.svg?token=98Zt8zYdwyheTKqziswS&branch=6.0)](https://magnum.travis-ci.com/cartalyst/platform-media)
 
-A Platform 6 media manager.
+A Platform 7 media manager.
 
 Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](LICENSE). Code well, rock on.
 
 ## Documentation
 
-Reader-friendly Documentation can be found [here](https://cartalyst.com/manual/platform-media/5.0).
+Reader-friendly Documentation can be found [here](https://cartalyst.com/manual/platform-media/6.0).
 
-Raw files can be found [here](https://github.com/cartalyst/platform-media/tree/docs/5.0).
+Raw files can be found [here](https://github.com/cartalyst/platform-media/tree/docs/6.0).
 
 ## Change Log
 
 Important versions listed below. Refer to the [Change Log](CHANGELOG.md) for a full history of the project.
 
+- [6.0](CHANGELOG.md) - 2017-02-24
 - [5.0](CHANGELOG.md) - 2017-02-24
 - [4.0](CHANGELOG.md) - 2016-08-03
 - [3.0](CHANGELOG.md) - 2015-07-06
