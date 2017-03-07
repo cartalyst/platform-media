@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v6.0.2 - 2017-03-08
+
+`REVISED`
+
+- Markup clean up.
+
 ### v6.0.1 - 2017-03-07
 
 `FIXED`
@@ -21,6 +27,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 ### v6.0.0 - 2017-02-24
 
 - Updated for Platform 7.
+
+### v5.0.2 - 2017-03-08
+
+`REVISED`
+
+- Markup clean up.
 
 ### v5.0.1 - 2017-03-07
 
