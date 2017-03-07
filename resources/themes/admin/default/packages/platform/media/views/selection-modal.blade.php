@@ -1,6 +1,7 @@
-{{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'jquery') }}
-{{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
 {{ Asset::queue('moment', 'moment/js/moment.js', 'jquery') }}
+{{ Asset::queue('lodash', 'cartalyst/js/lodash.min.js') }}
+{{ Asset::queue('exojs', 'cartalyst/js/exoskeleton.min.js', 'lodash') }}
+{{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'jquery') }}
 
 <div class="modal modal-media-selection fade" id="media-selection-modal" tabindex="-1" role="dialog" aria-labelledby="media-selection-modal" aria-hidden="true">
 
@@ -16,7 +17,7 @@
 
         <div class="modal-header-center"></div>
 
-        <div class="modal-header-right" data-search data-grid="main">
+        <div class="modal-header-right" data-grid-search data-grid="main">
 
           <div>
             <div class="input-group">
@@ -41,7 +42,7 @@
                 <ul class="dropdown-menu" role="menu">
 
                   @foreach($uploadedMimeTypes as $mimeType)
-                  <li><a href="#" data-filter="mime:{{ $mimeType }}" data-grid="main">{{ $mimeType }}</a></li>
+                  <li><a href="#" data-grid-filter="{{ $mimeType }}" data-grid-query="mime:{{ $mimeType }}" data-grid="main">{{ $mimeType }}</a></li>
                   @endforeach
 
                 </ul>
@@ -52,8 +53,7 @@
 
               <span class="input-group-btn">
 
-
-                <button class="btn btn-default" data-grid="main" data-reset>
+                <button class="btn btn-default" data-grid="main" data-grid-reset>
                   <i class="fa fa-refresh fa-sm"></i>
                 </button>
 
@@ -93,7 +93,7 @@
         </div>
 
         <div>
-          <div class="media-results" id="data-grid" data-grid-source="{{ route('admin.media.grid') }}" data-grid="main"></div>
+          <div class="media-results" id="data-grid" data-grid-source="{{ route('admin.media.grid') }}" data-grid="main" data-grid-layout="results"></div>
         </div>
 
       </div>
@@ -119,4 +119,3 @@
 @include('platform/media::grid/manager/results')
 @include('platform/media::grid/manager/pagination')
 @include('platform/media::grid/manager/filters')
-@include('platform/media::grid/manager/no_results')
