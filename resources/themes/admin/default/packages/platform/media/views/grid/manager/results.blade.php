@@ -2,9 +2,6 @@
 
     <% var results = response.results; %>
 
-    <% console.log('feesssssssss') %>
-    <% console.log(results) %>
-
     <% if (_.isEmpty(results)) { %>
 
         <p class="media-no-results">{{{ trans('common.no_results') }}}</p>
