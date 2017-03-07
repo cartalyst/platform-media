@@ -159,7 +159,7 @@ return [
                 Route::get('images_list', ['as' => 'admin.media.images_list', 'uses' => 'MediaController@imagesList']);
 
                 Route::post('upload', ['as' => 'admin.media.upload', 'uses' => 'MediaController@upload']);
-                Route::post('upload_redactor', ['as' => 'admin.media.upload', 'uses' => 'MediaController@uploadRedactor']);
+                Route::post('upload_redactor', ['as' => 'admin.media.upload_redactor', 'uses' => 'MediaController@uploadRedactor']);
                 Route::post('link_media', ['as' => 'admin.media.link_media', 'uses' => 'MediaController@linkMedia']);
 
                 Route::get('email/{id}', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@index']);
@@ -212,7 +212,7 @@ return [
             $g->permission('media.upload', function ($p) {
                 $p->label = trans('platform/media::permissions.upload');
 
-                $p->controller('Platform\Media\Controllers\Admin\MediaController', 'upload, linkMedia');
+                $p->controller('Platform\Media\Controllers\Admin\MediaController', 'upload, uploadRedactor, linkMedia');
             });
 
             $g->permission('media.edit', function ($p) {
