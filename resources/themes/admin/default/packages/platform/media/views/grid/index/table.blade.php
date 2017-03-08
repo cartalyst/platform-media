@@ -8,7 +8,7 @@
 				<tr>
 					<th><input data-grid-checkbox="all" type="checkbox"></th>
 					<th class="sortable" data-grid-sort="mime"><i class="fa fa-file-o"></i></th>
-					<th class="sortable" data-grid-sort="mime"><i class="fa fa-shield"></i></th>
+					<th class="sortable" data-grid-sort="private"><i class="fa fa-shield"></i></th>
 					<th class="sortable" data-grid-sort="name">{{{ trans('model.name') }}}</th>
 					<th class="hidden-xs">{{{ trans('platform/tags::model.tag.legend') }}}</th>
 					<th class="sortable hidden-xs" data-grid-sort="size">{{{ trans('platform/media::model.general.size') }}}</th>
