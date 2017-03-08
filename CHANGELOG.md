@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v5.0.3 - 2017-03-08
+
+`FIXED`
+
+- Sorting by status.
+
 ### v5.0.2 - 2017-03-08
 
 `REVISED`
