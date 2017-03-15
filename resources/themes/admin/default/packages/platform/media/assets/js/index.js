@@ -25,7 +25,7 @@ var Extension;
 	Extension = Extension || {
 		Index: {},
 		Config: {},
-        lastChecked: null,
+		lastChecked: null,
 	};
 
 	// Initialize functions
@@ -61,7 +61,7 @@ var Extension;
 		var startDate, endDate, config, filter;
 
 		var filters = _.compact(
-			String(window.location.hash.slice(3)).split('/').splice(2)
+			String(window.location.hash.slice(1)).split('/')
 		);
 
 		config = {
@@ -82,10 +82,6 @@ var Extension;
 
 		if (startDate && endDate)
 		{
-			$('[data-grid-calendar]').val(
-				startDate.format('YYYY-MM-DD') + ' - ' + endDate.format('YYYY-MM-DD')
-			);
-
 			config = {
 				startDate: startDate,
 				endDate: endDate,
@@ -96,10 +92,6 @@ var Extension;
 		Platform.Cache.$body.on('click', '.range_inputs .applyBtn', function()
 		{
 			$('input[name="daterangepicker_start"]').trigger('change');
-
-			$('[data-grid-calendar]').val(
-				moment($('input[name="daterangepicker_start"]').val()).format('YYYY-MM-DD') + ' - ' + moment($('input[name="daterangepicker_end"]').val()).format('YYYY-MM-DD')
-			);
 		});
 
 		Extension.Index.datePicker = $('[data-grid-calendar]').daterangepicker(config, function(start, end, label)
@@ -112,22 +104,18 @@ var Extension;
 		$('.daterangepicker_end_input').attr('data-grid', 'main');
 
 		$('input[name="daterangepicker_start"]')
-			.attr('data-format', 'YYYY-MM-DD')
 			.attr('data-grid-type', 'range')
 			.attr('data-grid-query', 'created_at:>:' + $('input[name="daterangepicker_start"]').val())
 			.attr('data-grid-range', 'start')
 			.attr('data-grid-filter', 'created_at')
-			.attr('data-grid-label', 'Created At')
-		;
+			.attr('data-grid-label', 'Created At');
 
 		$('input[name="daterangepicker_end"]')
-			.attr('data-format', 'YYYY-MM-DD')
 			.attr('data-grid-type', 'range')
 			.attr('data-grid-query', 'created_at:<:' + $('input[name="daterangepicker_end"]').val())
 			.attr('data-grid-range', 'end')
 			.attr('data-grid-filter', 'created_at')
-			.attr('data-grid-label', 'Created At')
-		;
+			.attr('data-grid-label', 'Created At');
 
 		return this;
 	};
@@ -137,24 +125,12 @@ var Extension;
 	{
 		var config = {
 			pagination: {
-	            scroll: '#data-grid',
-	        },
-	        loader: {
-	            element: '.loading'
-	        },
-	        events: {
-				removing: function(dg)
-				{
-					_.each(dg.applied_filters, function(filter)
-					{
-						if (filter.column === 'created_at' && filter.from !== undefined && filter.to !== undefined)
-						{
-							$('[data-grid-calendar]').val('');
-						}
-					});
-				}
+				scroll: '#data-grid',
 			},
-	        callback: function()
+			loader: {
+				element: '.loading'
+			},
+			callback: function()
 			{
 				$('[data-grid-checkbox-all]').prop('checked', false);
 
@@ -188,29 +164,29 @@ var Extension;
 			$('[data-grid-row]').not('[data-grid-row][disabled]').not(this).toggleClass('active', this.checked);
 		}
 
-        // Multi Select
-        if(!Extension.lastChecked) {
-            Extension.lastChecked = this;
-        }
+		// Multi Select
+		if(!Extension.lastChecked) {
+			Extension.lastChecked = this;
+		}
 
-        if(event.shiftKey) {
-            var start = $('[data-grid-checkbox]').index(this);
-            var end = $('[data-grid-checkbox]').index(Extension.lastChecked);
+		if(event.shiftKey) {
+			var start = $('[data-grid-checkbox]').index(this);
+			var end = $('[data-grid-checkbox]').index(Extension.lastChecked);
 
-            $('[data-grid-checkbox]').slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', Extension.lastChecked.checked);
+			$('[data-grid-checkbox]').slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', Extension.lastChecked.checked);
 
-            if(Extension.lastChecked.checked){
-                $('[data-grid-checkbox]').slice(Math.min(start,end), Math.max(start,end)+ 1).parents('[data-grid-row]').not('[data-grid-row][disabled]').addClass('active');
-            } else {
-                $('[data-grid-checkbox]').slice(Math.min(start,end), Math.max(start,end)+ 1).parents('[data-grid-row]').not('[data-grid-row][disabled]').removeClass('active');
-            }
-        } else {
-            $(this).parents('[data-grid-row]').not('[data-grid-row][disabled]').toggleClass('active');
-        }
+			if(Extension.lastChecked.checked){
+				$('[data-grid-checkbox]').slice(Math.min(start,end), Math.max(start,end)+ 1).parents('[data-grid-row]').not('[data-grid-row][disabled]').addClass('active');
+			} else {
+				$('[data-grid-checkbox]').slice(Math.min(start,end), Math.max(start,end)+ 1).parents('[data-grid-row]').not('[data-grid-row][disabled]').removeClass('active');
+			}
+		} else {
+			$(this).parents('[data-grid-row]').not('[data-grid-row][disabled]').toggleClass('active');
+		}
 
-        Extension.Index.bulkStatus();
+		Extension.Index.bulkStatus();
 
-        Extension.lastChecked = this;
+		Extension.lastChecked = this;
 	};
 
 	// Handle Data Grid shift multi select
@@ -218,33 +194,33 @@ var Extension;
 	{
 		event.stopPropagation();
 
-        var checkbox = $(this).find('[data-grid-checkbox]')[0];
+		var checkbox = $(this).find('[data-grid-checkbox]')[0];
 
-        if(!Extension.lastChecked) {
-            Extension.lastChecked = checkbox;
-        }
+		if(!Extension.lastChecked) {
+			Extension.lastChecked = checkbox;
+		}
 
-        if(event.shiftKey) {
-            var start = $('[data-grid-checkbox]').index(checkbox);
-            var end = $('[data-grid-checkbox]').index(Extension.lastChecked);
+		if(event.shiftKey) {
+			var start = $('[data-grid-checkbox]').index(checkbox);
+			var end = $('[data-grid-checkbox]').index(Extension.lastChecked);
 
-            $('[data-grid-checkbox]').slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', Extension.lastChecked.checked);
-        }
+			$('[data-grid-checkbox]').slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', Extension.lastChecked.checked);
+		}
 
-        Extension.Index.bulkStatus();
+		Extension.Index.bulkStatus();
 
-        Extension.lastChecked = checkbox;
+		Extension.lastChecked = checkbox;
 
-        // Remove Selection
-        if (window.getSelection) {
-          if (window.getSelection().empty) {  // Chrome
-            window.getSelection().empty();
-          } else if (window.getSelection().removeAllRanges) {  // Firefox
-            window.getSelection().removeAllRanges();
-          }
-        } else if (document.selection) {  // IE?
-          document.selection.empty();
-        }
+		// Remove Selection
+		if (window.getSelection) {
+		  if (window.getSelection().empty) {  // Chrome
+			window.getSelection().empty();
+		  } else if (window.getSelection().removeAllRanges) {  // Firefox
+			window.getSelection().removeAllRanges();
+		  }
+		} else if (document.selection) {  // IE?
+		  document.selection.empty();
+		}
 	};
 
 	// Handle Data Grid row checking
