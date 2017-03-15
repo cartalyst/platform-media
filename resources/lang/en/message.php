@@ -40,7 +40,7 @@ return [
     'error' => [
         'update'   => 'There was an issue updating the media. Please try again.',
         'delete'   => 'There was an issue deleting the media. Please try again.',
-        'multiple' => '{1} 1 item was successfully removed.|[2,Inf] :items items were successfully removed.',
+        'multiple' => '{1} 1 item was successfully removed.|[2,*] :items items were successfully removed.',
     ],
 
 ];
