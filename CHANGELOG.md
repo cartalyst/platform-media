@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v5.0.4 - 2017-03-15
+
+`FIXED`
+
+- Data Grid filters.
+
 ### v5.0.3 - 2017-03-08
 
 `FIXED`
