@@ -3,7 +3,7 @@
 {{ Asset::queue('exojs', 'cartalyst/js/exoskeleton.min.js', 'lodash') }}
 {{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'jquery') }}
 
-<div class="modal modal-media-selection fade" id="media-selection-modal" tabindex="-1" role="dialog" aria-labelledby="media-selection-modal" aria-hidden="true">
+<div class="modal modal-media-selection fade" id="media-selection-modal" tabindex="-1" role="dialog" aria-labelledby="media-selection-modal" aria-hidden="true" data-grid="main">
 
   <div class="modal-dialog">
 
