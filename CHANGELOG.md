@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v5.0.5 - 2017-03-16
+
+`FIXED`
+
+- A bug on the media uploader widget.
+
 ### v5.0.4 - 2017-03-15
 
 `FIXED`
