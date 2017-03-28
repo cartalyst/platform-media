@@ -1,7 +1,7 @@
 {
     "name": "platform/media",
     "type": "platform-extension",
-    "description": "A Platform 6 media manager.",
+    "description": "A Platform extension for media managemenet.",
     "keywords": [
         "php",
         "cartalyst",
