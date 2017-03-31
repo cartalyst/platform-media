@@ -141,9 +141,8 @@ class MediaController extends AdminController
 
         // The column that will be sorted by default is created_at
         $sorts = [
-            'column' => 'created_at',
+            'column'    => 'created_at',
             'direction' => 'desc',
-            //'pdf_view'  => 'pdf',
         ];
 
         // The transformer to manipulate data
