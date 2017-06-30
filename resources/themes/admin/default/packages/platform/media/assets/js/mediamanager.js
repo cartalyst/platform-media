@@ -90,7 +90,7 @@
                 self.enableUpload();
             });
 
-            $(document).on('change', 'input[type="file"]', function(e)
+            $(document).on('change', '.upload__select input[type="file"]', function(e)
             {
                 var input = e.currentTarget;
 
