@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v4.0.5 - 2017-07-12
+
+`FIXED`
+
+- Issue with preset paths model attribute being triggered on non images.
+
 ### v4.0.4 - 2016-12-15
 
 `FIXED`
