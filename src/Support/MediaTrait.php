@@ -115,7 +115,7 @@ trait MediaTrait
      */
     public function media()
     {
-        return $this->morphToMany(static::$mediaModel, 'object', 'media_relations')->orderBy('sort');
+        return $this->morphToMany(static::$mediaModel, 'object', 'media_relations')->withPivot('sort');
     }
 
     /**
