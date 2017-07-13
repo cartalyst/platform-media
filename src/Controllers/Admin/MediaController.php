@@ -204,9 +204,8 @@ class MediaController extends AdminController
     public function imagesList()
     {
         $columns = [
-            'name'      => 'title',
-            'path'      => 'image',
-            'thumbnail' => 'thumb',
+            'name',
+            'path',
         ];
 
         $settings = [
@@ -217,7 +216,7 @@ class MediaController extends AdminController
         $transformer = function ($media) {
             return [
                 'thumb' => getImagePath($media, 'thumb'),
-                'image' => route('media.view', $media->image),
+                'image' => route('media.view', $media->path),
                 'title' => $media->name,
             ];
         };

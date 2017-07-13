@@ -46,6 +46,32 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 - Updated for Platform 6.
 
+### v4.0.5 - 2017-07-12
+
+`FIXED`
+
+- Issue with preset paths model attribute being triggered on non images.
+
+### v4.0.4 - 2016-12-15
+
+`FIXED`
+
+- Redactor images list bug.
+- Postgresql ordering bug.
+
+### v4.0.3 - 2016-11-04
+
+`FIXED`
+
+- Redactor upload route name.
+- Redactor upload permission.
+
+### v4.0.2 - 2016-10-27
+
+`UPDATED`
+
+- Update index view to use the new Blade help widget.
+
 ### v4.0.1 - 2016-08-10
 
 `FIXED`

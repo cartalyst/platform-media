@@ -75,7 +75,7 @@ class Media
 
         $model = $isNamespaced ? $namespace : null;
 
-        $currentUploads = $isNamespaced ? $model->media : [];
+        $currentUploads = $isNamespaced ? $model->media->sortBy('pivot.sort') : [];
 
         $uploadedMimeTypes = app('platform.media')->pluck('mime')->unique()->toArray();
 
