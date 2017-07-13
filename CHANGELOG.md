@@ -11,6 +11,14 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v6.0.6 - 2017-07-13
+
+`FIXED`
+
+- Redactor images list bug.
+- Postgresql ordering bug.
+- Issue with preset paths model attribute being triggered on non images.
+
 ### v6.0.5 - 2017-03-16
 
 `FIXED`
