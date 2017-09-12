@@ -173,27 +173,29 @@ class MediaController extends AdminController
      */
     public function filesList()
     {
-        $columns = [
-            'name',
-            'path' => 'link',
-            'size',
-        ];
-
         $settings = [
-            'sort'      => 'created_at',
-            'direction' => 'desc',
+            'columns' => [
+                'name',
+                'path' => 'link',
+                'size',
+            ],
+
+            'settings' => [
+                'sort'      => 'created_at',
+                'direction' => 'desc',
+            ],
+
+            'transformer' => function ($media) {
+                return [
+                    'title' => $media->name,
+                    'name'  => $media->name,
+                    'link'  => route('media.download', $media->link),
+                    'size'  => formatBytes($media->size),
+                ];
+            },
         ];
 
-        $transformer = function ($media) {
-            return [
-                'title' => $media->name,
-                'name'  => $media->name,
-                'link'  => route('media.download', $media->link),
-                'size'  => formatBytes($media->size),
-            ];
-        };
-
-        return datagrid($this->media->grid(), $columns, $settings, $transformer)->getDataHandler()->getResults();
+        return datagrid($this->media->grid(), $settings)->getDataHandler()->toArray();
     }
 
     /**
@@ -203,27 +205,29 @@ class MediaController extends AdminController
      */
     public function imagesList()
     {
-        $columns = [
-            'name',
-            'path',
-        ];
-
         $settings = [
-            'sort'      => 'created_at',
-            'direction' => 'desc',
-        ];
+            'columns' => [
+                'name',
+                'path',
+            ],
 
-        $transformer = function ($media) {
-            return [
-                'thumb' => getImagePath($media, 'thumb'),
-                'image' => route('media.view', $media->path),
-                'title' => $media->name,
-            ];
-        };
+            'settings' => [
+                'sort'      => 'created_at',
+                'direction' => 'desc',
+            ],
+
+            'transformer' => function ($media) {
+                return [
+                    'thumb' => getImagePath($media, 'thumb'),
+                    'image' => route('media.view', $media->path),
+                    'title' => $media->name,
+                ];
+            },
+        ];
 
         $data = $this->media->grid()->where('is_image', true);
 
-        return datagrid($data, $columns, $settings, $transformer)->getDataHandler()->getResults();
+        return datagrid($data, $settings)->getDataHandler()->toArray();
     }
 
     /**
