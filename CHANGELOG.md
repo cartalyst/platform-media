@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v6.0.7 - 2017-09-12
+
+`FIXED`
+
+- Redactor media manager.
+
 ### v6.0.6 - 2017-07-13
 
 `FIXED`
