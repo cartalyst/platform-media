@@ -178,10 +178,11 @@ class MediaController extends AdminController
                 'name',
                 'path' => 'link',
                 'size',
+                'created_at',
             ],
 
-            'settings' => [
-                'sort'      => 'created_at',
+            'sorts' => [
+                'column'    => 'created_at',
                 'direction' => 'desc',
             ],
 
@@ -209,10 +210,11 @@ class MediaController extends AdminController
             'columns' => [
                 'name',
                 'path',
+                'created_at',
             ],
 
-            'settings' => [
-                'sort'      => 'created_at',
+            'sorts' => [
+                'column'    => 'created_at',
                 'direction' => 'desc',
             ],
 
