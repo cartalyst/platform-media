@@ -20,9 +20,10 @@
 
 return [
 
-    'index'  => 'List Media',
-    'upload' => 'Upload\Link Media',
-    'edit'   => 'Edit Media',
-    'delete' => 'Delete Media',
+    'index'        => 'List Media',
+    'upload'       => 'Upload\Link Media',
+    'edit'         => 'Edit Media',
+    'delete'       => 'Delete Media',
+    'bulk_actions' => 'Bulk Actions',
 
 ];

@@ -226,6 +226,12 @@ return [
 
                 $p->controller('Platform\Media\Controllers\Admin\MediaController', 'delete');
             });
+
+            $g->permission('media.bulk_actions', function ($p) {
+                $p->label = trans('platform/media::permissions.bulk_actions');
+
+                $p->controller('Platform\Media\Controllers\Admin\MediaController', 'executeAction');
+            });
         });
     },
 
