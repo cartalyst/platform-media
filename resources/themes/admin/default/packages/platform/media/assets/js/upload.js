@@ -9,7 +9,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    6.0.8
+ * @version    6.0.9
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2017, Cartalyst LLC
