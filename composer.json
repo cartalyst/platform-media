@@ -28,12 +28,12 @@
         "cartalyst/support": "~2.0",
         "intervention/image": "~2.3",
         "intervention/imagecache": "~2.3",
-        "platform/access": "~6.0",
-        "platform/foundation": "~6.0",
-        "platform/tags": "~6.0"
+        "platform/access": "~7.0",
+        "platform/foundation": "~7.0",
+        "platform/tags": "~7.0"
     },
     "require-dev": {
-        "laravel/framework": "~5.3",
+        "laravel/framework": "~5.5",
         "cartalyst/testing": "~2.0@dev",
         "patchwork/utf8": "~1.1"
     },
@@ -50,7 +50,7 @@
     "extra": {
         "component": "extension",
         "branch-alias": {
-            "dev-master": "5.0.x-dev"
+            "dev-master": "7.0.x-dev"
         }
     },
     "minimum-stability": "dev",
