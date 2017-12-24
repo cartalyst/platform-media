@@ -4,7 +4,7 @@ This project adheres to the following standards and practices.
 
 ## Versioning
 
-This Platform 6 extension is versioned under the [Semantic Versioning](http://semver.org/) guidelines as much as possible.
+This Platform 8 extension is versioned under the [Semantic Versioning](http://semver.org/) guidelines as much as possible.
 
 Releases will be numbered with the following format:
 
@@ -18,7 +18,7 @@ And constructed with the following guidelines:
 
 ## Coding Styles
 
-This Platform 6 extension is compliant with the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) and [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) coding standards.
+This Platform 8 extension is compliant with the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) and [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) coding standards.
 
 ## Cartalyst Contribution Guide
 
