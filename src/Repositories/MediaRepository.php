@@ -238,6 +238,11 @@ class MediaRepository implements MediaRepositoryInterface
                     array_get($input, 'name', $uploadedFile->getClientOriginalName())
                 );
 
+                // Should we update the name?
+                if ((bool) array_get($input, 'force_name_update', false) === true) {
+                    $fileName = $input['name'] = $uploadedFile->getClientOriginalName();
+                }
+
                 // Upload the file
                 $file = $this->filesystem->upload($uploadedFile, $fileName);
 
@@ -255,11 +260,6 @@ class MediaRepository implements MediaRepositoryInterface
                     'width'     => $imageSize['width'],
                     'height'    => $imageSize['height'],
                 ], $input);
-
-                // Should we update the name?
-                if ((bool) array_get($input, 'force_name_update', false) === true) {
-                    $input['name'] = $uploadedFile->getClientOriginalName();
-                }
             } else {
                 return false;
             }
