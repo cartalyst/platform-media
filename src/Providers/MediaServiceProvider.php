@@ -84,7 +84,7 @@ class MediaServiceProvider extends ServiceProvider
     {
         $config = realpath(__DIR__.'/../../resources/config/config.php');
 
-        $this->mergeConfigFrom($config, 'platform-media');
+        $this->mergeConfigFrom($config, 'platform.media.config');
 
         $this->publishes([
             $config => config_path('platform-media.php'),
@@ -134,13 +134,13 @@ class MediaServiceProvider extends ServiceProvider
     {
         $manager = $this->app['platform.media.manager'];
 
-        $presets = $this->app['config']->get('platform-media.presets');
+        $presets = $this->app['config']->get('platform.media.config.presets');
 
         foreach ($presets as $presetName => $preset) {
             $manager->setPreset($presetName, $preset);
         }
 
-        $macros = $this->app['config']->get('platform-media.macros');
+        $macros = $this->app['config']->get('platform.media.config.macros');
 
         foreach ($macros as $macroName => $macro) {
             $manager->setMacro($macroName, $macro);

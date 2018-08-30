@@ -69,7 +69,7 @@ class Fit extends AbstractMacro
 
         $this->intervention = $app['image'];
 
-        $this->presets = $app['config']->get('platform-media.presets');
+        $this->presets = $app['config']->get('platform.media.config.presets');
     }
 
     /**
