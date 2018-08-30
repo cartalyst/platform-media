@@ -11,6 +11,18 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v7.0.2 - 2018-08-30
+
+`FIXED`
+
+- Config references.
+
+### v7.0.1 - 2018-02-27
+
+`FIXED`
+
+- A bug renaming uploads.
+
 ### v7.0.0 - 2017-12-24
 
 - Updated for Platform 8.
