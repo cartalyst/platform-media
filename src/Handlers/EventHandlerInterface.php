@@ -11,11 +11,11 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    7.0.2
+ * @version    8.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2018, Cartalyst LLC
- * @link       http://cartalyst.com
+ * @copyright  (c) 2011-2019, Cartalyst LLC
+ * @link       https://cartalyst.com
  */
 
 namespace Platform\Media\Handlers;

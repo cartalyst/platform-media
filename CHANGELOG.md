@@ -1,5 +1,9 @@
 # Changelog
 
+### v8.0.0 - TBA
+
+- Updated for Platform 9
+
 ### v7.0.2 - 2018-08-30
 
 `FIXED`
