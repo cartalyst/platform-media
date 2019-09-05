@@ -19,7 +19,10 @@
         }
     ],
     "repositories": [
-        { "type": "composer", "url": "https://packages.cartalyst.com" }
+        {
+            "type": "composer",
+            "url": "https://packages.cartalyst.com"
+        }
     ],
     "require": {
         "php": ">=7.0",
@@ -45,7 +48,19 @@
         "files": [
             "src/helpers.php"
         ],
-        "psr-4": { "Platform\\Media\\" : "src/" }
+        "psr-4": {
+            "Platform\\Media\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Platform\\Media\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
     },
     "extra": {
         "component": "extension",
