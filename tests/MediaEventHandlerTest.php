@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -31,7 +31,7 @@ class MediaEventHandlerTest extends IlluminateTestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -65,15 +65,18 @@ class MediaEventHandlerTest extends IlluminateTestCase
 
         $this->app['files']->shouldReceive('delete')
             ->with('foo')
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.media.manager']->shouldReceive('handleUp')
-            ->once();
+            ->once()
+        ;
 
         $media->shouldReceive('getAttribute')
             ->once()
             ->with('thumbnail')
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $this->shouldFlushCache($media);
 
@@ -97,7 +100,8 @@ class MediaEventHandlerTest extends IlluminateTestCase
         $file  = m::mock('Cartalyst\Filesystem\File');
 
         $this->app['platform.media.manager']->shouldReceive('handleDown')
-            ->once();
+            ->once()
+        ;
 
         $this->handler->deleting($media, $file);
     }
@@ -115,27 +119,32 @@ class MediaEventHandlerTest extends IlluminateTestCase
     /**
      * Sets expected method calls for flushing cache.
      *
-     * @param  \Platform\Media\Models\Media  $media
+     * @param \Platform\Media\Models\Media $media
+     *
      * @return void
      */
     protected function shouldFlushCache($media)
     {
         $this->app['cache']->shouldReceive('forget')
             ->once()
-            ->with('platform.media.1');
+            ->with('platform.media.1')
+        ;
 
         $this->app['cache']->shouldReceive('forget')
             ->once()
-            ->with('platform.media.path.foo');
+            ->with('platform.media.path.foo')
+        ;
 
         $media->shouldReceive('getAttribute')
             ->once()
             ->with('id')
-            ->andReturn(1);
+            ->andReturn(1)
+        ;
 
         $media->shouldReceive('getAttribute')
             ->once()
             ->with('path')
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -31,7 +31,7 @@ class FrontendMediaControllerTest extends IlluminateTestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -58,50 +58,61 @@ class FrontendMediaControllerTest extends IlluminateTestCase
         $this->media->shouldReceive('findByPath')
             ->with('foo')
             ->once()
-            ->andReturn($media);
+            ->andReturn($media)
+        ;
 
         $media->shouldReceive('getAttribute')
             ->with('private')
             ->once()
-            ->andReturn(false);
+            ->andReturn(false)
+        ;
 
         $media->shouldReceive('getAttribute')
             ->with('path')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $media->shouldReceive('getAttribute')
             ->with('mime')
-            ->once();
+            ->once()
+        ;
 
         $this->app['cartalyst.filesystem']->shouldReceive('read')
-            ->once();
+            ->once()
+        ;
 
         $this->app['Illuminate\Contracts\Routing\ResponseFactory']->shouldReceive('make')
             ->with(null, 200)
             ->once()
-            ->andReturn($response = m::mock('Symfony\Component\HttpFoundation\Response'));
+            ->andReturn($response = m::mock('Symfony\Component\HttpFoundation\Response'))
+        ;
 
         $response->shouldReceive('header')
             ->with('Content-Type', null)
-            ->once();
+            ->once()
+        ;
 
         $response->shouldReceive('header')
             ->with('Content-Length', null)
-            ->once();
+            ->once()
+        ;
 
         $response->shouldReceive('header')
             ->with('Cache-Control', m::any())
-            ->once();
+            ->once()
+        ;
 
         $response->shouldReceive('header')
             ->with('ETag', m::any())
-            ->once();
+            ->once()
+        ;
 
         $this->app['request']->shouldReceive('server')
             ->with('HTTP_IF_NONE_MATCH')
             ->once()
-            ->andReturn(false);
+            ->andReturn(false)
+        ;
 
         $this->controller->view('foo');
     }
@@ -117,49 +128,60 @@ class FrontendMediaControllerTest extends IlluminateTestCase
         $this->media->shouldReceive('findByPath')
             ->with('foo')
             ->once()
-            ->andReturn($media);
+            ->andReturn($media)
+        ;
 
         $media->shouldReceive('getAttribute')
             ->with('private')
             ->once()
-            ->andReturn(false);
+            ->andReturn(false)
+        ;
 
         $media->shouldReceive('getAttribute')
             ->with('path')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $media->shouldReceive('getAttribute')
             ->with('mime')
-            ->once();
+            ->once()
+        ;
 
         $media->shouldReceive('getAttribute')
             ->with('name')
-            ->once();
+            ->once()
+        ;
 
         $this->app['cartalyst.filesystem']->shouldReceive('read')
-            ->once();
+            ->once()
+        ;
 
         $this->app['Illuminate\Contracts\Routing\ResponseFactory']->shouldReceive('make')
             ->with(null, 200)
             ->once()
-            ->andReturn($response = m::mock('Symfony\Component\HttpFoundation\Response'));
+            ->andReturn($response = m::mock('Symfony\Component\HttpFoundation\Response'))
+        ;
 
         $response->shouldReceive('header')
             ->with('Connection', 'close')
-            ->once();
+            ->once()
+        ;
 
         $response->shouldReceive('header')
             ->with('Content-Type', null)
-            ->once();
+            ->once()
+        ;
 
         $response->shouldReceive('header')
             ->with('Content-Length', null)
-            ->once();
+            ->once()
+        ;
 
         $response->shouldReceive('header')
             ->with('Content-Disposition', 'attachment; filename=""')
-            ->once();
+            ->once()
+        ;
 
         $this->controller->download('foo');
     }

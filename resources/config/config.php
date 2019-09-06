@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -19,7 +19,6 @@
  */
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Time to live
@@ -42,9 +41,7 @@ return [
     */
 
     'macros' => [
-
         'fit' => 'Platform\Media\Macros\Fit',
-
     ],
 
     /*
@@ -57,33 +54,30 @@ return [
     */
 
     'presets' => [
-
         'thumb' => [
             'width' => 400,
 
-            'macros' => [ 'fit' ],
+            'macros' => ['fit'],
         ],
 
         'medium' => [
             'width' => 800,
 
-            'macros' => [ 'fit' ],
+            'macros' => ['fit'],
         ],
 
         '720p' => [
             'width'  => 1280,
             'height' => 720,
 
-            'macros' => [ 'fit' ],
+            'macros' => ['fit'],
         ],
 
         '1080p' => [
             'width'  => 1920,
             'height' => 1080,
 
-            'macros' => [ 'fit' ],
+            'macros' => ['fit'],
         ],
-
     ],
-
 ];

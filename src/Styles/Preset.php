@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -50,8 +50,9 @@ class Preset
     /**
      * Constructor.
      *
-     * @param  string  $name
-     * @param  array  $attributes
+     * @param string $name
+     * @param array  $attributes
+     *
      * @return void
      */
     public function __construct($name, array $attributes)
@@ -72,7 +73,8 @@ class Preset
     /**
      * Sets the media entity.
      *
-     * @param  \Platform\Media\Models\Media  $media
+     * @param \Platform\Media\Models\Media $media
+     *
      * @return $this
      */
     public function setMedia(Media $media)
@@ -95,7 +97,8 @@ class Preset
     /**
      * Sets the media file object.
      *
-     * @param  \Cartalyst\Filesystem\File  $file
+     * @param \Cartalyst\Filesystem\File $file
+     *
      * @return void
      */
     public function setFile(File $file)
@@ -139,7 +142,8 @@ class Preset
     /**
      * Apply all the relevant macros on this preset.
      *
-     * @param  string  $method
+     * @param string $method
+     *
      * @return void
      */
     public function applyMacros($method = 'up')
@@ -156,7 +160,8 @@ class Preset
     /**
      * Accessor for the "path" attribute.
      *
-     * @param  string  $path
+     * @param string $path
+     *
      * @return string
      */
     public function getPathAttribute($path)
@@ -167,7 +172,8 @@ class Preset
     /**
      * Accessor for the "constraints" attribute.
      *
-     * @param  array  $constraints
+     * @param array $constraints
+     *
      * @return array
      */
     public function getConstraintsAttribute($constraints)
@@ -178,7 +184,8 @@ class Preset
     /**
      * Mutator for the "constraints" attribute.
      *
-     * @param  array  $constraints
+     * @param array $constraints
+     *
      * @return void
      */
     public function setConstraintsAttribute(array $constraints)
@@ -191,7 +198,8 @@ class Preset
     /**
      * Accessor for the "mimes" attribute.
      *
-     * @param  array  $mimes
+     * @param array $mimes
+     *
      * @return array
      */
     public function getMimesAttribute($mimes)
@@ -202,7 +210,8 @@ class Preset
     /**
      * Mutator for the "mimes" attribute.
      *
-     * @param  array  $mimes
+     * @param array $mimes
+     *
      * @return void
      */
     public function setMimesAttribute(array $mimes)
@@ -215,7 +224,8 @@ class Preset
     /**
      * Accessor for the "macros" attribute.
      *
-     * @param  array  $macros
+     * @param array $macros
+     *
      * @return array
      */
     public function getMacrosAttribute($macros)
@@ -226,7 +236,8 @@ class Preset
     /**
      * Mutator for the "macros" attribute.
      *
-     * @param  array  $macros
+     * @param array $macros
+     *
      * @return void
      */
     public function setMacrosAttribute(array $macros)
@@ -239,7 +250,8 @@ class Preset
     /**
      * Accessor for the "namespaces" attribute.
      *
-     * @param  array  $namespaces
+     * @param array $namespaces
+     *
      * @return array
      */
     public function getNamespacesAttribute($namespaces)
@@ -250,7 +262,8 @@ class Preset
     /**
      * Mutator for the "namespaces" attribute.
      *
-     * @param  array  $namespaces
+     * @param array $namespaces
+     *
      * @return void
      */
     public function setNamespacesAttribute(array $namespaces)
@@ -263,7 +276,8 @@ class Preset
     /**
      * Dynamically retrieve attributes from the object.
      *
-     * @param  string  $key
+     * @param string $key
+     *
      * @return mixed
      */
     public function __get($key)
@@ -282,8 +296,9 @@ class Preset
     /**
      * Dynamically set attributes on the object.
      *
-     * @param  string  $key
-     * @param  mixed  $value
+     * @param string $key
+     * @param mixed  $value
+     *
      * @return void
      */
     public function __set($key, $value)

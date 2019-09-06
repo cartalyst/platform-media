@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -34,7 +34,8 @@ interface MediaRepositoryInterface
     /**
      * Returns a media by its primary key.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Platform\Media\Models\Media
      */
     public function find($id);
@@ -42,7 +43,8 @@ interface MediaRepositoryInterface
     /**
      * Returns a media by its file path.
      *
-     * @param  string  $path
+     * @param string $path
+     *
      * @return \Platform\Media\Models\Media
      */
     public function findByPath($path);
@@ -50,18 +52,22 @@ interface MediaRepositoryInterface
     /**
      * Determine if the given file is valid for upload.
      *
-     * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $file
-     * @return bool
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $file
+     *
      * @throws \Cartalyst\Filesystem\Exceptions\InvalidFileException
      * @throws \Cartalyst\Filesystem\Exceptions\MaxFileSizeExceededException
      * @throws \Cartalyst\Filesystem\Exceptions\InvalidMimeTypeException
+     *
+     * @return bool
      */
     public function validForUpload(UploadedFile $file);
 
     /**
      * Determine if the given media is valid for updating.
      *
-     * @param  array  $data
+     * @param array $data
+     * @param mixed $id
+     *
      * @return \Illuminate\Support\MessageBag
      */
     public function validForUpdate($id, array $data);
@@ -69,8 +75,9 @@ interface MediaRepositoryInterface
     /**
      * Upload the given file.
      *
-     * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $file
-     * @param  array  $input
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $file
+     * @param array                                               $input
+     *
      * @return bool
      */
     public function upload(UploadedFile $file, array $input);
@@ -78,7 +85,8 @@ interface MediaRepositoryInterface
     /**
      * Creates a media with the given data.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return \Platform\Media\Models\Media
      */
     public function create($data);
@@ -86,8 +94,9 @@ interface MediaRepositoryInterface
     /**
      * Updates a media with the given data.
      *
-     * @param  int    $id
-     * @param  array  $data
+     * @param int   $id
+     * @param array $data
+     *
      * @return \Platform\Media\Models\Media
      */
     public function update($id, array $data);
@@ -95,7 +104,8 @@ interface MediaRepositoryInterface
     /**
      * Deletes the given media.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return bool
      */
     public function delete($id);
@@ -110,7 +120,8 @@ interface MediaRepositoryInterface
     /**
      * Set the occurred error.
      *
-     * @param  string  $error
+     * @param string $error
+     *
      * @return void
      */
     public function setError($error);

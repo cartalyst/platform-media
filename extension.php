@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -25,7 +25,6 @@ use Cartalyst\Permissions\Container as Permissions;
 use Illuminate\Contracts\Routing\Registrar as Router;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Slug
@@ -107,9 +106,7 @@ return [
     */
 
     'requires' => [
-
         'platform/access',
-
     ],
 
     /*
@@ -123,9 +120,7 @@ return [
     */
 
     'providers' => [
-
         Platform\Media\Providers\MediaServiceProvider::class,
-
     ],
 
     /*
@@ -253,7 +248,6 @@ return [
     */
 
     'settings' => function (Settings $settings, Application $app) {
-
     },
 
     /*
@@ -277,9 +271,7 @@ return [
     */
 
     'menus' => [
-
         'admin' => [
-
             [
                 'slug'  => 'admin-media',
                 'name'  => 'Media',
@@ -287,9 +279,6 @@ return [
                 'uri'   => 'media',
                 'regex' => '/:admin\/media/i',
             ],
-
         ],
-
     ],
-
 ];

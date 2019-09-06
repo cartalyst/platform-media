@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -92,7 +92,8 @@ class Media extends Model implements TaggableInterface
     /**
      * Sets the media relation model.
      *
-     * @param  string  $model
+     * @param string $model
+     *
      * @return void
      */
     public static function setMediaRelationModel($model)
@@ -103,7 +104,8 @@ class Media extends Model implements TaggableInterface
     /**
      * Sets media presets.
      *
-     * @param  array  $presets
+     * @param array $presets
+     *
      * @return void
      */
     public static function setPresets(array $presets)
@@ -124,9 +126,11 @@ class Media extends Model implements TaggableInterface
     /**
      * Get mutator for the "roles" attribute.
      *
-     * @param  mixed  $roles
-     * @return array
+     * @param mixed $roles
+     *
      * @throws \InvalidArgumentException
+     *
+     * @return array
      */
     public function getRolesAttribute($roles)
     {
@@ -148,7 +152,8 @@ class Media extends Model implements TaggableInterface
     /**
      * Set mutator for the "roles" attribute.
      *
-     * @param  array  $roles
+     * @param array $roles
+     *
      * @return void
      */
     public function setRolesAttribute($roles)
@@ -169,7 +174,8 @@ class Media extends Model implements TaggableInterface
     /**
      * Set mutator for the "namespace" attribute.
      *
-     * @param  string  $namespace
+     * @param string $namespace
+     *
      * @return void
      */
     public function setNamespaceAttribute($namespace)

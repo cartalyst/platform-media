@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -45,9 +45,10 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface
     /**
      * On upload event.
      *
-     * @param  \Platform\Media\Models\Media  $media
-     * @param  \Cartalyst\Filesystem\File  $file
-     * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $uploadedFile
+     * @param \Platform\Media\Models\Media                        $media
+     * @param \Cartalyst\Filesystem\File                          $file
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $uploadedFile
+     *
      * @return void
      */
     public function uploaded(Media $media, File $file, UploadedFile $uploadedFile)
@@ -64,18 +65,20 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface
     /**
      * On updating event.
      *
-     * @param  \Platform\Media\Models\Media  $media
+     * @param \Platform\Media\Models\Media $media
+     *
      * @return void
      */
     public function updating(Media $media)
     {
-        # We need to verify if a file was uploaded while updating
+        // We need to verify if a file was uploaded while updating
     }
 
     /**
      * On updated event.
      *
-     * @param  \Platform\Media\Models\Media  $media
+     * @param \Platform\Media\Models\Media $media
+     *
      * @return void
      */
     public function updated(Media $media)
@@ -86,8 +89,9 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface
     /**
      * On deleting event.
      *
-     * @param  \Platform\Media\Models\Media  $media
-     * @param  \Cartalyst\Filesystem\File  $file
+     * @param \Platform\Media\Models\Media $media
+     * @param \Cartalyst\Filesystem\File   $file
+     *
      * @return void
      */
     public function deleting(Media $media, File $file)
@@ -98,7 +102,8 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface
     /**
      * On deleted event.
      *
-     * @param  \Platform\Media\Models\Media  $media
+     * @param \Platform\Media\Models\Media $media
+     *
      * @return void
      */
     public function deleted(Media $media)
@@ -109,7 +114,8 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface
     /**
      * Flush the cache.
      *
-     * @param  \Platform\Media\Models\Media  $media
+     * @param \Platform\Media\Models\Media $media
+     *
      * @return void
      */
     protected function flushCache(Media $media)

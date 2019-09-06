@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -23,6 +23,7 @@ namespace Platform\Media\Controllers\Admin;
 use Config;
 use Sentinel;
 use Filesystem;
+use Illuminate\Support\Arr;
 use Cartalyst\Support\Mailer;
 use Illuminate\Database\Eloquent\Collection;
 use Platform\Access\Controllers\AdminController;
@@ -70,10 +71,11 @@ class MediaMailerController extends AdminController
     /**
      * Constructor.
      *
-     * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
-     * @param  \Platform\Users\Repositories\UserRepositoryInterface  $users
-     * @param  \Platform\Roles\Repositories\RoleRepositoryInterface  $roles
-     * @param  \Cartalyst\Support\Mailer  $mailer
+     * @param \Platform\Media\Repositories\MediaRepositoryInterface $media
+     * @param \Platform\Users\Repositories\UserRepositoryInterface  $users
+     * @param \Platform\Roles\Repositories\RoleRepositoryInterface  $roles
+     * @param \Cartalyst\Support\Mailer                             $mailer
+     *
      * @return void
      */
     public function __construct(
@@ -98,7 +100,8 @@ class MediaMailerController extends AdminController
     /**
      * Displays the main mailing page.
      *
-     * @param  mixed  $id
+     * @param mixed $id
+     *
      * @return \Illuminate\View\View
      */
     public function index($id)
@@ -107,7 +110,7 @@ class MediaMailerController extends AdminController
             return redirect()->route('admin.media.all');
         }
 
-        if ($remove = input('remove')) {
+        if ($remove = request('remove')) {
             $items = implode(',', array_diff(explode(',', $id), [$remove])) ?: 0;
 
             return redirect()->route('admin.media.email', $items);
@@ -127,7 +130,8 @@ class MediaMailerController extends AdminController
     /**
      * Processes the mailing request.
      *
-     * @param  mixed  $id
+     * @param mixed $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function process($id)
@@ -136,9 +140,9 @@ class MediaMailerController extends AdminController
             return redirect()->route('admin.media.all');
         }
 
-        $maxAttachments = array_get($this->config, 'email.max_attachments');
+        $maxAttachments = Arr::get($this->config, 'email.max_attachments');
 
-        $maxAttachmentsSize = array_get($this->config, 'email.attachments_max_size');
+        $maxAttachmentsSize = Arr::get($this->config, 'email.attachments_max_size');
 
         $total = array_sum(array_map(function ($item) {
             return $item->size;
@@ -153,25 +157,25 @@ class MediaMailerController extends AdminController
         }
 
         // Prepare the email view
-        # probably have a dropdown where we can select a view..
+        // probably have a dropdown where we can select a view..
         $view = 'platform/media::emails/email';
 
         // Prepare the email subject
-        $subject = input('subject', array_get($this->config, 'email.subject'));
+        $subject = request('subject', Arr::get($this->config, 'email.subject'));
 
         // Get the email body
-        $body = input('body');
+        $body = request('body');
 
         // Prepare the recipients
         $recipients = new Collection();
 
-        foreach (input('users', []) as $email) {
+        foreach (request('users', []) as $email) {
             if ($user = $this->users->findByEmail($email)) {
                 $recipients->add($user);
             }
         }
 
-        foreach (input('roles', []) as $roleId) {
+        foreach (request('roles', []) as $roleId) {
             if ($role = $this->roles->find($roleId)) {
                 foreach ($role->users as $user) {
                     $recipients->add($user);
@@ -198,7 +202,7 @@ class MediaMailerController extends AdminController
         }, $items));
 
         // set input var, will make accessible to the view
-        $input = input()->except(['_token', 'users']);
+        $input = request()->except(['_token', 'users']);
 
         $this->mailer->setView($view, compact('body'));
         $this->mailer->setSubject($subject);

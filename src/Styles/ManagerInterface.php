@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -34,8 +34,9 @@ interface ManagerInterface
     /**
      * Sets a new preset.
      *
-     * @param  string|\Platform\Media\Styles\Preset  $preset
-     * @param  array  $info
+     * @param \Platform\Media\Styles\Preset|string $preset
+     * @param array                                $info
+     *
      * @return $this
      */
     public function setPreset($preset, array $info = []);
@@ -50,8 +51,9 @@ interface ManagerInterface
     /**
      * Sets a new macro.
      *
-     * @param  string  $name
-     * @param  string  $class
+     * @param string $name
+     * @param string $class
+     *
      * @return $this
      */
     public function setMacro($name, $class);
@@ -59,7 +61,8 @@ interface ManagerInterface
     /**
      * Handles the presets on upload.
      *
-     * @param  \Platform\Media\Models\Media  $media
+     * @param \Platform\Media\Models\Media $media
+     *
      * @return void
      */
     public function handleUp(Media $media);
@@ -67,7 +70,8 @@ interface ManagerInterface
     /**
      * Handles the presets on delete.
      *
-     * @param  \Platform\Media\Models\Media  $media
+     * @param \Platform\Media\Models\Media $media
+     *
      * @return void
      */
     public function handleDown(Media $media);
@@ -75,7 +79,8 @@ interface ManagerInterface
     /**
      * Determines if the given preset is valid.
      *
-     * @param  string  $name
+     * @param string $name
+     *
      * @return bool
      */
     public function isValidPreset($name);
@@ -83,9 +88,10 @@ interface ManagerInterface
     /**
      * Apply the preset on the given media.
      *
-     * @param  string  $name
-     * @param  string  $direction
-     * @param  \Platform\Media\Models\Media  $media
+     * @param string                       $name
+     * @param string                       $direction
+     * @param \Platform\Media\Models\Media $media
+     *
      * @return void
      */
     public function applyPreset($name, $direction, Media $media);
@@ -93,8 +99,9 @@ interface ManagerInterface
     /**
      * Apply the presets on the given media.
      *
-     * @param  string  $direction
-     * @param  \Platform\Media\Models\Media  $media
+     * @param string                       $direction
+     * @param \Platform\Media\Models\Media $media
+     *
      * @return void
      */
     public function applyPresets($direction, Media $media);
@@ -102,7 +109,8 @@ interface ManagerInterface
     /**
      * Returns the given preset instance.
      *
-     * @param  string  $name
+     * @param string $name
+     *
      * @return \Platform\Media\Styles\Preset
      */
     public function getPreset($name);

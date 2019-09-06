@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -31,7 +31,7 @@ class MediaWidgetTest extends IlluminateTestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -52,32 +52,39 @@ class MediaWidgetTest extends IlluminateTestCase
         $this->media->shouldReceive('find')
             ->with(1)
             ->once()
-            ->andReturn($media);
+            ->andReturn($media)
+        ;
 
         $media->shouldReceive('getAttribute')
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $this->manager->shouldReceive('isValidPreset')
             ->with('thumbnail')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $this->manager->shouldReceive('getPreset')
             ->with('thumbnail')
             ->once()
-            ->andReturn($preset = m::mock('Platform\Media\Styles\Preset'));
+            ->andReturn($preset = m::mock('Platform\Media\Styles\Preset'))
+        ;
 
         $preset->shouldReceive('getPathAttribute')
-            ->once();
+            ->once()
+        ;
 
         $this->app['files']->shouldReceive('exists')
             ->with('/foo')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $this->app['url']->shouldReceive('to')
             ->with('foo', [], '')
-            ->once();
+            ->once()
+        ;
 
         $this->widget->path(1, 'thumbnail');
     }
@@ -90,16 +97,19 @@ class MediaWidgetTest extends IlluminateTestCase
         $this->media->shouldReceive('find')
             ->with(1)
             ->once()
-            ->andReturn($media);
+            ->andReturn($media)
+        ;
 
         $media->shouldReceive('getAttribute')
             ->with('path')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $this->app['url']->shouldReceive('route')
             ->with('media.view', 'foo', true, '')
-            ->once();
+            ->once()
+        ;
 
         $this->widget->path(1);
     }

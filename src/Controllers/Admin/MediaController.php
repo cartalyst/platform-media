@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -21,11 +21,10 @@
 namespace Platform\Media\Controllers\Admin;
 
 use Platform\Access\Controllers\AdminController;
-use Platform\Tags\Repositories\TagsRepositoryInterface;
 use Cartalyst\DataGrid\Export\Providers\ExportProvider;
+use Platform\Tags\Repositories\TagsRepositoryInterface;
 use Platform\Roles\Repositories\RoleRepositoryInterface;
 use Platform\Media\Repositories\MediaRepositoryInterface;
-use Cartalyst\DataGrid\Laravel\DataHandlers\DatabaseHandler;
 use Platform\Attributes\Repositories\ManagerRepositoryInterface;
 
 class MediaController extends AdminController
@@ -72,10 +71,11 @@ class MediaController extends AdminController
     /**
      * Constructor.
      *
-     * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
-     * @param  \Platform\Roles\Repositories\RoleRepositoryInterface  $roles
-     * @param  \Platform\Tags\Repositories\TagsRepositoryInterface  $tags
-     * @param  \Platform\Attributes\Repositories\ManagerRepositoryInterface  $namespaces
+     * @param \Platform\Media\Repositories\MediaRepositoryInterface        $media
+     * @param \Platform\Roles\Repositories\RoleRepositoryInterface         $roles
+     * @param \Platform\Tags\Repositories\TagsRepositoryInterface          $tags
+     * @param \Platform\Attributes\Repositories\ManagerRepositoryInterface $namespaces
+     *
      * @return void
      */
     public function __construct(
@@ -277,6 +277,7 @@ class MediaController extends AdminController
         if ($mediaIds = request()->input('_new_media_ids')) {
             $mediaIds         = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
             $preparedMediaIds = [];
+
             foreach ($mediaIds as $key => $id) {
                 $preparedMediaIds[$id] = ['sort' => $key];
             }
@@ -296,7 +297,8 @@ class MediaController extends AdminController
     /**
      * Shows the form for updating a media.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return mixed
      */
     public function edit($id)
@@ -324,7 +326,8 @@ class MediaController extends AdminController
     /**
      * Processes the form for updating a media.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update($id)
@@ -357,7 +360,8 @@ class MediaController extends AdminController
     /**
      * Removes the specified media.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function delete($id)
@@ -394,7 +398,8 @@ class MediaController extends AdminController
     /**
      * Prepares mime types for output.
      *
-     * @param  array  $mimes
+     * @param array $mimes
+     *
      * @return string
      */
     protected function prepareMimes($mimes)

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -42,7 +42,7 @@ class MigrationPlatformMediaAddNamespaceAndRelations extends Migration
 
             $table->engine = 'InnoDB';
 
-            $table->index([ 'object_type', 'object_id' ]);
+            $table->index(['object_type', 'object_id']);
         });
     }
 

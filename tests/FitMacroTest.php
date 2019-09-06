@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -32,12 +32,12 @@ class FitMacroTest extends IlluminateTestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->app['image']                 = m::mock('Intervention\Image\ImageManager');
-        $this->app['path.public']           = '';
+        $this->app['image']       = m::mock('Intervention\Image\ImageManager');
+        $this->app['path.public'] = '';
 
         $this->macro = new Fit($this->app);
 
@@ -49,46 +49,55 @@ class FitMacroTest extends IlluminateTestCase
     /** @test */
     public function it_can_run_macros_up()
     {
-        $image    = m::mock('Intervention\Image\ImageManager');
-        $media    = m::mock('Platform\Media\Models\Media');
-        $file     = m::mock('Cartalyst\Filesystem\File');
+        $image = m::mock('Intervention\Image\ImageManager');
+        $media = m::mock('Platform\Media\Models\Media');
+        $file  = m::mock('Cartalyst\Filesystem\File');
 
         $file->shouldReceive('isImage')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $this->app['files']->shouldReceive('exists')
             ->with('/cache/media/foo')
             ->once()
-            ->andReturn(false);
+            ->andReturn(false)
+        ;
 
         $this->app['files']->shouldReceive('makeDirectory')
             ->with('/cache/media/foo')
-            ->once();
+            ->once()
+        ;
 
         $file->shouldReceive('getFilename')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $file->shouldReceive('getExtension')
             ->once()
-            ->andReturn('jpg');
+            ->andReturn('jpg')
+        ;
 
         $file->shouldReceive('getContents')
-            ->once();
+            ->once()
+        ;
 
         $this->app['image']->shouldReceive('make')
             ->once()
-            ->andReturn($image);
+            ->andReturn($image)
+        ;
 
         $image->shouldReceive('fit')
             ->with(200, 200, m::any())
             ->once()
-            ->andReturn($image);
+            ->andReturn($image)
+        ;
 
         $image->shouldReceive('save')
             ->with('/cache/media/foo/foo.jpg')
-            ->once();
+            ->once()
+        ;
 
         $this->macro->up($media, $file);
     }
@@ -101,24 +110,29 @@ class FitMacroTest extends IlluminateTestCase
 
         $file->shouldReceive('isImage')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $this->app['files']->shouldReceive('exists')
             ->with('/cache/media/foo')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $file->shouldReceive('getFilename')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $file->shouldReceive('getExtension')
             ->once()
-            ->andReturn('jpg');
+            ->andReturn('jpg')
+        ;
 
         $this->app['files']->shouldReceive('delete')
             ->with('/cache/media/foo/foo.jpg')
-            ->once();
+            ->once()
+        ;
 
         $this->macro->down($media, $file);
     }

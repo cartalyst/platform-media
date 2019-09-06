@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -22,7 +22,6 @@ namespace Platform\Media\Macros;
 
 use Cartalyst\Filesystem\File;
 use Platform\Media\Models\Media;
-use Platform\Media\Styles\Preset;
 use Illuminate\Container\Container;
 
 class Fit extends AbstractMacro
@@ -58,7 +57,8 @@ class Fit extends AbstractMacro
     /**
      * Constructor.
      *
-     * @param  \Illuminate\Container\Container  $app
+     * @param \Illuminate\Container\Container $app
+     *
      * @return void
      */
     public function __construct(Container $app)
@@ -113,8 +113,9 @@ class Fit extends AbstractMacro
     /**
      * Returns the prepared file path.
      *
-     * @param  \Cartalyst\Filesystem\File  $file
-     * @param  \Platform\Media\Models\Media  $media
+     * @param \Cartalyst\Filesystem\File   $file
+     * @param \Platform\Media\Models\Media $media
+     *
      * @return string
      */
     protected function getPath(File $file, Media $media)
@@ -127,7 +128,8 @@ class Fit extends AbstractMacro
     /**
      * Ensures the given path exists on the filesystem.
      *
-     * @param  string  $path
+     * @param string $path
+     *
      * @return void
      */
     protected function ensurePathExists($path)

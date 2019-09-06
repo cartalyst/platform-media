@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -157,11 +157,11 @@ class MediaServiceProvider extends ServiceProvider
         $compiler = $this->app['blade.compiler'];
 
         $compiler->directive('mediaPath', function ($value) {
-            return "<?php echo Widget::make('platform/media::media.path', array($value)); ?>";
+            return "<?php echo Widget::make('platform/media::media.path', array(${value})); ?>";
         });
 
         $compiler->directive('mediaUpload', function ($value) {
-            return "<?php echo Widget::make('platform/media::media.upload', array($value)); ?>";
+            return "<?php echo Widget::make('platform/media::media.upload', array(${value})); ?>";
         });
     }
 

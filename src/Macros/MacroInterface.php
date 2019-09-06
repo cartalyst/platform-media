@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -36,7 +36,8 @@ interface MacroInterface
     /**
      * Sets the Preset.
      *
-     * @param  \Platform\Media\Styles\Preset  $preset
+     * @param \Platform\Media\Styles\Preset $preset
+     *
      * @return $this
      */
     public function setPreset(Preset $preset);

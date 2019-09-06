@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -20,6 +20,7 @@
 
 namespace Platform\Media\Repositories;
 
+use Illuminate\Support\Arr;
 use Cartalyst\Support\Traits;
 use Illuminate\Container\Container;
 use League\Flysystem\FileNotFoundException;
@@ -64,7 +65,8 @@ class MediaRepository implements MediaRepositoryInterface
     /**
      * Constructor.
      *
-     * @param  \Illuminate\Container\Container  $app
+     * @param \Illuminate\Container\Container $app
+     *
      * @return void
      */
     public function __construct(Container $app)
@@ -166,12 +168,12 @@ class MediaRepository implements MediaRepositoryInterface
 
             // Sanitize the file name
             $fileName = $this->prepareFileName(
-                array_get($input, 'name', $uploadedFile->getClientOriginalName()),
+                Arr::get($input, 'name', $uploadedFile->getClientOriginalName()),
                 $media->id
             );
 
             // Get the submitted tags
-            $tags = array_pull($input, 'tags', []);
+            $tags = Arr::pull($input, 'tags', []);
 
             // Upload the file
             $file = $this->filesystem->upload($uploadedFile, $fileName);
@@ -195,7 +197,7 @@ class MediaRepository implements MediaRepositoryInterface
             // Set the tags on the media entry
             $this->tags->set($media, $tags);
 
-            $this->fireEvent('platform.media.uploaded', [ $media, $file, $uploadedFile ]);
+            $this->fireEvent('platform.media.uploaded', [$media, $file, $uploadedFile]);
 
             return $media;
         } catch (FileExistsException $e) {
@@ -220,10 +222,10 @@ class MediaRepository implements MediaRepositoryInterface
     {
         $media = $this->find($id);
 
-        $this->fireEvent('platform.media.updating', [ $media ]);
+        $this->fireEvent('platform.media.updating', [$media]);
 
         // Get the submitted tags
-        $tags = array_pull($input, 'tags', []);
+        $tags = Arr::pull($input, 'tags', []);
 
         if ($uploadedFile instanceof UploadedFile) {
             if ($this->validForUpload($uploadedFile)) {
@@ -235,18 +237,18 @@ class MediaRepository implements MediaRepositoryInterface
 
                 // Sanitize the file name
                 $fileName = $this->sanitizeFileName(
-                    array_get($input, 'name', $uploadedFile->getClientOriginalName())
+                    Arr::get($input, 'name', $uploadedFile->getClientOriginalName())
                 );
 
                 // Should we update the name?
-                if ((bool) array_get($input, 'force_name_update', false) === true) {
+                if ((bool) Arr::get($input, 'force_name_update', false) === true) {
                     $fileName = $input['name'] = $uploadedFile->getClientOriginalName();
                 }
 
                 // Upload the file
                 $file = $this->filesystem->upload($uploadedFile, $fileName);
 
-                $this->fireEvent('platform.media.uploaded', [ $media, $file, $uploadedFile ]);
+                $this->fireEvent('platform.media.uploaded', [$media, $file, $uploadedFile]);
 
                 $imageSize = $file->getImageSize();
 
@@ -271,7 +273,7 @@ class MediaRepository implements MediaRepositoryInterface
         // Update the media entry
         $media->fill($input)->save();
 
-        $this->fireEvent('platform.media.updated', [ $media ]);
+        $this->fireEvent('platform.media.updated', [$media]);
 
         return $media;
     }
@@ -284,14 +286,14 @@ class MediaRepository implements MediaRepositoryInterface
         if ($media = $this->find($id)) {
             $file = $this->filesystem->get($media->path);
 
-            $this->fireEvent('platform.media.deleting', [ $media, $file ]);
+            $this->fireEvent('platform.media.deleting', [$media, $file]);
 
             try {
                 $this->filesystem->delete($media->path);
             } catch (FileNotFoundException $e) {
             }
 
-            $this->fireEvent('platform.media.deleted', [ $media ]);
+            $this->fireEvent('platform.media.deleted', [$media]);
 
             $media->relations()->delete();
 
@@ -308,7 +310,8 @@ class MediaRepository implements MediaRepositoryInterface
     /**
      * Sets the media private.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return void
      */
     public function makePrivate($id)
@@ -322,7 +325,8 @@ class MediaRepository implements MediaRepositoryInterface
     /**
      * Sets the media public.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return void
      */
     public function makePublic($id)
@@ -352,12 +356,13 @@ class MediaRepository implements MediaRepositoryInterface
     /**
      * Sanitizes the file name.
      *
-     * @param  string  $fileName
+     * @param string $fileName
+     *
      * @return string
      */
     protected function sanitizeFileName($fileName)
     {
-        $regex = [ '#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#', '#[ ]#', '![_]+!u' ];
+        $regex = ['#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#', '#[ ]#', '![_]+!u'];
 
         return preg_replace($regex, '_', strtolower($fileName));
     }
@@ -366,8 +371,9 @@ class MediaRepository implements MediaRepositoryInterface
      * Prepares the filename by sanitizing it and
      * appending the media id to the end.
      *
-     * @param  string  $fileName
-     * @param  string  $id
+     * @param string $fileName
+     * @param string $id
+     *
      * @return string
      */
     protected function prepareFileName($fileName, $id)

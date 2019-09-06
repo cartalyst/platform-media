@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -24,8 +24,8 @@ use Illuminate\Support\Facades\Response;
 use Platform\Foundation\Controllers\Controller;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Cartalyst\Filesystem\Laravel\Facades\Filesystem;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Platform\Media\Repositories\MediaRepositoryInterface;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class MediaController extends Controller
 {
@@ -39,7 +39,8 @@ class MediaController extends Controller
     /**
      * Constructor.
      *
-     * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
+     * @param \Platform\Media\Repositories\MediaRepositoryInterface $media
+     *
      * @return void
      */
     public function __construct(MediaRepositoryInterface $media)
@@ -52,7 +53,8 @@ class MediaController extends Controller
     /**
      * Returns the given media file.
      *
-     * @param  string  $path
+     * @param string $path
+     *
      * @return \Illuminate\Http\Response
      */
     public function view($path)
@@ -82,7 +84,8 @@ class MediaController extends Controller
     /**
      * Downloads the given media file.
      *
-     * @param  string  $path
+     * @param string $path
+     *
      * @return \Illuminate\Http\Response
      */
     public function download($path)
@@ -105,7 +108,8 @@ class MediaController extends Controller
      * Grabs the media file by its path and determines if the
      * logged in user  has access to the media file.
      *
-     * @param  string  $path
+     * @param string $path
+     *
      * @return \Platform\Media\Media
      */
     protected function getMedia($path)
@@ -140,8 +144,9 @@ class MediaController extends Controller
     /**
      * Sends the response with the appropriate headers.
      *
-     * @param  string  $file
-     * @param  array  $headers
+     * @param string $file
+     * @param array  $headers
+     *
      * @return \Illuminate\Http\Response
      */
     protected function respond($file, $headers = [])

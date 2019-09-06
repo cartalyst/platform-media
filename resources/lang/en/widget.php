@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -19,12 +19,11 @@
  */
 
 return [
+    'title' => 'Media',
 
-    'title'         => 'Media',
+    'delete_info' => 'Deleting an image will unlink it from this record, the image itself remains available under the media extension.',
 
-    'delete_info'   => 'Deleting an image will unlink it from this record, the image itself remains available under the media extension.',
-
-    'multi_upload'  => 'Multiple images can be added.',
+    'multi_upload' => 'Multiple images can be added.',
 
     'single_upload' => 'Only a single image can be added.',
 
@@ -32,6 +31,5 @@ return [
 
     'selected' => 'Selected',
 
-    'no_items_selected' => 'No items selected.'
-
+    'no_items_selected' => 'No items selected.',
 ];

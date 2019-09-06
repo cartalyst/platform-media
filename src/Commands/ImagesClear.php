@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -21,8 +21,6 @@
 namespace Platform\Media\Commands;
 
 use Illuminate\Console\Command;
-use Platform\Media\Models\Media;
-use Symfony\Component\Console\Helper\ProgressBar;
 
 class ImagesClear extends Command
 {

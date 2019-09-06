@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -28,22 +28,22 @@ class MediaRepositoryTest extends IlluminateTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         // Additional Bindings
-        $this->app['cartalyst.filesystem']                  = m::mock('Cartalyst\Filesystem\Filesystem');
-        $this->app['platform.content']                      = m::mock('Platform\Content\Repositories\ContentRepositoryInterface');
-        $this->app['platform.media.handler.data']           = m::mock('Platform\Media\Handlers\DataHandlerInterface');
-        $this->app['platform.media.manager']                = m::mock('Platform\Media\Repositories\ManagerRepository');
-        $this->app['platform.media.validator']              = m::mock('Cartalyst\Support\Validator');
-        $this->app['platform.menus']                        = m::mock('Platform\Menus\Repositories\MenuRepositoryInterface');
-        $this->app['platform.menus.manager']                = m::mock('Platform\Menus\Repositories\ManagerRepositoryInterface');
-        $this->app['platform.permissions']                  = m::mock('Platform\Permissions\Repositories\PermissionsRepositoryInterface');
-        $this->app['platform.roles']                        = m::mock('Platform\Roles\Repositories\RoleRepositoryInterface');
-        $this->app['platform.tags']                         = m::mock('Platform\Tags\Repositories\TagsRepositoryInterface');
-        $this->app['themes']                                = m::mock('Cartalyst\Themes\ThemeBag');
+        $this->app['cartalyst.filesystem']        = m::mock('Cartalyst\Filesystem\Filesystem');
+        $this->app['platform.content']            = m::mock('Platform\Content\Repositories\ContentRepositoryInterface');
+        $this->app['platform.media.handler.data'] = m::mock('Platform\Media\Handlers\DataHandlerInterface');
+        $this->app['platform.media.manager']      = m::mock('Platform\Media\Repositories\ManagerRepository');
+        $this->app['platform.media.validator']    = m::mock('Cartalyst\Support\Validator');
+        $this->app['platform.menus']              = m::mock('Platform\Menus\Repositories\MenuRepositoryInterface');
+        $this->app['platform.menus.manager']      = m::mock('Platform\Menus\Repositories\ManagerRepositoryInterface');
+        $this->app['platform.permissions']        = m::mock('Platform\Permissions\Repositories\PermissionsRepositoryInterface');
+        $this->app['platform.roles']              = m::mock('Platform\Roles\Repositories\RoleRepositoryInterface');
+        $this->app['platform.tags']               = m::mock('Platform\Tags\Repositories\TagsRepositoryInterface');
+        $this->app['themes']                      = m::mock('Cartalyst\Themes\ThemeBag');
 
         $this->app['platform.menus.manager']->shouldIgnoreMissing();
 
@@ -66,7 +66,8 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $this->app['cache']->shouldReceive('rememberForever')
             ->once()
@@ -77,7 +78,8 @@ class MediaRepositoryTest extends IlluminateTestCase
             }))->andReturn($model);
 
         $model->shouldReceive('find')
-            ->once();
+            ->once()
+        ;
 
         $this->repository->find(1);
     }
@@ -89,7 +91,8 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $this->app['cache']->shouldReceive('rememberForever')
             ->once()
@@ -101,10 +104,12 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $model->shouldReceive('wherePath')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('first')
-            ->once();
+            ->once()
+        ;
 
         $this->repository->findByPath('foo');
     }
@@ -116,15 +121,18 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('allTags')
             ->once()
-            ->andReturn($collection = m::mock('Illuminate\Support\Collection'));
+            ->andReturn($collection = m::mock('Illuminate\Support\Collection'))
+        ;
 
         $collection->shouldReceive('pluck')
             ->with('name')
-            ->once();
+            ->once()
+        ;
 
         $this->repository->getAllTags();
     }
@@ -149,15 +157,17 @@ class MediaRepositoryTest extends IlluminateTestCase
         $this->app['translator']->shouldReceive('trans')
             ->with('platform/media::message.invalid_file', [], 'messages', '')
             ->once()
-            ->andReturn($error);
+            ->andReturn($error)
+        ;
 
         $this->app['cartalyst.filesystem']->shouldReceive('validateFile')
             ->once()
-            ->andThrow(new \Cartalyst\Filesystem\Exceptions\InvalidFileException());
+            ->andThrow(new \Cartalyst\Filesystem\Exceptions\InvalidFileException())
+        ;
 
         $this->repository->validForUpload($file);
 
-        $this->assertEquals($error, $this->repository->getError());
+        $this->assertSame($error, $this->repository->getError());
     }
 
     /** @test */
@@ -170,15 +180,17 @@ class MediaRepositoryTest extends IlluminateTestCase
         $this->app['translator']->shouldReceive('trans')
             ->with('platform/media::message.file_size_exceeded', [], 'messages', '')
             ->once()
-            ->andReturn($error);
+            ->andReturn($error)
+        ;
 
         $this->app['cartalyst.filesystem']->shouldReceive('validateFile')
             ->once()
-            ->andThrow(new \Cartalyst\Filesystem\Exceptions\MaxFileSizeExceededException());
+            ->andThrow(new \Cartalyst\Filesystem\Exceptions\MaxFileSizeExceededException())
+        ;
 
         $this->repository->validForUpload($file);
 
-        $this->assertEquals($error, $this->repository->getError());
+        $this->assertSame($error, $this->repository->getError());
     }
 
     /** @test */
@@ -191,15 +203,17 @@ class MediaRepositoryTest extends IlluminateTestCase
         $this->app['translator']->shouldReceive('trans')
             ->with('platform/media::message.invalid_mime', [], 'messages', '')
             ->once()
-            ->andReturn($error);
+            ->andReturn($error)
+        ;
 
         $this->app['cartalyst.filesystem']->shouldReceive('validateFile')
             ->once()
-            ->andThrow(new \Cartalyst\Filesystem\Exceptions\InvalidMimeTypeException());
+            ->andThrow(new \Cartalyst\Filesystem\Exceptions\InvalidMimeTypeException())
+        ;
 
         $this->repository->validForUpload($file);
 
-        $this->assertEquals($error, $this->repository->getError());
+        $this->assertSame($error, $this->repository->getError());
     }
 
     /** @test */
@@ -212,11 +226,13 @@ class MediaRepositoryTest extends IlluminateTestCase
         $this->app['platform.media.validator']->shouldReceive('on')
             ->with('update')
             ->once()
-            ->andReturn($this->app['platform.media.validator']);
+            ->andReturn($this->app['platform.media.validator'])
+        ;
 
         $this->app['platform.media.validator']->shouldReceive('validate')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $this->assertTrue($this->repository->validForUpdate($model, $data));
     }
@@ -230,7 +246,8 @@ class MediaRepositoryTest extends IlluminateTestCase
         $model->shouldReceive('create')
             ->with($data)
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $media = $this->repository->create($data);
 
@@ -242,7 +259,8 @@ class MediaRepositoryTest extends IlluminateTestCase
     {
         $uploaded = m::mock('Symfony\Component\HttpFoundation\File\UploadedFile');
         $uploaded->shouldReceive('getClientOriginalName')
-            ->twice();
+            ->twice()
+        ;
 
         $file = m::mock('Cartalyst\Filesystem\File');
 
@@ -264,56 +282,69 @@ class MediaRepositoryTest extends IlluminateTestCase
         $this->app['cartalyst.filesystem']->shouldReceive('upload')
             ->with($uploaded, 'foo_1.')
             ->once()
-            ->andReturn($file);
+            ->andReturn($file)
+        ;
 
         $file->shouldReceive('getPath')
             ->once()
-            ->andReturn('foo_path');
+            ->andReturn('foo_path')
+        ;
 
         $file->shouldReceive('getImageSize')
             ->once()
-            ->andReturn(['width' => 1, 'height' => 1]);
+            ->andReturn(['width' => 1, 'height' => 1])
+        ;
 
         $file->shouldReceive('getExtension')
             ->once()
-            ->andReturn('png');
+            ->andReturn('png')
+        ;
 
         $file->shouldReceive('getMimetype')
-            ->once();
+            ->once()
+        ;
 
         $file->shouldReceive('getSize')
-            ->once();
+            ->once()
+        ;
 
         $file->shouldReceive('isImage')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $model = m::mock('Platform\Media\Models\Media');
 
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('fill')
             ->with($preparedData)
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('save')
-            ->twice();
+            ->twice()
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('id')
             ->once()
-            ->andReturn(1);
+            ->andReturn(1)
+        ;
 
         $this->app['platform.tags']->shouldReceive('set')
             ->with($model, null)
-            ->once();
+            ->once()
+        ;
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.media.uploaded', [ $model, $file, $uploaded ])
-            ->once();
+            ->with('platform.media.uploaded', [$model, $file, $uploaded])
+            ->once()
+        ;
 
         $this->repository->upload($uploaded, $data);
     }
@@ -323,7 +354,8 @@ class MediaRepositoryTest extends IlluminateTestCase
     {
         $uploaded = m::mock('Symfony\Component\HttpFoundation\File\UploadedFile');
         $uploaded->shouldReceive('getClientOriginalName')
-            ->once();
+            ->once()
+        ;
 
         $file = m::mock('Cartalyst\Filesystem\File');
 
@@ -344,47 +376,58 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $this->app['cartalyst.filesystem']->shouldReceive('validateFile')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $this->app['cartalyst.filesystem']->shouldReceive('delete')
-            ->once();
+            ->once()
+        ;
 
         $this->app['cartalyst.filesystem']->shouldReceive('upload')
             ->with($uploaded, 'foo')
             ->once()
-            ->andReturn($file);
+            ->andReturn($file)
+        ;
 
         $file->shouldReceive('getPath')
             ->once()
-            ->andReturn('foo_path');
+            ->andReturn('foo_path')
+        ;
 
         $file->shouldReceive('getImageSize')
             ->once()
-            ->andReturn(['width' => 1, 'height' => 1]);
+            ->andReturn(['width' => 1, 'height' => 1])
+        ;
 
         $file->shouldReceive('getExtension')
-            ->once();
+            ->once()
+        ;
 
         $file->shouldReceive('getMimetype')
-            ->once();
+            ->once()
+        ;
 
         $file->shouldReceive('getSize')
-            ->once();
+            ->once()
+        ;
 
         $file->shouldReceive('isImage')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $model = m::mock('Platform\Media\Models\Media');
 
         $model->shouldReceive('getAttribute')
             ->once()
             ->with('path')
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $this->app['cache']->shouldReceive('rememberForever')
             ->once()
@@ -396,31 +439,38 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $model->shouldReceive('find')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('fill')
             ->with($preparedData)
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('save')
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.tags']->shouldReceive('set')
             ->with($model, null)
-            ->once();
+            ->once()
+        ;
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.media.uploaded', [ $model, $file, $uploaded ])
-            ->once();
+            ->with('platform.media.uploaded', [$model, $file, $uploaded])
+            ->once()
+        ;
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.media.updating', [ $model ])
-            ->once();
+            ->with('platform.media.updating', [$model])
+            ->once()
+        ;
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.media.updated', [ $model ])
-            ->once();
+            ->with('platform.media.updated', [$model])
+            ->once()
+        ;
 
         $this->repository->update(1, $data, $uploaded);
     }
@@ -436,17 +486,20 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $this->app['cartalyst.filesystem']->shouldReceive('validateFile')
             ->once()
-            ->andThrow(new \Cartalyst\Filesystem\Exceptions\InvalidFileException());
+            ->andThrow(new \Cartalyst\Filesystem\Exceptions\InvalidFileException())
+        ;
 
         $this->app['translator']->shouldReceive('trans')
-                ->once()
-                ->andReturn($error);
+            ->once()
+            ->andReturn($error)
+        ;
 
         $model = m::mock('Platform\Media\Models\Media');
 
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $this->app['cache']->shouldReceive('rememberForever')
             ->once()
@@ -458,11 +511,13 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $model->shouldReceive('find')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.media.updating', [ $model ])
-            ->once();
+            ->with('platform.media.updating', [$model])
+            ->once()
+        ;
 
         $this->assertFalse($this->repository->update(1, [], $uploaded));
     }
@@ -474,21 +529,25 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $this->app['cartalyst.filesystem']->shouldReceive('get')
             ->once()
-            ->andReturn($file);
+            ->andReturn($file)
+        ;
 
         $this->app['cartalyst.filesystem']->shouldReceive('delete')
-            ->once();
+            ->once()
+        ;
 
         $model = m::mock('Platform\Media\Models\Media');
 
         $model->shouldReceive('getAttribute')
             ->twice()
             ->with('path')
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $this->app['cache']->shouldReceive('rememberForever')
             ->once()
@@ -500,25 +559,31 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $model->shouldReceive('find')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('relations')
             ->once()
-            ->andReturn($collection = m::mock('Illuminate\Support\Collection'));
+            ->andReturn($collection = m::mock('Illuminate\Support\Collection'))
+        ;
 
         $collection->shouldReceive('delete')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('delete')
-            ->once();
+            ->once()
+        ;
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.media.deleting', [ $model, $file ])
-            ->once();
+            ->with('platform.media.deleting', [$model, $file])
+            ->once()
+        ;
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.media.deleted', [ $model ])
-            ->once();
+            ->with('platform.media.deleted', [$model])
+            ->once()
+        ;
 
         $this->repository->delete(1);
     }
@@ -532,11 +597,13 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $this->app['translator']->shouldReceive('trans')
             ->once()
-            ->andReturn($error);
+            ->andReturn($error)
+        ;
 
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $this->app['cache']->shouldReceive('rememberForever')
             ->once()
@@ -544,20 +611,23 @@ class MediaRepositoryTest extends IlluminateTestCase
                 $callback();
 
                 return true;
-            }));
+            }))
+        ;
 
         $model->shouldReceive('find')
-            ->once();
+            ->once()
+        ;
 
         $this->repository->delete(1);
 
-        $this->assertEquals($error, $this->repository->getError());
+        $this->assertSame($error, $this->repository->getError());
     }
 
     /**
      * Repository should receive createModel.
      *
-     * @param  bool  $withTags
+     * @param bool $withTags
+     *
      * @return mixed
      */
     protected function shouldReceiveCreateModel($withTags = true)
@@ -566,13 +636,15 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         if ($withTags) {
             $model->shouldReceive('with')
                 ->with('tags')
                 ->once()
-                ->andReturn($model);
+                ->andReturn($model)
+            ;
         }
 
         return $model;
@@ -581,20 +653,20 @@ class MediaRepositoryTest extends IlluminateTestCase
     /**
      * Media creation expectations.
      *
-     * @param  arary  $data
+     * @param arary $data
+     *
      * @return \Platform\Media\Models\Media
      */
     protected function shouldReceiveCreate($data)
     {
-        $model = $this->shouldReceiveCreateModel(false);
-
-        return $model;
+        return $this->shouldReceiveCreateModel(false);
     }
 
     /**
      * Media update expectations.
      *
-     * @param  arary  $data
+     * @param arary $data
+     *
      * @return void
      */
     protected function shouldReceiveUpdate($data)
@@ -602,51 +674,62 @@ class MediaRepositoryTest extends IlluminateTestCase
         $model = $this->shouldReceiveFind();
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.media.updating', [ $model, $data ])
-            ->once();
+            ->with('platform.media.updating', [$model, $data])
+            ->once()
+        ;
 
         $this->app['platform.media.handler.data']->shouldReceive('prepare')
             ->once()
-            ->andReturn($data);
+            ->andReturn($data)
+        ;
 
         $model->shouldReceive('getAttribute')
             ->once()
             ->with('slug')
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $model->shouldReceive('getAttribute')
             ->once()
             ->with('uri')
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.media.updated', [ $model ])
-            ->once();
+            ->with('platform.media.updated', [$model])
+            ->once()
+        ;
 
         $this->app['platform.media.validator']->shouldReceive('on')
             ->with('update')
             ->once()
-            ->andReturn($this->app['platform.media.validator']);
+            ->andReturn($this->app['platform.media.validator'])
+        ;
 
         $this->app['platform.media.validator']->shouldReceive('bind')
             ->with($data)
             ->once()
-            ->andReturn($this->app['platform.media.validator']);
+            ->andReturn($this->app['platform.media.validator'])
+        ;
 
         $this->app['platform.media.validator']->shouldReceive('validate')
             ->once()
-            ->andReturn($messages = m::mock('Illuminate\Support\MessageBag'));
+            ->andReturn($messages = m::mock('Illuminate\Support\MessageBag'))
+        ;
 
         $messages->shouldReceive('isEmpty')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $model->shouldReceive('fill')
             ->once()
             ->with($data)
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('save')
-            ->once();
+            ->once()
+        ;
     }
 }

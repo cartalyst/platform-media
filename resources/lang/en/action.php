@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -19,7 +19,6 @@
  */
 
 return [
-
     'send_email' => 'Send Email',
     'share'      => 'Share',
     'download'   => 'Download',
@@ -36,5 +35,4 @@ return [
         'private' => 'All Private',
         'public'  => 'All Public',
     ],
-
 ];

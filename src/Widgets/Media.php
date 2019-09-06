@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -28,7 +28,8 @@ class Media
     /**
      * Constructor.
      *
-     * @param  \Platform\Media\Repositories\MediaRepositoryInterface  $media
+     * @param \Platform\Media\Repositories\MediaRepositoryInterface $media
+     *
      * @return void
      */
     public function __construct(MediaRepositoryInterface $media)
@@ -39,9 +40,10 @@ class Media
     /**
      * Returns the given media path or the HTML <img> tag.
      *
-     * @param  int  $id
-     * @param  string|array  $name
-     * @param  array  $attributes
+     * @param int          $id
+     * @param array|string $name
+     * @param array        $attributes
+     *
      * @return string
      */
     public function path($id, $name = null, array $attributes = [])
@@ -62,9 +64,10 @@ class Media
     /**
      * Returns the media upload widget.
      *
-     * @param  \Cartalyst\Support\Contracts\NamespacedEntityInterface|string  $namespace
-     * @param  bool  $multiUpload
-     * @param  string  $view
+     * @param \Cartalyst\Support\Contracts\NamespacedEntityInterface|string $namespace
+     * @param bool                                                          $multiUpload
+     * @param string                                                        $view
+     *
      * @return string
      */
     public function upload($namespace, $multiUpload = true, $view = '')

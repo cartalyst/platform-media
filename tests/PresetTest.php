@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -20,17 +20,17 @@
 
 namespace Platform\Media\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Platform\Media\Styles\Preset;
 
-class PresetTest extends PHPUnit_Framework_TestCase
+class PresetTest extends TestCase
 {
     /**
      * Setup.
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->style = new Preset('foo', []);
     }
@@ -44,7 +44,7 @@ class PresetTest extends PHPUnit_Framework_TestCase
 
         $this->style->macros = $macros;
 
-        $this->assertEquals($macros, $this->style->macros);
+        $this->assertSame($macros, $this->style->macros);
     }
 
     /** @test */
@@ -54,6 +54,6 @@ class PresetTest extends PHPUnit_Framework_TestCase
 
         $this->style->attribute = $attribute;
 
-        $this->assertEquals($attribute, $this->style->attribute);
+        $this->assertSame($attribute, $this->style->attribute);
     }
 }

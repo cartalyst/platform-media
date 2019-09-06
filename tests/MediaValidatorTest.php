@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -21,10 +21,10 @@
 namespace Platform\Media\Tests;
 
 use Mockery as m;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Platform\Media\Validator\MediaValidator;
 
-class MediaValidatorTest extends PHPUnit_Framework_TestCase
+class MediaValidatorTest extends TestCase
 {
     /**
      * Validator instance.
@@ -38,7 +38,7 @@ class MediaValidatorTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         m::close();
     }
@@ -48,7 +48,7 @@ class MediaValidatorTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->validator = new MediaValidator(m::mock('Illuminate\Validation\Factory'));
     }
@@ -60,7 +60,7 @@ class MediaValidatorTest extends PHPUnit_Framework_TestCase
             'name' => 'required',
         ];
 
-        $this->assertEquals($rules, $this->validator->getRules());
+        $this->assertSame($rules, $this->validator->getRules());
 
         $this->validator->onUpdate();
     }

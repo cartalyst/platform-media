@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -19,7 +19,6 @@
  */
 
 return [
-
     // Total of allowed attachments per email
     'max_attachments' => 10,
 
@@ -28,5 +27,4 @@ return [
 
     // Default email subject
     'subject' => "You've Got Media!",
-
 ];

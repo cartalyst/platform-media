@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -19,11 +19,9 @@
  */
 
 return [
-
     'index'        => 'List Media',
     'upload'       => 'Upload\Link Media',
     'edit'         => 'Edit Media',
     'delete'       => 'Delete Media',
     'bulk_actions' => 'Bulk Actions',
-
 ];

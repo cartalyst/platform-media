@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -19,7 +19,6 @@
  */
 
 return [
-
     'file_exists' => 'File already exists.',
 
     'file_size_exceeded' => 'File size exceeded',
@@ -42,5 +41,4 @@ return [
         'delete'   => 'There was an issue deleting the media. Please try again.',
         'multiple' => '{1} 1 item was successfully removed.|[2,*] :items items were successfully removed.',
     ],
-
 ];

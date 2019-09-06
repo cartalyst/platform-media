@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -19,35 +19,31 @@
  */
 
 return [
-
     'general' => [
+        'legend' => 'Details',
 
-        'legend'         => 'Details',
-
-        'name'           => 'Name',
-        'name_help'      => 'Type a descriptive name for your media.',
+        'name'      => 'Name',
+        'name_help' => 'Type a descriptive name for your media.',
 
         'namespace'      => 'Namespace',
         'namespace_help' => "Select the media's namespace.",
 
-        'file'           => 'File',
-        'size'           => 'Size',
+        'file' => 'File',
+        'size' => 'Size',
 
-        'roles'          => 'Roles',
-        'roles_help'     => 'Select the roles to assign to this media file.',
+        'roles'      => 'Roles',
+        'roles_help' => 'Select the roles to assign to this media file.',
 
-        'status'         => 'Status',
-        'status_help'    => 'The media status.',
+        'status'      => 'Status',
+        'status_help' => 'The media status.',
 
-        'description'         => 'Description',
-        'description_help'    => 'The media description.',
+        'description'      => 'Description',
+        'description_help' => 'The media description.',
 
-        'share'          => 'Share',
-        'download'       => 'Download',
-        'email'          => 'Email',
-        'public'         => 'Public',
-        'private'        => 'Private',
-
+        'share'    => 'Share',
+        'download' => 'Download',
+        'email'    => 'Email',
+        'public'   => 'Public',
+        'private'  => 'Private',
     ],
-
 ];

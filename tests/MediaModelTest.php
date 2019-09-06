@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -20,17 +20,18 @@
 
 namespace Platform\Media\Tests;
 
-use PHPUnit_Framework_TestCase;
+use Illuminate\Support\Arr;
+use PHPUnit\Framework\TestCase;
 use Platform\Media\Models\Media;
 
-class MediaModelTest extends PHPUnit_Framework_TestCase
+class MediaModelTest extends TestCase
 {
     /**
      * Setup.
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->media = new Media();
     }
@@ -45,14 +46,13 @@ class MediaModelTest extends PHPUnit_Framework_TestCase
 
         $this->media->roles = $roles;
 
-        $this->assertEquals(json_encode($roles), array_get($this->media->getAttributes(), 'roles'));
+        $this->assertSame(json_encode($roles), Arr::get($this->media->getAttributes(), 'roles'));
 
         $this->assertSame($roles, $this->media->roles);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function it_throws_in_exception_if_roles_cannot_be_decoded()
     {
@@ -60,7 +60,7 @@ class MediaModelTest extends PHPUnit_Framework_TestCase
 
         $this->media->roles = $roles;
 
-        $this->assertEquals(json_encode($roles), array_get($this->media->getAttributes(), 'roles'));
+        $this->assertSame(json_encode($roles), Arr::get($this->media->getAttributes(), 'roles'));
 
         $this->assertSame($roles, $this->media->roles);
     }

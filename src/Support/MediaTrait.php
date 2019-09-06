@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -49,6 +49,7 @@ trait MediaTrait
 
                 $mediaIds = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
                 $preparedMediaIds = [];
+
                 foreach ($mediaIds as $key => $id) {
                     $preparedMediaIds[$id] = ['sort' => $key];
                 }
@@ -63,6 +64,7 @@ trait MediaTrait
 
                 $mediaIds = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
                 $preparedMediaIds = [];
+
                 foreach ($mediaIds as $key => $id) {
                     $preparedMediaIds[$id] = ['sort' => $key];
                 }
@@ -77,6 +79,7 @@ trait MediaTrait
 
                 $mediaIds = is_array($mediaIds) ? $mediaIds : json_decode($mediaIds);
                 $preparedMediaIds = [];
+
                 foreach ($mediaIds as $key => $id) {
                     $preparedMediaIds[$id] = ['sort' => $key];
                 }
@@ -137,7 +140,8 @@ trait MediaTrait
     /**
      * Sets related media ids.
      *
-     * @param  array  $ids
+     * @param array $ids
+     *
      * @return void
      */
     public static function setMediaIds(array $ids)

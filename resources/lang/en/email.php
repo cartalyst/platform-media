@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -19,14 +19,12 @@
  */
 
 return [
-
     'attachments' => 'Attachments',
     'total_bytes' => 'Total',
 
-    'users'       => 'Users',
-    'users_help'  => 'Select users to add as recipients.',
+    'users'      => 'Users',
+    'users_help' => 'Select users to add as recipients.',
 
-    'roles'       => 'Roles',
-    'roles_help'  => 'Select roles to add as recipients',
-
+    'roles'      => 'Roles',
+    'roles_help' => 'Select roles to add as recipients',
 ];

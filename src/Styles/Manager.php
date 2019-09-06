@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -20,7 +20,6 @@
 
 namespace Platform\Media\Styles;
 
-use Closure;
 use Cartalyst\Filesystem\File;
 use Platform\Media\Models\Media;
 use Illuminate\Container\Container;
@@ -58,7 +57,8 @@ class Manager implements ManagerInterface
     /**
      * Constructor.
      *
-     * @param  \Illuminate\Container\Container  $app
+     * @param \Illuminate\Container\Container $app
+     *
      * @return void
      */
     public function __construct(Container $app)
@@ -69,7 +69,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getPresets()
     {
@@ -77,7 +77,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setPreset($preset, array $info = [])
     {
@@ -93,7 +93,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getMacros()
     {
@@ -101,7 +101,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setMacro($name, $class)
     {
@@ -111,7 +111,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function handleUp(Media $media)
     {
@@ -119,7 +119,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function handleDown(Media $media)
     {
@@ -127,7 +127,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isValidPreset($name)
     {
@@ -135,7 +135,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function applyPreset($name, $direction, Media $media)
     {
@@ -161,7 +161,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function applyPresets($direction, Media $media)
     {
@@ -171,7 +171,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getPreset($name)
     {

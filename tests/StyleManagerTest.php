@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -21,13 +21,9 @@
 namespace Platform\Media\Tests;
 
 use Mockery as m;
-use Cartalyst\Filesystem\File;
-use Platform\Media\Models\Media;
-use Platform\Media\Styles\Preset;
+use Illuminate\Support\Arr;
 use Platform\Media\Styles\Manager;
-use Platform\Media\Macros\AbstractMacro;
 use Cartalyst\Testing\IlluminateTestCase;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class StyleManagerTest extends IlluminateTestCase
 {
@@ -36,12 +32,12 @@ class StyleManagerTest extends IlluminateTestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->app['cartalyst.filesystem'] = m::mock('Cartalyst\Filesystem\Filesystem');
-        $this->app['platform.media'] = m::mock('Platform\Media\Repositories\MediaRepositoryInterface');
+        $this->app['platform.media']       = m::mock('Platform\Media\Repositories\MediaRepositoryInterface');
 
         $this->manager = new Manager($this->app);
     }
@@ -56,10 +52,12 @@ class StyleManagerTest extends IlluminateTestCase
 
         $this->app['platform.media']->shouldReceive('createModel')
             ->twice()
-            ->andReturn($media = m::mock('Platform\Media\Models\Media'));
+            ->andReturn($media = m::mock('Platform\Media\Models\Media'))
+        ;
 
         $media->shouldReceive('setPresets')
-            ->twice();
+            ->twice()
+        ;
 
         foreach ($presets as $key => $preset) {
             $this->manager->setPreset($key, $preset);
@@ -84,8 +82,8 @@ class StyleManagerTest extends IlluminateTestCase
             $this->manager->setMacro($key, $macro);
         }
 
-        $this->assertSame($macros['resize'], array_get($this->manager->getMacros(), 'resize'));
-        $this->assertSame($macros['foo'], array_get($this->manager->getMacros(), 'foo'));
+        $this->assertSame($macros['resize'], Arr::get($this->manager->getMacros(), 'resize'));
+        $this->assertSame($macros['foo'], Arr::get($this->manager->getMacros(), 'foo'));
     }
 
     /** @test */
@@ -98,42 +96,51 @@ class StyleManagerTest extends IlluminateTestCase
 
         $this->app['platform.media']->shouldReceive('createModel')
             ->once()
-            ->andReturn($media);
+            ->andReturn($media)
+        ;
 
         $media->shouldReceive('setPresets')
-            ->once();
+            ->once()
+        ;
 
         $media->shouldReceive('getAttribute')
             ->with('path')
             ->twice()
-            ->andReturn($filePath);
+            ->andReturn($filePath)
+        ;
 
         $this->app['cartalyst.filesystem']->shouldReceive('get')
             ->with($filePath)
             ->twice()
-            ->andReturn($file);
+            ->andReturn($file)
+        ;
 
         $preset = m::mock('Platform\Media\Styles\Preset');
 
         $preset->shouldReceive('setMedia')
             ->with($media)
-            ->twice();
+            ->twice()
+        ;
 
         $preset->shouldReceive('setFile')
             ->with($file)
-            ->twice();
+            ->twice()
+        ;
 
         $preset->shouldReceive('isValid')
             ->twice()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $preset->shouldReceive('applyMacros')
             ->with('up')
-            ->once();
+            ->once()
+        ;
 
         $preset->shouldReceive('applyMacros')
             ->with('down')
-            ->once();
+            ->once()
+        ;
 
         $this->manager->setPreset($preset);
 

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -30,9 +30,10 @@ interface EventHandlerInterface extends BaseEventHandlerInterface
     /**
      * On upload event.
      *
-     * @param  \Platform\Media\Models\Media  $media
-     * @param  \Cartalyst\Filesystem\File  $file
-     * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $uploadedFile
+     * @param \Platform\Media\Models\Media                        $media
+     * @param \Cartalyst\Filesystem\File                          $file
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $uploadedFile
+     *
      * @return void
      */
     public function uploaded(Media $media, File $file, UploadedFile $uploadedFile);
@@ -40,8 +41,9 @@ interface EventHandlerInterface extends BaseEventHandlerInterface
     /**
      * On deleting event.
      *
-     * @param  \Platform\Media\Models\Media  $media
-     * @param  \Cartalyst\Filesystem\File  $file
+     * @param \Platform\Media\Models\Media $media
+     * @param \Cartalyst\Filesystem\File   $file
+     *
      * @return void
      */
     public function deleting(Media $media, File $file);
@@ -49,7 +51,8 @@ interface EventHandlerInterface extends BaseEventHandlerInterface
     /**
      * On deleted event.
      *
-     * @param  \Platform\Media\Models\Media  $media
+     * @param \Platform\Media\Models\Media $media
+     *
      * @return void
      */
     public function deleted(Media $media);

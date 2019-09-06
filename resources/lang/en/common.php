@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Media extension.
  *
  * NOTICE OF LICENSE
@@ -19,13 +19,11 @@
  */
 
 return [
-
-    'title'  => 'Media',
+    'title' => 'Media',
 
     'tabs' => [
         'general' => 'Media',
         'tags'    => 'Tags',
         'email'   => 'Email Media',
     ],
-
 ];
