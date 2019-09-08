@@ -27,6 +27,18 @@ use Cartalyst\Testing\IlluminateTestCase;
 class MediaWidgetTest extends IlluminateTestCase
 {
     /**
+     * Close mockery.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        $this->addToAssertionCount(1);
+
+        m::close();
+    }
+
+    /**
      * Setup.
      *
      * @return void
@@ -81,7 +93,7 @@ class MediaWidgetTest extends IlluminateTestCase
             ->andReturn(true)
         ;
 
-        $this->app['url']->shouldReceive('to')
+        $this->app['Illuminate\Contracts\Routing\UrlGenerator']->shouldReceive('to')
             ->with('foo', [], '')
             ->once()
         ;
@@ -106,7 +118,7 @@ class MediaWidgetTest extends IlluminateTestCase
             ->andReturn('foo')
         ;
 
-        $this->app['url']->shouldReceive('route')
+        $this->app['Illuminate\Contracts\Routing\UrlGenerator']->shouldReceive('route')
             ->with('media.view', 'foo', true, '')
             ->once()
         ;

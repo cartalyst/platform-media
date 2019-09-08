@@ -27,6 +27,18 @@ use Platform\Media\Controllers\Admin\MediaController;
 class AdminMediaControllerTest extends IlluminateTestCase
 {
     /**
+     * Close mockery.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        $this->addToAssertionCount(1);
+
+        m::close();
+    }
+
+    /**
      * Setup.
      *
      * @return void
@@ -37,7 +49,7 @@ class AdminMediaControllerTest extends IlluminateTestCase
 
         // Admin Controller expectations
         $this->app['sentinel']->shouldReceive('getUser');
-        $this->app['view']->shouldReceive('share');
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('share');
 
         // Media Repository
         $this->media      = m::mock('Platform\Media\Repositories\MediaRepositoryInterface');
@@ -65,7 +77,7 @@ class AdminMediaControllerTest extends IlluminateTestCase
             ->once()
         ;
 
-        $this->app['view']->shouldReceive('make')
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('make')
             ->once()
         ;
 
@@ -94,7 +106,7 @@ class AdminMediaControllerTest extends IlluminateTestCase
             ->andReturn($model)
         ;
 
-        $this->app['view']->shouldReceive('make')
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('make')
             ->once()
         ;
 
@@ -160,7 +172,7 @@ class AdminMediaControllerTest extends IlluminateTestCase
             ->andReturn($media = m::mock('Platform\Media\Models\Media'))
         ;
 
-        $this->app['response']->shouldReceive('make')
+        $this->app['Illuminate\Contracts\Routing\ResponseFactory']->shouldReceive('make')
             ->with($media, 200, [])
             ->once()
         ;
@@ -185,7 +197,7 @@ class AdminMediaControllerTest extends IlluminateTestCase
             ->once()
         ;
 
-        $this->app['response']->shouldReceive('make')
+        $this->app['Illuminate\Contracts\Routing\ResponseFactory']->shouldReceive('make')
             ->with(null, 400, [])
             ->once()
         ;
@@ -225,7 +237,7 @@ class AdminMediaControllerTest extends IlluminateTestCase
             ->andReturn($media = m::mock('Platform\Media\Models\Media'))
         ;
 
-        $this->app['response']->shouldReceive('make')
+        $this->app['Illuminate\Contracts\Routing\ResponseFactory']->shouldReceive('make')
             ->with(null, 200, [])
             ->once()
         ;
@@ -323,7 +335,7 @@ class AdminMediaControllerTest extends IlluminateTestCase
             ->once()
         ;
 
-        $this->app['response']->shouldReceive('make')
+        $this->app['Illuminate\Contracts\Routing\ResponseFactory']->shouldReceive('make')
             ->with('Success', 200, [])
             ->once()
         ;
@@ -340,7 +352,7 @@ class AdminMediaControllerTest extends IlluminateTestCase
             ->andReturn('foobar')
         ;
 
-        $this->app['response']->shouldReceive('make')
+        $this->app['Illuminate\Contracts\Routing\ResponseFactory']->shouldReceive('make')
             ->with('Failed', 500, [])
             ->once()
         ;

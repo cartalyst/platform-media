@@ -26,6 +26,18 @@ use Cartalyst\Testing\IlluminateTestCase;
 class MediaRepositoryTest extends IlluminateTestCase
 {
     /**
+     * Close mockery.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        $this->addToAssertionCount(1);
+
+        m::close();
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
@@ -126,10 +138,10 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $model->shouldReceive('allTags')
             ->once()
-            ->andReturn($collection = m::mock('Illuminate\Support\Collection'))
+            ->andReturn($builder = m::mock('Illuminate\Database\Eloquent\Builder'))
         ;
 
-        $collection->shouldReceive('pluck')
+        $builder->shouldReceive('pluck')
             ->with('name')
             ->once()
         ;
@@ -341,7 +353,7 @@ class MediaRepositoryTest extends IlluminateTestCase
             ->once()
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.media.uploaded', [$model, $file, $uploaded])
             ->once()
         ;
@@ -457,17 +469,17 @@ class MediaRepositoryTest extends IlluminateTestCase
             ->once()
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.media.uploaded', [$model, $file, $uploaded])
             ->once()
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.media.updating', [$model])
             ->once()
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.media.updated', [$model])
             ->once()
         ;
@@ -514,7 +526,7 @@ class MediaRepositoryTest extends IlluminateTestCase
             ->andReturn($model)
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.media.updating', [$model])
             ->once()
         ;
@@ -575,12 +587,12 @@ class MediaRepositoryTest extends IlluminateTestCase
             ->once()
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.media.deleting', [$model, $file])
             ->once()
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.media.deleted', [$model])
             ->once()
         ;
@@ -673,7 +685,7 @@ class MediaRepositoryTest extends IlluminateTestCase
     {
         $model = $this->shouldReceiveFind();
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.media.updating', [$model, $data])
             ->once()
         ;
@@ -695,7 +707,7 @@ class MediaRepositoryTest extends IlluminateTestCase
             ->andReturn('foo')
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.media.updated', [$model])
             ->once()
         ;

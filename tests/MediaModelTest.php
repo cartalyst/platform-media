@@ -20,12 +20,25 @@
 
 namespace Platform\Media\Tests;
 
+use Mockery as m;
 use Illuminate\Support\Arr;
 use PHPUnit\Framework\TestCase;
 use Platform\Media\Models\Media;
 
 class MediaModelTest extends TestCase
 {
+    /**
+     * Close mockery.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        $this->addToAssertionCount(1);
+
+        m::close();
+    }
+
     /**
      * Setup.
      *
@@ -56,6 +69,8 @@ class MediaModelTest extends TestCase
      */
     public function it_throws_in_exception_if_roles_cannot_be_decoded()
     {
+        $this->expectException('InvalidArgumentException');
+
         $roles = 'foo';
 
         $this->media->roles = $roles;

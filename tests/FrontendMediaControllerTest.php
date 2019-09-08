@@ -27,6 +27,18 @@ use Platform\Media\Controllers\Frontend\MediaController;
 class FrontendMediaControllerTest extends IlluminateTestCase
 {
     /**
+     * Close mockery.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        $this->addToAssertionCount(1);
+
+        m::close();
+    }
+
+    /**
      * Setup.
      *
      * @return void
@@ -37,7 +49,7 @@ class FrontendMediaControllerTest extends IlluminateTestCase
 
         // Admin Controller expectations
         $this->app['sentinel']->shouldReceive('getUser');
-        $this->app['view']->shouldReceive('share');
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('share');
         $this->app['cartalyst.filesystem'] = m::mock('Cartalyst\Filesystem\FilesystemManager');
 
         // Media Repository
