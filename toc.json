@@ -1,18 +1,18 @@
 {
-	"preface" : [
-		"introduction",
-		"features",
-		"examples"
-	],
-	"setup" : [
-		"installation"
-	],
-	"usage": [
-		"index",
-		"repository",
-		"manager",
-		"image-manipulation",
-		"widgets",
-		"artisan"
-	]
+    "preface": [
+        "introduction",
+        "features",
+        "examples"
+    ],
+    "setup": [
+        "installation"
+    ],
+    "usage": [
+        "index",
+        "repository",
+        "manager",
+        "image-manipulation",
+        "widgets",
+        "artisan"
+    ]
 }
