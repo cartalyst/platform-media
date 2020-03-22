@@ -11,10 +11,10 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    8.0.0
+ * @version    9.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2019, Cartalyst LLC
+ * @copyright  (c) 2011-2020, Cartalyst LLC
  * @link       https://cartalyst.com
  */
 
@@ -74,7 +74,7 @@ return [
     |
     */
 
-    'version' => '8.0.0',
+    'version' => '9.0.0',
 
     /*
     |--------------------------------------------------------------------------
@@ -141,36 +141,36 @@ return [
 
     'routes' => function (Router $router, ExtensionInterface $extension, Application $app) {
         if (! $app->routesAreCached()) {
-            Route::group([
+            $router->group([
                 'prefix'    => admin_uri().'/media',
                 'namespace' => 'Platform\Media\Controllers\Admin',
-            ], function () {
-                Route::get('/', ['as' => 'admin.media.all', 'uses' => 'MediaController@index']);
-                Route::post('/', ['as' => 'admin.media.all', 'uses' => 'MediaController@executeAction']);
+            ], function (Router $router) {
+                $router->get('/', 'MediaController@index')->name('admin.media.all');
+                $router->post('/', 'MediaController@executeAction')->name('admin.media.execute');
 
-                Route::get('grid', ['as' => 'admin.media.grid', 'uses' => 'MediaController@grid']);
+                $router->get('grid', 'MediaController@grid')->name('admin.media.grid');
 
-                Route::get('files_list', ['as' => 'admin.media.files_list', 'uses' => 'MediaController@filesList']);
-                Route::get('images_list', ['as' => 'admin.media.images_list', 'uses' => 'MediaController@imagesList']);
+                $router->get('files_list', 'MediaController@filesList')->name('admin.media.files_list');
+                $router->get('images_list', 'MediaController@imagesList')->name('admin.media.images_list');
 
-                Route::post('upload', ['as' => 'admin.media.upload', 'uses' => 'MediaController@upload']);
-                Route::post('upload_redactor', ['as' => 'admin.media.upload_redactor', 'uses' => 'MediaController@uploadRedactor']);
-                Route::post('link_media', ['as' => 'admin.media.link_media', 'uses' => 'MediaController@linkMedia']);
+                $router->post('upload', 'MediaController@upload')->name('admin.media.upload');
+                $router->post('upload_redactor', 'MediaController@uploadRedactor')->name('admin.media.upload_redactor');
+                $router->post('link_media', 'MediaController@linkMedia')->name('admin.media.link_media');
 
-                Route::get('email/{id}', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@index']);
-                Route::post('email/{id}', ['as' => 'admin.media.email', 'uses' => 'MediaMailerController@process']);
+                $router->get('email/{id}', 'MediaMailerController@index')->name('admin.media.email');
+                $router->post('email/{id}', 'MediaMailerController@process')->name('admin.media.process');
 
-                Route::get('{id}', ['as' => 'admin.media.edit', 'uses' => 'MediaController@edit']);
-                Route::post('{id}', ['as' => 'admin.media.edit', 'uses' => 'MediaController@update']);
-                Route::delete('{id}', ['as' => 'admin.media.delete', 'uses' => 'MediaController@delete']);
+                $router->get('{id}', 'MediaController@edit')->name('admin.media.edit');
+                $router->post('{id}', 'MediaController@update')->name('admin.media.update');
+                $router->delete('{id}', 'MediaController@delete')->name('admin.media.delete');
             });
 
-            Route::group([
+            $router->group([
                 'prefix'    => 'media',
                 'namespace' => 'Platform\Media\Controllers\Frontend',
-            ], function () {
-                Route::get('view/{id}', ['as' => 'media.view', 'uses' => 'MediaController@view'])->where('id', '.*?');
-                Route::get('download/{id}', ['as' => 'media.download', 'uses' => 'MediaController@download'])->where('id', '.*?');
+            ], function (Router $router) {
+                $router->get('view/{id}', 'MediaController@view')->name('media.view')->where('id', '.*?');
+                $router->get('download/{id}', 'MediaController@download')->name('media.download')->where('id', '.*?');
             });
         }
     },

@@ -10,14 +10,15 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](LICENSE). Code well, ro
 
 Version | Platform | Laravel | PHP Version
 ------- | -------- | ------- | ------------
-8.x     | 9.x       | 6.x    | >= 7.2
-7.x     | 8.x       | 5.5    | >= 7.0
-6.x     | 7.x       | 5.4    | >= 5.6.4
-5.x     | 6.x       | 5.3    | >= 5.6.4
-4.x     | 5.x       | 5.2    | >= 5.5.9
-3.x     | 4.x       | 5.1    | >= 5.5.9
-2.x     | 3.x       | 5.0    | >= 5.4.0
-1.x     | 2.x       | 4.2    | >= 5.4.0
+9.x     | 10.x     | 7.x    | >= 7.2.5
+8.x     | 9.x      | 6.x    | >= 7.2
+7.x     | 8.x      | 5.5    | >= 7.0
+6.x     | 7.x      | 5.4    | >= 5.6.4
+5.x     | 6.x      | 5.3    | >= 5.6.4
+4.x     | 5.x      | 5.2    | >= 5.5.9
+3.x     | 4.x      | 5.1    | >= 5.5.9
+2.x     | 3.x      | 5.0    | >= 5.4.0
+1.x     | 2.x      | 4.2    | >= 5.4.0
 
 ## Documentation
 
@@ -43,4 +44,4 @@ This software is released under the [Cartalyst PSL](LICENSE) License.
 [link-docs]:   https://cartalyst.com/manual/platform-media
 [link-travis]: https://travis-ci.com/cartalyst/platform-media
 
-[icon-travis]: https://travis-ci.com/cartalyst/platform-media.svg?token=LAut3LMbmBFi3T9j45FH&branch=8.0
+[icon-travis]: https://travis-ci.com/cartalyst/platform-media.svg?token=LAut3LMbmBFi3T9j45FH&branch=9.x
