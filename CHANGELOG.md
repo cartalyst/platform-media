@@ -1,5 +1,9 @@
 # Changelog
 
+### v11.0.0 - 2022-04-18
+
+- Updated for Platform 12
+
 ### v10.0.0 - 2020-12-30
 
 - Updated for Platform 11
