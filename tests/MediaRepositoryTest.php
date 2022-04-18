@@ -301,7 +301,7 @@ class MediaRepositoryTest extends IlluminateTestCase
 
         $this->app['files']->shouldReceive('get')
             ->twice()
-            ->andReturn(base64_decode('R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='));
+            ->andReturn(base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=='));
 
         $this->app['files']->shouldReceive('put')
             ->once();
