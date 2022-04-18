@@ -56,6 +56,7 @@ class MediaRepositoryTest extends IlluminateTestCase
         $this->app['platform.roles']              = m::mock('Platform\Roles\Repositories\RoleRepositoryInterface');
         $this->app['platform.tags']               = m::mock('Platform\Tags\Repositories\TagsRepositoryInterface');
         $this->app['themes']                      = m::mock('Cartalyst\Themes\ThemeBag');
+        $this->app['path.storage']                = '';
 
         $this->app['platform.menus.manager']->shouldIgnoreMissing();
 
@@ -271,59 +272,64 @@ class MediaRepositoryTest extends IlluminateTestCase
     {
         $uploaded = m::mock('Symfony\Component\HttpFoundation\File\UploadedFile');
         $uploaded->shouldReceive('getClientOriginalName')
-            ->twice()
+            ->once()
         ;
 
-        $file = m::mock('Cartalyst\Filesystem\File');
+        $uploaded->shouldReceive('getPathname')
+            ->once()
+            ->andReturn('foo_path')
+        ;
+
+        $uploaded->shouldReceive('getMimeType')
+            ->twice()
+            ->andReturn('image/png')
+        ;
+
+        $uploaded->shouldReceive('getExtension')
+            ->once()
+            ->andReturn('png')
+        ;
+
+        $uploaded->shouldReceive('getSize')
+            ->once()
+        ;
+
+        $uploaded->shouldReceive('path')
+            ->once()
+            ->andReturn('')
+        ;
+
+        $this->app['files']->shouldReceive('get')
+            ->twice()
+            ->andReturn(base64_decode('R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='));
+
+        $this->app['files']->shouldReceive('put')
+            ->once();
 
         $data = [
-            'name' => 'Foo',
+            'name' => 'Foo.png',
         ];
 
         $preparedData = [
-            'name'      => 'Foo',
-            'path'      => 'foo_path',
+            'name'      => 'Foo.png',
+            'path'      => 'foo_1.png',
             'extension' => 'png',
-            'mime'      => null,
-            'size'      => null,
+            'mime'      => 'image/png',
+            'size'      => 0,
             'is_image'  => true,
             'width'     => 1,
             'height'    => 1,
         ];
 
-        $this->app['cartalyst.filesystem']->shouldReceive('upload')
-            ->with($uploaded, 'foo_1.')
-            ->once()
-            ->andReturn($file)
-        ;
-
-        $file->shouldReceive('getPath')
-            ->once()
-            ->andReturn('foo_path')
-        ;
-
-        $file->shouldReceive('getImageSize')
-            ->once()
-            ->andReturn(['width' => 1, 'height' => 1])
-        ;
-
-        $file->shouldReceive('getExtension')
-            ->once()
-            ->andReturn('png')
-        ;
-
-        $file->shouldReceive('getMimetype')
+        $this->app['cartalyst.filesystem']->shouldReceive('prepareFileLocation')
+            ->with($uploaded)
             ->once()
         ;
 
-        $file->shouldReceive('getSize')
-            ->once()
-        ;
-
-        $file->shouldReceive('isImage')
+        $this->app['files']->shouldReceive('exists')
             ->once()
             ->andReturn(true)
-        ;
+            ;
 
         $model = m::mock('Platform\Media\Models\Media');
 
@@ -354,7 +360,7 @@ class MediaRepositoryTest extends IlluminateTestCase
         ;
 
         $this->app['events']->shouldReceive('dispatch')
-            ->with('platform.media.uploaded', [$model, $file, $uploaded])
+            ->with('platform.media.uploaded', [$model, $uploaded])
             ->once()
         ;
 
@@ -391,7 +397,7 @@ class MediaRepositoryTest extends IlluminateTestCase
             ->andReturn(true)
         ;
 
-        $this->app['cartalyst.filesystem']->shouldReceive('delete')
+        $this->app['files']->shouldReceive('delete')
             ->once()
         ;
 
@@ -415,11 +421,11 @@ class MediaRepositoryTest extends IlluminateTestCase
             ->once()
         ;
 
-        $file->shouldReceive('getMimetype')
+        $file->shouldReceive('mimeType')
             ->once()
         ;
 
-        $file->shouldReceive('getSize')
+        $file->shouldReceive('fileSize')
             ->once()
         ;
 
@@ -470,7 +476,7 @@ class MediaRepositoryTest extends IlluminateTestCase
         ;
 
         $this->app['events']->shouldReceive('dispatch')
-            ->with('platform.media.uploaded', [$model, $file, $uploaded])
+            ->with('platform.media.uploaded', [$model, $uploaded])
             ->once()
         ;
 
@@ -491,8 +497,6 @@ class MediaRepositoryTest extends IlluminateTestCase
     public function it_returns_false_on_invalid_update()
     {
         $uploaded = m::mock('Symfony\Component\HttpFoundation\File\UploadedFile');
-
-        $file = m::mock('Cartalyst\Filesystem\File');
 
         $error = 'error message';
 

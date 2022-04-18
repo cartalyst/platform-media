@@ -22,7 +22,7 @@ namespace Platform\Media\Styles;
 
 use Cartalyst\Filesystem\File;
 use Platform\Media\Models\Media;
-use League\Flysystem\FileNotFoundException;
+use League\Flysystem\UnableToRetrieveMetadata;
 
 class Preset
 {
@@ -121,8 +121,8 @@ class Preset
         $namespaces = $this->namespaces;
 
         try {
-            $mimeType = $this->file->getMimeType();
-        } catch (FileNotFoundException $e) {
+            $mimeType = $this->file->mimeType();
+        } catch (UnableToRetrieveMetadata $e) {
             return false;
         }
 

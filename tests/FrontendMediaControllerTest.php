@@ -92,10 +92,11 @@ class FrontendMediaControllerTest extends IlluminateTestCase
 
         $this->app['cartalyst.filesystem']->shouldReceive('read')
             ->once()
+            ->andReturn('')
         ;
 
         $this->app['Illuminate\Contracts\Routing\ResponseFactory']->shouldReceive('make')
-            ->with(null, 200)
+            ->with('', 200)
             ->once()
             ->andReturn($response = m::mock('Symfony\Component\HttpFoundation\Response'))
         ;
@@ -167,6 +168,7 @@ class FrontendMediaControllerTest extends IlluminateTestCase
 
         $this->app['cartalyst.filesystem']->shouldReceive('read')
             ->once()
+            ->andReturn('')
         ;
 
         $this->app['Illuminate\Contracts\Routing\ResponseFactory']->shouldReceive('make')

@@ -117,14 +117,12 @@ class StyleManagerTest extends IlluminateTestCase
 
         $media->shouldReceive('getAttribute')
             ->with('path')
-            ->twice()
+            ->times(4)
             ->andReturn($filePath)
         ;
 
-        $this->app['cartalyst.filesystem']->shouldReceive('get')
-            ->with($filePath)
+        $this->app['cartalyst.filesystem']->shouldReceive('connection')
             ->twice()
-            ->andReturn($file)
         ;
 
         $preset = m::mock('Platform\Media\Styles\Preset');
@@ -135,7 +133,6 @@ class StyleManagerTest extends IlluminateTestCase
         ;
 
         $preset->shouldReceive('setFile')
-            ->with($file)
             ->twice()
         ;
 

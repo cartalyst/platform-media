@@ -23,12 +23,12 @@ namespace Platform\Media\Repositories;
 use Illuminate\Support\Arr;
 use Cartalyst\Support\Traits;
 use Illuminate\Container\Container;
-use League\Flysystem\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Cartalyst\Filesystem\Exceptions\FileExistsException;
 use Cartalyst\Filesystem\Exceptions\InvalidFileException;
 use Cartalyst\Filesystem\Exceptions\InvalidMimeTypeException;
 use Cartalyst\Filesystem\Exceptions\MaxFileSizeExceededException;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class MediaRepository implements MediaRepositoryInterface
 {
@@ -40,6 +40,13 @@ class MediaRepository implements MediaRepositoryInterface
      * @var \Cartalyst\Filesystem\Filesystem
      */
     protected $filesystem;
+
+    /**
+     * The Filesystem instance.
+     *
+     * @var \Illuminate\Filesystem\Filesystem
+     */
+    protected $files;
 
     /**
      * The Eloquent model name.
@@ -76,6 +83,8 @@ class MediaRepository implements MediaRepositoryInterface
         $this->tags = $app['platform.tags'];
 
         $this->setDispatcher($app['events']);
+
+        $this->files = $app['files'];
 
         $this->filesystem = $app['cartalyst.filesystem'];
 
@@ -175,19 +184,32 @@ class MediaRepository implements MediaRepositoryInterface
             // Get the submitted tags
             $tags = Arr::pull($input, 'tags', []);
 
-            // Upload the file
-            $file = $this->filesystem->upload($uploadedFile, $fileName);
+            $destination = $this->filesystem->prepareFileLocation($uploadedFile);
+
+            $finalDestination = storage_path('files/'.$destination);
+
+            $this->ensurePathExists($finalDestination);
+
+            $this->files->put($finalDestination.$fileName, $this->files->get($uploadedFile->getPathname()));
+
+            $mime = $uploadedFile->getMimeType();
+
+            $isImage = false;
+
+            if (in_array($mime, ['image/gif', 'image/jpeg', 'image/png'])) {
+                $isImage = true;
+            }
 
             // If the file is an image, we get the image size
-            $imageSize = $file->getImageSize();
+            $imageSize = $this->getImageSize($uploadedFile);
 
             $input = array_merge([
-                'name'      => $uploadedFile->getClientOriginalName(),
-                'path'      => $file->getPath(),
-                'extension' => $file->getExtension(),
-                'mime'      => $file->getMimetype(),
-                'size'      => $file->getSize(),
-                'is_image'  => $file->isImage(),
+                'name'      => $fileName,
+                'path'      => $destination.$fileName,
+                'extension' => $uploadedFile->getExtension(),
+                'mime'      => $mime,
+                'size'      => $uploadedFile->getSize(),
+                'is_image'  => $isImage,
                 'width'     => $imageSize['width'],
                 'height'    => $imageSize['height'],
             ], $input);
@@ -197,7 +219,7 @@ class MediaRepository implements MediaRepositoryInterface
             // Set the tags on the media entry
             $this->tags->set($media, $tags);
 
-            $this->fireEvent('platform.media.uploaded', [$media, $file, $uploadedFile]);
+            $this->fireEvent('platform.media.uploaded', [$media, $uploadedFile]);
 
             return $media;
         } catch (FileExistsException $e) {
@@ -231,7 +253,7 @@ class MediaRepository implements MediaRepositoryInterface
             if ($this->validForUpload($uploadedFile)) {
                 try {
                     // Delete the old media file
-                    $this->filesystem->delete($media->path);
+                    $this->files->delete($media->path);
                 } catch (FileNotFoundException $e) {
                 }
 
@@ -248,7 +270,7 @@ class MediaRepository implements MediaRepositoryInterface
                 // Upload the file
                 $file = $this->filesystem->upload($uploadedFile, $fileName);
 
-                $this->fireEvent('platform.media.uploaded', [$media, $file, $uploadedFile]);
+                $this->fireEvent('platform.media.uploaded', [$media, $uploadedFile]);
 
                 $imageSize = $file->getImageSize();
 
@@ -256,8 +278,8 @@ class MediaRepository implements MediaRepositoryInterface
                 $input = array_merge([
                     'path'      => $file->getPath(),
                     'extension' => $file->getExtension(),
-                    'mime'      => $file->getMimetype(),
-                    'size'      => $file->getSize(),
+                    'mime'      => $file->mimeType(),
+                    'size'      => $file->fileSize(),
                     'is_image'  => $file->isImage(),
                     'width'     => $imageSize['width'],
                     'height'    => $imageSize['height'],
@@ -381,5 +403,65 @@ class MediaRepository implements MediaRepositoryInterface
         $fileName = $this->sanitizeFileName($fileName);
 
         return pathinfo($fileName, PATHINFO_FILENAME)."_{$id}.".pathinfo($fileName, PATHINFO_EXTENSION);
+    }
+
+    /**
+     * Ensures the given path exists on the filesystem.
+     *
+     * @param string $path
+     *
+     * @return void
+     */
+    protected function ensurePathExists($path)
+    {
+        $files = $this->files;
+
+        if (! $files->exists($path)) {
+            $files->makeDirectory($path, 0755, true);
+        }
+    }
+
+    /**
+     * Returns the image size.
+     *
+     * @param \Cartalyst\Filesystem\File $file
+     *
+     * @return array
+     */
+    protected function getImageSize($file)
+    {
+        if (! $this->isImage($file)) {
+            return ['width' => 0, 'height' => 0];
+        }
+
+        $raw = $this->files->get($file->path());
+
+        $image = imagecreatefromstring($raw);
+
+        $width  = imagesx($image);
+        $height = imagesy($image);
+
+        return compact('width', 'height');
+    }
+
+    /**
+     * Returns the image size.
+     *
+     * @param \Cartalyst\Filesystem\File $file
+     *
+     * @return bool
+     */
+    protected function isImage($file)
+    {
+        // Validate the file mime type
+        $imageMimes = [
+            'image/gif', 'image/jpeg', 'image/png',
+        ];
+
+        if (! in_array($file->getMimeType(), $imageMimes)) {
+            return false;
+        }
+
+        return true;
     }
 }

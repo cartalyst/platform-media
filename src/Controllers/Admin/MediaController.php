@@ -148,10 +148,10 @@ class MediaController extends AdminController
         // The transformer to manipulate data
         $transformer = function ($element) {
             $element->thumbnail_uri = getImagePath($element, 'thumb');
-            $element->view_uri      = route('media.view', $element->path);
+            $element->view_uri      = route('media.view', $element->path ?? $element->id);
             $element->edit_uri      = route('admin.media.edit', $element->id);
             $element->email_uri     = route('admin.media.email', $element->id);
-            $element->download_uri  = route('media.download', $element->path);
+            $element->download_uri  = route('media.download', $element->path ?? $element->id);
 
             return $element->toArray();
         };

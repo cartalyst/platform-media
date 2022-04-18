@@ -46,18 +46,17 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface
      * On upload event.
      *
      * @param \Platform\Media\Models\Media                        $media
-     * @param \Cartalyst\Filesystem\File                          $file
      * @param \Symfony\Component\HttpFoundation\File\UploadedFile $uploadedFile
      *
      * @return void
      */
-    public function uploaded(Media $media, File $file, UploadedFile $uploadedFile)
+    public function uploaded(Media $media, UploadedFile $uploadedFile)
     {
         if ($thumbnail = $media->thumbnail) {
             \Illuminate\Support\Facades\File::delete($thumbnail);
         }
 
-        $this->app['platform.media.manager']->handleUp($media, $file, $uploadedFile);
+        $this->app['platform.media.manager']->handleUp($media);
 
         $this->flushCache($media);
     }
@@ -90,13 +89,12 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface
      * On deleting event.
      *
      * @param \Platform\Media\Models\Media $media
-     * @param \Cartalyst\Filesystem\File   $file
      *
      * @return void
      */
-    public function deleting(Media $media, File $file)
+    public function deleting(Media $media)
     {
-        $this->app['platform.media.manager']->handleDown($media, $file);
+        $this->app['platform.media.manager']->handleDown($media);
     }
 
     /**

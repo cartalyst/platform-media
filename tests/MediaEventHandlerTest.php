@@ -72,7 +72,6 @@ class MediaEventHandlerTest extends IlluminateTestCase
     public function test_on_uploaded()
     {
         $media        = m::mock('Platform\Media\Models\Media');
-        $file         = m::mock('Cartalyst\Filesystem\File');
         $uploadedFile = m::mock('Symfony\Component\HttpFoundation\File\UploadedFile');
 
         $this->app['files']->shouldReceive('delete')
@@ -92,7 +91,7 @@ class MediaEventHandlerTest extends IlluminateTestCase
 
         $this->shouldFlushCache($media);
 
-        $this->handler->uploaded($media, $file, $uploadedFile);
+        $this->handler->uploaded($media, $uploadedFile);
     }
 
     /** @test */

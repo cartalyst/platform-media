@@ -54,6 +54,6 @@ if (! function_exists('getImagePath')) {
             $manager->applyPreset($presetName, 'up', $media);
         }
 
-        return url(str_replace(public_path(), null, $cachedMediaPath));
+        return url(str_replace(public_path(), '', $cachedMediaPath));
     }
 }

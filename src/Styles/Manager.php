@@ -145,9 +145,13 @@ class Manager implements ManagerInterface
         // Set the media entity
         $preset->setMedia($media);
 
+        if (! $media->path) {
+            return;
+        }
+
         // Set the media file object
         $preset->setFile(
-            $this->filesystem->get($media->path)
+            new File($this->filesystem->connection(), $media->path)
         );
 
         // Check if the preset is in a valid state
