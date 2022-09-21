@@ -22,6 +22,7 @@ namespace Platform\Media\Repositories;
 
 use Illuminate\Support\Arr;
 use Cartalyst\Support\Traits;
+use Cartalyst\Filesystem\File;
 use Illuminate\Container\Container;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Cartalyst\Filesystem\Exceptions\FileExistsException;
@@ -32,7 +33,10 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class MediaRepository implements MediaRepositoryInterface
 {
-    use Traits\ContainerTrait, Traits\EventTrait, Traits\RepositoryTrait, Traits\ValidatorTrait;
+    use Traits\ContainerTrait;
+    use Traits\EventTrait;
+    use Traits\RepositoryTrait;
+    use Traits\ValidatorTrait;
 
     /**
      * The Filesystem instance.
@@ -306,7 +310,7 @@ class MediaRepository implements MediaRepositoryInterface
     public function delete($id)
     {
         if ($media = $this->find($id)) {
-            $file = $this->filesystem->get($media->path);
+            $file = new File($this->filesystem->connection(), $media->path);
 
             $this->fireEvent('platform.media.deleting', [$media, $file]);
 
