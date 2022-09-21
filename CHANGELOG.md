@@ -1,5 +1,11 @@
 # Changelog
 
+### v11.0.1 - 2022-09-21
+
+`FIXED`
+
+- A bug affecting media deletion.
+
 ### v11.0.0 - 2022-04-18
 
 - Updated for Platform 12

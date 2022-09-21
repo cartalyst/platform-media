@@ -9,7 +9,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    11.0.0
+ * @version    11.0.1
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2022, Cartalyst LLC
@@ -20,54 +20,54 @@
 {
 	$.Redactor.prototype.imagemanager = function()
 	{
-		return {
+    return {
 			init: function()
 			{
-				if (!this.opts.imageManagerJson) return;
+        if (!this.opts.imageManagerJson) return;
 
-				this.modal.addCallback('image', this.imagemanager.load);
-			},
+        this.modal.addCallback('image', this.imagemanager.load);
+      },
 			load: function()
 			{
-				var $modal = this.modal.getModal();
+        var $modal = this.modal.getModal();
 
-				this.modal.createTabber($modal);
-				this.modal.addTab(1, 'Upload', 'active');
-				this.modal.addTab(2, 'Choose');
+        this.modal.createTabber($modal);
+        this.modal.addTab(1, 'Upload', 'active');
+        this.modal.addTab(2, 'Choose');
 
 				$('#redactor-modal-image-droparea').addClass('redactor-tab redactor-tab1');
 
 				var $box = $('<div id="redactor-image-manager-box" style="overflow: auto; height: 300px;" class="redactor-tab redactor-tab2">').hide();
-				$modal.append($box);
+        $modal.append($box);
 
-				$.ajax({
+        $.ajax({
 				  dataType: "json",
-				  cache: false,
-				  url: this.opts.imageManagerJson,
+          cache: false,
+          url: this.opts.imageManagerJson,
 				  success: $.proxy(function(data)
 					{
 						$.each(data, $.proxy(function(key, val)
 						{
-							// title
-							var thumbtitle = '';
-							if (typeof val.title !== 'undefined') thumbtitle = val.title;
+                // title
+                var thumbtitle = '';
+                if (typeof val.title !== 'undefined') thumbtitle = val.title;
 
 							var img = $('<img src="' + val.thumb + '" rel="' + val.image + '" title="' + thumbtitle + '" style="width: 100px; height: 75px; cursor: pointer;" />');
-							$('#redactor-image-manager-box').append(img);
-							$(img).click($.proxy(this.imagemanager.insert, this));
+                $('#redactor-image-manager-box').append(img);
+                $(img).click($.proxy(this.imagemanager.insert, this));
 
 						}, this));
 
 
-					}, this)
-				});
+              }, this)
+        });
 
 
-			},
+      },
 			insert: function(e)
 			{
 				this.image.insert('<img src="' + $(e.target).attr('rel') + '" alt="' + $(e.target).attr('title') + '">');
 			}
-		};
-	};
+    };
+  };
 })(jQuery);

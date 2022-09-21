@@ -9,7 +9,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    11.0.0
+ * @version    11.0.1
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2022, Cartalyst LLC
@@ -17,211 +17,211 @@
  */
 
  ;(function($, window, document, undefined) {
-    'use strict';
+  'use strict';
 
-    /**
-     * Default settings
-     *
-     * @var array
-     */
+  /**
+   * Default settings
+   *
+   * @var array
+   */
     var defaults =
     {
-        onFail : function(xhr) {},
-        onFileQueued : function(file) {},
-        onSuccess : function(xhr) {},
-        onComplete : function() {},
-        onRemove : function(self, elem) {},
-        icons: {
-            def:   'fa-file-o',
-            image: 'fa-file-image-o',
-            audio: 'fa-file-audio-o',
-            video: 'fa-file-video-o',
-            pdf:   'fa-file-pdf-o',
-            zip:   'fa-file-zip-o',
-        },
-    };
+    onFail: function (xhr) {},
+    onFileQueued: function (file) {},
+    onSuccess: function (xhr) {},
+    onComplete: function () {},
+    onRemove: function (self, elem) {},
+    icons: {
+      def: 'fa-file-o',
+      image: 'fa-file-image-o',
+      audio: 'fa-file-audio-o',
+      video: 'fa-file-video-o',
+      pdf: 'fa-file-pdf-o',
+      zip: 'fa-file-zip-o',
+    },
+  };
 
     function MediaManager(options)
     {
-        // Extend the default options with the provided options
-        this.opt = $.extend({}, defaults, options);
+    // Extend the default options with the provided options
+    this.opt = $.extend({}, defaults, options);
 
-        //
-        this.files = {};
+    //
+    this.files = {};
 
-        //
-        this.totalFiles = 0;
+    //
+    this.totalFiles = 0;
 
-        //
-        this.totalSize = 0;
+    //
+    this.totalSize = 0;
 
-        // Initialize the Media Manager
-        this.initializer();
-    }
+    // Initialize the Media Manager
+    this.initializer();
+  }
 
     MediaManager.prototype =
     {
-        /**
-         * Initializes the Media Manager.
-         *
-         * @return void
-         */
+    /**
+     * Initializes the Media Manager.
+     *
+     * @return void
+     */
         initializer : function()
         {
-            // Avoid scope issues
-            var self = this;
+      // Avoid scope issues
+      var self = this;
 
-            // Initialize the event listeners
-            self.events();
-        },
+      // Initialize the event listeners
+      self.events();
+    },
 
         events : function()
         {
-            // Avoid scope issues
-            var self = this;
+      // Avoid scope issues
+      var self = this;
 
-            // Disable the upload button
-            if (self.hasFiles() === false) self.disableUploadButton();
+      // Disable the upload button
+      if (self.hasFiles() === false) self.disableUploadButton();
 
-            // Process the queued files
+      // Process the queued files
             $(document).on('click', '[data-media-upload]', function()
             {
-                self.processQueue();
-                self.enableUpload();
-            });
+        self.processQueue();
+        self.enableUpload();
+      });
 
             $(document).on('change', '.upload__select input[type="file"]', function(e)
             {
-                var input = e.currentTarget;
+          var input = e.currentTarget;
 
-                FileAPI.reset(input);
+          FileAPI.reset(input);
 
                 FileAPI.each(FileAPI.getFiles(e), function(file)
                 {
-                    self.addFile(file);
+            self.addFile(file);
 
-                    self.opt.onFileQueued(file);
-                });
+            self.opt.onFileQueued(file);
+          });
 
-                if (self.hasFiles() === true) {
+          if (self.hasFiles() === true) {
 
-                    if ($('.upload__select-input').attr('multiple') === undefined) {
-                        self.disableUpload();
-                    }
+            if ($('.upload__select-input').attr('multiple') === undefined) {
+              self.disableUpload();
+            }
 
-                    self.enableUploadButton();
-                }
+            self.enableUploadButton();
+          }
 
-                self.refreshTotals();
+          self.refreshTotals();
             });
 
             $(document).on('click', '[data-media-remove]', function(e)
             {
-                e.preventDefault();
+        e.preventDefault();
 
                 self.removeFile(
                     $(this).data('media-remove')
                 );
 
-                self.opt.onRemove(self, $(this));
+        self.opt.onRemove(self, $(this));
 
-                if ($('.upload__select-input').attr('multiple') === undefined) {
-                    self.enableUpload();
-                }
+        if ($('.upload__select-input').attr('multiple') === undefined) {
+          self.enableUpload();
+        }
 
-                self.refreshTotals();
-            });
+        self.refreshTotals();
+      });
 
-            jQuery(function($){
-                if(FileAPI.support.dnd) {
+      jQuery(function ($) {
+        if (FileAPI.support.dnd) {
                     $('.upload__instructions').dnd(function(over) {
-                        $('.dnd').toggle(over);
+              $('.dnd').toggle(over);
                     }, function (files) {
-                        FileAPI.each(files, function(file) {
-                            self.addFile(file);
+              FileAPI.each(files, function (file) {
+                self.addFile(file);
 
-                            self.opt.onFileQueued(file);
-                        });
+                self.opt.onFileQueued(file);
+              });
 
-                        if (self.hasFiles() === true) self.enableUploadButton();
+              if (self.hasFiles() === true) self.enableUploadButton();
                     });
-                }
-            });
-        },
+        }
+      });
+    },
 
         getUploadUrl : function()
         {
-            return this.opt.uploadUrl;
-        },
+      return this.opt.uploadUrl;
+    },
 
         setUploadUrl : function(url)
         {
-            this.opt.uploadUrl = url;
-        },
+      this.opt.uploadUrl = url;
+    },
 
         getNamespace : function()
         {
-            return this.opt.namespace;
-        },
+      return this.opt.namespace;
+    },
 
         setNamespace : function(namespace)
         {
-            this.opt.namespace = namespace;
-        },
+      this.opt.namespace = namespace;
+    },
 
         refreshTotals : function()
         {
-            $('[data-media-total-size]').html(
-                (this.totalSize/FileAPI.KB).toFixed(2)
-                );
+      $('[data-media-total-size]').html(
+        (this.totalSize / FileAPI.KB).toFixed(2)
+      );
 
-            $('[data-media-total-files]').html(this.totalFiles);
-        },
+      $('[data-media-total-files]').html(this.totalFiles);
+    },
 
         hasFiles : function()
         {
-            return ! $.isEmptyObject(this.files);
-        },
+      return !$.isEmptyObject(this.files);
+    },
 
         disableUploadButton : function()
         {
-            $('[data-media-upload]').attr('disabled', true);
-        },
+      $('[data-media-upload]').attr('disabled', true);
+    },
 
         enableUploadButton : function()
         {
-            $('[data-media-upload]').attr('disabled', false);
-        },
+      $('[data-media-upload]').attr('disabled', false);
+    },
 
         disableUpload : function()
         {
-            $('.upload__select').attr('disabled', true);
-        },
+      $('.upload__select').attr('disabled', true);
+    },
 
         enableUpload : function()
         {
-            $('.upload__select').attr('disabled', false);
-        },
+      $('.upload__select').attr('disabled', false);
+    },
 
         hideDnd : function()
         {
-            $('.dnd').hide();
-        },
+      $('.dnd').hide();
+    },
 
         addFile : function(file)
         {
-            // Avoid scope issues
-            var self = this;
+      // Avoid scope issues
+      var self = this;
 
-            self.files[FileAPI.uid(file)] = file;
+      self.files[FileAPI.uid(file)] = file;
 
-            var data = {
+      var data = {
                 'file' : file,
                 'namespace' : self.opt.namespace,
                 'icon' : self.opt.icons
-            };
+      };
 
-            var template = _.template($('[data-media-file-template]').html());
+      var template = _.template($('[data-media-file-template]').html());
 
             $('[data-media-queue-list]').append(
                 template(data)
@@ -236,128 +236,128 @@
                     if ( ! err )
                     {
                         self._getEl(file, '[data-media-file-image]').addClass('media-file__left_border').html(img);
-                    }
-                });
             }
+          });
+      }
 
-            self.totalFiles += 1;
+      self.totalFiles += 1;
 
-            self.totalSize += file.size;
-        },
+      self.totalSize += file.size;
+    },
 
         removeFile : function(id)
         {
-            var file = this.files[id];
+      var file = this.files[id];
 
-            this.totalFiles -= 1;
+      this.totalFiles -= 1;
 
-            this.totalSize -= file.size;
+      this.totalSize -= file.size;
 
-            delete this.files[id];
+      delete this.files[id];
 
-            $('[data-media-file="' + id + '"]').remove();
+      $('[data-media-file="' + id + '"]').remove();
 
-            if ( ! this.hasFiles()) {
-                this.disableUploadButton();
-                this.hideDnd();
-            }
-        },
+      if (!this.hasFiles()) {
+        this.disableUploadButton();
+        this.hideDnd();
+      }
+    },
 
         upload : function(fileId, file)
         {
-            // Avoid scope issues
-            var self = this;
+      // Avoid scope issues
+      var self = this;
 
             if (file)
             {
-                var fileId = FileAPI.uid(file);
+        var fileId = FileAPI.uid(file);
 
                 file.xhr = FileAPI.upload(
                 {
-                    url: self.opt.uploadUrl,
-                    files: { file : file },
-                    data: {
-                        name : self._getEl(file, 'input[name="' + fileId + '_name"]').val(),
+          url: self.opt.uploadUrl,
+          files: { file: file },
+          data: {
+            name: self._getEl(file, 'input[name="' + fileId + '_name"]').val(),
                         namespace : self._getEl(file, 'input[name="' + fileId + '_namespace"]').val(),
                         tags : self._getEl(file, 'input[name="' + fileId + '_tags[]"]').val(),
-                    },
-                    headers: {
+          },
+          headers: {
                         'X-CSRF-Token' : $('meta[name="csrf-token"]').attr('content')
-                    },
+          },
                     upload: function()
                     {
-                        self._getEl(file, '.file-ready').hide();
-                    },
+            self._getEl(file, '.file-ready').hide();
+          },
                     progress: function(evt)
                     {
-                        self._getEl(file, '.file-progress').show();
-                    },
+            self._getEl(file, '.file-progress').show();
+          },
                     complete: function(err, xhr)
                     {
-                        var state = err ? 'error' : 'done';
+            var state = err ? 'error' : 'done';
 
                         if (state === 'done')
                         {
-                            self._getEl(file, '.file-progress').hide();
+              self._getEl(file, '.file-progress').hide();
 
-                            self._getEl(file, '.file-success').show();
+              self._getEl(file, '.file-success').show();
 
-                            // Timeout to show the success button for 200ms
+              // Timeout to show the success button for 200ms
                             setTimeout(function()
                             {
-                                self.opt.onSuccess(xhr);
+                self.opt.onSuccess(xhr);
 
-                                self.removeFile(fileId);
+                self.removeFile(fileId);
 
-                                if (self.hasFiles() === false) {
-                                    self.disableUploadButton();
-                                    self.opt.onComplete();
-                                }
+                if (self.hasFiles() === false) {
+                  self.disableUploadButton();
+                  self.opt.onComplete();
+                }
 
-                                self.refreshTotals();
-                            }, 200);
+                self.refreshTotals();
+              }, 200);
                         }
                         else if (state === 'error')
                         {
-                            self._getEl(file, '.file-progress').hide();
+              self._getEl(file, '.file-progress').hide();
 
-                            self._getEl(file, '.file-error').show();
+              self._getEl(file, '.file-error').show();
 
                             self._getEl(file, '.file-error-help').text((err ? (xhr.responseText || err) : state));
 
-                            self.opt.onFail(xhr);
-                        }
-                    }
-                });
+              self.opt.onFail(xhr);
             }
-        },
+                    }
+        });
+      }
+    },
 
         processQueue : function()
         {
-            // Avoid scope issues
-            var self = this;
+      // Avoid scope issues
+      var self = this;
 
-            self.disableUploadButton();
+      self.disableUploadButton();
 
-            // Loop through all the files on the queue
+      // Loop through all the files on the queue
             $.each(self.files, function(id, file)
             {
-                self.upload(id, file);
-            });
-        },
+        self.upload(id, file);
+      });
+    },
 
         _getEl : function(file, sel)
         {
-            var $el = $('[data-media-file=' + FileAPI.uid(file) + ']');
+      var $el = $('[data-media-file=' + FileAPI.uid(file) + ']');
 
-            return  sel ? $el.find(sel) : $el;
-        },
+      return sel ? $el.find(sel) : $el;
+    },
 
     }
 
     $.mediamanager = function(options)
     {
-        return new MediaManager(options);
-    };
+    return new MediaManager(options);
+  };
 
 })(jQuery, window, document);

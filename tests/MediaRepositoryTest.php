@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    11.0.0
+ * @version    11.0.1
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2022, Cartalyst LLC
@@ -329,7 +329,7 @@ class MediaRepositoryTest extends IlluminateTestCase
         $this->app['files']->shouldReceive('exists')
             ->once()
             ->andReturn(true)
-            ;
+        ;
 
         $model = m::mock('Platform\Media\Models\Media');
 

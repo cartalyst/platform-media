@@ -9,7 +9,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Media extension
- * @version    11.0.0
+ * @version    11.0.1
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2022, Cartalyst LLC
@@ -20,49 +20,49 @@ var Extension;
 
 ;(function(window, document, $, undefined)
 {
-	'use strict';
+  'use strict';
 
-	Extension = Extension || {
-		Form: {},
-	};
+  Extension = Extension || {
+    Form: {},
+  };
 
-	// Initialize functions
+  // Initialize functions
 	Extension.Form.init = function()
 	{
-		Extension.Form.selectize();
-		Extension.Form.listeners();
-	};
+    Extension.Form.selectize();
+    Extension.Form.listeners();
+  };
 
-	// Add Listeners
+  // Add Listeners
 	Extension.Form.listeners = function()
 	{
 		Platform.Cache.$body
 			.on('change', '#private', Extension.Form.private)
 		;
-	};
+  };
 
 	Extension.Form.private = function()
 	{
 		if ($(this).val() == 1)
 		{
-			$('[data-roles]').removeClass('hide');
+      $('[data-roles]').removeClass('hide');
 		}
 		else
 		{
-			$('[data-roles]').addClass('hide');
-		}
-	};
+      $('[data-roles]').addClass('hide');
+    }
+  };
 
-	// Initialize Bootstrap Popovers
+  // Initialize Bootstrap Popovers
 	Extension.Form.selectize = function ()
 	{
-		$('#tags').selectize({
-			create: true,
+    $('#tags').selectize({
+      create: true,
 			sortField: 'text'
-		});
-	};
+    });
+  };
 
-	// Job done, lets run.
-	Extension.Form.init();
+  // Job done, lets run.
+  Extension.Form.init();
 
 })(window, document, jQuery);
